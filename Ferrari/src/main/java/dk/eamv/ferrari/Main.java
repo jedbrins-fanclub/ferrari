@@ -3,15 +3,11 @@ package dk.eamv.ferrari;
 import dk.eamv.ferrari.sidebar.SidebarController;
 import dk.eamv.ferrari.sidebar.SidebarView;
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
-
-import java.io.IOException;
-import java.sql.SQLException;
 import java.util.Objects;
 
 import dk.eamv.ferrari.database.Database;
@@ -25,11 +21,8 @@ public class Main extends Application {
     public void start (Stage stage) {
         Database.init();
 
-
         new SidebarController(sidebarView);
-
         root.setLeft(sidebarView);
-
 
         init(stage, root);
     }

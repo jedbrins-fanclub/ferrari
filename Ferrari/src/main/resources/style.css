@@ -1,11 +1,9 @@
 
 .root {
   -ferrari-red: #F50000;
-
   -darkest-gray: #111111;
   -darker-gray: #1F1F1F;
   -dark-gray: #373737;
-
   -text-color: #FFFFFF;
 }
 
@@ -14,7 +12,7 @@
   -fx-background-color: #f7f7f7;
 }
 
-/* Header */
+/* Sidebar header */
 .sidebar Label {
     -fx-font-size: 36;
     -fx-font-weight: 600;
@@ -28,12 +26,11 @@
 }
 
 /* Sidebar */
-
 .sidebar {
     -fx-background-color: -darkest-gray;
 }
 
-.sidebar Button {
+.sidebar ToggleButton {
     -fx-background-color: -darker-gray;
     -fx-text-fill: -text-color;
     -fx-font-size: 18;
@@ -44,21 +41,19 @@
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 5, 0.0, 0, 2);
 }
 
-.sidebar Button:hover {
+.sidebar ToggleButton:hover {
     -fx-background-color: -dark-gray;
 }
 
-.sidebar Button:selected {
+.sidebar ToggleButton:selected {
     -fx-background-color: -ferrari-red;
     -fx-text-fill: -darker-gray;
 }
 
 .sidebar-icon {
-    -fx-fill: #FFFFFF; /* Default icon color */
+    -fx-fill: -text-color;
 }
 
-.sidebar-button:hover .sidebar-icon {
-    -fx-fill: -ferrari-red; /* Icon color on hover */
+.sidebar-togglebutton:selected .sidebar-icon {
+    -fx-fill: -darker-gray;
 }
-
-

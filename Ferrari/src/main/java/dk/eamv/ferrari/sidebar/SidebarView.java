@@ -3,26 +3,26 @@ package dk.eamv.ferrari.sidebar;
 import dk.eamv.ferrari.resources.SVGResources;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ToggleButton;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.SVGPath;
-
 import java.util.*;
 
 public class SidebarView extends VBox {
 
-    private final Button dashboard = new Button("Forside");
-    private final Button loans = new Button("Lån");
-    private final Button reports = new Button("Rapporter");
-    private final Button cars = new Button("Biler");
-    private final Button customers = new Button("Kunder");
-    private final Button sellers = new Button("Sælgere");
-    private final Button settings = new Button("Indstillinger");
-    private final Map<Button, String> buttonsWithIcons = new HashMap<>() {{
+    protected final ToggleButton dashboard = new ToggleButton("Forside");
+    protected final ToggleButton loans = new ToggleButton("Lån");
+    protected final ToggleButton reports = new ToggleButton("Rapporter");
+    protected final ToggleButton cars = new ToggleButton("Biler");
+    protected final ToggleButton customers = new ToggleButton("Kunder");
+    protected final ToggleButton sellers = new ToggleButton("Sælgere");
+    protected final ToggleButton settings = new ToggleButton("Indstillinger");
+    private final Map<ToggleButton, String> buttonsWithIcons = new HashMap<>() {{
         put(dashboard, SVGResources.getDashboardIcon());
         put(loans, SVGResources.getLoansIcon());
         put(reports, SVGResources.getReportsIcon());
@@ -33,12 +33,13 @@ public class SidebarView extends VBox {
     }};
 
     public SidebarView() {
-        getStyleClass().add("sidebar");
 
         configureButtons();
 
         setMinWidth(250);
         setSpacing(50);
+        getStyleClass().add("sidebar");
+
         getChildren().addAll(getHeader(), getButtons());
     }
 
@@ -60,12 +61,14 @@ public class SidebarView extends VBox {
     }
 
     private void configureButtons() {
-        for (Map.Entry<Button, String> entry : buttonsWithIcons.entrySet()) {
+        ToggleGroup toggleGroup = new ToggleGroup();
 
-            Button button = entry.getKey();
+        for (Map.Entry<ToggleButton, String> entry : buttonsWithIcons.entrySet()) {
+
+            ToggleButton button = entry.getKey();
 
             SVGPath icon = new SVGPath();
-            icon.setContent(entry.getValue());
+            icon.setContent(entry.getValue()); // set content as the related svg resource
             icon.getStyleClass().add("sidebar-icon");
 
             HBox iconContainer = new HBox(icon);
@@ -73,7 +76,8 @@ public class SidebarView extends VBox {
 
             button.setGraphic(iconContainer);
             button.setAlignment(Pos.CENTER_LEFT);
-            button.getStyleClass().add("sidebar-button");
+            button.getStyleClass().add("sidebar-togglebutton");
+            button.setToggleGroup(toggleGroup);
         }
     }
 
@@ -93,8 +97,8 @@ public class SidebarView extends VBox {
         VBox buttonGroupThree = new VBox(settings);
         buttonGroupThree.setAlignment(Pos.CENTER_RIGHT);
 
-        //buttonsContainer.setAlignment(Pos.CENTER_RIGHT);
-        buttonsContainer.setSpacing(50);
+        buttonsContainer.setSpacing(50); // buttons are grouped visually as they best relate
+
         buttonsContainer.getChildren().addAll(buttonGroupOne, buttonGroupTwo, buttonGroupThree);
 
         return buttonsContainer;
