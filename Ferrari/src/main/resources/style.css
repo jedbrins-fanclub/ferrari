@@ -14,6 +14,19 @@
   -fx-background-color: #f7f7f7;
 }
 
+/* Header */
+.sidebar Label {
+    -fx-font-size: 36;
+    -fx-font-weight: 600;
+    -fx-text-fill: -ferrari-red;
+    -fx-font-weight: bold;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.4), 5, 0.0, 0, 2);
+}
+
+.sidebar ImageView {
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.4), 5, 0.0, 0, 2);
+}
+
 /* Sidebar */
 
 .sidebar {
@@ -23,10 +36,11 @@
 .sidebar Button {
     -fx-background-color: -darker-gray;
     -fx-text-fill: -text-color;
-    /*-fx-fill: -text-color;  icon color */
     -fx-font-size: 18;
+    -fx-font-weight: 300;
     -fx-background-radius: 10 0 0 10;
-    -fx-min-width: 150;
+    -fx-min-width: 200;
+    -fx-min-height: 50;
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 5, 0.0, 0, 2);
 }
 
@@ -47,9 +61,4 @@
     -fx-fill: -ferrari-red; /* Icon color on hover */
 }
 
-/* Header label */
-.sidebar Label {
-    -fx-font-size: 36;
-    -fx-font-weight: 600;
-    -fx-text-fill: -ferrari-red;
-}
+

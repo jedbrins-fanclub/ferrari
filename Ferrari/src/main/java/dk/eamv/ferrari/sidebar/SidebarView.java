@@ -1,5 +1,6 @@
 package dk.eamv.ferrari.sidebar;
 
+import dk.eamv.ferrari.resources.SVGResources;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -8,7 +9,6 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 import javafx.scene.shape.SVGPath;
 
 import java.util.*;
@@ -37,7 +37,7 @@ public class SidebarView extends VBox {
 
         configureButtons();
 
-        setMinWidth(200);
+        setMinWidth(250);
         setSpacing(50);
         getChildren().addAll(getHeader(), getButtons());
     }
@@ -46,13 +46,14 @@ public class SidebarView extends VBox {
         HBox header = new HBox();
 
         ImageView logo = new ImageView(new Image("file:src/main/resources/media/ferrari-logo.png"));
-        logo.setFitHeight(70);
+        logo.setFitHeight(64);
         logo.setPreserveRatio(true);
 
         Label text = new Label("Ferrari");
 
         header.setAlignment(Pos.CENTER);
-        header.setPadding(new Insets(20, 0, 0, 0));
+        header.setPadding(new Insets(25, 0, 0, 0));
+        header.setSpacing(10);
         header.getChildren().addAll(logo, text);
 
         return header;
@@ -66,10 +67,11 @@ public class SidebarView extends VBox {
             SVGPath icon = new SVGPath();
             icon.setContent(entry.getValue());
             icon.getStyleClass().add("sidebar-icon");
-            //icon.setScaleX(16 / icon.prefWidth(-1));
-            //icon.setScaleY(16 / icon.prefHeight(-1));
 
-            button.setGraphic(icon);
+            HBox iconContainer = new HBox(icon);
+            iconContainer.setPadding(new Insets(0, 6, 0, 0)); // set padding between icon and text
+
+            button.setGraphic(iconContainer);
             button.setAlignment(Pos.CENTER_LEFT);
             button.getStyleClass().add("sidebar-button");
         }
@@ -78,9 +80,22 @@ public class SidebarView extends VBox {
     private VBox getButtons() {
         VBox buttonsContainer = new VBox();
 
-        buttonsContainer.setAlignment(Pos.CENTER_RIGHT);
-        buttonsContainer.setSpacing(12);
-        buttonsContainer.getChildren().addAll(dashboard, loans, reports, cars, customers, sellers, settings);
+        VBox buttonGroupOne = new VBox();
+        buttonGroupOne.getChildren().addAll(dashboard, loans, reports);
+        buttonGroupOne.setAlignment(Pos.CENTER_RIGHT);
+        buttonGroupOne.setSpacing(12);
+
+        VBox buttonGroupTwo = new VBox();
+        buttonGroupTwo.getChildren().addAll(cars, customers, sellers);
+        buttonGroupTwo.setAlignment(Pos.CENTER_RIGHT);
+        buttonGroupTwo.setSpacing(16);
+
+        VBox buttonGroupThree = new VBox(settings);
+        buttonGroupThree.setAlignment(Pos.CENTER_RIGHT);
+
+        //buttonsContainer.setAlignment(Pos.CENTER_RIGHT);
+        buttonsContainer.setSpacing(50);
+        buttonsContainer.getChildren().addAll(buttonGroupOne, buttonGroupTwo, buttonGroupThree);
 
         return buttonsContainer;
     }
