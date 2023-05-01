@@ -9,15 +9,18 @@ import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.Objects;
+
+import dk.eamv.ferrari.database.Database;
 
 public class Main extends Application {
 
     private final BorderPane root = new BorderPane();
 
     @Override
-    public void start (Stage stage){
-
+    public void start (Stage stage) {
+        Database.init();
         init(stage, root);
     }
 
