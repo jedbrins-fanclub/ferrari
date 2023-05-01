@@ -1,4 +1,4 @@
-package utils;
+package dk.eamv.ferrari.utils;
 
 import javafx.scene.Node;
 import javafx.scene.layout.Region;
@@ -9,28 +9,52 @@ import javafx.scene.shape.Rectangle;
 public class Align {
     //2 nodes X axis.
     public static void left(Node parent, Node child) {
-        child.setLayoutX(parent.getLayoutX());
+        child.setLayoutX(0);
+    }
+
+    public static void left(Node parent, Region moveThis, Node childWidth) {
+        moveThis.setLayoutX(0);
     }
 
     public static void center(Node parent, Node child) {
-        child.setLayoutX(parent.getLayoutX() + getWidth(parent) / 2 - getWidth(child) / 2);
+        child.setLayoutX((getWidth(parent) - getWidth(child)) / 2);
+    }
+
+    public static void center(Node parent, Region moveThis, Node childWidth) {
+        moveThis.setLayoutX((getWidth(parent) - getWidth(childWidth)) / 2);
     }
 
     public static void right(Node parent, Node child) {
-        child.setLayoutX(parent.getLayoutX() + getWidth(parent) - getWidth(child));
+        child.setLayoutX(getWidth(parent) - getWidth(child));
+    }
+
+    public static void right(Node parent, Region moveThis, Node childWidth) {
+        moveThis.setLayoutX(getWidth(parent) - getWidth(childWidth));
     }
 
     //2 nodes Y axis.
     public static void top(Node parent, Node child) {
-        child.setLayoutY(parent.getLayoutY());
+        child.setLayoutY(0);
+    }
+
+    public static void top(Node parent, Region moveThis, Node childHeight) {
+        moveThis.setLayoutY(0);
     }
 
     public static void middle(Node parent, Node child) {
-        child.setLayoutY(parent.getLayoutY() + getHeight(parent) / 2 - getHeight(child) / 2);
+        child.setLayoutY((getHeight(parent) - getHeight(child)) / 2);
+    }
+
+    public static void middle(Node parent, Region moveThis, Node childHeight) {
+        moveThis.setLayoutY((getHeight(parent) - getHeight(childHeight)) / 2);
     }
 
     public static void bottom(Node parent, Node child) {
-        child.setLayoutY(parent.getLayoutY() + getHeight(parent) - getHeight(child));
+        child.setLayoutY(getHeight(parent) - getHeight(child));
+    }
+
+    public static void bottom(Node parent, Region moveThis, Node childHeight) {
+        moveThis.setLayoutY(getHeight(parent) - getHeight(childHeight));
     }
 
     //1 node, screen size X axis.
@@ -58,7 +82,7 @@ public class Align {
     public static void screenBottom(Node child) {
         child.setLayoutY(ScreenBounds.getHeight() - getHeight(child));
     }
-
+    
     //Service methods to get X & Y of different types of nodes.
     private static double getWidth(Node node) {
         if (node instanceof Circle) {

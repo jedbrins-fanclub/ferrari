@@ -1,4 +1,4 @@
-package utils;
+package dk.eamv.ferrari.utils;
 
 import javafx.stage.Screen;
 

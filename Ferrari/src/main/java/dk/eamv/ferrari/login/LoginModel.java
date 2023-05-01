@@ -1,4 +1,4 @@
-package login;
+package dk.eamv.ferrari.login;
 
 /**
  * Lavet af:

@@ -1,15 +1,15 @@
 package dk.eamv.ferrari;
 
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
-import java.io.IOException;
 import java.util.Objects;
+
+import dk.eamv.ferrari.login.LoginView;
 
 public class Main extends Application {
 
@@ -24,7 +24,7 @@ public class Main extends Application {
     private void init(Stage stage, Parent root) {
         root.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/style.css")).toExternalForm());
 
-        Scene scene = new Scene(root);
+        Scene scene = new Scene(LoginView.getScene());
 
         stage.setMaximized(true);
         stage.setScene(scene);
