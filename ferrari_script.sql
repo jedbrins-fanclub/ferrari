@@ -43,6 +43,7 @@ CREATE TABLE [Loan] (
   [employee_id] INT NOT NULL,
   [loan_size] DECIMAL(10,2) NOT NULL,
   [down_payment] DECIMAL(10,2) NOT NULL,
+  [interest_rate] DECIMAL(5,2) NOT NULL,
   [start_date] DATE NOT NULL, -- sættes tilpas ude i fremtiden så det kan godkendes
   [end_date] DATE NOT NULL,
   [status] INT NOT NULL,
