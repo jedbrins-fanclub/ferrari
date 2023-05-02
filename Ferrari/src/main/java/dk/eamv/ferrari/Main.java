@@ -1,22 +1,28 @@
 package dk.eamv.ferrari;
 
+import dk.eamv.ferrari.sidebar.SidebarController;
+import dk.eamv.ferrari.sidebar.SidebarView;
 import javafx.application.Application;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
-
 import java.util.Objects;
 
-import dk.eamv.ferrari.login.LoginView;
+import dk.eamv.ferrari.database.Database;
 
 public class Main extends Application {
 
     private final BorderPane root = new BorderPane();
+    private static final SidebarView sidebarView = new SidebarView();
 
     @Override
-    public void start (Stage stage){
+    public void start (Stage stage) {
+        Database.init();
+
+        new SidebarController(sidebarView);
+        root.setLeft(sidebarView);
 
         init(stage, root);
     }
@@ -24,7 +30,7 @@ public class Main extends Application {
     private void init(Stage stage, Parent root) {
         root.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/style.css")).toExternalForm());
 
-        Scene scene = new Scene(LoginView.getScene());
+        Scene scene = new Scene(root);
 
         stage.setMaximized(true);
         stage.setScene(scene);
