@@ -43,6 +43,7 @@ public class SidebarView extends VBox {
         getStyleClass().add("sidebar");
 
         getChildren().addAll(getHeader(), getButtons());
+        setMediator();
     }
 
     private HBox getHeader() {
@@ -104,6 +105,17 @@ public class SidebarView extends VBox {
         buttonsContainer.getChildren().addAll(buttonGroupOne, buttonGroupTwo, buttonGroupThree);
 
         return buttonsContainer;
+    }
+
+    //TODO: Iterate over the hashmap instead to reduce reduncancy.
+    private void setMediator() {
+        dashboard.setOnMouseClicked(e -> SidebarMediator.setButtonActive(dashboard));
+        loans.setOnMouseClicked(e -> SidebarMediator.setButtonActive(loans));
+        reports.setOnMouseClicked(e -> SidebarMediator.setButtonActive(reports));
+        cars.setOnMouseClicked(e -> SidebarMediator.setButtonActive(cars));
+        customers.setOnMouseClicked(e -> SidebarMediator.setButtonActive(customers));
+        sellers.setOnMouseClicked(e -> SidebarMediator.setButtonActive(sellers));
+        settings.setOnMouseClicked(e -> SidebarMediator.setButtonActive(settings));
     }
 
     public Map<ToggleButton, String> getButtonsWithIcons() {

@@ -20,7 +20,7 @@ public class Main extends Application {
 
     @Override
     public void start (Stage stage) {
-        Database.init();
+        //Database.init();
 
         new SidebarController(SidebarView.getSidebarView());
         root.setLeft(SidebarView.getSidebarView());
