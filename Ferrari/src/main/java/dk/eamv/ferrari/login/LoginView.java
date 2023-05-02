@@ -32,6 +32,7 @@ public class LoginView {
     private static TextField usernameTextField;
     private static PasswordField passwordPasswordField;
     private static StackPane loginButton;
+    private static Label forgottenPassword;
 
     public static AnchorPane getScene() {
         //Background
@@ -71,6 +72,7 @@ public class LoginView {
         loginButton.setMinWidth(loginButtonBackground.getWidth());
         Align.center(loginBox, loginButton, loginButtonBackground);
         loginButton.setLayoutY(loginBox.getLayoutY() * 7);
+        loginButton.setOnMouseClicked(e -> LoginController.authenticate());
 
         //Fields
         Label loginTopLabel = new Label("LOGIN");
@@ -117,7 +119,7 @@ public class LoginView {
         passwordField.getChildren().addAll(passwordIcon, passwordPasswordField);
         Line passwordLine = new Line();
         passwordLine.setEndX(400);
-        Label forgottenPassword = new Label("Glemt kodeord?");
+        forgottenPassword = new Label("Glemt kodeord?");
         //TODO: CSS
         forgottenPassword.setStyle("-fx-text-fill: #555555;");
         forgottenPassword.setPadding(new Insets(0, 0, 0, 300));
