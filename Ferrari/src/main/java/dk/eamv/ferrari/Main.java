@@ -8,7 +8,7 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
-import java.util.Objects;
+import java.util.Objects; // hej med dig
 
 import dk.eamv.ferrari.database.Database;
 
