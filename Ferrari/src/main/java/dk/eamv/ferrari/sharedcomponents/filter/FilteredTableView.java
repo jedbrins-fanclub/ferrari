@@ -16,7 +16,7 @@ public class FilteredTableView<T> extends TableView<T> {
     // When class is instantiated, it takes the original data that is to be filtered (list of Car objects etc)
     public FilteredTableView(ObservableList<T> data) {
         // Data will initially be shown like this (everything)
-        filteredData = new FilteredList<>(data, p -> true);
+        filteredData = new FilteredList<>(data, predicate -> true);
         sortedData = new SortedList<>(filteredData);
 
         // Binds data from list to the TableView - If user sorts in the tableview, list order is updated
@@ -24,6 +24,7 @@ public class FilteredTableView<T> extends TableView<T> {
         setItems(sortedData);
     }
 
+    // This is explained in detail in the FieldTextField class
     public void setFilter(Predicate<T> predicate) {
         filteredData.setPredicate(predicate);
     }

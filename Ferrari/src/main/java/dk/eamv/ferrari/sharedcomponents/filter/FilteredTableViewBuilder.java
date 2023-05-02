@@ -24,8 +24,9 @@ public class FilteredTableViewBuilder<T> {
         return this;
     }
 
-    // Adds
     public FilteredTableViewBuilder<T> withColumn(String columnName, Function<T, String> propertyValueGetter) {
+
+        // Every time this method is called, a specific column and its list of Value Getter methods is added to the list
         columnInfo.add(new Pair<>(columnName, propertyValueGetter));
         return this;
     }
