@@ -45,7 +45,7 @@
     -fx-background-color: -dark-gray;
 }
 
-.sidebar ToggleButton:selected {
+.sidebar ToggleButtonSelected {
     -fx-background-color: -ferrari-red;
     -fx-text-fill: -darker-gray;
 }

@@ -1,5 +1,8 @@
 package dk.eamv.ferrari.sidebar;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import dk.eamv.ferrari.resources.SVGResources;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -11,10 +14,9 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.SVGPath;
-import java.util.*;
 
 public class SidebarView extends VBox {
-
+    private static final SidebarView sidebarView = new SidebarView();
     protected final ToggleButton dashboard = new ToggleButton("Forside");
     protected final ToggleButton loans = new ToggleButton("Lån");
     protected final ToggleButton reports = new ToggleButton("Rapporter");
@@ -102,5 +104,13 @@ public class SidebarView extends VBox {
         buttonsContainer.getChildren().addAll(buttonGroupOne, buttonGroupTwo, buttonGroupThree);
 
         return buttonsContainer;
+    }
+
+    public Map<ToggleButton, String> getButtonsWithIcons() {
+        return buttonsWithIcons;
+    }
+
+    public static SidebarView getSidebarView() {
+        return sidebarView;
     }
 }
