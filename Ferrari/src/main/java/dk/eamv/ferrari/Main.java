@@ -71,7 +71,7 @@ public class Main extends Application {
                 .withColumn("Efternavn", Seller::getLastName)
                 .withColumn("Telefonnummer", Seller::getPhoneNumber)
                 .withColumn("E-mail", Seller::getEmail)
-                .withColumn("Max lån", seller -> Double.toString(seller.getMaxLoan()));
+                .withColumn("Max lån", Seller::getMaxLoan);
 
         FilteredTableView<Seller> sellerTableView = sellerBuilder.build();
         FilterTextField<Seller> sellerFilter = sellerBuilder.withFilterTextField(sellerTableView);
@@ -81,12 +81,12 @@ public class Main extends Application {
 
         FilteredTableViewBuilder<Loan> loanBuilder = new FilteredTableViewBuilder<Loan>()
                 .withData(loans)
-                .withColumn("Bil id", loan -> Integer.toString(loan.getCar_id()))
-                .withColumn("Kunde id", loan -> Integer.toString(loan.getCustomer_id()))
-                .withColumn("Sælger id", loan -> Integer.toString(loan.getEmployee_id()))
-                .withColumn("Lån", loan -> Double.toString(loan.getLoanSize()))
-                .withColumn("Indskud", loan -> Double.toString(loan.getDownPayment()))
-                .withColumn("Rente", loan -> Double.toString(loan.getInterestRate()))
+                .withColumn("Bil id", Loan::getCar_id)
+                .withColumn("Kunde id", Loan::getCustomer_id)
+                .withColumn("Sælger id", Loan::getEmployee_id)
+                .withColumn("Lån", Loan::getLoanSize)
+                .withColumn("Indskud", Loan::getDownPayment)
+                .withColumn("Rente", Loan::getInterestRate)
                 .withColumn("Status", loan -> loan.getStatus().getDisplayName());
 
         FilteredTableView<Loan> loanTableView = loanBuilder.build();

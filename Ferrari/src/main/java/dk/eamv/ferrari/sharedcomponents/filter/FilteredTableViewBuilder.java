@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 public class FilteredTableViewBuilder<T> {
 
     private ObservableList<T> data;
-    private List<Pair<String, Function<T, String>>> columnInfo;
+    private List<Pair<String, Function<T, Object>>> columnInfo;
     public FilteredTableViewBuilder() {
         columnInfo = new ArrayList<>();
     }
@@ -27,7 +27,7 @@ public class FilteredTableViewBuilder<T> {
         return this;
     }
 
-    public FilteredTableViewBuilder<T> withColumn(String columnName, Function<T, String> propertyValueGetter) {
+    public FilteredTableViewBuilder<T> withColumn(String columnName, Function<T, Object> propertyValueGetter) {
 
         // Every time this method is called, a specific column and its list of Value Getter methods is added to the list
         columnInfo.add(new Pair<>(columnName, propertyValueGetter));
@@ -36,9 +36,9 @@ public class FilteredTableViewBuilder<T> {
 
     public FilteredTableView<T> build() {
         FilteredTableView<T> tableView = new FilteredTableView<>(data);
-        for (Pair<String, Function<T, String>> info : columnInfo) {
+        for (Pair<String, Function<T, Object>> info : columnInfo) {
             TableColumn<T, String> column = new TableColumn<>(info.getKey());
-            column.setCellValueFactory(cellData -> new SimpleStringProperty(info.getValue().apply(cellData.getValue())));
+            column.setCellValueFactory(cellData -> new SimpleStringProperty(info.getValue().apply(cellData.getValue()).toString()));
             tableView.getColumns().add(column);
         }
         return tableView;

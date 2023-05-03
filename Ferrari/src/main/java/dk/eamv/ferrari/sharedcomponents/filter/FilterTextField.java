@@ -12,12 +12,11 @@ import java.util.function.Function;
  */
 public class FilterTextField<T> extends TextField {
     private final FilteredTableView<T> filteredTableView;
-    private final List<Function<T, String>> propertyValueGetters;
+    private final List<Function<T, Object>> propertyValueGetters;
 
-    public FilterTextField(FilteredTableView<T> filteredTableView, List<Function<T, String>> propertyValueGetters) {
+    public FilterTextField(FilteredTableView<T> filteredTableView, List<Function<T, Object>> propertyValueGetters) {
         this.filteredTableView = filteredTableView;
         this.propertyValueGetters = propertyValueGetters;
-        System.out.println(propertyValueGetters);
         setPromptText("Filter");
         setupFiltering();
     }
@@ -38,16 +37,19 @@ public class FilterTextField<T> extends TextField {
      */
     private void setupFiltering() {
         textProperty().addListener((observable, oldValue, newValue) -> {
-            String filterText = newValue == null ? "" : newValue.toLowerCase(); // Convert filter text to lowercase only once
+            String filterText = newValue == null ? "" : newValue.toLowerCase();
             filteredTableView.setFilter(item -> {
                 if (filterText.isEmpty()) {
                     return true;
                 }
 
-                for (Function<T, String> propertyValueGetter : propertyValueGetters) {
-                    String propertyValue = propertyValueGetter.apply(item);
-                    if (propertyValue != null && propertyValue.toLowerCase().contains(filterText)) { // Avoid NullPointerException
-                        return true;
+                for (Function<T, Object> propertyValueGetter : propertyValueGetters) {
+                    Object propertyValueObject = propertyValueGetter.apply(item);
+                    if (propertyValueObject != null) {
+                        String propertyValue = propertyValueObject.toString();
+                        if (propertyValue.toLowerCase().contains(filterText)) {
+                            return true;
+                        }
                     }
                 }
                 return false;
