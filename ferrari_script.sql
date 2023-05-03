@@ -12,12 +12,11 @@ CREATE TABLE [Car] (
   [id] INT PRIMARY KEY IDENTITY (1,1), -- svarer til stelnummer
   [model] NVARCHAR(255) NOT NULL,
   [year] INT NOT NULL,
-  [price] DECIMAL(10,2) NOT NULL,
-  [image] NVARCHAR(255)
+  [price] DECIMAL(10,2) NOT NULL
 );
 
 CREATE TABLE [Customer] (
-  [id] INT PRIMARY KEY IDENTITY (1,1), -- svarer til stelnummer
+  [id] INT PRIMARY KEY IDENTITY (1,1),
   [first_name] NVARCHAR(255) NOT NULL,
   [last_name] NVARCHAR(255) NOT NULL,
   [phone_number] NVARCHAR(255) NOT NULL,
