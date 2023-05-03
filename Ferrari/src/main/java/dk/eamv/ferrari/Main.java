@@ -3,10 +3,8 @@ package dk.eamv.ferrari;
 import dk.eamv.ferrari.database.Database;
 import dk.eamv.ferrari.sharedcomponents.filter.*;
 import dk.eamv.ferrari.sidebar.SidebarController;
-import dk.eamv.ferrari.sidebar.SidebarMediator;
 import dk.eamv.ferrari.sidebar.SidebarView;
 import javafx.application.Application;
-import javafx.geometry.Side;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
@@ -39,7 +37,6 @@ public class Main extends Application {
         stage.setScene(scene);
         stage.setTitle("Ferrari");
         stage.getIcons().add(new Image("file:src/main/resources/media/ferrari-emoji.png"));
-        //SidebarMediator.setButtonActive(null);
         stage.show();
     }
 
