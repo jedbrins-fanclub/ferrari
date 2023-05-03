@@ -23,4 +23,24 @@ public abstract class Database {
     public static Connection getConnection() {
         return connection;
     }
+
+    public static boolean execute(String query) {
+        try {
+            return getConnection().createStatement().execute(query);
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
+
+        return false;
+    }
+
+    public static ResultSet query(String query) {
+        try {
+            return getConnection().createStatement().executeQuery(query);
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
+
+        return null;
+    }
 }
