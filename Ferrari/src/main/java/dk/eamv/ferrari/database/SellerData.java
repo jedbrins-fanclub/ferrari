@@ -25,6 +25,6 @@ public class SellerData {
     }
 
     public static boolean isAdmin(Seller seller) {
-        return seller.getMaxLoan() > -1;
+        return seller.getMaxLoan() < 0;
     }
 }
