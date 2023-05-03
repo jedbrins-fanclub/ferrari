@@ -2,10 +2,10 @@ package dk.eamv.ferrari.resources;
 
 import dk.eamv.ferrari.car.Car;
 import dk.eamv.ferrari.customer.Customer;
+import dk.eamv.ferrari.employee.Employee;
 import dk.eamv.ferrari.loan.Loan;
+import dk.eamv.ferrari.loan.LoanState;
 import dk.eamv.ferrari.loan.LoanStatus;
-import dk.eamv.ferrari.seller.Seller;
-
 import java.sql.Date;
 import java.util.ArrayList;
 
@@ -14,7 +14,7 @@ public class TestData {
     private final ArrayList<Car> cars;
     private final ArrayList<Customer> customers;
     private final ArrayList<Loan> loans;
-    private final ArrayList<Seller> sellers;
+    private final ArrayList<Employee> sellers;
 
     public TestData() {
         cars = createCars();
@@ -43,16 +43,16 @@ public class TestData {
 
     private ArrayList<Loan> createLoans() {
         ArrayList<Loan> loans = new ArrayList<>();
-        loans.add(new Loan(1, 1, 1, 1, 1000000.00, 500000.00, 3.5, new Date(2000, 6, 11), new Date(2000, 6, 11), LoanStatus.PENDING_APPROVAL));
-        loans.add(new Loan(2, 2, 2, 1, 2000000.00, 300000.00, 4.0, new Date(2000, 6, 11), new Date(2000, 6, 11), LoanStatus.ACTIVE));
-        loans.add(new Loan(3, 3, 3, 2, 3000000.00, 500000.00, 3.0, new Date(2000, 6, 11), new Date(2000, 6, 11), LoanStatus.COMPLETED));
+        loans.add(new Loan(1, 1, 1, 1, 1000000.00, 500000.00, 3.5, new Date(2000, 6, 11), new Date(2000, 6, 11), new LoanStatus(LoanState.PENDING)));
+        loans.add(new Loan(2, 2, 2, 1, 2000000.00, 300000.00, 4.0, new Date(2000, 6, 11), new Date(2000, 6, 11), new LoanStatus(LoanState.ACTIVE)));
+        loans.add(new Loan(3, 3, 3, 2, 3000000.00, 500000.00, 3.0, new Date(2000, 6, 11), new Date(2000, 6, 11), new LoanStatus(LoanState.COMPLETED)));
         return loans;
     }
 
-    private ArrayList<Seller> createSellers() {
-        ArrayList<Seller> sellers = new ArrayList<>();
-        sellers.add(new Seller(1, "Michael", "Johnson", "56789012", "michael@example.com", "password1", 5000000.00));
-        sellers.add(new Seller(2, "Samantha", "Williams", "67890123", "samantha@example.com", "password2", 4000000.00));
+    private ArrayList<Employee> createSellers() {
+        ArrayList<Employee> sellers = new ArrayList<>();
+        sellers.add(new Employee(1, "Michael", "Johnson", "56789012", "michael@example.com", "password1", 5000000.00));
+        sellers.add(new Employee(2, "Samantha", "Williams", "67890123", "samantha@example.com", "password2", 4000000.00));
         return sellers;
     }
 
@@ -68,7 +68,7 @@ public class TestData {
         return loans;
     }
 
-    public ArrayList<Seller> getAllSellers() {
+    public ArrayList<Employee> getAllSellers() {
         return sellers;
     }
 }

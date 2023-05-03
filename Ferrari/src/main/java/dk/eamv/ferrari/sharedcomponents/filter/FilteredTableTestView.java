@@ -4,7 +4,7 @@ import dk.eamv.ferrari.car.Car;
 import dk.eamv.ferrari.customer.Customer;
 import dk.eamv.ferrari.loan.Loan;
 import dk.eamv.ferrari.resources.TestData;
-import dk.eamv.ferrari.seller.Seller;
+import dk.eamv.ferrari.employee.Employee;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.layout.HBox;
@@ -42,18 +42,18 @@ public class FilteredTableTestView extends HBox {
         FilterTextField<Customer> customerFilter = customerBuilder.withFilterTextField(customerTableView);
         SearchContainer customerSearch = new SearchContainer(customerFilter);
 
-        ObservableList<Seller> sellers = FXCollections.observableArrayList(testData.getAllSellers());
+        ObservableList<Employee> sellers = FXCollections.observableArrayList(testData.getAllSellers());
 
-        FilteredTableViewBuilder<Seller> sellerBuilder = new FilteredTableViewBuilder<Seller>()
+        FilteredTableViewBuilder<Employee> sellerBuilder = new FilteredTableViewBuilder<Employee>()
                 .withData(sellers)
-                .withColumn("Fornavn", Seller::getFirstName)
-                .withColumn("Efternavn", Seller::getLastName)
-                .withColumn("Telefonnummer", Seller::getPhoneNumber)
-                .withColumn("E-mail", Seller::getEmail)
-                .withColumn("Max lån", Seller::getMaxLoan);
+                .withColumn("Fornavn", Employee::getFirstName)
+                .withColumn("Efternavn", Employee::getLastName)
+                .withColumn("Telefonnummer", Employee::getPhoneNumber)
+                .withColumn("E-mail", Employee::getEmail)
+                .withColumn("Max lån", Employee::getMaxLoan);
 
-        FilteredTableView<Seller> sellerTableView = sellerBuilder.build();
-        FilterTextField<Seller> sellerFilter = sellerBuilder.withFilterTextField(sellerTableView);
+        FilteredTableView<Employee> sellerTableView = sellerBuilder.build();
+        FilterTextField<Employee> sellerFilter = sellerBuilder.withFilterTextField(sellerTableView);
         SearchContainer sellerSearch = new SearchContainer(sellerFilter);
 
         ObservableList<Loan> loans = FXCollections.observableArrayList(testData.getAllLoans());
@@ -74,9 +74,11 @@ public class FilteredTableTestView extends HBox {
 
 
         VBox leftContainer = new VBox();
+        leftContainer.setMinWidth(500);
         leftContainer.getChildren().addAll(carSearch, carTableView, customerSearch, customerTableView);
 
         VBox rightContainer = new VBox();
+        rightContainer.setMinWidth(500);
         rightContainer.getChildren().addAll(sellerSearch, sellerTableView, loanSearch, loanTableView);
 
         getChildren().addAll(leftContainer, rightContainer);
