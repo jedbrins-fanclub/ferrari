@@ -1,5 +1,8 @@
 package dk.eamv.ferrari.sidebar;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import dk.eamv.ferrari.resources.SVGResources;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -11,10 +14,9 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.SVGPath;
-import java.util.*;
 
 public class SidebarView extends VBox {
-
+    private static final SidebarView sidebarView = new SidebarView();
     protected final ToggleButton dashboard = new ToggleButton("Forside");
     protected final ToggleButton loans = new ToggleButton("Lån");
     protected final ToggleButton reports = new ToggleButton("Rapporter");
@@ -41,6 +43,7 @@ public class SidebarView extends VBox {
         getStyleClass().add("sidebar");
 
         getChildren().addAll(getHeader(), getButtons());
+        setMediator();
     }
 
     private HBox getHeader() {
@@ -102,5 +105,24 @@ public class SidebarView extends VBox {
         buttonsContainer.getChildren().addAll(buttonGroupOne, buttonGroupTwo, buttonGroupThree);
 
         return buttonsContainer;
+    }
+
+    //TODO: Iterate over the hashmap instead to reduce reduncancy.
+    private void setMediator() {
+        dashboard.setOnMouseClicked(e -> SidebarMediator.setButtonActive(dashboard));
+        loans.setOnMouseClicked(e -> SidebarMediator.setButtonActive(loans));
+        reports.setOnMouseClicked(e -> SidebarMediator.setButtonActive(reports));
+        cars.setOnMouseClicked(e -> SidebarMediator.setButtonActive(cars));
+        customers.setOnMouseClicked(e -> SidebarMediator.setButtonActive(customers));
+        sellers.setOnMouseClicked(e -> SidebarMediator.setButtonActive(sellers));
+        settings.setOnMouseClicked(e -> SidebarMediator.setButtonActive(settings));
+    }
+
+    public Map<ToggleButton, String> getButtonsWithIcons() {
+        return buttonsWithIcons;
+    }
+
+    public static SidebarView getSidebarView() {
+        return sidebarView;
     }
 }

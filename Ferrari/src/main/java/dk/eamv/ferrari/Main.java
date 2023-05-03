@@ -1,8 +1,10 @@
 package dk.eamv.ferrari;
 
 import dk.eamv.ferrari.sidebar.SidebarController;
+import dk.eamv.ferrari.sidebar.SidebarMediator;
 import dk.eamv.ferrari.sidebar.SidebarView;
 import javafx.application.Application;
+import javafx.geometry.Side;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
@@ -15,14 +17,13 @@ import dk.eamv.ferrari.database.Database;
 public class Main extends Application {
 
     private final BorderPane root = new BorderPane();
-    private static final SidebarView sidebarView = new SidebarView();
 
     @Override
     public void start (Stage stage) {
-        Database.init();
+        //Database.init();
 
-        new SidebarController(sidebarView);
-        root.setLeft(sidebarView);
+        new SidebarController(SidebarView.getSidebarView());
+        root.setLeft(SidebarView.getSidebarView());
 
         init(stage, root);
     }
@@ -36,6 +37,7 @@ public class Main extends Application {
         stage.setScene(scene);
         stage.setTitle("Ferrari");
         stage.getIcons().add(new Image("file:src/main/resources/media/ferrari-emoji.png"));
+        //SidebarMediator.setButtonActive(null);
         stage.show();
     }
 

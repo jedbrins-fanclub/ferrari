@@ -45,9 +45,20 @@
     -fx-background-color: -dark-gray;
 }
 
-.sidebar ToggleButton:selected {
-    -fx-background-color: -ferrari-red;
+.ToggleButtonSelected {
+    -fx-background-color: #F50000;
     -fx-text-fill: -darker-gray;
+}
+
+.ToggleButton {
+    -fx-background-color: -darker-gray;
+    -fx-text-fill: -text-color;
+    -fx-font-size: 18;
+    -fx-font-weight: 300;
+    -fx-background-radius: 10 0 0 10;
+    -fx-min-width: 200;
+    -fx-min-height: 50;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 5, 0.0, 0, 2);
 }
 
 .sidebar-icon {
