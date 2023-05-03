@@ -4,15 +4,6 @@
   -darker-gray: #1F1F1F;
   -dark-gray: #373737;
   -text-color: #FFFFFF;
-
-  -header-color: #3a3f52;
-  -header-text: #ffffff;
-
-  -even-color: #e8e8e8;
-  -odd-color: #ffffff;
-  -cell-text: #333333;
-  -cell-text-hover: #222222;
-  -row-selected: #70a0ff;
 }
 
 .table-view,
@@ -23,45 +14,45 @@
 }
 
 .table-view .column-header-background{
-    -fx-background-color: -header-color;
+    -fx-background-color: yellow;               /* header background */
     -fx-background-radius: 7px 7px 0px 0px;
     -fx-background-insets: 0 11px 0 0;
     -fx-padding: 0 0 5px 0;
 }
 
 .table-view .table-cell{
-    -fx-border-color: transparent;
+    -fx-border-color: transparent;               /* cell border color (GRID!) */
     -fx-padding: 2 0 2 10px;
-    -fx-min-height: 40px;
+    -fx-min-height: 35px;
     -fx-alignment: center;
 }
 
 .table-row-cell:hover {
-    -fx-background-color: transparent;
-    -fx-text-background-color: -cell-text-hover;
+    -fx-background-color: transparent;           /* cell hover background (can not see)*/
+    -fx-text-background-color: green;            /* cell hover text */
 }
 
 .table-row-cell:odd{
-    -fx-background-color: -odd-color;
+    -fx-background-color: #ffffff;               /* cell odd background */
     -fx-background-insets: 0, 0 0 1 0;
     -fx-padding: 0.0em;
 }
 
 .table-row-cell:even{
-    -fx-background-color: -even-color;
+    -fx-background-color: grey;               /* cell even background */
     -fx-background-insets: 0, 0 0 1 0;
     -fx-padding: 0.0em;
 }
 
 .table-row-cell:highlighted {
-    -fx-background-color: -ferrari-red;
+    -fx-background-color: #F50000;
     -fx-background-radius: 5px;
     -fx-background-insets: 2px;
 }
 
 .table-row-cell:selected {
-    -fx-background-color: -row-selected;
-    -fx-text-background-color: white;
+    -fx-background-color: blue;           /* row selected background */
+    -fx-text-background-color: red;       /* row selected text color */
     -fx-background-radius: 5px;
     -fx-background-insets: 2px;
 }
@@ -76,11 +67,11 @@
 }
 
 .table-view .virtual-flow .scroll-bar:vertical .thumb{
-    -fx-background-color:  -dark-gray;
+    -fx-background-color:  red;                                     /* scroll vertical */
 }
 
 .table-view .virtual-flow .scroll-bar:horizontal .thumb {
-    -fx-background-color:  linear-gradient(to right, #1dbbdd44, #93f9b944);
+    -fx-background-color:  linear-gradient(to right, red, yellow);  /* scroll horizontal */
 }
 
 .table-view .virtual-flow .scroll-bar .increment-button,
