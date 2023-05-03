@@ -101,6 +101,8 @@
     -fx-text-fill: -darker-gray;
 }
 
+
+
 .ToggleButton {
     -fx-background-color: -darker-gray;
     -fx-text-fill: -text-color;
@@ -110,6 +112,15 @@
     -fx-min-width: 200;
     -fx-min-height: 50;
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 5, 0.0, 0, 2);
+}
+
+.sidebar ToggleButton:hover {
+    -fx-background-color: -dark-gray;
+}
+
+.sidebar ToggleButton:selected {
+    -fx-background-color: #F50000;
+    -fx-text-fill: -darker-gray;
 }
 
 .sidebar-icon {
