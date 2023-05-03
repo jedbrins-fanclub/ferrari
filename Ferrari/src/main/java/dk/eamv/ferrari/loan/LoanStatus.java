@@ -3,6 +3,10 @@ package dk.eamv.ferrari.loan;
 public class LoanStatus {
     private final LoanState state;
 
+    public LoanStatus(LoanState state) {
+        this.state = state;
+    }
+
     public LoanStatus(int value) {
         if (value < 0 || value > 5) {
             throw new RuntimeException(
