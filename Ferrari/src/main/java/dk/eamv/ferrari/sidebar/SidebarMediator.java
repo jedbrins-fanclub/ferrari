@@ -11,11 +11,11 @@ public final class SidebarMediator {
     public static void setButtonActive(ToggleButton toggleButton) {
         
         for (Map.Entry<ToggleButton, String> entry : SidebarView.getSidebarView().getButtonsWithIcons().entrySet()) {
-            entry.getKey().setStyle("-fx-background-color: 1F1F1F");
+            entry.getKey().setStyle("-fx-background-color: #1F1F1F");
             //entry.getKey().getStyleClass().add("ToggleButton");
         }
 
-        toggleButton.setStyle("-fx-background-color: F50000");
+        toggleButton.setStyle("-fx-background-color: #F50000");
         //toggleButton.getStyleClass().add("ToggleButtonSelected");
     }   
 }
