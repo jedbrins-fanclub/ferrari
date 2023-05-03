@@ -4,12 +4,14 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+import dk.eamv.ferrari.ConnectionString;
+
 public abstract class Database {
     private static Connection connection;
 
     // Default SQL Server init
     public static void init() {
-        init("jdbc:sqlserver://localhost:1433;database=master;integratedSecurity=true;encrypt=true;trustServerCertificate=true;loginTimeout=15;");
+        init(ConnectionString.getConnectionString());
     }
 
     public static void init(String connectionString) {
