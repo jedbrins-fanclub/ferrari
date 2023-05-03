@@ -29,7 +29,7 @@ public class EmployeeModel {
         try {
             PreparedStatement statement = Database.getConnection().prepareStatement("SELECT id FROM dbo.Employee WHERE email = ? AND password = ?");
             statement.setString(1, email);
-            statement.setString(1, password);
+            statement.setString(2, password);
 
             ResultSet rs = statement.executeQuery();
             if (rs.next()) {
