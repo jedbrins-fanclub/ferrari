@@ -1,6 +1,9 @@
 package dk.eamv.ferrari.sharedcomponents.filter;
 
+import dk.eamv.ferrari.resources.SVGResources;
 import javafx.scene.control.TextField;
+import javafx.scene.shape.SVGPath;
+
 import java.util.List;
 import java.util.function.Function;
 
