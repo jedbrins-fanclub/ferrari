@@ -1,5 +1,6 @@
 package dk.eamv.ferrari.login;
 
+import dk.eamv.ferrari.resources.SVGResources;
 import dk.eamv.ferrari.utils.Align;
 import dk.eamv.ferrari.utils.RoundCorners;
 import dk.eamv.ferrari.utils.ScreenBounds;
@@ -88,8 +89,8 @@ public class LoginView {
         usernameLabel.setStyle("-fx-font-weight: 900;");
         HBox usernameField = new HBox();
         SVGPath usernameIcon = new SVGPath();
-        //TODO: Add path to resources & reference it here
-        usernameIcon.setContent("M8 9C8 6.79086 9.79086 5 12 5C14.2091 5 16 6.79086 16 9C16 11.2091 14.2091 13 12 13C9.79086 13 8 11.2091 8 9ZM15.8243 13.6235C17.1533 12.523 18 10.8604 18 9C18 5.68629 15.3137 3 12 3C8.68629 3 6 5.68629 6 9C6 10.8604 6.84668 12.523 8.17572 13.6235C4.98421 14.7459 3 17.2474 3 20C3 20.5523 3.44772 21 4 21C4.55228 21 5 20.5523 5 20C5 17.7306 7.3553 15 12 15C16.6447 15 19 17.7306 19 20C19 20.5523 19.4477 21 20 21C20.5523 21 21 20.5523 21 20C21 17.2474 19.0158 14.7459 15.8243 13.6235Z");
+        usernameIcon.setContent(SVGResources.getUsernameIcon());
+
         usernameTextField = new TextField();
         usernameTextField.setFocusTraversable(false);
         usernameTextField.setPrefWidth(400);
@@ -109,7 +110,7 @@ public class LoginView {
         HBox passwordField = new HBox();
         SVGPath passwordIcon = new SVGPath();
         //TODO: Add path to resources & reference it here
-        passwordIcon.setContent("M7 8.12037C5.3161 8.53217 4 9.95979 4 11.7692V17.3077C4 19.973 6.31545 22 9 22H15C17.6846 22 20 19.973 20 17.3077V11.7692C20 9.95979 18.6839 8.53217 17 8.12037V7C17 4.23858 14.7614 2 12 2C9.23858 2 7 4.23858 7 7V8.12037ZM15 7V8H9V7C9 6.64936 9.06015 6.31278 9.17071 6C9.58254 4.83481 10.6938 4 12 4C13.3062 4 14.4175 4.83481 14.8293 6C14.9398 6.31278 15 6.64936 15 7ZM6 11.7692C6 10.866 6.81856 10 8 10H16C17.1814 10 18 10.866 18 11.7692V17.3077C18 18.7208 16.7337 20 15 20H9C7.26627 20 6 18.7208 6 17.3077V11.7692Z");
+        passwordIcon.setContent(SVGResources.getPasswordIcon());
         passwordPasswordField = new PasswordField();
         passwordPasswordField.setFocusTraversable(false);
         passwordPasswordField.setPromptText("Indtast password");
@@ -133,6 +134,8 @@ public class LoginView {
         loginBoxContent.getChildren().addAll(loginButton, loginTopLabel, fields);
 
         scene.getChildren().addAll(getLogos(), loginBox, loginBoxContent);
+        scene.getStyleClass().add("");
+
         return scene;
     }
     
