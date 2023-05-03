@@ -8,7 +8,7 @@ import dk.eamv.ferrari.scenemanager.SceneManager;
 /**
  * Lavet af: Christian
  * Tjekket af:
- * Modificeret af:
+ * Modificeret af: Benjamin
  */
 public class LoginController {
     public static void authenticate() {
