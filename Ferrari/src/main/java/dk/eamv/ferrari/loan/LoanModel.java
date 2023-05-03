@@ -11,7 +11,7 @@ public class LoanModel {
 
         try {
             if (rs.next()) {
-                return new Loan(//int id, int car_id, int customer_id, int employee_id, double loanSize, double downPayment, double interestRate, Date startDate, Date endDate, LoanStatus status
+                return new Loan(
                     id, rs.getInt("car_id"), rs.getInt("customer_id"), rs.getInt("employee_id"),
                     rs.getDouble("loan_size"), rs.getDouble("down_payment"), rs.getDouble("interest_rate"),
                     rs.getDate("start_date"), rs.getDate("end_date"),
