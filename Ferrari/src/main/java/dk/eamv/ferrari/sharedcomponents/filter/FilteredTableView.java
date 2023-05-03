@@ -7,6 +7,9 @@ import javafx.scene.control.TableView;
 
 import java.util.function.Predicate;
 
+/**
+ * Lavet af: Mikkel
+ */
 public class FilteredTableView<T> extends TableView<T> {
     // TableView takes generic type T in order to be able to use different types (Car, Customer etc)
 

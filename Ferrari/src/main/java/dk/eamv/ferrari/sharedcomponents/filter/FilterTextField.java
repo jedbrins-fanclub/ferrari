@@ -4,6 +4,9 @@ import javafx.scene.control.TextField;
 import java.util.List;
 import java.util.function.Function;
 
+/**
+ * Lavet af: Mikkel
+ */
 public class FilterTextField<T> extends TextField {
     private final FilteredTableView<T> filteredTableView;
     private final List<Function<T, String>> propertyValueGetters;
