@@ -18,6 +18,9 @@ on:
     paths:
       - '**.java'
 
+env:
+  SQL_SERVER_CONNECTION: ignore
+
 jobs:
   build:
 
