@@ -1,25 +1,15 @@
 package dk.eamv.ferrari;
 
-import dk.eamv.ferrari.car.Car;
-import dk.eamv.ferrari.customer.Customer;
 import dk.eamv.ferrari.database.Database;
-import dk.eamv.ferrari.loan.Loan;
-import dk.eamv.ferrari.resources.TestData;
-import dk.eamv.ferrari.seller.Seller;
 import dk.eamv.ferrari.sharedcomponents.filter.*;
 import dk.eamv.ferrari.sidebar.SidebarController;
 import dk.eamv.ferrari.sidebar.SidebarView;
 import javafx.application.Application;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-
 import java.util.Objects;
 
 public class Main extends Application {
