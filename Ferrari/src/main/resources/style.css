@@ -12,6 +12,57 @@
   -fx-background-color: #f7f7f7;
 }
 
+/* Login */
+.login {
+    -fx-font-family: "Inter", "Segoe UI", "Arial", sans-serif;
+    -fx-background-color: #f7f7f7;
+}
+
+.login Label {
+    -fx-font-weight: 900;
+}
+
+.login Button {
+    -fx-background-color: -darker-gray;
+    -fx-pref-width: 400;
+    -fx-pref-height: 40;
+    -fx-background-radius: 50;
+    -fx-text-fill: -text-color;
+    -fx-font-size: 24;
+    -fx-font-weight: bold;
+}
+
+.login Button:hover {
+    -fx-background-color: -dark-gray;
+}
+
+.login-header {
+    -fx-font-size: 24;
+    -fx-font-weight: bold;
+    -fx-padding: 0 0 0 200;
+}
+
+.login TextField, PasswordField {
+    -fx-prompt-text-fill: #555555;
+    -fx-background-color: transparent;
+    -fx-pref-width: 400;
+}
+
+.login TextField:hover, PasswordField:hover {
+    -fx-prompt-text-fill: -darker-gray;
+}
+
+.login-forgotten-password {
+    -fx-text-fill: #555555;
+    -fx-font-weight: 300;
+    -fx-padding: 0 0 0 300;
+}
+
+.login-logo-horse {
+    -fx-fill: F9F9F9;
+    -fx-opacity: 0.2;
+}
+
 /* Sidebar header */
 .sidebar Label {
     -fx-font-size: 36;
@@ -45,9 +96,20 @@
     -fx-background-color: -dark-gray;
 }
 
-.sidebar ToggleButton:selected {
-    -fx-background-color: -ferrari-red;
+.ToggleButtonSelected {
+    -fx-background-color: #F50000;
     -fx-text-fill: -darker-gray;
+}
+
+.ToggleButton {
+    -fx-background-color: -darker-gray;
+    -fx-text-fill: -text-color;
+    -fx-font-size: 18;
+    -fx-font-weight: 300;
+    -fx-background-radius: 10 0 0 10;
+    -fx-min-width: 200;
+    -fx-min-height: 50;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 5, 0.0, 0, 2);
 }
 
 .sidebar-icon {
