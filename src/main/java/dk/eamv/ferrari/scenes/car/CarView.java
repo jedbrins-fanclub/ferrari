@@ -5,15 +5,21 @@ import dk.eamv.ferrari.sharedcomponents.filter.FilteredTable;
 import dk.eamv.ferrari.sharedcomponents.filter.SearchContainer;
 import dk.eamv.ferrari.scenes.sidebar.SidebarView;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+
+/**
+ * Lavet af: Mikkel
+ */
 
 public class CarView {
 
@@ -34,7 +40,7 @@ public class CarView {
     }
 
     private static VBox getCarView() {
-        CarController.initCarBuilder();
+        CarController.initFilterBuilder();
 
         initTableView();
         initSearchContainer();
@@ -42,28 +48,44 @@ public class CarView {
         initButtonEdit();
         initButtonDelete();
 
+        HBox containerAboveTable = new HBox();
+        containerAboveTable.getChildren().add(searchContainer); // Put search box top right of table
+        containerAboveTable.setAlignment(Pos.CENTER_RIGHT);
+
         VBox container = new VBox();
-        container.getChildren().addAll(searchContainer, tableView, buttonEdit, buttonDelete);
+        container.setAlignment(Pos.CENTER);
+        container.setMaxWidth(600);
+        container.getChildren().addAll(containerAboveTable, tableView, buttonEdit, buttonDelete);
 
         return container;
     }
 
     private static void initTableView() {
-        tableView = CarController.carBuilder.build();
+        tableView = CarController.filterBuilder.build();
     }
 
     private static void initSearchContainer() {
-        searchContainer = new SearchContainer(CarController.carBuilder.withFilterTextField(tableView));
+        searchContainer = new SearchContainer(CarController.filterBuilder.withFilterTextField(tableView));
     }
 
     private static void initButtonEdit() {
-        buttonEdit = new Button("Edit this car");
+        /* Pass the creation of the button to the instance of FilterBuilder
+         * This allows the listener to be set once in the builder method "withControlButton"
+         * Takes a FilteredTable as a parameter, so the listener is set for that instance
+         */
+        buttonEdit = CarController.filterBuilder.withControlButton("Edit this car", tableView);
+
         buttonEdit.setOnAction(e -> {
             Car selectedCar = tableView.getSelectionModel().getSelectedItem();
             if (selectedCar != null) {
                 showEditCarDialog(selectedCar);
             }
         });
+    }
+
+    private static void initButtonDelete() {
+        buttonDelete = CarController.filterBuilder.withControlButton("Delete this car", tableView);
+        buttonDelete.setOnAction(e -> CarController.deleteCar(tableView.getSelectionModel().getSelectedItem()));
     }
 
     private static void showEditCarDialog(Car selectedCar) {
@@ -117,11 +139,6 @@ public class CarView {
         Scene scene = new Scene(container);
         dialog.setScene(scene);
         dialog.show();
-    }
-
-    private static void initButtonDelete() {
-        buttonDelete = new Button("Delete this car");
-        buttonDelete.setOnAction(e -> CarController.deleteCar(tableView.getSelectionModel().getSelectedItem()));
     }
 
     public static void refreshTableView() {

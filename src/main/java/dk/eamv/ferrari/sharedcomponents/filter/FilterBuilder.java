@@ -2,10 +2,11 @@ package dk.eamv.ferrari.sharedcomponents.filter;
 
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
-import javafx.scene.control.ProgressBar;
-import javafx.scene.control.TableCell;
-import javafx.scene.control.TableColumn;
+import javafx.scene.control.*;
 import javafx.util.Pair;
 
 import java.util.ArrayList;
@@ -72,6 +73,18 @@ public class FilterBuilder<T> {
 
     public FilterTextField<T> withFilterTextField(FilteredTable<T> tableView) {
         return new FilterTextField<>(tableView, columnInfo.stream().map(Pair::getValue).collect(Collectors.toList()));
+    }
+
+    public Button withControlButton(String buttonText, FilteredTable<T> tableView) {
+        Button button = new Button(buttonText);
+        button.setDisable(true); // Initially set the button as disabled
+
+        // Enable the button when a row is selected
+        tableView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            button.setDisable(newValue == null);
+        });
+
+        return button;
     }
 
     public FilteredTable<T> build() {
