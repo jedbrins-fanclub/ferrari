@@ -47,32 +47,6 @@ public class EmployeeModel {
         return null;
     }
 
-    public static void update(int id, Employee employee) {
-        try {
-            PreparedStatement statement = Database.getConnection().prepareStatement("""
-                UPDATE dbo.Employee
-                SET
-                    first_name = ?, last_name = ?, phone_number = ?,
-                    email = ?, password = ?, max_loan = ?
-                WHERE id = ?;
-            """);
-
-            statement.setString(1, employee.getFirstName());
-            statement.setString(2, employee.getLastName());
-            statement.setString(3, employee.getPhoneNumber());
-            statement.setString(4, employee.getEmail());
-            statement.setString(5, employee.getPassword());
-            statement.setDouble(6, employee.getMaxLoan());
-            statement.setInt(7, employee.getId());
-        } catch (SQLException exception) {
-            exception.printStackTrace();
-        }
-    }
-
-    public static boolean delete(int id) {
-        return Database.execute("DELETE FROM dbo.Employee WHERE id = " + Integer.toString(id));
-    }
-
     public static ArrayList<Employee> readPage(int page, int amount) {
         int offset = page * amount;
         ResultSet rs = Database.query(String.format("""
@@ -97,6 +71,32 @@ public class EmployeeModel {
         }
 
         return employees;
+    }
+
+    public static void update(int id, Employee employee) {
+        try {
+            PreparedStatement statement = Database.getConnection().prepareStatement("""
+                UPDATE dbo.Employee
+                SET
+                    first_name = ?, last_name = ?, phone_number = ?,
+                    email = ?, password = ?, max_loan = ?
+                WHERE id = ?;
+            """);
+
+            statement.setString(1, employee.getFirstName());
+            statement.setString(2, employee.getLastName());
+            statement.setString(3, employee.getPhoneNumber());
+            statement.setString(4, employee.getEmail());
+            statement.setString(5, employee.getPassword());
+            statement.setDouble(6, employee.getMaxLoan());
+            statement.setInt(7, employee.getId());
+        } catch (SQLException exception) {
+            exception.printStackTrace();
+        }
+    }
+
+    public static boolean delete(int id) {
+        return Database.execute("DELETE FROM dbo.Employee WHERE id = " + Integer.toString(id));
     }
 
     // Returns null on failure
