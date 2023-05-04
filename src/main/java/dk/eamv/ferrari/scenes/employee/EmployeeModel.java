@@ -47,6 +47,24 @@ public class EmployeeModel {
         return null;
     }
 
+    public static ArrayList<Employee> readAll() {
+        ArrayList<Employee> employees = new ArrayList<Employee>();
+
+        try (ResultSet rs = Database.query("SELECT * FROM dbo.Employee")) {
+            while (rs.next()) {
+                employees.add(new Employee(
+                    rs.getInt("id"), rs.getString("first_name"), rs.getString("last_name"),
+                    rs.getString("phone_number"), rs.getString("email"),
+                    rs.getString("password"), rs.getDouble("max_loan")
+                ));
+            }
+        } catch (SQLException exception) {
+            exception.printStackTrace();
+        }
+
+        return employees;
+    }
+
     public static ArrayList<Employee> readPage(int page, int amount) {
         int offset = page * amount;
         ResultSet rs = Database.query(String.format("""
