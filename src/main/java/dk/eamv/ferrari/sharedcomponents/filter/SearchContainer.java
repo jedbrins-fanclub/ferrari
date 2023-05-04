@@ -7,6 +7,10 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.SVGPath;
 
+/**
+ * Lavet af: Mikkel
+ */
+
 public class SearchContainer extends HBox {
 
     public SearchContainer(TextField textField) {

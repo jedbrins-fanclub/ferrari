@@ -7,13 +7,17 @@ import javafx.collections.ObservableList;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Lavet af: Mikkel
+ */
+
 public class CarController {
 
-    protected static FilterBuilder<Car> carBuilder;
+    protected static FilterBuilder<Car> filterBuilder;
     private static ObservableList<Car> cars = FXCollections.observableArrayList();
 
-    protected static void initCarBuilder() {
-        carBuilder = new FilterBuilder<Car>()
+    protected static void initFilterBuilder() {
+        filterBuilder = new FilterBuilder<Car>()
                 .withData(fetchCars())
                 .withColumn("Model", Car::getModel)
                 .withColumn("Årgang", car -> Integer.toString(car.getYear()))
