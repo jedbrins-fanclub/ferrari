@@ -73,7 +73,7 @@ public class EmployeeModel {
         return Database.execute("DELETE FROM dbo.Employee WHERE id = " + Integer.toString(id));
     }
 
-    public static ArrayList<Employee> getPage(int page, int amount) {
+    public static ArrayList<Employee> readPage(int page, int amount) {
         int offset = page * amount;
         ResultSet rs = Database.query(String.format("""
             SELECT * FROM dbo.Employee 
