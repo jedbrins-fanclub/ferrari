@@ -100,20 +100,4 @@ public class EmployeeModel {
     }
 
     // Returns null on failure
-    public static Employee authenticate(String email, String password) {
-        try {
-            PreparedStatement statement = Database.getConnection().prepareStatement("SELECT id FROM dbo.Employee WHERE email = ? AND password = ?");
-            statement.setString(1, email);
-            statement.setString(2, password);
-
-            ResultSet rs = statement.executeQuery();
-            if (rs.next()) {
-                return read(rs.getInt("id"));
-            }
-        } catch (SQLException exception) {
-            exception.printStackTrace();
-        }
-
-        return null;
-    }
 }
