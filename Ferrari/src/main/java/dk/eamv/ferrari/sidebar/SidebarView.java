@@ -85,7 +85,7 @@ public class SidebarView extends VBox {
                 buttons.get(SidebarButton.LOANS),
                 buttons.get(SidebarButton.REPORTS));
         buttonGroupOne.setAlignment(Pos.CENTER_RIGHT);
-        buttonGroupOne.setSpacing(12);
+        buttonGroupOne.setSpacing(16);
 
         VBox buttonGroupTwo = new VBox();
         buttonGroupTwo.getChildren().addAll(
