@@ -6,7 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class CarModel {
-    public static Car getCarFromID(int id) {
+    public static Car getFromID(int id) {
         ResultSet rs = Database.query("SELECT * FROM dbo.Car WHERE id = " + Integer.toString(id));
 
         try {

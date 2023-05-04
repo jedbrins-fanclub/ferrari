@@ -6,7 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class LoanModel {
-    public static Loan getLoanFromID(int id) {
+    public static Loan getFromID(int id) {
         ResultSet rs = Database.query("SELECT * FROM dbo.Loan WHERE id = " + Integer.toString(id));
 
         try {
