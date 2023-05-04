@@ -38,7 +38,8 @@ public class EmployeeModel {
                 return new Employee(
                     id, rs.getString("first_name"), rs.getString("last_name"), 
                     rs.getString("phone_number"), rs.getString("email"), 
-                    rs.getString("password"), rs.getDouble("max_loan"));
+                    rs.getString("password"), rs.getDouble("max_loan")
+                );
             }
         } catch (SQLException exception) {
             exception.printStackTrace();
