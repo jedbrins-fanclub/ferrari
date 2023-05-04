@@ -15,18 +15,9 @@ public class LoginController {
         if (employee != null) {
             System.out.println("Changing to frontpage");
             SceneManager.changeScene(FrontpageView.getScene());
+            LoginView.showErrorMessage(false);
+        } else {
+            LoginView.showErrorMessage(true);
         }
-        //Take the input from textfield & passwordfield. Use it in LoginModels login query.
-        //if returned rows == 1 -> get enum(byte) containing status being seller or saleschief.
-        //else displayLoginFailed(); 
-        System.out.println("Authenticate Placeholder. Delete when implemented.");
-    }
-
-    private static void displayLoginFailed() {
-
-    }
-
-    private static void displayRecoverPassword() {
-
     }
 }
