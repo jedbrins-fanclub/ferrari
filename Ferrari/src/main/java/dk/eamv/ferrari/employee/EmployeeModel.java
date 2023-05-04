@@ -8,7 +8,29 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class EmployeeModel {
-    public static Employee getFromID(int id) {
+    public static void create(Employee employee) {
+        try {
+            PreparedStatement statement = Database.getConnection().prepareStatement(
+                String.format("""
+                    INSERT INTO [dbo.Employee]
+                    VALUES (?, ?, ?, ?, ?, ?);
+                """)
+            );
+
+            statement.setString(1, employee.getFirstName());
+            statement.setString(2, employee.getLastName());
+            statement.setString(3, employee.getPhoneNumber());
+            statement.setString(4, employee.getEmail());
+            statement.setString(5, employee.getPassword());
+            statement.setDouble(6, employee.getMaxLoan());
+
+            statement.executeUpdate();
+        } catch (SQLException exception) {
+            exception.printStackTrace();
+        }
+    }
+
+    public static Employee read(int id) {
         ResultSet rs = Database.query("SELECT * FROM dbo.Employee WHERE id = " + Integer.toString(id));
 
         try {
