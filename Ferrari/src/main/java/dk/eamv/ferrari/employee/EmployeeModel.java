@@ -108,7 +108,7 @@ public class EmployeeModel {
 
             ResultSet rs = statement.executeQuery();
             if (rs.next()) {
-                return getFromID(rs.getInt("id"));
+                return read(rs.getInt("id"));
             }
         } catch (SQLException exception) {
             exception.printStackTrace();
