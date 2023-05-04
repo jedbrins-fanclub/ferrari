@@ -7,7 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class EmployeeModel {
-    public static Employee getEmployeeFromID(int id) {
+    public static Employee getFromID(int id) {
         ResultSet rs = Database.query("SELECT * FROM dbo.Employee WHERE id = " + Integer.toString(id));
 
         try {
@@ -33,7 +33,7 @@ public class EmployeeModel {
 
             ResultSet rs = statement.executeQuery();
             if (rs.next()) {
-                return getEmployeeFromID(rs.getInt("id"));
+                return getFromID(rs.getInt("id"));
             }
         } catch (SQLException exception) {
             exception.printStackTrace();

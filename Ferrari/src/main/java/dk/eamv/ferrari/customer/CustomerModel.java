@@ -6,7 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class CustomerModel {
-    public static Customer getCustomerFromID(int id) {
+    public static Customer getFromID(int id) {
         ResultSet rs = Database.query("SELECT * FROM dbo.Customer WHERE id = " + Integer.toString(id));
 
         try {
