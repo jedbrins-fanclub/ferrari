@@ -5,6 +5,7 @@ import dk.eamv.ferrari.database.Database;
 import java.util.ArrayList;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.PreparedStatement;
 
 public class CustomerModel {
     public static Customer read(int id) {
@@ -41,5 +42,32 @@ public class CustomerModel {
         }
 
         return customers;
+    }
+
+    public static void update(int id, Customer customer) {
+        try {
+            PreparedStatement statement = Database.getConnection().prepareStatement("""
+                UPDATE dbo.Customer
+                SET
+                    first_name = ?, last_name = ?,
+                    phone_number = ?, email = ?,
+                    address = ?, cpr = ?
+                WHERE id = ?;
+            """);
+
+            statement.setString(1, customer.getFirstName());
+            statement.setString(2, customer.getLastName());
+            statement.setString(3, customer.getPhoneNumber());
+            statement.setString(4, customer.getEmail());
+            statement.setString(5, customer.getAddress());
+            statement.setString(6, customer.getCpr());
+            statement.setInt(7, customer.getId());
+        } catch (SQLException exception) {
+            exception.printStackTrace();
+        }
+    }
+
+    public static boolean delete(int id) {
+        return Database.execute("DELETE FROM dbo.Customer WHERE id = " + Integer.toString(id));
     }
 }
