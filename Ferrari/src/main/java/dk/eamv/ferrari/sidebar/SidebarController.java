@@ -13,13 +13,13 @@ public class SidebarController {
     }
 
     private void attachButtonListeners() {
-        sidebarView.dashboard.setOnAction(this::onDashboardButtonClick);
-        sidebarView.loans.setOnAction(this::onLoansButtonClick);
-        sidebarView.reports.setOnAction(this::onReportsButtonClick);
-        sidebarView.cars.setOnAction(this::onCarsButtonClick);
-        sidebarView.customers.setOnAction(this::onCustomersButtonClick);
-        sidebarView.sellers.setOnAction(this::onSellersButtonClick);
-        sidebarView.settings.setOnAction(this::onSettingsButtonClick);
+        sidebarView.buttons.get(SidebarButton.DASHBOARD).setOnAction(this::onDashboardButtonClick);
+        sidebarView.buttons.get(SidebarButton.LOANS).setOnAction(this::onLoansButtonClick);
+        sidebarView.buttons.get(SidebarButton.REPORTS).setOnAction(this::onReportsButtonClick);
+        sidebarView.buttons.get(SidebarButton.CARS).setOnAction(this::onCarsButtonClick);
+        sidebarView.buttons.get(SidebarButton.CUSTOMERS).setOnAction(this::onCustomersButtonClick);
+        sidebarView.buttons.get(SidebarButton.SELLERS).setOnAction(this::onSellersButtonClick);
+        sidebarView.buttons.get(SidebarButton.SETTINGS).setOnAction(this::onSettingsButtonClick);
     }
 
     private void onDashboardButtonClick(ActionEvent event) {

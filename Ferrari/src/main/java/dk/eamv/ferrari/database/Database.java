@@ -5,17 +5,25 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.ResultSet;
 
-import dk.eamv.ferrari.ConnectionString;
-
 public abstract class Database {
     private static Connection connection;
 
     // Default SQL Server init
     public static void init() {
-        init(ConnectionString.getConnectionString());
+        String connectionString = System.getenv("SQL_SERVER_CONNECTION");
+        if (connectionString == null) {
+            throw new RuntimeException("Environment variable SQL_SERVER_CONNECTION not set");
+        }
+
+        init(connectionString);
     }
 
     public static void init(String connectionString) {
+        if (connectionString.equals("ignore")) {
+            System.out.println("Ignoring SQL Server connection");
+            return;
+        }
+
         try {
             connection = DriverManager.getConnection(connectionString);
         } catch (SQLException exception) {
