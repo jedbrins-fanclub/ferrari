@@ -130,3 +130,18 @@
 .sidebar-togglebutton:selected .sidebar-icon {
     -fx-fill: -darker-gray;
 }
+
+/* SearchContainer */
+.search-container {
+    -fx-border-color: grey;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+    -fx-padding: 0 5 0 5;
+}
+
+.search-container .text-field {
+    -fx-background-color: transparent;
+    -fx-background-insets: 0;
+    -fx-border-insets: 0;
+    -fx-background-radius: 0;
+}
