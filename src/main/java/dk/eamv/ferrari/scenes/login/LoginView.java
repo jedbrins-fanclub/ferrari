@@ -4,6 +4,7 @@ import dk.eamv.ferrari.resources.SVGResources;
 import dk.eamv.ferrari.utils.Align;
 import dk.eamv.ferrari.utils.RoundCorners;
 import dk.eamv.ferrari.utils.ScreenBounds;
+import dk.eamv.ferrari.utils.ToggleVisible;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -26,11 +27,12 @@ import javafx.scene.shape.SVGPath;
  * Tjekket af:
  * Modificeret af: Mikkel (CSS, små visuelle ændringer)
  */
-public class LoginView {
+public class LoginView implements ToggleVisible {
     private static TextField usernameTextField;
     private static PasswordField passwordPasswordField;
     private static final Button loginButton = new Button("LOGIN");
     private static Label forgottenPassword;
+    private static Label wrongLogin;
 
     public static AnchorPane getScene() {
         AnchorPane scene = new AnchorPane(makeBackground());
@@ -39,12 +41,16 @@ public class LoginView {
         AnchorPane loginBoxContent = makeLoginBoxContent(loginBox);
         setLoginButton();
         Label loginHeader = makeLoginHeader();
+        wrongLogin = makeWrongLoginLabel();
+        //TODO: Remove the comment below to make the error message invisible by default.
+        //toggleErrorMessage();
+        VBox loginMessages = makeLoginMessages(loginHeader, wrongLogin);
         VBox usernameField = makeUsernameField();
         VBox passwordField = makePasswordField();
         VBox fields = new VBox(usernameField, passwordField);
         fields.setPadding(new Insets(0, 0, 0, 50));
         setFields(fields);
-        loginBoxContent.getChildren().addAll(loginButton, loginHeader, fields);
+        loginBoxContent.getChildren().addAll(loginButton, loginMessages, fields);
 
         scene.getChildren().addAll(makeLogos(), loginBox, loginBoxContent);
         scene.getStyleClass().add("login");
@@ -89,8 +95,14 @@ public class LoginView {
     private static Label makeLoginHeader() {
         Label loginHeader = new Label("LOGIN");
         loginHeader.getStyleClass().add("login-header");
-        loginHeader.setLayoutY(175);
         return loginHeader;
+    }
+
+    private static VBox makeLoginMessages(Label login, Label error) {
+        VBox loginMessages = new VBox(login, error);
+        loginMessages.setSpacing(25);
+        loginMessages.setLayoutY(175);
+        return loginMessages;
     }
 
     private static VBox makeUsernameField() {
@@ -136,11 +148,10 @@ public class LoginView {
     private static VBox makeLogos() {
         VBox logos = new VBox(40);
         logos.getChildren().addAll(
-            getFullLine(),
-            getNotFullLine(),
-            getFullLine(),
-            getNotFullLine()
-        );
+                getFullLine(),
+                getNotFullLine(),
+                getFullLine(),
+                getNotFullLine());
         return logos;
     }
     
@@ -169,6 +180,17 @@ public class LoginView {
         logo.getStyleClass().add("login-logo-horse");
 
         return logo;
+    }
+
+    private static Label makeWrongLoginLabel() {
+        //TODO: ADD CSS & Fix padding after.
+        Label wrongLogin = new Label("Login ikke fundet");
+        wrongLogin.setPadding(new Insets(0, 0, 0, 200));
+        return wrongLogin;
+    }
+
+    public static void toggleErrorMessage() {
+        ToggleVisible.toggleVisible(wrongLogin);
     }
 
     public static String getUsernameInput() {
