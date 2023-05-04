@@ -25,6 +25,10 @@ public class EmployeeModel {
         return null;
     }
 
+    public static boolean delete(int id) {
+        return Database.execute("DELETE FROM dbo.Employee WHERE id = " + Integer.toString(id));
+    }
+
     public static ArrayList<Employee> getPage(int page, int amount) {
         int offset = page * amount;
         ResultSet rs = Database.query(String.format("""
