@@ -5,12 +5,14 @@ import dk.eamv.ferrari.sharedcomponents.filter.FilteredTable;
 import dk.eamv.ferrari.sharedcomponents.filter.SearchContainer;
 import dk.eamv.ferrari.scenes.sidebar.SidebarView;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -42,8 +44,14 @@ public class CarView {
         initButtonEdit();
         initButtonDelete();
 
+        HBox containerAboveTable = new HBox();
+        containerAboveTable.getChildren().add(searchContainer); // Put search box top right of table
+        containerAboveTable.setAlignment(Pos.CENTER_RIGHT);
+
         VBox container = new VBox();
-        container.getChildren().addAll(searchContainer, tableView, buttonEdit, buttonDelete);
+        container.setAlignment(Pos.CENTER);
+        container.setMaxWidth(600);
+        container.getChildren().addAll(containerAboveTable, tableView, buttonEdit, buttonDelete);
 
         return container;
     }
