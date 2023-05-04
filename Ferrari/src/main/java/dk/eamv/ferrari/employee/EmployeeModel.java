@@ -2,6 +2,7 @@ package dk.eamv.ferrari.employee;
 
 import dk.eamv.ferrari.database.Database;
 
+import java.util.ArrayList;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -22,6 +23,32 @@ public class EmployeeModel {
         }
 
         return null;
+    }
+
+    public static ArrayList<Employee> getPage(int page, int amount) {
+        int offset = page * amount;
+        ResultSet rs = Database.query(String.format("""
+            SELECT * FROM dbo.Employee 
+            ORDER BY id 
+            OFFSET %d ROWS
+            FETCH NEXT %d ROWS ONLY;
+        """, offset, amount));
+
+        ArrayList<Employee> employees = new ArrayList<Employee>();
+
+        try {
+            while (rs.next()) {
+                employees.add(new Employee(
+                    rs.getInt("id"), rs.getString("first_name"), rs.getString("last_name"), 
+                    rs.getString("phone_number"), rs.getString("email"), 
+                    rs.getString("password"), rs.getDouble("max_loan")
+                ));
+            }
+        } catch (SQLException exception) {
+            exception.printStackTrace();
+        }
+
+        return employees;
     }
 
     // Returns null on failure
