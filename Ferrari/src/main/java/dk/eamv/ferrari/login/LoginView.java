@@ -150,15 +150,15 @@ public class LoginView {
         return logo;
     }
 
-    public String getUsernameInput() {
+    public static String getUsernameInput() {
         return usernameTextField.getText();
     }
 
-    public String getPasswordInput() {
+    public static String getPasswordInput() {
         return passwordPasswordField.getText();
     }
 
-    public Button getLoginButton() {
+    public static Button getLoginButton() {
         return loginButton;
     }
 }

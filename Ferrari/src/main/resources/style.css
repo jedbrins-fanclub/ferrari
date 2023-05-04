@@ -101,6 +101,8 @@
     -fx-text-fill: -darker-gray;
 }
 
+
+
 .ToggleButton {
     -fx-background-color: -darker-gray;
     -fx-text-fill: -text-color;
@@ -112,10 +114,34 @@
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 5, 0.0, 0, 2);
 }
 
+.sidebar ToggleButton:hover {
+    -fx-background-color: -dark-gray;
+}
+
+.sidebar ToggleButton:selected {
+    -fx-background-color: #F50000;
+    -fx-text-fill: -darker-gray;
+}
+
 .sidebar-icon {
     -fx-fill: -text-color;
 }
 
 .sidebar-togglebutton:selected .sidebar-icon {
     -fx-fill: -darker-gray;
+}
+
+/* SearchContainer */
+.search-container {
+    -fx-border-color: grey;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+    -fx-padding: 0 5 0 5;
+}
+
+.search-container .text-field {
+    -fx-background-color: transparent;
+    -fx-background-insets: 0;
+    -fx-border-insets: 0;
+    -fx-background-radius: 0;
 }

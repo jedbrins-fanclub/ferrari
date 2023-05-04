@@ -1,7 +1,6 @@
-package dk.eamv.ferrari.seller;
+package dk.eamv.ferrari.employee;
 
-public class Seller {
-
+public class Employee {
     private int id;
     private String firstName;
     private String lastName;
@@ -10,7 +9,7 @@ public class Seller {
     private String password;
     private double maxLoan;
 
-    public Seller(int id, String firstName, String lastName, String phoneNumber, String email, String password, double maxLoan) {
+    public Employee(int id, String firstName, String lastName, String phoneNumber, String email, String password, double maxLoan) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;

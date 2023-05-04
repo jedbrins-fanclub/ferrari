@@ -1,13 +1,12 @@
 package dk.eamv.ferrari.frontpage;
 
-import javafx.scene.layout.AnchorPane;
+import dk.eamv.ferrari.sidebar.SidebarView;
+import javafx.scene.layout.BorderPane;
 
-// TODO: Add sidebar
-// TODO: Switch to this scene on successful login
 public class FrontpageView {
-    public static AnchorPane getScene() {
-        AnchorPane scene = new AnchorPane();
-        scene.setStyle("-fx-background-color: red;");
+    public static BorderPane getScene() {
+        BorderPane scene = new BorderPane();
+        scene.setLeft(SidebarView.getSidebarView());
         return scene;
     }
 }

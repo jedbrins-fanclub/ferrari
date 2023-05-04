@@ -1,9 +1,8 @@
 package dk.eamv.ferrari.sidebar;
 
-import java.util.HashMap;
+import java.util.EnumMap;
 import java.util.Map;
 
-import dk.eamv.ferrari.resources.SVGResources;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
@@ -17,25 +16,12 @@ import javafx.scene.shape.SVGPath;
 
 public class SidebarView extends VBox {
     private static final SidebarView sidebarView = new SidebarView();
-    protected final ToggleButton dashboard = new ToggleButton("Forside");
-    protected final ToggleButton loans = new ToggleButton("Lån");
-    protected final ToggleButton reports = new ToggleButton("Rapporter");
-    protected final ToggleButton cars = new ToggleButton("Biler");
-    protected final ToggleButton customers = new ToggleButton("Kunder");
-    protected final ToggleButton sellers = new ToggleButton("Sælgere");
-    protected final ToggleButton settings = new ToggleButton("Indstillinger");
-    private final Map<ToggleButton, String> buttonsWithIcons = new HashMap<>() {{
-        put(dashboard, SVGResources.getDashboardIcon());
-        put(loans, SVGResources.getLoansIcon());
-        put(reports, SVGResources.getReportsIcon());
-        put(cars, SVGResources.getCarsIcon());
-        put(customers, SVGResources.getCustomersIcon());
-        put(sellers, SVGResources.getSellersIcon());
-        put(settings, SVGResources.getSettingsIcon());
-    }};
+    private final ToggleGroup toggleGroup = new ToggleGroup();
+    private final Map<SidebarButton, String> icons = new EnumMap<>(SidebarButton.class);
+    protected final Map<SidebarButton, ToggleButton> buttons = new EnumMap<>(SidebarButton.class);
 
     public SidebarView() {
-
+        setButtonMap();
         configureButtons();
 
         setMinWidth(250);
@@ -43,7 +29,14 @@ public class SidebarView extends VBox {
         getStyleClass().add("sidebar");
 
         getChildren().addAll(getHeader(), getButtons());
-        setMediator();
+    }
+
+    private void setButtonMap() {
+        for (SidebarButton button : SidebarButton.values()) {
+            ToggleButton toggleButton = new ToggleButton(button.getLabel());
+            buttons.put(button, toggleButton);
+            icons.put(button, button.getIcon());
+        }
     }
 
     private HBox getHeader() {
@@ -64,11 +57,10 @@ public class SidebarView extends VBox {
     }
 
     private void configureButtons() {
-        ToggleGroup toggleGroup = new ToggleGroup();
 
-        for (Map.Entry<ToggleButton, String> entry : buttonsWithIcons.entrySet()) {
+        for (Map.Entry<SidebarButton, String> entry : icons.entrySet()) {
 
-            ToggleButton button = entry.getKey();
+            ToggleButton button = buttons.get(entry.getKey());
 
             SVGPath icon = new SVGPath();
             icon.setContent(entry.getValue()); // set content as the related svg resource
@@ -88,16 +80,23 @@ public class SidebarView extends VBox {
         VBox buttonsContainer = new VBox();
 
         VBox buttonGroupOne = new VBox();
-        buttonGroupOne.getChildren().addAll(dashboard, loans, reports);
+        buttonGroupOne.getChildren().addAll(
+                buttons.get(SidebarButton.DASHBOARD),
+                buttons.get(SidebarButton.LOANS),
+                buttons.get(SidebarButton.REPORTS));
         buttonGroupOne.setAlignment(Pos.CENTER_RIGHT);
         buttonGroupOne.setSpacing(12);
 
         VBox buttonGroupTwo = new VBox();
-        buttonGroupTwo.getChildren().addAll(cars, customers, sellers);
+        buttonGroupTwo.getChildren().addAll(
+                buttons.get(SidebarButton.CARS),
+                buttons.get(SidebarButton.CUSTOMERS),
+                buttons.get(SidebarButton.SELLERS));
         buttonGroupTwo.setAlignment(Pos.CENTER_RIGHT);
         buttonGroupTwo.setSpacing(16);
 
-        VBox buttonGroupThree = new VBox(settings);
+        VBox buttonGroupThree = new VBox(
+                buttons.get(SidebarButton.SETTINGS));
         buttonGroupThree.setAlignment(Pos.CENTER_RIGHT);
 
         buttonsContainer.setSpacing(50); // buttons are grouped visually as they best relate
@@ -107,19 +106,8 @@ public class SidebarView extends VBox {
         return buttonsContainer;
     }
 
-    //TODO: Iterate over the hashmap instead to reduce reduncancy.
-    private void setMediator() {
-        dashboard.setOnMouseClicked(e -> SidebarMediator.setButtonActive(dashboard));
-        loans.setOnMouseClicked(e -> SidebarMediator.setButtonActive(loans));
-        reports.setOnMouseClicked(e -> SidebarMediator.setButtonActive(reports));
-        cars.setOnMouseClicked(e -> SidebarMediator.setButtonActive(cars));
-        customers.setOnMouseClicked(e -> SidebarMediator.setButtonActive(customers));
-        sellers.setOnMouseClicked(e -> SidebarMediator.setButtonActive(sellers));
-        settings.setOnMouseClicked(e -> SidebarMediator.setButtonActive(settings));
-    }
-
-    public Map<ToggleButton, String> getButtonsWithIcons() {
-        return buttonsWithIcons;
+    public void setActiveToggleButton(SidebarButton button) {
+        toggleGroup.selectToggle(buttons.get(button));
     }
 
     public static SidebarView getSidebarView() {
