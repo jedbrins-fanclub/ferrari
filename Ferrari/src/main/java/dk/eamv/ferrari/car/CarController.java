@@ -23,6 +23,12 @@ public class CarController {
         return cars; // Place method to retrieve all cars from database here
     }
 
+    protected static void updateCar(Car car) {
+        System.out.println("Call method in CarModel update car with id: " + car.getId());
+
+        CarView.refreshTableView();
+    }
+
     protected static void deleteCar(Car car) {
         System.out.println("Call method in CarModel to delete car with id: " + car.getId());
 
