@@ -43,7 +43,7 @@ public class LoginView implements ToggleVisible {
         Label loginHeader = makeLoginHeader();
         wrongLogin = makeWrongLoginLabel();
         //TODO: Remove the comment below to make the error message invisible by default.
-        //toggleErrorMessage();
+        //showErrorMessage(false);
         VBox loginMessages = makeLoginMessages(loginHeader, wrongLogin);
         VBox usernameField = makeUsernameField();
         VBox passwordField = makePasswordField();
@@ -189,8 +189,8 @@ public class LoginView implements ToggleVisible {
         return wrongLogin;
     }
 
-    public static void toggleErrorMessage() {
-        ToggleVisible.toggleVisible(wrongLogin);
+    public static void showErrorMessage(boolean makeVisible) {
+        wrongLogin.setVisible(makeVisible);
     }
 
     public static String getUsernameInput() {
