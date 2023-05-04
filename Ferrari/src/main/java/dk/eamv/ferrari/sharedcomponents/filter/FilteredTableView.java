@@ -28,7 +28,7 @@ public class FilteredTableView<T> extends TableView<T> {
         setItems(sortedData);
 
         // Has some problems regarding the colors
-        getStylesheets().add(Objects.requireNonNull(getClass().getResource("/tableview.css")).toExternalForm());
+        // getStylesheets().add(Objects.requireNonNull(getClass().getResource("/tableview.css")).toExternalForm());
     }
 
     // This is explained in detail in the FieldTextField class
