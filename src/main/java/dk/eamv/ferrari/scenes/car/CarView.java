@@ -1,6 +1,8 @@
 package dk.eamv.ferrari.scenes.car;
 
 import dk.eamv.ferrari.scenes.sidebar.SidebarButton;
+import dk.eamv.ferrari.sharedcomponents.filter.ControlButton;
+import dk.eamv.ferrari.sharedcomponents.filter.FilterTextField;
 import dk.eamv.ferrari.sharedcomponents.filter.FilteredTable;
 import dk.eamv.ferrari.sharedcomponents.filter.SearchContainer;
 import dk.eamv.ferrari.scenes.sidebar.SidebarView;
@@ -61,19 +63,21 @@ public class CarView {
     }
 
     private static void initTableView() {
-        tableView = CarController.filterBuilder.build();
+        tableView = CarController.filteredTableBuilder.build();
     }
 
     private static void initSearchContainer() {
-        searchContainer = new SearchContainer(CarController.filterBuilder.withFilterTextField());
+        // When instantiating the FilterTextField, the instance of the builder is passed as a parameter
+        // This is in order to give the FilterTextField access to the FilteredTable and ProperValueGetters
+        searchContainer = new SearchContainer(new FilterTextField<>(CarController.filteredTableBuilder));
     }
 
     private static void initButtonEdit() {
-        /* Pass the creation of the button to the instance of FilterBuilder
+        /* Pass the creation of the button to the instance of FilteredTableBuilder
          * This allows the listener to be set once in the builder method "withControlButton"
          * Takes a FilteredTable as a parameter, so the listener is set for that instance
          */
-        buttonEdit = CarController.filterBuilder.withControlButton("Edit this car");
+        buttonEdit = new ControlButton(CarController.filteredTableBuilder, "Edit this car");
 
         buttonEdit.setOnAction(e -> {
             Car selectedCar = tableView.getSelectionModel().getSelectedItem();
@@ -84,7 +88,7 @@ public class CarView {
     }
 
     private static void initButtonDelete() {
-        buttonDelete = CarController.filterBuilder.withControlButton("Delete this car");
+        buttonDelete = new ControlButton(CarController.filteredTableBuilder, "Delete this car");
 
         buttonDelete.setOnAction(e -> {
             Car selectedCar = tableView.getSelectionModel().getSelectedItem();

@@ -2,9 +2,6 @@ package dk.eamv.ferrari.sharedcomponents.filter;
 
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.scene.control.*;
 import javafx.util.Pair;
@@ -17,33 +14,33 @@ import java.util.stream.Collectors;
 /**
  * Lavet af: Mikkel
  */
-public class FilterBuilder<T> {
+public class FilteredTableBuilder<T> implements FilteredTableBuilderInfo<T> {
 
     private ObservableList<T> data;
     private List<Pair<String, Function<T, Object>>> columnInfo;
     private List<TableColumn<T, ?>> progressColumns;
-    private FilteredTable<T> tableView;
+    private FilteredTable<T> filteredTable;
 
 
-    public FilterBuilder() {
+    public FilteredTableBuilder() {
         columnInfo = new ArrayList<>();
         progressColumns = new ArrayList<>();
     }
 
     // Adds the list of objects to the tableview (could be any object like Car, Customer etc)
-    public FilterBuilder<T> withData(ObservableList<T> data) {
+    public FilteredTableBuilder<T> withData(ObservableList<T> data) {
         this.data = data;
         return this;
     }
 
-    public FilterBuilder<T> withColumn(String columnName, Function<T, Object> propertyValueGetter) {
+    public FilteredTableBuilder<T> withColumn(String columnName, Function<T, Object> propertyValueGetter) {
 
         // Every time this method is called, a specific column and its list of Value Getter methods is added to the list
         columnInfo.add(new Pair<>(columnName, propertyValueGetter));
         return this;
     }
 
-    public FilterBuilder<T> withProgressColumn(String columnName, Function<T, Double> startValueGetter, Function<T, Double> endValueGetter, Function<T, Double> currentValueGetter) {
+    public FilteredTableBuilder<T> withProgressColumn(String columnName, Function<T, Double> startValueGetter, Function<T, Double> endValueGetter, Function<T, Double> currentValueGetter) {
         TableColumn<T, Double> progressColumn = new TableColumn<>(columnName);
         progressColumn.setCellValueFactory(cellData -> {
             double start = startValueGetter.apply(cellData.getValue());
@@ -74,33 +71,27 @@ public class FilterBuilder<T> {
         return this;
     }
 
-    public FilterTextField<T> withFilterTextField() {
-        return new FilterTextField<>(tableView, columnInfo.stream().map(Pair::getValue).collect(Collectors.toList()));
-    }
-
-    public Button withControlButton(String buttonText) {
-        Button button = new Button(buttonText);
-        button.setDisable(true); // Initially set the button as disabled
-
-        // Enable the button when a row is selected
-        tableView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            button.setDisable(newValue == null);
-        });
-
-        return button;
-    }
-
     public FilteredTable<T> build() {
-        tableView = new FilteredTable<>(data);
+        filteredTable = new FilteredTable<>(data);
         for (Pair<String, Function<T, Object>> info : columnInfo) {
             TableColumn<T, String> column = new TableColumn<>(info.getKey());
             column.setCellValueFactory(cellData -> new SimpleStringProperty(info.getValue().apply(cellData.getValue()).toString()));
-            tableView.getColumns().add(column);
+            filteredTable.getColumns().add(column);
         }
 
         // Add progress columns to the TableView
-        tableView.getColumns().addAll(progressColumns);
+        filteredTable.getColumns().addAll(progressColumns);
 
-        return tableView;
+        return filteredTable;
+    }
+
+    @Override
+    public FilteredTable<T> getFilteredTable() {
+        return filteredTable;
+    }
+
+    @Override
+    public List<Function<T, Object>> getPropertyValueGetters() {
+        return columnInfo.stream().map(Pair::getValue).collect(Collectors.toList());
     }
 }

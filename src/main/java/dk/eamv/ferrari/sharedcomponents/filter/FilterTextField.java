@@ -9,12 +9,11 @@ import java.util.function.Function;
  * Lavet af: Mikkel
  */
 public class FilterTextField<T> extends TextField {
-    private final FilteredTable<T> filteredTable;
-    private final List<Function<T, Object>> propertyValueGetters;
 
-    public FilterTextField(FilteredTable<T> filteredTable, List<Function<T, Object>> propertyValueGetters) {
-        this.filteredTable = filteredTable;
-        this.propertyValueGetters = propertyValueGetters;
+    private final FilteredTableBuilderInfo<T> filteredTableBuilderInfo;
+
+    public FilterTextField(FilteredTableBuilderInfo<T> filteredTableBuilderInfo) {
+        this.filteredTableBuilderInfo = filteredTableBuilderInfo;
         setPromptText("Filter");
         setupFiltering();
     }
@@ -34,6 +33,9 @@ public class FilterTextField<T> extends TextField {
      *
      */
     private void setupFiltering() {
+        FilteredTable<T> filteredTable = filteredTableBuilderInfo.getFilteredTable();
+        List<Function<T, Object>> propertyValueGetters = filteredTableBuilderInfo.getPropertyValueGetters();
+
         textProperty().addListener((observable, oldValue, newValue) -> {
             String filterText = newValue == null ? "" : newValue.toLowerCase();
             filteredTable.setFilter(item -> {

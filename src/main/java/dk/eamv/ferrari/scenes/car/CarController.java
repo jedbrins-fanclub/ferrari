@@ -1,12 +1,8 @@
 package dk.eamv.ferrari.scenes.car;
 
-import dk.eamv.ferrari.scenes.loan.LoanModel;
-import dk.eamv.ferrari.sharedcomponents.filter.FilterBuilder;
+import dk.eamv.ferrari.sharedcomponents.filter.FilteredTableBuilder;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Lavet af: Mikkel
@@ -14,11 +10,11 @@ import java.util.List;
 
 public class CarController {
 
-    protected static FilterBuilder<Car> filterBuilder;
+    protected static FilteredTableBuilder<Car> filteredTableBuilder;
     private static ObservableList<Car> cars = FXCollections.observableArrayList();
 
     protected static void initFilterBuilder() {
-        filterBuilder = new FilterBuilder<Car>()
+        filteredTableBuilder = new FilteredTableBuilder<Car>()
                 .withData(fetchCars())
                 .withColumn("Model", Car::getModel)
                 .withColumn("Årgang", car -> Integer.toString(car.getYear()))
