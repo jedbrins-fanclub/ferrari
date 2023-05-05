@@ -31,7 +31,6 @@ public class LoginView implements ToggleVisible {
     private static TextField usernameTextField;
     private static PasswordField passwordPasswordField;
     private static final Button loginButton = new Button("LOGIN");
-    private static Label forgottenPassword;
     private static Label wrongLogin;
 
     public static AnchorPane getScene() {
@@ -42,8 +41,7 @@ public class LoginView implements ToggleVisible {
         setLoginButton();
         Label loginHeader = makeLoginHeader();
         wrongLogin = makeWrongLoginLabel();
-        //TODO: Remove the comment below to make the error message invisible by default.
-        //showErrorMessage(false);
+        showErrorMessage(false);
         VBox loginMessages = makeLoginMessages(loginHeader, wrongLogin);
         VBox usernameField = makeUsernameField();
         VBox passwordField = makePasswordField();
@@ -105,7 +103,7 @@ public class LoginView implements ToggleVisible {
         return loginMessages;
     }
 
-    private static VBox makeUsernameField() {
+        private static VBox makeUsernameField() {
         VBox username = new VBox(10);
         username.setPadding(new Insets(225, 0, 0, 0));
         Label usernameLabel = new Label("Brugernavn");
@@ -134,7 +132,7 @@ public class LoginView implements ToggleVisible {
         passwordField.getChildren().addAll(passwordIcon, passwordPasswordField);
         Line passwordLine = new Line();
         passwordLine.setEndX(400);
-        forgottenPassword = new Label("Glemt kodeord?");
+        Label forgottenPassword = new Label("Glemt kodeord?");
         forgottenPassword.getStyleClass().add("login-forgotten-password");
         password.getChildren().addAll(passwordLabel, passwordField, passwordLine, forgottenPassword);
         return password;
@@ -183,9 +181,9 @@ public class LoginView implements ToggleVisible {
     }
 
     private static Label makeWrongLoginLabel() {
-        //TODO: ADD CSS & Fix padding after.
         Label wrongLogin = new Label("Login ikke fundet");
-        wrongLogin.setPadding(new Insets(0, 0, 0, 200));
+        wrongLogin.getStyleClass().add("login-error");
+
         return wrongLogin;
     }
 
