@@ -65,7 +65,7 @@ public class CarView {
     }
 
     private static void initSearchContainer() {
-        searchContainer = new SearchContainer(CarController.filterBuilder.withFilterTextField(tableView));
+        searchContainer = new SearchContainer(CarController.filterBuilder.withFilterTextField());
     }
 
     private static void initButtonEdit() {
@@ -73,7 +73,7 @@ public class CarView {
          * This allows the listener to be set once in the builder method "withControlButton"
          * Takes a FilteredTable as a parameter, so the listener is set for that instance
          */
-        buttonEdit = CarController.filterBuilder.withControlButton("Edit this car", tableView);
+        buttonEdit = CarController.filterBuilder.withControlButton("Edit this car");
 
         buttonEdit.setOnAction(e -> {
             Car selectedCar = tableView.getSelectionModel().getSelectedItem();
@@ -84,7 +84,7 @@ public class CarView {
     }
 
     private static void initButtonDelete() {
-        buttonDelete = CarController.filterBuilder.withControlButton("Delete this car", tableView);
+        buttonDelete = CarController.filterBuilder.withControlButton("Delete this car");
 
         buttonDelete.setOnAction(e -> {
             Car selectedCar = tableView.getSelectionModel().getSelectedItem();

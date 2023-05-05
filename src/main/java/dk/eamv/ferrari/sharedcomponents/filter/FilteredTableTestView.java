@@ -23,7 +23,7 @@ public class FilteredTableTestView extends HBox {
                 .withColumn("Pris", car -> Double.toString(car.getPrice()));
 
         FilteredTable<Car> carTableView = carBuilder.build();
-        FilterTextField<Car> carFilter = carBuilder.withFilterTextField(carTableView);
+        FilterTextField<Car> carFilter = carBuilder.withFilterTextField();
         SearchContainer carSearch = new SearchContainer(carFilter);
 
         ObservableList<Customer> customers = FXCollections.observableArrayList();
@@ -38,7 +38,7 @@ public class FilteredTableTestView extends HBox {
         //.withColumn("CPR", Customer::getCpr); // Does not need to add all fields of the given object
 
         FilteredTable<Customer> customerTableView = customerBuilder.build();
-        FilterTextField<Customer> customerFilter = customerBuilder.withFilterTextField(customerTableView);
+        FilterTextField<Customer> customerFilter = customerBuilder.withFilterTextField();
         SearchContainer customerSearch = new SearchContainer(customerFilter);
 
         ObservableList<Employee> sellers = FXCollections.observableArrayList();
@@ -52,7 +52,7 @@ public class FilteredTableTestView extends HBox {
                 .withColumn("Max lån", Employee::getMaxLoan);
 
         FilteredTable<Employee> sellerTableView = sellerBuilder.build();
-        FilterTextField<Employee> sellerFilter = sellerBuilder.withFilterTextField(sellerTableView);
+        FilterTextField<Employee> sellerFilter = sellerBuilder.withFilterTextField();
         SearchContainer sellerSearch = new SearchContainer(sellerFilter);
 
         ObservableList<Loan> loans = FXCollections.observableArrayList();
@@ -70,7 +70,7 @@ public class FilteredTableTestView extends HBox {
                 .withColumn("Slutdato", Loan::getEndDate);
 
         FilteredTable<Loan> loanTableView = loanBuilder.build();
-        FilterTextField<Loan> loanFilter = loanBuilder.withFilterTextField(loanTableView);
+        FilterTextField<Loan> loanFilter = loanBuilder.withFilterTextField();
         SearchContainer loanSearch = new SearchContainer(loanFilter);
 
 

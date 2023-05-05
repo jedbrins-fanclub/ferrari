@@ -22,6 +22,9 @@ public class FilterBuilder<T> {
     private ObservableList<T> data;
     private List<Pair<String, Function<T, Object>>> columnInfo;
     private List<TableColumn<T, ?>> progressColumns;
+    private FilteredTable<T> tableView;
+
+
     public FilterBuilder() {
         columnInfo = new ArrayList<>();
         progressColumns = new ArrayList<>();
@@ -71,11 +74,11 @@ public class FilterBuilder<T> {
         return this;
     }
 
-    public FilterTextField<T> withFilterTextField(FilteredTable<T> tableView) {
+    public FilterTextField<T> withFilterTextField() {
         return new FilterTextField<>(tableView, columnInfo.stream().map(Pair::getValue).collect(Collectors.toList()));
     }
 
-    public Button withControlButton(String buttonText, FilteredTable<T> tableView) {
+    public Button withControlButton(String buttonText) {
         Button button = new Button(buttonText);
         button.setDisable(true); // Initially set the button as disabled
 
@@ -88,7 +91,7 @@ public class FilterBuilder<T> {
     }
 
     public FilteredTable<T> build() {
-        FilteredTable<T> tableView = new FilteredTable<>(data);
+        tableView = new FilteredTable<>(data);
         for (Pair<String, Function<T, Object>> info : columnInfo) {
             TableColumn<T, String> column = new TableColumn<>(info.getKey());
             column.setCellValueFactory(cellData -> new SimpleStringProperty(info.getValue().apply(cellData.getValue()).toString()));
