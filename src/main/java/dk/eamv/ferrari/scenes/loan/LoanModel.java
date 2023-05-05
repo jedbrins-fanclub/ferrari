@@ -41,9 +41,9 @@ public class LoanModel {
             statement.setDouble(4, loan.getLoanSize());
             statement.setDouble(5, loan.getDownPayment());
             statement.setDouble(6, loan.getInterestRate());
-            statement.setDate(6, loan.getStartDate());
-            statement.setDate(6, loan.getEndDate());
-            statement.setInt(6, loan.getStatus().getStatusNumber());
+            statement.setDate(7, loan.getStartDate());
+            statement.setDate(8, loan.getEndDate());
+            statement.setInt(9, loan.getStatus().getStatusNumber());
 
             statement.executeUpdate();
         } catch (SQLException exception) {
