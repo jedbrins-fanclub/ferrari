@@ -4,8 +4,6 @@ import dk.eamv.ferrari.sharedcomponents.filter.FilteredTableBuilder;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
-import java.text.DecimalFormat;
-
 /**
  * Lavet af: Mikkel
  */
@@ -22,7 +20,7 @@ public class CarController {
                 .withColumn("Model", Car::getModel)
                 .withColumn("Årgang", Car::getYear)
                 .withColumn("Pris", Car::getPrice) //TODO: Decide how to display price (maybe store in Ks)
-                .withButton("...", CarController::buttonIsClicked);
+                .withButtonColumn("...", "...", CarController::buttonIsClicked);
     }
 
     private static void buttonIsClicked(Car car) {

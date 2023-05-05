@@ -4,7 +4,6 @@ import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.ObservableList;
 import javafx.scene.control.*;
-import javafx.util.Callback;
 import javafx.util.Pair;
 
 import java.util.ArrayList;
@@ -16,15 +15,35 @@ import java.util.stream.Collectors;
 /**
  * Lavet af: Mikkel
  */
-public class FilteredTableBuilder<T> implements FilteredTableBuilderInfo<T> {
 
+/**
+ * @param <T> The type of the elements contained in the table row. This is generic to allow the FilteredTableBuilder to
+ *            work with all our types, so the creation of TableViews with filter functionality is not repeated.
+ *            When this class is instantiated, it is necessary to supply the desired type.
+ */
+
+public class FilteredTableBuilder<T> implements FilteredTableBuilderInfo<T> {
     private ObservableList<T> data;
+    /**
+     *
+     */
     private final List<Pair<String, Function<T, Object>>> columnInfo;
     private final List<TableColumn<T, ?>> progressColumns;
     private final List<TableColumn<T, ?>> buttonColumns;
     private FilteredTable<T> filteredTable;
 
-
+    /**
+     * Constructs a new {@code FilteredTableBuilder} instance with empty lists of column information,
+     * progress columns, and button columns.
+     *
+     * <p> The {@link #columnInfo} list will contain information about each column in the table, such as
+     * its header text and data type.
+     * <p> The {@link #progressColumns} list will contain the indices of columns that
+     * should display a progress bar.
+     * <p> The {@link #buttonColumns} list will contain the indices of columns that
+     * should display buttons.
+     * <p> These columns will be added in the {@link #build()} method.
+     */
     public FilteredTableBuilder() {
         columnInfo = new ArrayList<>();
         progressColumns = new ArrayList<>();
@@ -75,39 +94,9 @@ public class FilteredTableBuilder<T> implements FilteredTableBuilderInfo<T> {
         return this;
     }
 
-    public FilteredTableBuilder<T> withButton(String columnName, Consumer<T> onButtonClick) {
+    public FilteredTableBuilder<T> withButtonColumn(String columnName, String buttonName, Consumer<T> onButtonClick) {
         TableColumn<T, Void> buttonColumn = new TableColumn<>(columnName);
-
-        Callback<TableColumn<T, Void>, TableCell<T, Void>> cellFactory =
-                new Callback<>() {
-                    @Override
-                    public TableCell<T, Void> call(final TableColumn<T, Void> param) {
-                        final TableCell<T, Void> cell = new TableCell<>() {
-                            private final Button btn = new Button("Button");
-                            {
-                                btn.setOnAction(event -> {
-                                    T item = getTableView().getItems().get(getIndex());
-
-                                    System.out.println("Selected item: " + item);
-                                    onButtonClick.accept(item);
-                                });
-                            }
-
-                            @Override
-                            public void updateItem(Void item, boolean empty) {
-                                super.updateItem(item, empty);
-                                if (empty) {
-                                    setGraphic(null);
-                                } else {
-                                    setGraphic(btn);
-                                }
-                            }
-                        };
-                        return cell;
-                    }
-                };
-
-        buttonColumn.setCellFactory(cellFactory);
+        buttonColumn.setCellFactory(param -> new ButtonTableCell<>(buttonName, onButtonClick));
         buttonColumns.add(buttonColumn);
         return this;
     }
