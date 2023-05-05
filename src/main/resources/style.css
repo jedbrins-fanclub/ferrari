@@ -39,8 +39,15 @@
 .login-header {
     -fx-font-size: 24;
     -fx-font-weight: bold;
-    -fx-padding: 0 0 0 200;
+    -fx-padding: 0 0 0 215;
 }
+
+.login-error {
+    -fx-font-weight: bold;
+    -fx-padding: 0 0 0 201;
+    -fx-text-fill: darkred;
+}
+
 
 .login TextField, PasswordField {
     -fx-prompt-text-fill: #555555;
