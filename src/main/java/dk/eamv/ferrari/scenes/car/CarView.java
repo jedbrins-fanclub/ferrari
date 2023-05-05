@@ -22,7 +22,6 @@ import javafx.stage.Stage;
 /**
  * Lavet af: Mikkel
  */
-
 public class CarView {
 
     private static FilteredTable<Car> tableView;

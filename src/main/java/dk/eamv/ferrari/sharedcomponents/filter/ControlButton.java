@@ -2,8 +2,12 @@ package dk.eamv.ferrari.sharedcomponents.filter;
 
 import javafx.scene.control.Button;
 
+/**
+ * Lavet af: Mikkel
+ */
 public class ControlButton extends Button {
 
+    //TODO: Consider to create a different interface for this class (Interface Segregation Principle)
     private final FilteredTableBuilderInfo<?> filteredTableBuilderInfo;
 
     public ControlButton(FilteredTableBuilderInfo<?> filteredTableBuilderInfo, String buttonText) {

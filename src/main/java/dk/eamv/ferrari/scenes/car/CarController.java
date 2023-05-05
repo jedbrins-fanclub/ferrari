@@ -4,6 +4,8 @@ import dk.eamv.ferrari.sharedcomponents.filter.FilteredTableBuilder;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
+import java.text.DecimalFormat;
+
 /**
  * Lavet af: Mikkel
  */
@@ -16,15 +18,11 @@ public class CarController {
     protected static void initFilterBuilder() {
         filteredTableBuilder = new FilteredTableBuilder<Car>()
                 .withData(fetchCars())
+                .withColumn("Stelnummer", Car::getId)
                 .withColumn("Model", Car::getModel)
-                .withColumn("Årgang", car -> Integer.toString(car.getYear()))
-                .withColumn("Pris", car -> Double.toString(car.getPrice()));
+                .withColumn("Årgang", Car::getYear)
+                .withColumn("Pris", Car::getPrice); //TODO: Decide how to display price (maybe store in Ks)
     }
-
-    //protected static ObservableList<Car> fetchCars() {
-    //    generateCars();
-    //    return cars; // Place method to retrieve all cars from database here
-    //}
 
     protected static ObservableList<Car> fetchCars() {
         for (int i = 1; i <= 28; i++) {

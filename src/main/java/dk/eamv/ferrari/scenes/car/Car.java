@@ -1,5 +1,7 @@
 package dk.eamv.ferrari.scenes.car;
 
+import java.text.DecimalFormat;
+
 public class Car {
 
     private int id;
