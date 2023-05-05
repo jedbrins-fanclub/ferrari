@@ -50,7 +50,7 @@ public class CarModel {
             statement.setString(1, car.getModel());
             statement.setInt(2, car.getYear());
             statement.setDouble(3, car.getPrice());
-            statement.setInt(7, car.getId());
+            statement.setInt(4, car.getId());
         } catch (SQLException exception) {
             exception.printStackTrace();
         }
