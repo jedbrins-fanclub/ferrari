@@ -21,12 +21,17 @@ public class CarController {
                 .withColumn("Stelnummer", Car::getId)
                 .withColumn("Model", Car::getModel)
                 .withColumn("Årgang", Car::getYear)
-                .withColumn("Pris", Car::getPrice); //TODO: Decide how to display price (maybe store in Ks)
+                .withColumn("Pris", Car::getPrice) //TODO: Decide how to display price (maybe store in Ks)
+                .withButton("...", CarController::buttonIsClicked);
+    }
+
+    private static void buttonIsClicked(Car car) {
+        System.out.println("Controller method is called with car: " + car);
     }
 
     protected static ObservableList<Car> fetchCars() {
         for (int i = 1; i <= 28; i++) {
-            cars.add(CarModel.getFromID(i));
+            cars.add(CarModel.read(i));
         }
         return cars;
     }

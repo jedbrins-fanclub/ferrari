@@ -4,10 +4,12 @@ import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.ObservableList;
 import javafx.scene.control.*;
+import javafx.util.Callback;
 import javafx.util.Pair;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -17,14 +19,16 @@ import java.util.stream.Collectors;
 public class FilteredTableBuilder<T> implements FilteredTableBuilderInfo<T> {
 
     private ObservableList<T> data;
-    private List<Pair<String, Function<T, Object>>> columnInfo;
-    private List<TableColumn<T, ?>> progressColumns;
+    private final List<Pair<String, Function<T, Object>>> columnInfo;
+    private final List<TableColumn<T, ?>> progressColumns;
+    private final List<TableColumn<T, ?>> buttonColumns;
     private FilteredTable<T> filteredTable;
 
 
     public FilteredTableBuilder() {
         columnInfo = new ArrayList<>();
         progressColumns = new ArrayList<>();
+        buttonColumns = new ArrayList<>();
     }
 
     // Adds the list of objects to the tableview (could be any object like Car, Customer etc)
@@ -71,6 +75,43 @@ public class FilteredTableBuilder<T> implements FilteredTableBuilderInfo<T> {
         return this;
     }
 
+    public FilteredTableBuilder<T> withButton(String columnName, Consumer<T> onButtonClick) {
+        TableColumn<T, Void> buttonColumn = new TableColumn<>(columnName);
+
+        Callback<TableColumn<T, Void>, TableCell<T, Void>> cellFactory =
+                new Callback<>() {
+                    @Override
+                    public TableCell<T, Void> call(final TableColumn<T, Void> param) {
+                        final TableCell<T, Void> cell = new TableCell<>() {
+                            private final Button btn = new Button("Button");
+                            {
+                                btn.setOnAction(event -> {
+                                    T item = getTableView().getItems().get(getIndex());
+
+                                    System.out.println("Selected item: " + item);
+                                    onButtonClick.accept(item);
+                                });
+                            }
+
+                            @Override
+                            public void updateItem(Void item, boolean empty) {
+                                super.updateItem(item, empty);
+                                if (empty) {
+                                    setGraphic(null);
+                                } else {
+                                    setGraphic(btn);
+                                }
+                            }
+                        };
+                        return cell;
+                    }
+                };
+
+        buttonColumn.setCellFactory(cellFactory);
+        buttonColumns.add(buttonColumn);
+        return this;
+    }
+
     public FilteredTable<T> build() {
         filteredTable = new FilteredTable<>(data);
         for (Pair<String, Function<T, Object>> info : columnInfo) {
@@ -81,6 +122,7 @@ public class FilteredTableBuilder<T> implements FilteredTableBuilderInfo<T> {
 
         // Add progress columns to the TableView
         filteredTable.getColumns().addAll(progressColumns);
+        filteredTable.getColumns().addAll(buttonColumns);
 
         return filteredTable;
     }
