@@ -4,6 +4,7 @@ import dk.eamv.ferrari.scenes.car.Car;
 import dk.eamv.ferrari.scenes.customer.Customer;
 import dk.eamv.ferrari.scenes.loan.Loan;
 import dk.eamv.ferrari.scenes.employee.Employee;
+import dk.eamv.ferrari.scenes.loan.LoanModel;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.layout.HBox;
@@ -64,7 +65,9 @@ public class FilteredTableTestView extends HBox {
                 .withColumn("Lån", Loan::getLoanSize)
                 .withColumn("Indskud", Loan::getDownPayment)
                 .withColumn("Rente", Loan::getInterestRate)
-                .withColumn("Status", loan -> loan.getStatus().getDisplayName());
+                .withColumn("Status", loan -> loan.getStatus().getDisplayName())
+                .withColumn("Startdato", Loan::getStartDate)
+                .withColumn("Slutdato", Loan::getEndDate);
 
         FilteredTable<Loan> loanTableView = loanBuilder.build();
         FilterTextField<Loan> loanFilter = loanBuilder.withFilterTextField(loanTableView);

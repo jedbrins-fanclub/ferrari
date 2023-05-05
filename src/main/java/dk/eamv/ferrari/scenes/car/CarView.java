@@ -85,7 +85,11 @@ public class CarView {
 
     private static void initButtonDelete() {
         buttonDelete = CarController.filterBuilder.withControlButton("Delete this car", tableView);
-        buttonDelete.setOnAction(e -> CarController.deleteCar(tableView.getSelectionModel().getSelectedItem()));
+
+        buttonDelete.setOnAction(e -> {
+            Car selectedCar = tableView.getSelectionModel().getSelectedItem();
+            CarController.deleteCar(selectedCar);
+        });
     }
 
     private static void showEditCarDialog(Car selectedCar) {
@@ -143,5 +147,6 @@ public class CarView {
 
     public static void refreshTableView() {
         tableView.refresh();
+        tableView.sort();
     }
 }
