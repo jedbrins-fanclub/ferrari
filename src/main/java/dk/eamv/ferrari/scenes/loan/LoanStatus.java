@@ -16,6 +16,17 @@ public class LoanStatus {
         this.state = LoanState.values()[value];
     }
 
+    public int getStatusNumber() {
+        return switch (state) {
+            case PENDING   -> 0;
+            case APPROVED  -> 1;
+            case REJECTED  -> 2;
+            case ACTIVE    -> 3;
+            case COMPLETED -> 4;
+            default        -> -1;
+        };
+    }
+
     public String getDisplayName() {
         return switch (state) {
             case PENDING   -> "Afventer godkendelse";
