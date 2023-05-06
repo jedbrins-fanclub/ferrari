@@ -19,6 +19,8 @@ public class CSVWriter {
     }
 
     public void writeHeader(String... columns) {
+        assert columns.length > 0 : "CSV header mush have more than 0 columns";
+        assert columnCount == 0 : "CSV header has already been written to this file";
         columnCount = columns.length;
 
         try {
@@ -35,9 +37,7 @@ public class CSVWriter {
     }
 
     public void writeRow(Object... fields) {
-        if (fields.length != columnCount) {
-            throw new RuntimeException(String.format("Expected %d fields, but got %d", columnCount, fields.length));
-        }
+        assert fields.length == columnCount : "Incorrect field count not matching column count";
 
         try {
             for (int i = 0; i < fields.length; ++i) {

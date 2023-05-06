@@ -65,7 +65,7 @@ public class CSVWriterTest {
         writer.writeHeader("first", "second");
 
         assertThrows(
-            RuntimeException.class,
+            AssertionError.class,
             () -> writer.writeRow("too", "many", "fields"),
             "Expected CSVWriter.writeRow() to throw due to incorrect field count"
         );
