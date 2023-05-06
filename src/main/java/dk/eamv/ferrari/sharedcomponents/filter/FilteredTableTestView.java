@@ -15,19 +15,19 @@ public class FilteredTableTestView extends HBox {
 
         ObservableList<Car> cars = FXCollections.observableArrayList();
 
-        FilterBuilder<Car> carBuilder = new FilterBuilder<Car>()
+        FilteredTableBuilder<Car> carBuilder = new FilteredTableBuilder<Car>()
                 .withData(cars)
                 .withColumn("Model", Car::getModel)
                 .withColumn("Årgang", car -> Integer.toString(car.getYear()))
                 .withColumn("Pris", car -> Double.toString(car.getPrice()));
 
         FilteredTable<Car> carTableView = carBuilder.build();
-        FilterTextField<Car> carFilter = carBuilder.withFilterTextField(carTableView);
+        FilterTextField<Car> carFilter = new FilterTextField<>(carBuilder);
         SearchContainer carSearch = new SearchContainer(carFilter);
 
         ObservableList<Customer> customers = FXCollections.observableArrayList();
 
-        FilterBuilder<Customer> customerBuilder = new FilterBuilder<Customer>()
+        FilteredTableBuilder<Customer> customerBuilder = new FilteredTableBuilder<Customer>()
                 .withData(customers)
                 .withColumn("Fornavn", Customer::getFirstName)
                 .withColumn("Efternavn", Customer::getLastName)
@@ -37,12 +37,12 @@ public class FilteredTableTestView extends HBox {
         //.withColumn("CPR", Customer::getCpr); // Does not need to add all fields of the given object
 
         FilteredTable<Customer> customerTableView = customerBuilder.build();
-        FilterTextField<Customer> customerFilter = customerBuilder.withFilterTextField(customerTableView);
+        FilterTextField<Customer> customerFilter = new FilterTextField<>(customerBuilder);
         SearchContainer customerSearch = new SearchContainer(customerFilter);
 
         ObservableList<Employee> sellers = FXCollections.observableArrayList();
 
-        FilterBuilder<Employee> sellerBuilder = new FilterBuilder<Employee>()
+        FilteredTableBuilder<Employee> sellerBuilder = new FilteredTableBuilder<Employee>()
                 .withData(sellers)
                 .withColumn("Fornavn", Employee::getFirstName)
                 .withColumn("Efternavn", Employee::getLastName)
@@ -51,12 +51,12 @@ public class FilteredTableTestView extends HBox {
                 .withColumn("Max lån", Employee::getMaxLoan);
 
         FilteredTable<Employee> sellerTableView = sellerBuilder.build();
-        FilterTextField<Employee> sellerFilter = sellerBuilder.withFilterTextField(sellerTableView);
+        FilterTextField<Employee> sellerFilter = new FilterTextField<>(sellerBuilder);
         SearchContainer sellerSearch = new SearchContainer(sellerFilter);
 
         ObservableList<Loan> loans = FXCollections.observableArrayList();
 
-        FilterBuilder<Loan> loanBuilder = new FilterBuilder<Loan>()
+        FilteredTableBuilder<Loan> loanBuilder = new FilteredTableBuilder<Loan>()
                 .withData(loans)
                 .withColumn("Bil id", Loan::getCar_id)
                 .withColumn("Kunde id", Loan::getCustomer_id)
@@ -64,10 +64,12 @@ public class FilteredTableTestView extends HBox {
                 .withColumn("Lån", Loan::getLoanSize)
                 .withColumn("Indskud", Loan::getDownPayment)
                 .withColumn("Rente", Loan::getInterestRate)
-                .withColumn("Status", loan -> loan.getStatus().getDisplayName());
+                .withColumn("Status", loan -> loan.getStatus().getDisplayName())
+                .withColumn("Startdato", Loan::getStartDate)
+                .withColumn("Slutdato", Loan::getEndDate);
 
         FilteredTable<Loan> loanTableView = loanBuilder.build();
-        FilterTextField<Loan> loanFilter = loanBuilder.withFilterTextField(loanTableView);
+        FilterTextField<Loan> loanFilter = new FilterTextField<>(loanBuilder);
         SearchContainer loanSearch = new SearchContainer(loanFilter);
 
 
