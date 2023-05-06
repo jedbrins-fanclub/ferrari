@@ -37,22 +37,37 @@ public class CSVWriterTest {
         assertEquals(expected, readTestFile());
     }
 
-    /*
-    @Test
-    public void testWriteAmount() {
-
-    }
-
     @Test
     public void testWriteQuoted() {
+        String[] columns = {"firstname", "lastname"};
+        writer.writeHeader(columns);
 
+        Object[] row1 = {"\"Marcus", "Aurelius"};
+        Object[] row2 = {"Noam", "\"Chomsky\""};
+
+        writer.writeRow(row1);
+        writer.writeRow(row2);
+
+        String expected = "firstname,lastname\n"
+                        + "\"\\\"Marcus\",\"Aurelius\"\n"
+                        + "\"Noam\",\"\\\"Chomsky\\\"\"\n";
+
+        assertEquals(expected, readTestFile());
     }
 
     @Test
     public void testWriteComma() {
+        String[] columns = {"address"};
+        writer.writeHeader(columns);
 
+        Object[] row1 = {"Longyearbyen Vei 223-2, 9171"};
+        writer.writeRow(row1);
+
+        String expected = "address\n"
+                        + "\"Longyearbyen Vei 223-2, 9171\"";
+
+        assertEquals(expected, readTestFile());
     }
-    */
 
     @AfterEach
     public void close() {
