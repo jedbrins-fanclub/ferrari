@@ -21,18 +21,18 @@ public class CSVWriterTest {
 
     @Test
     public void testWrite() {
-        String[] columns = {"firstname", "lastname"};
+        String[] columns = {"firstname", "lastname", "birthyear"};
         writer.writeHeader(columns);
 
-        Object[] row1 = {"Fred", "Nietzsche"};
-        Object[] row2 = {"Lao", "Tzu"};
+        Object[] row1 = {"Fred", "Nietzsche", 1844};
+        Object[] row2 = {"Lao", "Tzu", -6000};
         
         writer.writeRow(row1);
         writer.writeRow(row2);
 
-        String expected = "firstname,lastname\n"
-                        + "\"Fred\",\"Nietzsche\"\n"
-                        + "\"Lao\",\"Tzu\"\n";
+        String expected = "firstname,lastname,birthyear\n"
+                        + "\"Fred\",\"Nietzsche\",\"1844\"\n"
+                        + "\"Lao\",\"Tzu\",\"-6000\"\n";
 
         assertEquals(expected, readTestFile());
     }
