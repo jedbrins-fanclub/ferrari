@@ -37,7 +37,7 @@ public class CSVWriterTest {
     @Test
     public void testWriteQuoted() {
         writer.writeHeader("firstname", "lastname");
-        writer.writeRow("\"Marcus\"", "Aurelius");
+        writer.writeRow("\"Marcus", "Aurelius");
         writer.writeRow("Noam", "\"Chomsky\"");
         writer.flush();
 
