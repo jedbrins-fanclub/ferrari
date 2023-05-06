@@ -7,6 +7,7 @@ import java.io.IOException;
 public class CSVWriter {
     private FileWriter file;
     private BufferedWriter writer;
+    private int columnCount;
 
     public CSVWriter(String filepath) {
         try {
@@ -18,6 +19,8 @@ public class CSVWriter {
     }
 
     public void writeHeader(String[] columns) {
+        columnCount = columns.length;
+
         try {
             for (int i = 0; i < columns.length; ++i) {
                 writer.write(columns[i].toString());
@@ -32,6 +35,10 @@ public class CSVWriter {
     }
 
     public void writeRow(Object[] fields) {
+        if (fields.length != columnCount) {
+            throw new RuntimeException(String.format("Expected %d fields, but got %d", columnCount, fields.length));
+        }
+
         try {
             for (int i = 0; i < fields.length; ++i) {
                 writer.write(sanitize(fields[i].toString()));

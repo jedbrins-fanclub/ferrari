@@ -1,6 +1,7 @@
 package dk.eamv.ferrari.csv;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.io.File;
 import java.io.IOException;
@@ -62,14 +63,27 @@ public class CSVWriterTest {
         String[] columns = {"address"};
         writer.writeHeader(columns);
 
-        Object[] row1 = {"Longyearbyen Vei 223-2, 9171"};
-        writer.writeRow(row1);
+        Object[] row = {"Longyearbyen Vei 223-2, 9171"};
+        writer.writeRow(row);
         writer.flush();
 
         String expected = "address\n"
                         + "\"Longyearbyen Vei 223-2, 9171\"\n";
 
         assertEquals(expected, readTestFile());
+    }
+
+    @Test
+    public void testWriteIncorrectFieldCount() {
+        String[] columns = {"first", "second"};
+        writer.writeHeader(columns);
+
+        Object[] row = {"too", "many", "fields"};
+        RuntimeException thrown = assertThrows(
+            RuntimeException.class,
+            () -> writer.writeRow(row),
+            "Expected CSVWriter.writeRow() to throw due to incorrect field count"
+        );
     }
 
     @AfterEach
