@@ -22,14 +22,9 @@ public class CSVWriterTest {
 
     @Test
     public void testWrite() {
-        String[] columns = {"firstname", "lastname", "birthyear"};
-        writer.writeHeader(columns);
-
-        Object[] row1 = {"Fred", "Nietzsche", 1844};
-        Object[] row2 = {"Lao", "Tzu", -6000};
-
-        writer.writeRow(row1);
-        writer.writeRow(row2);
+        writer.writeHeader("firstname", "lastname", "birthyear");
+        writer.writeRow("Fred", "Nietzsche", 1844);
+        writer.writeRow("Lao", "Tzu", -6000);
         writer.flush();
 
         String expected = "firstname,lastname,birthyear\n"
@@ -41,14 +36,9 @@ public class CSVWriterTest {
 
     @Test
     public void testWriteQuoted() {
-        String[] columns = {"firstname", "lastname"};
-        writer.writeHeader(columns);
-
-        Object[] row1 = {"\"Marcus", "Aurelius"};
-        Object[] row2 = {"Noam", "\"Chomsky\""};
-
-        writer.writeRow(row1);
-        writer.writeRow(row2);
+        writer.writeHeader("firstname", "lastname");
+        writer.writeRow("\"Marcus\"", "Aurelius");
+        writer.writeRow("Noam", "\"Chomsky\"");
         writer.flush();
 
         String expected = "firstname,lastname\n"
@@ -60,11 +50,8 @@ public class CSVWriterTest {
 
     @Test
     public void testWriteComma() {
-        String[] columns = {"address"};
-        writer.writeHeader(columns);
-
-        Object[] row = {"Longyearbyen Vei 223-2, 9171"};
-        writer.writeRow(row);
+        writer.writeHeader("address");
+        writer.writeRow("Longyearbyen Vei 223-2, 9171");
         writer.flush();
 
         String expected = "address\n"
@@ -75,13 +62,11 @@ public class CSVWriterTest {
 
     @Test
     public void testWriteIncorrectFieldCount() {
-        String[] columns = {"first", "second"};
-        writer.writeHeader(columns);
+        writer.writeHeader("first", "second");
 
-        Object[] row = {"too", "many", "fields"};
         assertThrows(
             RuntimeException.class,
-            () -> writer.writeRow(row),
+            () -> writer.writeRow("too", "many", "fields"),
             "Expected CSVWriter.writeRow() to throw due to incorrect field count"
         );
     }

@@ -18,7 +18,7 @@ public class CSVWriter {
         }
     }
 
-    public void writeHeader(String[] columns) {
+    public void writeHeader(String... columns) {
         columnCount = columns.length;
 
         try {
@@ -34,7 +34,7 @@ public class CSVWriter {
         }
     }
 
-    public void writeRow(Object[] fields) {
+    public void writeRow(Object... fields) {
         if (fields.length != columnCount) {
             throw new RuntimeException(String.format("Expected %d fields, but got %d", columnCount, fields.length));
         }
