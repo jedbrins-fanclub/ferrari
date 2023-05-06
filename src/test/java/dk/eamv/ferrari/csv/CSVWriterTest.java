@@ -26,9 +26,10 @@ public class CSVWriterTest {
 
         Object[] row1 = {"Fred", "Nietzsche", 1844};
         Object[] row2 = {"Lao", "Tzu", -6000};
-        
+
         writer.writeRow(row1);
         writer.writeRow(row2);
+        writer.flush();
 
         String expected = "firstname,lastname,birthyear\n"
                         + "\"Fred\",\"Nietzsche\",\"1844\"\n"
@@ -47,10 +48,11 @@ public class CSVWriterTest {
 
         writer.writeRow(row1);
         writer.writeRow(row2);
+        writer.flush();
 
         String expected = "firstname,lastname\n"
-                        + "\"\\\"Marcus\",\"Aurelius\"\n"
-                        + "\"Noam\",\"\\\"Chomsky\\\"\"\n";
+                        + "\"\"\"Marcus\",\"Aurelius\"\n"
+                        + "\"Noam\",\"\"\"Chomsky\"\"\"\n";
 
         assertEquals(expected, readTestFile());
     }
@@ -62,9 +64,10 @@ public class CSVWriterTest {
 
         Object[] row1 = {"Longyearbyen Vei 223-2, 9171"};
         writer.writeRow(row1);
+        writer.flush();
 
         String expected = "address\n"
-                        + "\"Longyearbyen Vei 223-2, 9171\"";
+                        + "\"Longyearbyen Vei 223-2, 9171\"\n";
 
         assertEquals(expected, readTestFile());
     }

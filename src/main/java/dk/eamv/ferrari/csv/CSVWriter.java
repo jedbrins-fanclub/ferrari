@@ -25,7 +25,7 @@ public class CSVWriter {
                     writer.write(',');
                 }
             }
-            writer.newLine();
+            writer.write('\n');
         } catch (IOException exception) {
             exception.printStackTrace();
         }
@@ -39,7 +39,16 @@ public class CSVWriter {
                     writer.write(',');
                 }
             }
-            writer.newLine();
+            writer.write('\n');
+        } catch (IOException exception) {
+            exception.printStackTrace();
+        }
+    }
+
+    // Used to flush BufferedWriter, mainly used for testing
+    public void flush() {
+        try {
+            writer.flush();
         } catch (IOException exception) {
             exception.printStackTrace();
         }
@@ -54,8 +63,10 @@ public class CSVWriter {
         }
     }
 
+    // Escape quotes in string by doubling them
+    // https://stackoverflow.com/a/17808731
     private String sanitize(String text) {
-        text.replaceAll("\"", "\\\"");
+        text = text.replaceAll("\"", "\"\"");
         return String.format("\"%s\"", text);
     }
 }
