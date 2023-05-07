@@ -1,6 +1,5 @@
 package dk.eamv.ferrari;
 
-import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -12,13 +11,7 @@ public class FormFactory {
      * Lavet af: Christian & Stefan
      */
 
-    private static GridPane createFormString(String... input) {
-        int column = 0;
-        int row = 0;
-        GridPane gridPane = new GridPane();
-        gridPane.setVgap(25);
-        gridPane.setHgap(50);
-        gridPane.setAlignment(Pos.CENTER);
+    private static int[] createFieldsString(GridPane gridPane, int column, int row, String... input) {
         for (String i : input) {
             VBox vBox = new VBox();
             Label heading = new Label(i);
@@ -32,16 +25,10 @@ public class FormFactory {
             gridPane.add(vBox, column, row);
             column++;
         }
-        return gridPane;
+        return new int[] { column, row };
     }
 
-    private static GridPane createFormInt(String... input) {
-        int column = 0;
-        int row = 0;
-        GridPane gridPane = new GridPane();
-        gridPane.setVgap(25);
-        gridPane.setHgap(50);
-        gridPane.setAlignment(Pos.CENTER);
+    private static int[] createFieldsInt(GridPane gridPane, int column, int row, String... input) {
         for (String i : input) {
             VBox vBox = new VBox();
             Label heading = new Label(i);
@@ -55,18 +42,36 @@ public class FormFactory {
             gridPane.add(vBox, column, row);
             column++;
         }
-        return gridPane;
+        
+        return new int[] { column, row };
     }
 
     public static GridPane createCustomerForm() {
-        return createFormString("Fornavn", "Efternavn", "Årstal", "By", "Adresse", "Vejnavn", "Postnummer");
+        GridPane customerForm = createGridPane();
+        int[] fields = createFieldsString(customerForm, 0, 0, "Fornavn", "Efternavn", "Email", "Adresse");
+        createFieldsInt(customerForm, fields[0], fields[1], "Telefonnummer", "CPR");
+        return customerForm;
     }
-
+    
     public static GridPane createCarForm() {
-        return createFormInt("Stelnummer", "Model", "Årgang");
+        GridPane carForm = createGridPane();
+        int[] fields = createFieldsInt(carForm, 0, 0, "Årgang", "Pris", "Stelnummer");
+        createFieldsString(carForm, fields[0], fields[1], "Model");
+        return carForm;
     }
-
+    
     public static GridPane createLoanForm() {
-        return createFormString();
+        GridPane loanForm = createGridPane();
+        createFieldsInt(loanForm, 0, 0, "Stelnummer", "Kunde CPR", "Lånets størrelse", "Udbetaling", "Rente", "Start dato", "Forfaldsdag");
+        return loanForm;
+    }
+    
+    private static GridPane createGridPane() {
+        GridPane gridPane = new GridPane();
+        gridPane.setVgap(25);
+        gridPane.setHgap(50);
+        gridPane.setAlignment(Pos.CENTER);
+
+        return gridPane;
     }
 }

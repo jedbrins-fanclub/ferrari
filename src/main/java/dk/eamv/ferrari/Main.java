@@ -11,7 +11,7 @@ public class Main extends Application {
     public void start(Stage stage) {
         //Database.init();
         SceneManager.init(stage);
-        SceneManager.changeScene(FormFactory.createCarForm());
+        SceneManager.changeScene(FormFactory.createLoanForm());
     }
 
     public static void main(String[] args) {
