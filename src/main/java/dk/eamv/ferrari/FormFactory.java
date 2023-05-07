@@ -1,6 +1,7 @@
 package dk.eamv.ferrari;
 
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
@@ -15,9 +16,9 @@ public class FormFactory {
         int column = 0;
         int row = 0;
         GridPane gridPane = new GridPane();
-        gridPane.setPadding(new Insets(200, 200, 200, 200));
         gridPane.setVgap(25);
         gridPane.setHgap(50);
+        gridPane.setAlignment(Pos.CENTER);
         for (String i : input) {
             VBox vBox = new VBox();
             Label heading = new Label(i);
