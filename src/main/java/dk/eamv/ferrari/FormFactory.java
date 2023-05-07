@@ -6,25 +6,12 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 
-public class Form {
+public class FormFactory {
     /*
-     * Tekstfelter
-     * I en GridPane
-     * Overskrift
-     * 
-     * Parameter af String ind,
-     * Stringen => Lav et tekstfelt => sæt promptteksten til Stringen
-     * Stringen => Lav et label => sæt label til Stringen
-     * Put dem i en VBox.
-     * 
-     * Gentag for alle vores argumenter.
-     * 
-     * 3 bred => gå en linie ned
-     * 
-     * returner gridpanen
+     * Lavet af: Christian & Stefan
      */
 
-    public static GridPane getForm(String... input) {
+    private static GridPane getForm(String... input) {
         int column = 0;
         int row = 0;
         GridPane gridPane = new GridPane();
@@ -45,5 +32,17 @@ public class Form {
             column++;
         }
         return gridPane;
+    }
+
+    public static GridPane createCustomerForm() {
+        return getForm("Fornavn", "Efternavn", "Årstal", "By", "Adresse", "Vejnavn", "Postnummer");
+    }
+
+    public static GridPane createCarForm() {
+        return getForm("Stelnummer", "Model", "Årgang");
+    }
+
+    public static GridPane createLoanForm() {
+        return getForm();
     }
 }

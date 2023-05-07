@@ -11,7 +11,7 @@ public class Main extends Application {
     public void start(Stage stage) {
         //Database.init();
         SceneManager.init(stage);
-        SceneManager.changeScene(Form.getForm("Fornavn", "Efternavn", "Årstal", "By", "Adresse", "Vejnavn", "Postnummer"));
+        SceneManager.changeScene(FormFactory.createCarForm());
     }
 
     public static void main(String[] args) {
