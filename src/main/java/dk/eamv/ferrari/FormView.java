@@ -1,27 +1,25 @@
 package dk.eamv.ferrari;
 
 
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
 
-public class FormView extends GridPane {
+public class FormView {
 
-    public FormView(){
-
-        
-       setAlignment(Pos.CENTER);
-        setVgap(10);
-        setHgap(20);
-        setGridLinesVisible(false);
+    public static GridPane getFormView() {
+        GridPane formView = new GridPane();
+        formView.setAlignment(Pos.CENTER);
+        formView.setVgap(10);
+        formView.setHgap(20);
+        formView.setGridLinesVisible(false);
        
         //fName label
         Label fTitel = new Label("Oprettelsesformular til kunder");
-        add(fTitel, 1, 0);
+        formView.add(fTitel, 1, 0);
         
         //fName label
     //    Label fName = new Label("Fornavn");
@@ -30,7 +28,7 @@ public class FormView extends GridPane {
         //fName input
         TextField fNameInput = new TextField();
         fNameInput.setPromptText("Fornavn");
-        add(fNameInput, 0, 2);
+        formView.add(fNameInput, 0, 2);
 
         //eName label
     //    Label eName = new Label("Efternavn");
@@ -39,7 +37,7 @@ public class FormView extends GridPane {
         //eName input
         TextField eNameInput = new TextField();
         eNameInput.setPromptText("Efternavn");
-        add(eNameInput, 1, 2);
+        formView.add(eNameInput, 1, 2);
 
         //bDay label
     //    Label bDay = new Label("Fødselsdag");
@@ -48,7 +46,7 @@ public class FormView extends GridPane {
         //bDay input
         TextField bDayInput = new TextField();
         bDayInput.setPromptText("Fødselsdag");
-        add(bDayInput, 2, 2);
+        formView.add(bDayInput, 2, 2);
         
         //Cpr
     //    Label cpr = new Label("CPR-nummer");
@@ -57,7 +55,7 @@ public class FormView extends GridPane {
         //CprIndput
         TextField cprInput = new TextField();
         cprInput.setPromptText("CPR-nummer");
-        add(cprInput, 0, 4);
+        formView.add(cprInput, 0, 4);
 
         //post
     //    Label postNr = new Label("Postnummer");
@@ -66,7 +64,7 @@ public class FormView extends GridPane {
         //PostInput
         TextField postInput = new TextField();
         postInput.setPromptText("Postnummer");
-        add(postInput, 1, 4);
+        formView.add(postInput, 1, 4);
 
         //By
     //    Label by = new Label("By");
@@ -75,7 +73,7 @@ public class FormView extends GridPane {
         //ByIndput
         TextField byInput = new TextField();
         byInput.setPromptText("By");
-        add(byInput, 2, 4); 
+        formView.add(byInput, 2, 4); 
         
         //Vej
     //    Label vejNavn = new Label("Vejnavn");
@@ -84,7 +82,7 @@ public class FormView extends GridPane {
         //VejIndput
         TextField vejInput = new TextField();
         vejInput.setPromptText("Vejnavn");
-        add(vejInput, 0, 6); 
+        formView.add(vejInput, 0, 6); 
 
         //Email
     //    Label email = new Label("Email");
@@ -93,7 +91,7 @@ public class FormView extends GridPane {
         //EmailInput
         TextField emailInput = new TextField();
         emailInput.setPromptText("Email");
-        add(emailInput, 1, 6); 
+        formView.add(emailInput, 1, 6); 
 
         //Telefonnummer
     //    Label tlf = new Label("Telefonnummer");
@@ -102,7 +100,9 @@ public class FormView extends GridPane {
         //TlfIndput
         TextField tlfInput = new TextField();
         tlfInput.setPromptText("Telefonnummer");
-        add(tlfInput, 2, 6); 
+        formView.add(tlfInput, 2, 6);
+        
+        return formView;
     }
     
     VBox vbox = new VBox();
