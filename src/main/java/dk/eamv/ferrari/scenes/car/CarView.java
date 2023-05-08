@@ -26,6 +26,7 @@ public class CarView {
 
     private static FilteredTable<Car> tableView;
     private static SearchContainer searchContainer;
+    private static Button buttonCreate;
     private static Button buttonEdit;
     private static Button buttonDelete;
 
@@ -46,11 +47,12 @@ public class CarView {
         initTableView();
         initSearchContainer();
 
+        initButtonCreate();
         initButtonEdit();
         initButtonDelete();
 
         HBox containerAboveTable = new HBox();
-        containerAboveTable.getChildren().add(searchContainer); // Put search box top right of table
+        containerAboveTable.getChildren().addAll(buttonCreate, searchContainer); // Put search box top right of table
         containerAboveTable.setAlignment(Pos.CENTER_RIGHT);
 
         VBox container = new VBox();
@@ -69,6 +71,12 @@ public class CarView {
         // When instantiating the FilterTextField, the instance of the builder is passed as a parameter
         // This is in order to give the FilterTextField access to the FilteredTable and ProperValueGetters
         searchContainer = new SearchContainer(new FilterTextField<>(CarController.filteredTableBuilder));
+    }
+
+    private static void initButtonCreate() {
+        buttonCreate = new Button("Create new car");
+
+        buttonCreate.setOnAction(e -> {}); //TODO: open dialog here
     }
 
     private static void initButtonEdit() {
