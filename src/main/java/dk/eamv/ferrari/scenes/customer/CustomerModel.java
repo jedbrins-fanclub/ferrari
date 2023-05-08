@@ -7,7 +7,17 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.PreparedStatement;
 
+/**
+ * Made by: Benjamin
+ * Checked by:
+ * Modified by:
+ */
 public class CustomerModel {
+    /**
+     * Read a customer from the database, based on the id.
+     * @param id the id of the customer to get from the database
+     * @return Customer containing the database row information
+     */
     public static Customer read(int id) {
         ResultSet rs = Database.query("SELECT * FROM dbo.Customer WHERE id = " + Integer.toString(id));
 
@@ -26,6 +36,10 @@ public class CustomerModel {
         return null;
     }
 
+    /**
+     * Get all customers from the database.
+     * @return ArrayList of all the Customers in the database
+     */
     public static ArrayList<Customer> readAll() {
         ArrayList<Customer> customers = new ArrayList<Customer>();
 
@@ -44,6 +58,11 @@ public class CustomerModel {
         return customers;
     }
 
+    /**
+     * Update a customer in the database based on the id.
+     * @param id the customer id to update
+     * @param customer the customer information to update with
+     */
     public static void update(int id, Customer customer) {
         try {
             PreparedStatement statement = Database.getConnection().prepareStatement("""
@@ -67,6 +86,11 @@ public class CustomerModel {
         }
     }
 
+    /**
+     * Delete customer from the database based on the id.
+     * @param id the id of the customer to delete from the database
+     * @return boolean indicating if the deletion was successful
+     */
     public static boolean delete(int id) {
         return Database.execute("DELETE FROM dbo.Customer WHERE id = " + Integer.toString(id));
     }
