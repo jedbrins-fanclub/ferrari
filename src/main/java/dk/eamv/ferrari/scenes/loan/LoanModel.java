@@ -21,7 +21,7 @@ public class LoanModel {
         try {
             PreparedStatement statement = Database.getConnection().prepareStatement(
                 String.format("""
-                    INSERT INTO [dbo.Loan]
+                    INSERT INTO dbo.Loan
                     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);
                 """)
             );

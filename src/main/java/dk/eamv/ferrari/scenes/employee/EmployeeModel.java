@@ -21,7 +21,7 @@ public class EmployeeModel {
         try {
             PreparedStatement statement = Database.getConnection().prepareStatement(
                 String.format("""
-                    INSERT INTO [dbo.Employee]
+                    INSERT INTO dbo.Employee
                     VALUES (?, ?, ?, ?, ?, ?);
                 """)
             );
