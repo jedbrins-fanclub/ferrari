@@ -19,7 +19,7 @@ public class CarModel {
      * @return car containing the database row information
      */
     public static Car read(int id) {
-        ResultSet rs = Database.query("SELECT * FROM dbo.Car WHERE id = " + Integer.toString(id));
+        ResultSet rs = Database.query("SELECT * FROM dbo.Car WHERE id = " + id);
 
         try {
             if (rs.next()) {
@@ -39,7 +39,7 @@ public class CarModel {
     public static ArrayList<Car> readAll() {
         ArrayList<Car> cars = new ArrayList<Car>();
 
-        try (ResultSet rs = Database.query("SELECT * FROM dbo.car")) {
+        try (ResultSet rs = Database.query("SELECT * FROM dbo.Car")) {
             while (rs.next()) {
                 cars.add(new Car(
                     rs.getInt("id"), rs.getString("model"),
@@ -58,7 +58,7 @@ public class CarModel {
      * @param id the car id to update
      * @param car the car information to update with
      */
-    public static void update(int id, Car car) {
+    public static void update(Car car) {
         try {
             PreparedStatement statement = Database.getConnection().prepareStatement("""
                 UPDATE dbo.Car
@@ -81,6 +81,6 @@ public class CarModel {
      * @return boolean indicating if the deletion was successful
      */
     public static boolean delete(int id) {
-        return Database.execute("DELETE FROM dbo.Car WHERE id = " + Integer.toString(id));
+        return Database.execute("DELETE FROM dbo.Car WHERE id = " + id);
     }
 }

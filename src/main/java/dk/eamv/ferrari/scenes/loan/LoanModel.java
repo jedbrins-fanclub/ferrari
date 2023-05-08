@@ -14,29 +14,6 @@ import java.sql.PreparedStatement;
  */
 public class LoanModel {
     /**
-     * Gets a Loan from the database from the loan id.
-     * @param id the id of the loan to retrieve
-     * @return a Loan containing all the row data
-     */
-    public static Loan getFromID(int id) {
-        ResultSet rs = Database.query("SELECT * FROM dbo.Loan WHERE id = " + Integer.toString(id));
-
-        try {
-            if (rs.next()) {
-                return new Loan(
-                    id, rs.getInt("car_id"), rs.getInt("customer_id"), rs.getInt("employee_id"),
-                    rs.getDouble("loan_size"), rs.getDouble("down_payment"), rs.getDouble("interest_rate"),
-                    rs.getDate("start_date"), rs.getDate("end_date"),
-                    new LoanStatus(rs.getInt("status")));
-            }
-        } catch (SQLException exception) {
-            exception.printStackTrace();
-        }
-
-        return null;
-    }
-
-    /**
      * Creates a loan in the database based on the loan.
      * @param loan Loan containing all the data to add to database
      */
@@ -44,7 +21,7 @@ public class LoanModel {
         try {
             PreparedStatement statement = Database.getConnection().prepareStatement(
                 String.format("""
-                    INSERT INTO [dbo.Loan]
+                    INSERT INTO dbo.Loan
                     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);
                 """)
             );
@@ -71,7 +48,7 @@ public class LoanModel {
      * @return a Loan containing all the row data
      */
     public static Loan read(int id) {
-        ResultSet rs = Database.query("SELECT * FROM dbo.Loan WHERE id = " + Integer.toString(id));
+        ResultSet rs = Database.query("SELECT * FROM dbo.Loan WHERE id = " + id);
 
         try {
             if (rs.next()) {
@@ -115,7 +92,7 @@ public class LoanModel {
      * @param id the id to update
      * @param loan the new loan information
      */
-    public static void update(int id, Loan loan) {
+    public static void update(Loan loan) {
         try {
             PreparedStatement statement = Database.getConnection().prepareStatement("""
                 UPDATE dbo.Loan
@@ -147,6 +124,6 @@ public class LoanModel {
      * @return a boolean if the delete request was successful
      */
     public static boolean delete(int id) {
-        return Database.execute("DELETE FROM dbo.Loan WHERE id = " + Integer.toString(id));
+        return Database.execute("DELETE FROM dbo.Loan WHERE id = " + id);
     }
 }

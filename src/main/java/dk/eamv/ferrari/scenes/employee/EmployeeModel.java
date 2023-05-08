@@ -21,7 +21,7 @@ public class EmployeeModel {
         try {
             PreparedStatement statement = Database.getConnection().prepareStatement(
                 String.format("""
-                    INSERT INTO [dbo.Employee]
+                    INSERT INTO dbo.Employee
                     VALUES (?, ?, ?, ?, ?, ?);
                 """)
             );
@@ -45,7 +45,7 @@ public class EmployeeModel {
      * @return an Employee containing all the row data
      */
     public static Employee read(int id) {
-        ResultSet rs = Database.query("SELECT * FROM dbo.Employee WHERE id = " + Integer.toString(id));
+        ResultSet rs = Database.query("SELECT * FROM dbo.Employee WHERE id = " + id);
 
         try {
             if (rs.next()) {
@@ -121,7 +121,7 @@ public class EmployeeModel {
      * @param id the employee id to update
      * @param employee the employee data to update with
      */
-    public static void update(int id, Employee employee) {
+    public static void update(Employee employee) {
         try {
             PreparedStatement statement = Database.getConnection().prepareStatement("""
                 UPDATE dbo.Employee
@@ -149,6 +149,6 @@ public class EmployeeModel {
      * @return boolean to show if the deletion was successful
      */
     public static boolean delete(int id) {
-        return Database.execute("DELETE FROM dbo.Employee WHERE id = " + Integer.toString(id));
+        return Database.execute("DELETE FROM dbo.Employee WHERE id = " + id);
     }
 }

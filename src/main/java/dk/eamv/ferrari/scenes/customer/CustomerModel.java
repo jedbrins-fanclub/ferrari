@@ -19,7 +19,7 @@ public class CustomerModel {
      * @return Customer containing the database row information
      */
     public static Customer read(int id) {
-        ResultSet rs = Database.query("SELECT * FROM dbo.Customer WHERE id = " + Integer.toString(id));
+        ResultSet rs = Database.query("SELECT * FROM dbo.Customer WHERE id = " + id);
 
         try {
             if (rs.next()) {
@@ -63,7 +63,7 @@ public class CustomerModel {
      * @param id the customer id to update
      * @param customer the customer information to update with
      */
-    public static void update(int id, Customer customer) {
+    public static void update(Customer customer) {
         try {
             PreparedStatement statement = Database.getConnection().prepareStatement("""
                 UPDATE dbo.Customer
@@ -92,6 +92,6 @@ public class CustomerModel {
      * @return boolean indicating if the deletion was successful
      */
     public static boolean delete(int id) {
-        return Database.execute("DELETE FROM dbo.Customer WHERE id = " + Integer.toString(id));
+        return Database.execute("DELETE FROM dbo.Customer WHERE id = " + id);
     }
 }
