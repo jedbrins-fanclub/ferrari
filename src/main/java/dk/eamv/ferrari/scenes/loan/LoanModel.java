@@ -7,7 +7,17 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.PreparedStatement;
 
+/**
+ * Made by: Benjamin
+ * Checked by:
+ * Modified by:
+ */
 public class LoanModel {
+    /**
+     * Gets a Loan from the database from the loan id.
+     * @param id the id of the loan to retrieve
+     * @return a Loan containing all the row data
+     */
     public static Loan getFromID(int id) {
         ResultSet rs = Database.query("SELECT * FROM dbo.Loan WHERE id = " + Integer.toString(id));
 
@@ -26,6 +36,10 @@ public class LoanModel {
         return null;
     }
 
+    /**
+     * Creates a loan in the database based on the loan.
+     * @param loan Loan containing all the data to add to database
+     */
     public static void create(Loan loan) {
         try {
             PreparedStatement statement = Database.getConnection().prepareStatement(
@@ -51,6 +65,11 @@ public class LoanModel {
         }
     }
 
+    /**
+     * Reads a loan from the database based on the id.
+     * @param id the id to read from the database
+     * @return a Loan containing all the row data
+     */
     public static Loan read(int id) {
         ResultSet rs = Database.query("SELECT * FROM dbo.Loan WHERE id = " + Integer.toString(id));
 
@@ -69,6 +88,10 @@ public class LoanModel {
         return null;
     }
 
+    /**
+     * Reads all rows from the database.
+     * @return an ArrayList of all loans in the database
+     */
     public static ArrayList<Loan> readAll() {
         ArrayList<Loan> loans = new ArrayList<Loan>();
 
@@ -87,6 +110,11 @@ public class LoanModel {
         return loans;
     }
 
+    /**
+     * Update loan in the database based on the id.
+     * @param id the id to update
+     * @param loan the new loan information
+     */
     public static void update(int id, Loan loan) {
         try {
             PreparedStatement statement = Database.getConnection().prepareStatement("""
@@ -113,6 +141,11 @@ public class LoanModel {
         }
     }
 
+    /**
+     * Delete a loan from the database, based on the id.
+     * @param id the id of the Loan to delete
+     * @return a boolean if the delete request was successful
+     */
     public static boolean delete(int id) {
         return Database.execute("DELETE FROM dbo.Loan WHERE id = " + Integer.toString(id));
     }

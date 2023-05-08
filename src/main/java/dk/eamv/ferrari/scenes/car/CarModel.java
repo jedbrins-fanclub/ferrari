@@ -7,7 +7,17 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.PreparedStatement;
 
+/**
+ * Made by: Benjamin
+ * Checked by:
+ * Modified by:
+ */
 public class CarModel {
+    /**
+     * Read a car from the database, based on the id.
+     * @param id the id of the car to get from the database
+     * @return car containing the database row information
+     */
     public static Car read(int id) {
         ResultSet rs = Database.query("SELECT * FROM dbo.Car WHERE id = " + Integer.toString(id));
 
@@ -22,6 +32,10 @@ public class CarModel {
         return null;
     }
 
+    /**
+     * Get all cars from the database.
+     * @return ArrayList of all the cars in the database
+     */
     public static ArrayList<Car> readAll() {
         ArrayList<Car> cars = new ArrayList<Car>();
 
@@ -39,6 +53,11 @@ public class CarModel {
         return cars;
     }
 
+    /**
+     * Update a car in the database based on the id.
+     * @param id the car id to update
+     * @param car the car information to update with
+     */
     public static void update(int id, Car car) {
         try {
             PreparedStatement statement = Database.getConnection().prepareStatement("""
@@ -56,6 +75,11 @@ public class CarModel {
         }
     }
 
+    /**
+     * Delete car from the database based on the id.
+     * @param id the id of the car to delete from the database
+     * @return boolean indicating if the deletion was successful
+     */
     public static boolean delete(int id) {
         return Database.execute("DELETE FROM dbo.Car WHERE id = " + Integer.toString(id));
     }
