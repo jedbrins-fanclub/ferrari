@@ -14,29 +14,6 @@ import java.sql.PreparedStatement;
  */
 public class LoanModel {
     /**
-     * Gets a Loan from the database from the loan id.
-     * @param id the id of the loan to retrieve
-     * @return a Loan containing all the row data
-     */
-    public static Loan getFromID(int id) {
-        ResultSet rs = Database.query("SELECT * FROM dbo.Loan WHERE id = " + Integer.toString(id));
-
-        try {
-            if (rs.next()) {
-                return new Loan(
-                    id, rs.getInt("car_id"), rs.getInt("customer_id"), rs.getInt("employee_id"),
-                    rs.getDouble("loan_size"), rs.getDouble("down_payment"), rs.getDouble("interest_rate"),
-                    rs.getDate("start_date"), rs.getDate("end_date"),
-                    new LoanStatus(rs.getInt("status")));
-            }
-        } catch (SQLException exception) {
-            exception.printStackTrace();
-        }
-
-        return null;
-    }
-
-    /**
      * Creates a loan in the database based on the loan.
      * @param loan Loan containing all the data to add to database
      */
