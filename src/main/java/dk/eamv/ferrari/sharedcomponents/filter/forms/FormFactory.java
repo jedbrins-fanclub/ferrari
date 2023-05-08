@@ -1,4 +1,4 @@
-package dk.eamv.ferrari;
+package dk.eamv.ferrari.sharedcomponents.filter.forms;
 
 import javafx.geometry.Pos;
 import javafx.scene.control.ButtonType;

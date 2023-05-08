@@ -1,4 +1,4 @@
-package dk.eamv.ferrari;
+package dk.eamv.ferrari.sharedcomponents.filter.forms;
 
 import javafx.scene.control.TextField;
 
