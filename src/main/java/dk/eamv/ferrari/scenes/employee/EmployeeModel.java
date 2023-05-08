@@ -7,7 +7,16 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+/**
+ * Made by: Benjamin
+ * Checked by:
+ * Modified by:
+ */
 public class EmployeeModel {
+    /**
+     * Creates a new employee in the database.
+     * @param employee an Employee object containing all the employee data
+     */
     public static void create(Employee employee) {
         try {
             PreparedStatement statement = Database.getConnection().prepareStatement(
@@ -30,6 +39,11 @@ public class EmployeeModel {
         }
     }
 
+    /**
+     * Reads an Employee from the database based on an id.
+     * @param id the id to read
+     * @return an Employee containing all the row data
+     */
     public static Employee read(int id) {
         ResultSet rs = Database.query("SELECT * FROM dbo.Employee WHERE id = " + Integer.toString(id));
 
@@ -48,6 +62,10 @@ public class EmployeeModel {
         return null;
     }
 
+    /**
+     * Get all the employees from the database.
+     * @return an ArrayList of Employees
+     */
     public static ArrayList<Employee> readAll() {
         ArrayList<Employee> employees = new ArrayList<Employee>();
 
@@ -66,6 +84,12 @@ public class EmployeeModel {
         return employees;
     }
 
+    /**
+     * Get a specific amount of Employees from a "page".
+     * @param page the page to read
+     * @param amount the amount to read (e.g. 20 employees)
+     * @return an ArrayList of Employees
+     */
     public static ArrayList<Employee> readPage(int page, int amount) {
         int offset = page * amount;
         ResultSet rs = Database.query(String.format("""
@@ -92,6 +116,11 @@ public class EmployeeModel {
         return employees;
     }
 
+    /**
+     * Update an employee in the database based on the id.
+     * @param id the employee id to update
+     * @param employee the employee data to update with
+     */
     public static void update(int id, Employee employee) {
         try {
             PreparedStatement statement = Database.getConnection().prepareStatement("""
@@ -114,9 +143,12 @@ public class EmployeeModel {
         }
     }
 
+    /**
+     * Delete an employee from the database based on the id.
+     * @param id the id to delete from the database
+     * @return boolean to show if the deletion was successful
+     */
     public static boolean delete(int id) {
         return Database.execute("DELETE FROM dbo.Employee WHERE id = " + Integer.toString(id));
     }
-
-    // Returns null on failure
 }
