@@ -19,7 +19,7 @@ public class CarModel {
      * @return car containing the database row information
      */
     public static Car read(int id) {
-        ResultSet rs = Database.query("SELECT * FROM dbo.Car WHERE id = " + Integer.toString(id));
+        ResultSet rs = Database.query("SELECT * FROM dbo.Car WHERE id = " + id);
 
         try {
             if (rs.next()) {
@@ -81,6 +81,6 @@ public class CarModel {
      * @return boolean indicating if the deletion was successful
      */
     public static boolean delete(int id) {
-        return Database.execute("DELETE FROM dbo.Car WHERE id = " + Integer.toString(id));
+        return Database.execute("DELETE FROM dbo.Car WHERE id = " + id);
     }
 }

@@ -45,7 +45,7 @@ public class EmployeeModel {
      * @return an Employee containing all the row data
      */
     public static Employee read(int id) {
-        ResultSet rs = Database.query("SELECT * FROM dbo.Employee WHERE id = " + Integer.toString(id));
+        ResultSet rs = Database.query("SELECT * FROM dbo.Employee WHERE id = " + id);
 
         try {
             if (rs.next()) {
@@ -149,6 +149,6 @@ public class EmployeeModel {
      * @return boolean to show if the deletion was successful
      */
     public static boolean delete(int id) {
-        return Database.execute("DELETE FROM dbo.Employee WHERE id = " + Integer.toString(id));
+        return Database.execute("DELETE FROM dbo.Employee WHERE id = " + id);
     }
 }

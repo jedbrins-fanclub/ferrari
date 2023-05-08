@@ -48,7 +48,7 @@ public class LoanModel {
      * @return a Loan containing all the row data
      */
     public static Loan read(int id) {
-        ResultSet rs = Database.query("SELECT * FROM dbo.Loan WHERE id = " + Integer.toString(id));
+        ResultSet rs = Database.query("SELECT * FROM dbo.Loan WHERE id = " + id);
 
         try {
             if (rs.next()) {
@@ -124,6 +124,6 @@ public class LoanModel {
      * @return a boolean if the delete request was successful
      */
     public static boolean delete(int id) {
-        return Database.execute("DELETE FROM dbo.Loan WHERE id = " + Integer.toString(id));
+        return Database.execute("DELETE FROM dbo.Loan WHERE id = " + id);
     }
 }
