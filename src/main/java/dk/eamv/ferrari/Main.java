@@ -9,9 +9,9 @@ import javafx.stage.Stage;
 public class Main extends Application {
     @Override
     public void start(Stage stage) {
-        //Database.init();
+        Database.init();
         SceneManager.init(stage);
-        SceneManager.changeScene(FormFactory.createLoanForm());
+        SceneManager.changeScene(LoginView.getScene());
     }
 
     public static void main(String[] args) {
