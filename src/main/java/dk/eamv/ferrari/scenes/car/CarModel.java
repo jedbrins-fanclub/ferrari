@@ -58,7 +58,7 @@ public class CarModel {
      * @param id the car id to update
      * @param car the car information to update with
      */
-    public static void update(int id, Car car) {
+    public static void update(Car car) {
         try {
             PreparedStatement statement = Database.getConnection().prepareStatement("""
                 UPDATE dbo.Car

@@ -121,7 +121,7 @@ public class EmployeeModel {
      * @param id the employee id to update
      * @param employee the employee data to update with
      */
-    public static void update(int id, Employee employee) {
+    public static void update(Employee employee) {
         try {
             PreparedStatement statement = Database.getConnection().prepareStatement("""
                 UPDATE dbo.Employee

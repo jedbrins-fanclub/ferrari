@@ -92,7 +92,7 @@ public class LoanModel {
      * @param id the id to update
      * @param loan the new loan information
      */
-    public static void update(int id, Loan loan) {
+    public static void update(Loan loan) {
         try {
             PreparedStatement statement = Database.getConnection().prepareStatement("""
                 UPDATE dbo.Loan

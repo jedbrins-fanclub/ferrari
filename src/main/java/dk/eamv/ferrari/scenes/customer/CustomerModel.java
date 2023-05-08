@@ -63,7 +63,7 @@ public class CustomerModel {
      * @param id the customer id to update
      * @param customer the customer information to update with
      */
-    public static void update(int id, Customer customer) {
+    public static void update(Customer customer) {
         try {
             PreparedStatement statement = Database.getConnection().prepareStatement("""
                 UPDATE dbo.Customer
