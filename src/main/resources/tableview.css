@@ -1,60 +1,46 @@
-.root {
-  -ferrari-red: #F50000;
-  -darkest-gray: #111111;
-  -darker-gray: #1F1F1F;
-  -dark-gray: #373737;
-  -text-color: #FFFFFF;
-}
-
 .table-view,
 .table-view .column-header,
 .table-view .column-header-background .filler,
 .table-view .corner {
     -fx-background-color: transparent;
+    -fx-border-radius: 7px;
+    -fx-font-size: 16;
+}
+
+.table-view {
+    -fx-background-color: transparent;
+    -fx-border-color: grey;
+    -fx-border-width: 1px;
+    -fx-border-radius: 7px;
 }
 
 .table-view .column-header-background{
-    -fx-background-color: yellow;               /* header background */
-    -fx-background-radius: 7px 7px 0px 0px;
-    -fx-background-insets: 0 11px 0 0;
-    -fx-padding: 0 0 5px 0;
+    -fx-background-color: lightgrey;
+    -fx-background-radius: 7px;
+    -fx-background-insets: -4px 0 2px 0;
+    -fx-min-height: 45px;
+    -fx-padding: 0 0 12px 0;
 }
 
 .table-view .table-cell{
-    -fx-border-color: transparent;               /* cell border color (GRID!) */
-    -fx-padding: 2 0 2 10px;
-    -fx-min-height: 35px;
+    -fx-border-color: transparent;
+    -fx-padding: 2 2 2 2px;
+    -fx-min-height: 45px;
     -fx-alignment: center;
 }
 
-.table-row-cell:hover {
-    -fx-background-color: transparent;           /* cell hover background (can not see)*/
-    -fx-text-background-color: green;            /* cell hover text */
+.table-row-cell:odd {
+    -fx-border-color: transparent transparent lightgrey transparent;
+    -fx-background-color: transparent;
 }
 
-.table-row-cell:odd{
-    -fx-background-color: #ffffff;               /* cell odd background */
-    -fx-background-insets: 0, 0 0 1 0;
-    -fx-padding: 0.0em;
-}
-
-.table-row-cell:even{
-    -fx-background-color: grey;               /* cell even background */
-    -fx-background-insets: 0, 0 0 1 0;
-    -fx-padding: 0.0em;
-}
-
-.table-row-cell:highlighted {
-    -fx-background-color: #F50000;
-    -fx-background-radius: 5px;
-    -fx-background-insets: 2px;
+.table-row-cell:even {
+    -fx-border-color: transparent transparent lightgrey transparent;
+    -fx-background-color: transparent;
 }
 
 .table-row-cell:selected {
-    -fx-background-color: blue;           /* row selected background */
-    -fx-text-background-color: red;       /* row selected text color */
-    -fx-background-radius: 5px;
-    -fx-background-insets: 2px;
+    -fx-text-background-color: #323232;
 }
 
 .table-view .virtual-flow .scroll-bar:vertical,
@@ -67,11 +53,11 @@
 }
 
 .table-view .virtual-flow .scroll-bar:vertical .thumb{
-    -fx-background-color:  red;                                     /* scroll vertical */
+    -fx-background-color:  linear-gradient(to right, grey, lightgrey);   /* scroll vertical */
 }
 
 .table-view .virtual-flow .scroll-bar:horizontal .thumb {
-    -fx-background-color:  linear-gradient(to right, red, yellow);  /* scroll horizontal */
+    -fx-background-color:  linear-gradient(to right, grey, lightgrey);  /* scroll horizontal */
 }
 
 .table-view .virtual-flow .scroll-bar .increment-button,

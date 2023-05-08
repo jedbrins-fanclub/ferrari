@@ -11,11 +11,9 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -41,7 +39,7 @@ public class CarView {
         return scene;
     }
 
-    private static VBox getCarView() {
+    private static StackPane getCarView() {
         CarController.initFilterBuilder();
 
         initTableView();
@@ -51,20 +49,38 @@ public class CarView {
         initButtonEdit();
         initButtonDelete();
 
+
+
         HBox containerAboveTable = new HBox();
-        containerAboveTable.getChildren().addAll(buttonCreate, searchContainer); // Put search box top right of table
         containerAboveTable.setAlignment(Pos.CENTER_RIGHT);
+        containerAboveTable.setPadding(new Insets(0, 10, 0, 0));
+        containerAboveTable.getChildren().addAll(buttonCreate, searchContainer); // Put search box top right of table
 
-        VBox container = new VBox();
-        container.setAlignment(Pos.CENTER);
-        container.setMaxWidth(600);
-        container.getChildren().addAll(containerAboveTable, tableView, buttonEdit, buttonDelete);
+        VBox tableContainer = new VBox();
+        tableContainer.setAlignment(Pos.BOTTOM_CENTER);
+        tableContainer.setMaxWidth(Double.MAX_VALUE);
+        tableContainer.setPadding(new Insets(25));
+        tableContainer.setSpacing(25);
+        tableContainer.getStyleClass().add("table-view-container");
+        tableContainer.getChildren().addAll(containerAboveTable, tableView);
 
-        return container;
+
+        // Apply drop shadow to parentContainer to avoid applying it to VBox children
+        StackPane parentContainer = new StackPane(tableContainer);
+        parentContainer.getStyleClass().add("drop-shadow-effect");
+
+
+        StackPane window = new StackPane(parentContainer);
+        window.setPadding(new Insets(75));
+        window.setStyle("-fx-background-color: lightgrey");
+
+        return window;
     }
 
     private static void initTableView() {
         tableView = CarController.filteredTableBuilder.build();
+        tableView.setPrefHeight(700);
+        tableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
     }
 
     private static void initSearchContainer() {
@@ -103,7 +119,7 @@ public class CarView {
         });
     }
 
-    private static void showEditCarDialog(Car selectedCar) {
+    protected static void showEditCarDialog(Car selectedCar) {
         // Create and configure the dialog
         Stage dialog = new Stage();
         dialog.initModality(Modality.APPLICATION_MODAL);

@@ -20,6 +20,8 @@ public class CarController {
                 .withColumn("Model", Car::getModel)
                 .withColumn("Årgang", Car::getYear)
                 .withColumn("Pris", Car::getPrice) //TODO: Decide how to display price (maybe store in Ks)
+                .withButtonColumn("", "Rediger", CarView::showEditCarDialog)
+                .withButtonColumn("", "Slet", CarController::deleteCar)
                 .withButtonColumn("...", "...", CarController::buttonIsClicked);
     }
 
