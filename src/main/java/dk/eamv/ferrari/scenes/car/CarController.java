@@ -38,7 +38,7 @@ public class CarController {
 
     //TODO: create car dialog calls this method
     protected static void createCar(Car car) {
-        System.out.println("Call method in CarModel create car with id: " + car.getId());
+        System.out.println("Call method in CarModel create car with id: ");
 
         CarView.refreshTableView();
     }

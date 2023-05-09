@@ -91,8 +91,8 @@ public class CarView {
 
     private static void initButtonCreate() {
         buttonCreate = new Button("Create new car");
-
-        buttonCreate.setOnAction(e -> {}); //TODO: open dialog here
+        
+        //buttonCreate.setOnAction(e -> );
     }
 
     private static void initButtonEdit() {
