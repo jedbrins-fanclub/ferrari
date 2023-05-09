@@ -18,6 +18,12 @@ public class NumericTextField extends TextField {
     }
 
     private boolean validate(String text) {
-        return text.matches("[0-9]*") || text.matches("\\.");
+        boolean isValid = true;
+        try {
+            Double.parseDouble(text);
+        } catch (NumberFormatException exception) {
+            isValid = false;
+        }
+        return isValid;
     }
 }
