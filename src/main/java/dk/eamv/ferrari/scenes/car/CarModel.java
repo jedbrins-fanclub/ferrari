@@ -22,7 +22,7 @@ public class CarModel {
         try {
             PreparedStatement statement = Database.getConnection().prepareStatement(
                     String.format("""
-                                INSERT INTO dbo.Employee
+                                INSERT INTO dbo.Car
                                 VALUES (?, ?, ?);
                             """));
 
