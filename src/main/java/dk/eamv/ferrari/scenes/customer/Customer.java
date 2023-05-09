@@ -10,8 +10,18 @@ public class Customer {
     private String address;
     private String cpr;
 
-    public Customer(int id, String firstName, String lastName, String phoneNumber, String email, String address, String cpr) {
+    public Customer(int id, String firstName, String lastName, String phoneNumber, String email, String address,
+            String cpr) {
         this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.phoneNumber = phoneNumber;
+        this.email = email;
+        this.address = address;
+        this.cpr = cpr;
+    }
+    
+    public Customer(String firstName, String lastName, String phoneNumber, String email, String address, String cpr) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.phoneNumber = phoneNumber;

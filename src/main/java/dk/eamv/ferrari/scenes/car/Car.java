@@ -16,6 +16,13 @@ public class Car {
         this.price = price;
     }
 
+    public Car(String model, int year, double price) {
+        this.model = model;
+        this.year = year;
+        this.price = price;
+    }
+
+
     public int getId() {
         return id;
     }

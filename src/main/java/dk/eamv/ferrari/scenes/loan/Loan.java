@@ -15,8 +15,21 @@ public class Loan {
     private java.sql.Date endDate;
     private LoanStatus status;
 
-    public Loan(int id, int car_id, int customer_id, int employee_id, double loanSize, double downPayment, double interestRate, Date startDate, Date endDate, LoanStatus status) {
+    public Loan(int id, int car_id, int customer_id, int employee_id, double loanSize, double downPayment,
+            double interestRate, Date startDate, Date endDate, LoanStatus status) {
         this.id = id;
+        this.car_id = car_id;
+        this.customer_id = customer_id;
+        this.employee_id = employee_id;
+        this.loanSize = loanSize;
+        this.downPayment = downPayment;
+        this.interestRate = interestRate;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.status = status;
+    }
+    
+    public Loan(int car_id, int customer_id, int employee_id, double loanSize, double downPayment, double interestRate, Date startDate, Date endDate, LoanStatus status) {
         this.car_id = car_id;
         this.customer_id = customer_id;
         this.employee_id = employee_id;
