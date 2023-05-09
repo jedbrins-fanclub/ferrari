@@ -20,6 +20,8 @@ public class CarController {
                 .withColumn("Model", Car::getModel)
                 .withColumn("Årgang", Car::getYear)
                 .withColumn("Pris", Car::getPrice) //TODO: Decide how to display price (maybe store in Ks)
+                .withButtonColumn("", "Rediger", CarView::showEditCarDialog)
+                .withButtonColumn("", "Slet", CarController::deleteCar)
                 .withButtonColumn("...", "...", CarController::buttonIsClicked);
     }
 
@@ -32,6 +34,13 @@ public class CarController {
             cars.add(CarModel.read(i));
         }
         return cars;
+    }
+
+    //TODO: create car dialog calls this method
+    protected static void createCar(Car car) {
+        System.out.println("Call method in CarModel create car with id: " + car.getId());
+
+        CarView.refreshTableView();
     }
 
     protected static void updateCar(Car car) {

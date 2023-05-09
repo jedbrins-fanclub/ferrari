@@ -12,6 +12,10 @@
   -fx-background-color: #f7f7f7;
 }
 
+.drop-shadow-effect {
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 10, 0, 0, 5);
+}
+
 /* Login */
 .login {
     -fx-font-family: "Inter", "Segoe UI", "Arial", sans-serif;
@@ -151,4 +155,10 @@
     -fx-background-insets: 0;
     -fx-border-insets: 0;
     -fx-background-radius: 0;
+}
+
+.table-view-container {
+    -fx-border-radius: 20px;
+    -fx-background-radius: 20px;
+    -fx-background-color: F7F7F7;
 }

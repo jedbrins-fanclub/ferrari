@@ -38,7 +38,7 @@ public class LoginView implements ToggleVisible {
 
         Rectangle loginBox = makeLoginBox();
         AnchorPane loginBoxContent = makeLoginBoxContent(loginBox);
-        setLoginButton();
+        setLoginButton(loginBoxContent);
         Label loginHeader = makeLoginHeader();
         wrongLogin = makeWrongLoginLabel();
         showErrorMessage(false);
@@ -84,9 +84,9 @@ public class LoginView implements ToggleVisible {
         return loginBoxContent;
     }
 
-    private static void setLoginButton() {
-        loginButton.setLayoutY(750);
-        loginButton.setLayoutX(50);
+    private static void setLoginButton(AnchorPane parent) {
+        AnchorPane.setBottomAnchor(loginButton, 10.0);
+        AnchorPane.setLeftAnchor(loginButton, 50.0);
         loginButton.setOnAction(e -> LoginController.authenticate());
     }
 
