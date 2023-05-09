@@ -113,6 +113,8 @@ public class LoanModel {
             statement.setDate(8, loan.getEndDate());
             statement.setInt(9, loan.getStatus().getStatusNumber());
             statement.setInt(10, loan.getId());
+
+            statement.executeUpdate();
         } catch (SQLException exception) {
             exception.printStackTrace();
         }
