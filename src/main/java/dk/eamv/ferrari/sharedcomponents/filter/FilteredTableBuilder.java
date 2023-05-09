@@ -25,7 +25,12 @@ import java.util.stream.Collectors;
 public class FilteredTableBuilder<T> implements FilteredTableBuilderInfo<T> {
     private ObservableList<T> data;
     /**
-     *
+     * <p> {@code String} - the name of the column.</p>
+     * <p> {@code Function<T, Object>} - a lambda or method reference that defines how to extract the value for
+     * the column from an object of type {@code <T>}. </p>
+     * <p>The functions being passed here will most often be getters from the entity class of the type being assigned
+     * when the {@link #FilteredTableBuilder} is instantiated.</p>
+     * <p>For more details go to: {@link #withColumn(String, Function)}</p>
      */
     private final List<Pair<String, Function<T, Object>>> columnInfo;
     private final List<TableColumn<T, ?>> progressColumns;
@@ -35,14 +40,13 @@ public class FilteredTableBuilder<T> implements FilteredTableBuilderInfo<T> {
     /**
      * Constructs a new {@code FilteredTableBuilder} instance with empty lists of column information,
      * progress columns, and button columns.
-     *
-     * <p> The {@link #columnInfo} list will contain information about each column in the table, such as
+     * <p>The {@link #columnInfo} list will contain information about each column in the table, such as
      * its header text and data type.
-     * <p> The {@link #progressColumns} list will contain the indices of columns that
+     * <p>The {@link #progressColumns} list will contain the indices of columns that
      * should display a progress bar.
-     * <p> The {@link #buttonColumns} list will contain the indices of columns that
+     * <p>The {@link #buttonColumns} list will contain the indices of columns that
      * should display buttons.
-     * <p> These columns will be added in the {@link #build()} method.
+     * <p>These columns will be added together in the {@link #build()} method.
      */
     public FilteredTableBuilder() {
         columnInfo = new ArrayList<>();
@@ -50,12 +54,22 @@ public class FilteredTableBuilder<T> implements FilteredTableBuilderInfo<T> {
         buttonColumns = new ArrayList<>();
     }
 
-    // Adds the list of objects to the tableview (could be any object like Car, Customer etc)
+    /**
+     * Method for adding data to the builder during its configuration.
+     * @param data the ObservableList of objects to be displayed in the FilteredTable
+     * @return Itself in order to allow for method chaining when configuring the instance of the builder
+     */
     public FilteredTableBuilder<T> withData(ObservableList<T> data) {
         this.data = data;
         return this;
     }
 
+    /**
+     *
+     * @param columnName name of the column in the FilteredTable
+     * @param propertyValueGetter a lambda or method reference to get the desired content from the objects entity class
+     * @return Itself in order to allow for method chaining when configuring the instance of the builder
+     */
     public FilteredTableBuilder<T> withColumn(String columnName, Function<T, Object> propertyValueGetter) {
 
         // Every time this method is called, a specific column and its list of Value Getter methods is added to the list
