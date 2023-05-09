@@ -107,6 +107,8 @@ public class CustomerModel {
             statement.setString(5, customer.getAddress());
             statement.setString(6, customer.getCpr());
             statement.setInt(7, customer.getId());
+
+            statement.executeUpdate();
         } catch (SQLException exception) {
             exception.printStackTrace();
         }

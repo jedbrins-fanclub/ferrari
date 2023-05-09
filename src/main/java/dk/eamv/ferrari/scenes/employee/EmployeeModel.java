@@ -138,6 +138,8 @@ public class EmployeeModel {
             statement.setString(5, employee.getPassword());
             statement.setDouble(6, employee.getMaxLoan());
             statement.setInt(7, employee.getId());
+
+            statement.executeUpdate();
         } catch (SQLException exception) {
             exception.printStackTrace();
         }
