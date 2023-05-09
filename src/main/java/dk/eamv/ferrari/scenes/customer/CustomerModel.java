@@ -14,6 +14,32 @@ import java.sql.PreparedStatement;
  */
 public class CustomerModel {
     /**
+     * Creates a new customer in the database.
+     * @param customer an Customer object containing all the customer data
+     */
+    public static void create(Customer customer) {
+        try {
+            PreparedStatement statement = Database.getConnection().prepareStatement(
+                String.format("""
+                    INSERT INTO dbo.Customer
+                    VALUES (?, ?, ?, ?, ?, ?);
+                """)
+            );
+
+            statement.setString(1, customer.getFirstName());
+            statement.setString(2, customer.getLastName());
+            statement.setString(3, customer.getPhoneNumber());
+            statement.setString(4, customer.getEmail());
+            statement.setString(5, customer.getAddress());
+            statement.setString(6, customer.getCpr());
+
+            statement.executeUpdate();
+        } catch (SQLException exception) {
+            exception.printStackTrace();
+        }
+    }
+
+    /**
      * Read a customer from the database, based on the id.
      * @param id the id of the customer to get from the database
      * @return Customer containing the database row information
