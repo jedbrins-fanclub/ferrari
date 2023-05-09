@@ -84,6 +84,12 @@ public class EmployeeModel {
         return employees;
     }
 
+    public static ArrayList<Employee> readAllSellers() {
+        var employees = readAll();
+        employees.removeIf(employee -> employee.isSalesManager());
+        return employees;
+    }
+
     /**
      * Get a specific amount of Employees from a "page".
      * @param page the page to read
