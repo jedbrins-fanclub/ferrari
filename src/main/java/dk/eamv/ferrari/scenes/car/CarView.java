@@ -5,6 +5,7 @@ import dk.eamv.ferrari.sharedcomponents.filter.ControlButton;
 import dk.eamv.ferrari.sharedcomponents.filter.FilterTextField;
 import dk.eamv.ferrari.sharedcomponents.filter.FilteredTable;
 import dk.eamv.ferrari.sharedcomponents.filter.SearchContainer;
+import dk.eamv.ferrari.sharedcomponents.filter.forms.FormFactory;
 import dk.eamv.ferrari.scenes.sidebar.SidebarView;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -91,8 +92,8 @@ public class CarView {
 
     private static void initButtonCreate() {
         buttonCreate = new Button("Create new car");
-
-        buttonCreate.setOnAction(e -> {}); //TODO: open dialog here
+        
+        buttonCreate.setOnAction(e -> FormFactory.createCarFormDialogBox());
     }
 
     private static void initButtonEdit() {
