@@ -40,7 +40,7 @@ public class EmployeeController {
     }
 
     protected static void deleteEmployee(Employee employee) {
-        System.out.println("Call method in EmployeeModel to delete employee with id: " + employee.getId());
+        EmployeeModel.delete(employee.getId());
 
         // When removing the Employee from the ObservableList, the TableView updates automatically
         employees.remove(employee);

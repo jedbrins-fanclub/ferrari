@@ -41,7 +41,7 @@ public class CustomerController {
     }
 
     protected static void deleteCustomer(Customer customer) {
-        System.out.println("Call method in CustomerModel to delete customer with id: " + customer.getId());
+        CustomerModel.delete(customer.getId());
 
         // When removing the customer from the ObservableList, the TableView updates automatically
         customers.remove(customer);

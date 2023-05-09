@@ -42,8 +42,6 @@ public class CustomerView {
         initButtonEdit();
         initButtonDelete();
 
-
-
         HBox containerAboveTable = new HBox();
         containerAboveTable.setAlignment(Pos.CENTER_RIGHT);
         containerAboveTable.setPadding(new Insets(0, 10, 0, 0));
@@ -89,10 +87,6 @@ public class CustomerView {
     }
 
     private static void initButtonEdit() {
-        /* Pass the creation of the button to the instance of FilteredTableBuilder
-         * This allows the listener to be set once in the builder method "withControlButton"
-         * Takes a FilteredTable as a parameter, so the listener is set for that instance
-         */
         Button buttonEdit = new ControlButton(CustomerController.filteredTableBuilder, "Rediger denne kunde");
 
         buttonEdit.setOnAction(e -> {

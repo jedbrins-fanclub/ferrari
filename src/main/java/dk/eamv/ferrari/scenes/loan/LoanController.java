@@ -45,7 +45,7 @@ public class LoanController {
     }
 
     protected static void deleteLoan(Loan loan) {
-        System.out.println("Call method in LoanModel to delete loan with id: " + loan.getId());
+        LoanModel.delete(loan.getId());
 
         // When removing the Loan from the ObservableList, the TableView updates automatically
         loans.remove(loan);
