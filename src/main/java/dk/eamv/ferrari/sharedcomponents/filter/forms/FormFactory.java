@@ -138,6 +138,7 @@ public class FormFactory {
                         dialog.close();
                     } else {
                         missingInput.setVisible(true);
+                        setFieldsRed(form);
                     }
                 });
                 break;
@@ -161,6 +162,7 @@ public class FormFactory {
                         dialog.close();
                     } else {
                         missingInput.setVisible(true);
+                        setFieldsRed(form);
                     }
                 });
                 break;
@@ -180,6 +182,7 @@ public class FormFactory {
                         dialog.close();
                     } else {
                         missingInput.setVisible(true);
+                        setFieldsRed(form);
                     }
                 });
                 break;
@@ -230,6 +233,15 @@ public class FormFactory {
     }
 
     private static void setFieldsRed(Form form) {
-        
+        ArrayList<TextField> fieldsList = form.getFieldsList();
+        for (TextField textField : fieldsList) {
+            if (textField.getText().isEmpty()) {
+                textField.setStyle("""
+                    -fx-prompt-text-fill: F50000;
+                    -fx-background-color: #f7adb1;
+                    -fx-border-color: F50000;
+                """);
+            }
+        }
     }
 }
