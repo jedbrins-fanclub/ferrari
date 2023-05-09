@@ -1,7 +1,6 @@
 package dk.eamv.ferrari;
 
 import dk.eamv.ferrari.scenes.car.CarView;
-import dk.eamv.ferrari.scenes.login.LoginView;
 import dk.eamv.ferrari.sharedcomponents.filter.forms.FormFactory;
 import dk.eamv.ferrari.database.Database;
 import dk.eamv.ferrari.scenemanager.SceneManager;
@@ -14,6 +13,7 @@ public class Main extends Application {
         Database.init();
         SceneManager.init(stage);
         SceneManager.changeScene(CarView.getScene());
+        FormFactory.createCustomerFormDialogBox();
         FormFactory.createCarFormDialogBox();
     }
 
