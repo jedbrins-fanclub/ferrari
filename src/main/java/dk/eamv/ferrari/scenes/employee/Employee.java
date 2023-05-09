@@ -74,4 +74,8 @@ public class Employee {
     public void setMaxLoan(double maxLoan) {
         this.maxLoan = maxLoan;
     }
+
+    public boolean isSalesManager() {
+        return maxLoan >= 0;
+    }
 }
