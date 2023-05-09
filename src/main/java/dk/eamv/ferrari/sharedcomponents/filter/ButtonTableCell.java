@@ -7,7 +7,7 @@ import java.util.function.Consumer;
 /**
  * A custom table cell that contains a button.
  * Allows the withButtonColumn method the FilteredTableBuilder class to not also take on the responsibility of
- * creating the ButtonTableCall with an innerclass folliwing the single responsibility principle
+ * creating the ButtonTableCall with an innerclass following the single responsibility principle
  * @see FilteredTableBuilder
  *
  */
