@@ -1,6 +1,9 @@
 package dk.eamv.ferrari.sharedcomponents.filter.forms;
 
+import java.util.ArrayList;
+
 import javafx.geometry.Pos;
+import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
@@ -13,7 +16,7 @@ public class FormFactory {
      * Lavet af: Christian & Stefan
      */
 
-    private static int[] createFieldsString(GridPane gridPane, int column, int row, String... input) {
+    private static int[] createFieldsString(GridPane gridPane, ArrayList<TextField> fieldsList, int column, int row, String... input) {
         for (String i : input) {
             VBox vBox = new VBox();
             Label heading = new Label(i);
@@ -25,12 +28,13 @@ public class FormFactory {
                 row++;
             }
             gridPane.add(vBox, column, row);
+            fieldsList.add(textField);
             column++;
         }
         return new int[] { column, row };
     }
 
-    private static int[] createFieldsInt(GridPane gridPane, int column, int row, String... input) {
+    private static int[] createFieldsInt(GridPane gridPane, ArrayList<TextField> fieldsList, int column, int row, String... input) {
         for (String i : input) {
             VBox vBox = new VBox();
             Label heading = new Label(i);
@@ -42,6 +46,7 @@ public class FormFactory {
                 row++;
             }
             gridPane.add(vBox, column, row);
+            fieldsList.add(textField);
             column++;
         }
 
@@ -57,31 +62,31 @@ public class FormFactory {
         return gridPane;
     }
 
-    private static GridPane createCustomerForm() {
-        GridPane customerForm = createGridPane();
-        int[] fields = createFieldsString(customerForm, 0, 0, "Fornavn", "Efternavn", "Email", "Adresse");
-        createFieldsInt(customerForm, fields[0], fields[1], "Telefonnummer", "CPR");
+    private static Form createCustomerForm() {
+        Form customerForm = new Form(createGridPane(), new ArrayList<TextField>());
+        int[] fields = createFieldsString(customerForm.getGridPane(), customerForm.getFieldsList(), 0, 0, "Fornavn", "Efternavn", "Email", "Adresse");
+        createFieldsInt(customerForm.getGridPane(), customerForm.getFieldsList(), fields[0], fields[1], "Telefonnummer", "CPR");
         return customerForm;
     }
 
-    private static GridPane createCarForm() {
-        GridPane carForm = createGridPane();
-        int[] fields = createFieldsInt(carForm, 0, 0, "Årgang", "Pris", "Stelnummer");
-        createFieldsString(carForm, fields[0], fields[1], "Model");
+    private static Form createCarForm() {
+        Form carForm = new Form(createGridPane(), new ArrayList<TextField>());
+        int[] fields = createFieldsInt(carForm.getGridPane(), carForm.getFieldsList(), 0, 0, "Årgang", "Pris", "Stelnummer");
+        createFieldsString(carForm.getGridPane(), carForm.getFieldsList(), fields[0], fields[1], "Model");
         return carForm;
     }
     
-    private static GridPane createLoanForm() {
-        GridPane loanForm = createGridPane();
-        createFieldsInt(loanForm, 0, 0, "Stelnummer", "Kunde CPR", "Lånets størrelse", "Udbetaling", "Rente",
+    private static Form createLoanForm() {
+        Form loanForm = new Form(createGridPane(), new ArrayList<TextField>());
+        createFieldsInt(loanForm.getGridPane(), loanForm.getFieldsList(),  0, 0, "Stelnummer", "Kunde CPR", "Lånets størrelse", "Udbetaling", "Rente",
                 "Start dato", "Forfaldsdag");
         return loanForm;
     }
 
-    private static Dialog wrap(GridPane gridPane) {
+    private static Dialog wrap(Form form) {
         Dialog dialog = new Dialog<>();
         dialog.getDialogPane().getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
-        dialog.getDialogPane().setContent(gridPane);
+        dialog.getDialogPane().setContent(form.getGridPane());
         dialog.setResizable(true);
         return dialog;
     }
