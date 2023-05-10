@@ -20,11 +20,20 @@ public class Form {
     private int row;
 
     private Form() {
-        gridPane = new GridPane();
+        gridPane = createGridPane();
         fieldsList = new ArrayList<TextField>();
         column = 0;
         row = 0;
     }
+
+    private static GridPane createGridPane() {
+            GridPane gridPane = new GridPane();
+            gridPane.setVgap(25);
+            gridPane.setHgap(50);
+            gridPane.setAlignment(Pos.CENTER);
+
+            return gridPane;
+        }
 
     public GridPane getGridPane() {
         return gridPane;
@@ -78,8 +87,8 @@ public class Form {
                     column = 0;
                     row++;
                 }
-                form.getGridPane().add(vBox, column, row);
-                form.getFieldsList().add(textField);
+                this.form.getGridPane().add(vBox, column, row);
+                this.form.getFieldsList().add(textField);
                 column++;
             }
 
@@ -99,8 +108,8 @@ public class Form {
                     column = 0;
                     row++;
                 }
-                form.getGridPane().add(vBox, column, row);
-                form.getFieldsList().add(textField);
+                this.form.getGridPane().add(vBox, column, row);
+                this.form.getFieldsList().add(textField);
                 column++;
             }
 
@@ -121,8 +130,8 @@ public class Form {
                     column = 0;
                     row++;
                 }
-                form.getGridPane().add(vBox, column, row);
-                form.getFieldsList().add(textField);
+                this.form.getGridPane().add(vBox, column, row);
+                this.form.getFieldsList().add(textField);
                 column++;
             }
 
@@ -135,35 +144,26 @@ public class Form {
             return form;
         }
 
-        private static GridPane createGridPane() {
-            GridPane gridPane = new GridPane();
-            gridPane.setVgap(25);
-            gridPane.setHgap(50);
-            gridPane.setAlignment(Pos.CENTER);
-
-            return gridPane;
-        }
-
         public Form createCustomerForm() {
             form = new Form.Builder()
-                .withFieldsString(form, 0, 0, "Fornavn", "Efternavn", "Email", "Adresse")
-                .withFieldsInt(form, form.getColumn(), form.getRow(), "Telefonnummer", "CPR")
+                .withFieldsString(this.form, 0, 0, "Fornavn", "Efternavn", "Email", "Adresse")
+                .withFieldsInt(this.form, this.form.getColumn(), this.form.getRow(), "Telefonnummer", "CPR")
                 .build();
             return form;
         }
 
         public Form createCarForm() {
             form = new Form.Builder()
-                .withFieldsInt(form, 0, 0, "Årgang", "Pris", "Stelnummer")
-                .withFieldsString(form, form.getColumn(), form.getRow(), "Model")
+                .withFieldsInt(this.form, 0, 0, "Årgang", "Pris", "Stelnummer")
+                .withFieldsString(this.form, this.form.getColumn(), this.form.getRow(), "Model")
                 .build();
             return form;
         }
 
         public Form createLoanForm() {
             form = new Form.Builder()
-                .withFieldsInt(form, 0, 0, "Stelnummer", "Kunde CPR", "Lånets størrelse", "Udbetaling")
-                .withFieldsInt(form, form.getColumn(), form.getRow(), "Rente", "Start dato", "Forfaldsdag")
+                .withFieldsInt(this.form, 0, 0, "Stelnummer", "Kunde CPR", "Lånets størrelse", "Udbetaling")
+                .withFieldsInt(this.form, this.form.getColumn(), this.form.getRow(), "Rente", "Start dato", "Forfaldsdag")
                 .build();
             return form;
         }
