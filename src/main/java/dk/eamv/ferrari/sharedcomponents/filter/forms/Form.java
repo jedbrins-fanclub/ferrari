@@ -2,8 +2,11 @@ package dk.eamv.ferrari.sharedcomponents.filter.forms;
 
 import java.util.ArrayList;
 
+import javafx.geometry.Pos;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
 
 /*
  * Lavet af: Christian
@@ -14,9 +17,9 @@ public class Form {
     private GridPane gridPane;
     private ArrayList<TextField> fieldsList;
 
-    public Form(GridPane gridPane, ArrayList<TextField> fieldsList) {
-        this.gridPane = gridPane;
-        this.fieldsList = fieldsList;
+    private Form() {
+        gridPane = new GridPane();
+        fieldsList = new ArrayList<TextField>();
     }
 
     public GridPane getGridPane() {
@@ -26,7 +29,7 @@ public class Form {
     public ArrayList<TextField> getFieldsList() {
         return fieldsList;
     }
-    
+
     public boolean hasFilledFields() {
         for (TextField i : fieldsList) {
             if (i.getText().isEmpty()) {
@@ -35,5 +38,108 @@ public class Form {
         }
 
         return true;
+    }
+
+    public static class Builder {
+        private Form form;
+
+        public Builder() {
+            form = new Form();
+        }
+
+        protected static int[] withFieldsString(GridPane gridPane, ArrayList<TextField> fieldsList, int column, int row,
+                String... input) {
+            for (String i : input) {
+                VBox vBox = new VBox();
+                Label heading = new Label(i);
+                TextField textField = new TextField();
+                textField.setPromptText(i);
+                vBox.getChildren().addAll(heading, textField);
+                if (column > 2) {
+                    column = 0;
+                    row++;
+                }
+                gridPane.add(vBox, column, row);
+                fieldsList.add(textField);
+                column++;
+            }
+            return new int[] { column, row };
+        }
+
+        protected static int[] withFieldsInt(GridPane gridPane, ArrayList<TextField> fieldsList, int column, int row,
+                String... input) {
+            for (String i : input) {
+                VBox vBox = new VBox();
+                Label heading = new Label(i);
+                NumericTextField textField = new NumericTextField();
+                textField.setPromptText(i);
+                vBox.getChildren().addAll(heading, textField);
+                if (column > 2) {
+                    column = 0;
+                    row++;
+                }
+                gridPane.add(vBox, column, row);
+                fieldsList.add(textField);
+                column++;
+            }
+
+            return new int[] { column, row };
+        }
+
+        protected static int[] withFieldsUneditable(GridPane gridPane, ArrayList<TextField> fieldsList, int column,
+                int row,
+                String... input) {
+            for (String i : input) {
+                VBox vBox = new VBox();
+                Label heading = new Label(i);
+                TextField textField = new TextField();
+                textField.setDisable(true);
+                textField.setPromptText(i);
+                vBox.getChildren().addAll(heading, textField);
+                if (column > 2) {
+                    column = 0;
+                    row++;
+                }
+                gridPane.add(vBox, column, row);
+                fieldsList.add(textField);
+                column++;
+            }
+
+            return new int[] { column, row };
+        }
+
+        private static GridPane createGridPane() {
+            GridPane gridPane = new GridPane();
+            gridPane.setVgap(25);
+            gridPane.setHgap(50);
+            gridPane.setAlignment(Pos.CENTER);
+
+            return gridPane;
+        }
+
+        private static Form createCustomerForm() {
+            Form customerForm = new Form(createGridPane(), new ArrayList<TextField>());
+            int[] fields = createFieldsString(customerForm.getGridPane(), customerForm.getFieldsList(), 0, 0, "Fornavn",
+                    "Efternavn", "Email", "Adresse");
+            createFieldsInt(customerForm.getGridPane(), customerForm.getFieldsList(), fields[0], fields[1],
+                    "Telefonnummer", "CPR");
+            return customerForm;
+        }
+
+        private static Form createCarForm() {
+            Form carForm = new Form(createGridPane(), new ArrayList<TextField>());
+            int[] fields = createFieldsInt(carForm.getGridPane(), carForm.getFieldsList(), 0, 0, "Årgang", "Pris",
+                    "Stelnummer");
+            createFieldsString(carForm.getGridPane(), carForm.getFieldsList(), fields[0], fields[1], "Model");
+            return carForm;
+        }
+
+        private static Form createLoanForm() {
+            Form loanForm = new Form(createGridPane(), new ArrayList<TextField>());
+            createFieldsInt(loanForm.getGridPane(), loanForm.getFieldsList(), 0, 0, "Stelnummer", "Kunde CPR",
+                    "Lånets størrelse", "Udbetaling", "Rente",
+                    "Start dato", "Forfaldsdag");
+            return loanForm;
+        }
     }
 }
