@@ -35,15 +35,15 @@ public class Form {
             return gridPane;
         }
 
-    public GridPane getGridPane() {
+    protected GridPane getGridPane() {
         return gridPane;
     }
 
-    public ArrayList<TextField> getFieldsList() {
+    protected ArrayList<TextField> getFieldsList() {
         return fieldsList;
     }
 
-    public boolean hasFilledFields() {
+    protected boolean hasFilledFields() {
         for (TextField i : fieldsList) {
             if (i.getText().isEmpty()) {
                 return false;
@@ -144,7 +144,7 @@ public class Form {
             return form;
         }
 
-        public Form createCustomerForm() {
+        protected Form buildCustomerForm() {
             form = new Form.Builder()
                 .withFieldsString(this.form, 0, 0, "Fornavn", "Efternavn", "Email", "Adresse")
                 .withFieldsInt(this.form, this.form.getColumn(), this.form.getRow(), "Telefonnummer", "CPR")
@@ -152,7 +152,7 @@ public class Form {
             return form;
         }
 
-        public Form createCarForm() {
+        protected Form buildCarForm() {
             form = new Form.Builder()
                 .withFieldsInt(this.form, 0, 0, "Årgang", "Pris", "Stelnummer")
                 .withFieldsString(this.form, this.form.getColumn(), this.form.getRow(), "Model")
@@ -160,7 +160,7 @@ public class Form {
             return form;
         }
 
-        public Form createLoanForm() {
+        protected Form buildLoanForm() {
             form = new Form.Builder()
                 .withFieldsInt(this.form, 0, 0, "Stelnummer", "Kunde CPR", "Lånets størrelse", "Udbetaling")
                 .withFieldsInt(this.form, this.form.getColumn(), this.form.getRow(), "Rente", "Start dato", "Forfaldsdag")
