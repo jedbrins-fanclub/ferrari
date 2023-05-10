@@ -67,7 +67,7 @@ public class Form {
             form = new Form();
         }
 
-        protected Builder withFieldsString(GridPane gridPane, ArrayList<TextField> fieldsList, int column, int row, String... input) {
+        protected Builder withFieldsString(Form form, int column, int row, String... input) {
             for (String i : input) {
                 VBox vBox = new VBox();
                 Label heading = new Label(i);
@@ -78,16 +78,17 @@ public class Form {
                     column = 0;
                     row++;
                 }
-                gridPane.add(vBox, column, row);
-                fieldsList.add(textField);
+                form.getGridPane().add(vBox, column, row);
+                form.getFieldsList().add(textField);
                 column++;
             }
 
+            form.setColumn(column);
+            form.setRow(row);
             return this;
         }
 
-        protected Builder withFieldsInt(GridPane gridPane, ArrayList<TextField> fieldsList, int column, int row,
-                String... input) {
+        protected Builder withFieldsInt(Form form, int column, int row, String... input) {
             for (String i : input) {
                 VBox vBox = new VBox();
                 Label heading = new Label(i);
@@ -98,17 +99,17 @@ public class Form {
                     column = 0;
                     row++;
                 }
-                gridPane.add(vBox, column, row);
-                fieldsList.add(textField);
+                form.getGridPane().add(vBox, column, row);
+                form.getFieldsList().add(textField);
                 column++;
             }
 
+            form.setColumn(column);
+            form.setRow(row);
             return this;
         }
 
-        protected Builder withFieldsUneditable(GridPane gridPane, ArrayList<TextField> fieldsList, int column,
-                int row,
-                String... input) {
+        protected Builder withFieldsUneditable(Form form, int column, int row, String... input) {
             for (String i : input) {
                 VBox vBox = new VBox();
                 Label heading = new Label(i);
@@ -120,12 +121,18 @@ public class Form {
                     column = 0;
                     row++;
                 }
-                gridPane.add(vBox, column, row);
-                fieldsList.add(textField);
+                form.getGridPane().add(vBox, column, row);
+                form.getFieldsList().add(textField);
                 column++;
             }
 
+            form.setColumn(column);
+            form.setRow(row);
             return this;
+        }
+
+        protected Form build() {
+            return form;
         }
 
         private static GridPane createGridPane() {
@@ -137,29 +144,27 @@ public class Form {
             return gridPane;
         }
 
-        private static Form createCustomerForm() {
+        private Form createCustomerForm() {
             Form customerForm = new Form.Builder()
-                    .withFieldsInt(null, null, 0, 0, null);
-            int[] fields = createFieldsString(customerForm.getGridPane(), customerForm.getFieldsList(), 0, 0, "Fornavn",
-                    "Efternavn", "Email", "Adresse");
-            createFieldsInt(customerForm.getGridPane(), customerForm.getFieldsList(), fields[0], fields[1],
-                    "Telefonnummer", "CPR");
+                .withFieldsString(this.form, 0, 0, "Fornavn", "Efternavn", "Email", "Adresse")
+                .withFieldsInt(this.form, this.form.getColumn(), this.form.getRow(), "Telefonnummer", "CPR")
+                .build();
             return customerForm;
         }
 
-        private static Form createCarForm() {
-            Form carForm = new Form(createGridPane(), new ArrayList<TextField>());
-            int[] fields = createFieldsInt(carForm.getGridPane(), carForm.getFieldsList(), 0, 0, "Årgang", "Pris",
-                    "Stelnummer");
-            createFieldsString(carForm.getGridPane(), carForm.getFieldsList(), fields[0], fields[1], "Model");
+        private Form createCarForm() {
+            Form carForm = new Form.Builder()
+                .withFieldsInt(this.form, 0, 0, "Årgang", "Pris", "Stelnummer")
+                .withFieldsString(this.form, this.form.getColumn(), this.form.getRow(), "Model")
+                .build();
             return carForm;
         }
 
-        private static Form createLoanForm() {
-            Form loanForm = new Form(createGridPane(), new ArrayList<TextField>());
-            createFieldsInt(loanForm.getGridPane(), loanForm.getFieldsList(), 0, 0, "Stelnummer", "Kunde CPR",
-                    "Lånets størrelse", "Udbetaling", "Rente",
-                    "Start dato", "Forfaldsdag");
+        private Form createLoanForm() {
+            Form loanForm = new Form.Builder()
+                .withFieldsInt(this.form, 0, 0, "Stelnummer", "Kunde CPR", "Lånets størrelse", "Udbetaling")
+                .withFieldsInt(this.form, this.form.getColumn(), this.form.getRow(), "Rente", "Start dato", "Forfaldsdag")
+                .build();
             return loanForm;
         }
     }
