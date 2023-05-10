@@ -16,10 +16,14 @@ import javafx.scene.layout.VBox;
 public class Form {
     private GridPane gridPane;
     private ArrayList<TextField> fieldsList;
+    private int column;
+    private int row;
 
     private Form() {
         gridPane = new GridPane();
         fieldsList = new ArrayList<TextField>();
+        column = 0;
+        row = 0;
     }
 
     public GridPane getGridPane() {
@@ -40,6 +44,22 @@ public class Form {
         return true;
     }
 
+    private void setColumn(int value) {
+        column = value;
+    }
+
+    private void setRow(int value) {
+        row = value;
+    }
+
+    private int getColumn() {
+        return column;
+    }
+
+    private int getRow() {
+        return row;
+    }
+
     public static class Builder {
         private Form form;
 
@@ -47,8 +67,7 @@ public class Form {
             form = new Form();
         }
 
-        protected static int[] withFieldsString(GridPane gridPane, ArrayList<TextField> fieldsList, int column, int row,
-                String... input) {
+        protected Builder withFieldsString(GridPane gridPane, ArrayList<TextField> fieldsList, int column, int row, String... input) {
             for (String i : input) {
                 VBox vBox = new VBox();
                 Label heading = new Label(i);
@@ -63,10 +82,11 @@ public class Form {
                 fieldsList.add(textField);
                 column++;
             }
-            return new int[] { column, row };
+
+            return this;
         }
 
-        protected static int[] withFieldsInt(GridPane gridPane, ArrayList<TextField> fieldsList, int column, int row,
+        protected Builder withFieldsInt(GridPane gridPane, ArrayList<TextField> fieldsList, int column, int row,
                 String... input) {
             for (String i : input) {
                 VBox vBox = new VBox();
@@ -83,10 +103,10 @@ public class Form {
                 column++;
             }
 
-            return new int[] { column, row };
+            return this;
         }
 
-        protected static int[] withFieldsUneditable(GridPane gridPane, ArrayList<TextField> fieldsList, int column,
+        protected Builder withFieldsUneditable(GridPane gridPane, ArrayList<TextField> fieldsList, int column,
                 int row,
                 String... input) {
             for (String i : input) {
@@ -105,7 +125,7 @@ public class Form {
                 column++;
             }
 
-            return new int[] { column, row };
+            return this;
         }
 
         private static GridPane createGridPane() {
@@ -118,7 +138,8 @@ public class Form {
         }
 
         private static Form createCustomerForm() {
-            Form customerForm = new Form(createGridPane(), new ArrayList<TextField>());
+            Form customerForm = new Form.Builder()
+                    .withFieldsInt(null, null, 0, 0, null);
             int[] fields = createFieldsString(customerForm.getGridPane(), customerForm.getFieldsList(), 0, 0, "Fornavn",
                     "Efternavn", "Email", "Adresse");
             createFieldsInt(customerForm.getGridPane(), customerForm.getFieldsList(), fields[0], fields[1],
