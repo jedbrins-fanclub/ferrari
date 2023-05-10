@@ -26,6 +26,7 @@ public class FormFactory {
      * Lavet af: Christian & Stefan
      */
 
+    private static Form.Builder builder = new Form.Builder();
     private enum Type {
         CAR,
         LOAN,
@@ -147,19 +148,19 @@ public class FormFactory {
     }
 
     public static void createCustomerFormDialogBox() {
-        Dialog<Void> dialog = wrap(createCustomerForm(), Type.CUSTOMER);
+        Dialog<Void> dialog = wrap(builder.createCustomerForm(), Type.CUSTOMER);
         dialog.setTitle("Opret kunde");
         dialog.show();
     }
 
     public static void createCarFormDialogBox() {
-        Dialog<Void> dialog = wrap(createCarForm(), Type.CAR);
+        Dialog<Void> dialog = wrap(builder.createCarForm(), Type.CAR);
         dialog.setTitle("Opret bil");
         dialog.show();
     }
 
     public static void createLoanFormDialogBox() {
-        Dialog<Void> dialog = wrap(createLoanForm(), Type.LOAN);
+        Dialog<Void> dialog = wrap(builder.createLoanForm(), Type.LOAN);
         dialog.setTitle("Opret lån");
         dialog.show();
     }

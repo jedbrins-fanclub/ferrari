@@ -144,28 +144,28 @@ public class Form {
             return gridPane;
         }
 
-        private Form createCustomerForm() {
-            Form customerForm = new Form.Builder()
-                .withFieldsString(this.form, 0, 0, "Fornavn", "Efternavn", "Email", "Adresse")
-                .withFieldsInt(this.form, this.form.getColumn(), this.form.getRow(), "Telefonnummer", "CPR")
+        public Form createCustomerForm() {
+            form = new Form.Builder()
+                .withFieldsString(form, 0, 0, "Fornavn", "Efternavn", "Email", "Adresse")
+                .withFieldsInt(form, form.getColumn(), form.getRow(), "Telefonnummer", "CPR")
                 .build();
-            return customerForm;
+            return form;
         }
 
-        private Form createCarForm() {
-            Form carForm = new Form.Builder()
-                .withFieldsInt(this.form, 0, 0, "Årgang", "Pris", "Stelnummer")
-                .withFieldsString(this.form, this.form.getColumn(), this.form.getRow(), "Model")
+        public Form createCarForm() {
+            form = new Form.Builder()
+                .withFieldsInt(form, 0, 0, "Årgang", "Pris", "Stelnummer")
+                .withFieldsString(form, form.getColumn(), form.getRow(), "Model")
                 .build();
-            return carForm;
+            return form;
         }
 
-        private Form createLoanForm() {
-            Form loanForm = new Form.Builder()
-                .withFieldsInt(this.form, 0, 0, "Stelnummer", "Kunde CPR", "Lånets størrelse", "Udbetaling")
-                .withFieldsInt(this.form, this.form.getColumn(), this.form.getRow(), "Rente", "Start dato", "Forfaldsdag")
+        public Form createLoanForm() {
+            form = new Form.Builder()
+                .withFieldsInt(form, 0, 0, "Stelnummer", "Kunde CPR", "Lånets størrelse", "Udbetaling")
+                .withFieldsInt(form, form.getColumn(), form.getRow(), "Rente", "Start dato", "Forfaldsdag")
                 .build();
-            return loanForm;
+            return form;
         }
     }
 }
