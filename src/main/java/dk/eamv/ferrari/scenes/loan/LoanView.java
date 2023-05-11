@@ -6,9 +6,11 @@ import dk.eamv.ferrari.sharedcomponents.filter.ControlButton;
 import dk.eamv.ferrari.sharedcomponents.filter.FilterTextField;
 import dk.eamv.ferrari.sharedcomponents.filter.FilteredTable;
 import dk.eamv.ferrari.sharedcomponents.filter.SearchContainer;
+import javafx.collections.FXCollections;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
@@ -71,7 +73,6 @@ public class LoanView {
     private static void initTableView() {
         tableView = LoanController.filteredTableBuilder.build();
         tableView.setPrefHeight(700);
-        tableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
     }
 
     private static void initSearchContainer() {
@@ -79,13 +80,13 @@ public class LoanView {
     }
 
     private static void initButtonCreate() {
-        buttonCreate = new Button("Registrer ny medarbejder");
+        buttonCreate = new Button("Opret ny låneaftale");
 
         buttonCreate.setOnAction(e -> {}); //TODO: open dialog here
     }
 
     private static void initButtonEdit() {
-        Button buttonEdit = new ControlButton(LoanController.filteredTableBuilder, "Rediger denne medarbejder");
+        Button buttonEdit = new ControlButton(LoanController.filteredTableBuilder, "Rediger denne låneaftale");
 
         buttonEdit.setOnAction(e -> {
             Loan selectedLoan = tableView.getSelectionModel().getSelectedItem();
@@ -96,7 +97,7 @@ public class LoanView {
     }
 
     private static void initButtonDelete() {
-        Button buttonDelete = new ControlButton(LoanController.filteredTableBuilder, "Slet denne medarbejder");
+        Button buttonDelete = new ControlButton(LoanController.filteredTableBuilder, "Slet denne låneaftale");
 
         buttonDelete.setOnAction(e -> {
             Loan selectedLoan = tableView.getSelectionModel().getSelectedItem();
