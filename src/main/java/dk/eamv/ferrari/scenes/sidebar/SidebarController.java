@@ -1,52 +1,40 @@
 package dk.eamv.ferrari.scenes.sidebar;
 
+import dk.eamv.ferrari.scenemanager.SceneManager;
+import dk.eamv.ferrari.scenes.car.CarView;
+import dk.eamv.ferrari.scenes.customer.CustomerView;
+import dk.eamv.ferrari.scenes.employee.EmployeeView;
+import dk.eamv.ferrari.scenes.frontpage.FrontpageView;
+import dk.eamv.ferrari.scenes.loan.LoanView;
 import javafx.event.ActionEvent;
 
 public class SidebarController {
 
-    private final SidebarView sidebarView;
-
-    public SidebarController(SidebarView sidebarView) {
-        this.sidebarView = sidebarView;
-
-        attachButtonListeners();
+    static void onDashboardButtonClick(ActionEvent event) {
+        SceneManager.changeScene(FrontpageView.getScene());
     }
 
-    private void attachButtonListeners() {
-        sidebarView.buttons.get(SidebarButton.DASHBOARD).setOnAction(this::onDashboardButtonClick);
-        sidebarView.buttons.get(SidebarButton.LOANS).setOnAction(this::onLoansButtonClick);
-        sidebarView.buttons.get(SidebarButton.REPORTS).setOnAction(this::onReportsButtonClick);
-        sidebarView.buttons.get(SidebarButton.CARS).setOnAction(this::onCarsButtonClick);
-        sidebarView.buttons.get(SidebarButton.CUSTOMERS).setOnAction(this::onCustomersButtonClick);
-        sidebarView.buttons.get(SidebarButton.SELLERS).setOnAction(this::onSellersButtonClick);
-        sidebarView.buttons.get(SidebarButton.SETTINGS).setOnAction(this::onSettingsButtonClick);
+    static void onLoansButtonClick(ActionEvent event) {
+        SceneManager.changeScene(LoanView.getScene());
     }
 
-    private void onDashboardButtonClick(ActionEvent event) {
-        System.out.println("Clicked: dashboard");
-    }
-
-    private void onLoansButtonClick(ActionEvent event) {
-        System.out.println("Clicked: loans");
-    }
-
-    private void onReportsButtonClick(ActionEvent event) {
+    static void onReportsButtonClick(ActionEvent event) {
         System.out.println("Clicked: reports");
     }
 
-    private void onCarsButtonClick(ActionEvent event) {
-        System.out.println("Clicked: cars");
+    static void onCarsButtonClick(ActionEvent event) {
+        SceneManager.changeScene(CarView.getScene());
     }
 
-    private void onCustomersButtonClick(ActionEvent event) {
-        System.out.println("Clicked: customers");
+    static void onCustomersButtonClick(ActionEvent event) {
+        SceneManager.changeScene(CustomerView.getScene());
     }
 
-    private void onSellersButtonClick(ActionEvent event) {
-        System.out.println("Clicked: sellers");
+    static void onSellersButtonClick(ActionEvent event) {
+        SceneManager.changeScene(EmployeeView.getScene());
     }
 
-    private void onSettingsButtonClick(ActionEvent event) {
+    static void onSettingsButtonClick(ActionEvent event) {
         System.out.println("Clicked: settings");
     }
 }
