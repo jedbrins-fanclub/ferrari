@@ -93,7 +93,7 @@ public class CarView {
     private static void initButtonCreate() {
         buttonCreate = new Button("Create new car");
         
-        buttonCreate.setOnAction(e -> FormFactory.createCarFormDialogBox());
+        buttonCreate.setOnAction(e -> CarController.createCar());
     }
 
     private static void initButtonEdit() {

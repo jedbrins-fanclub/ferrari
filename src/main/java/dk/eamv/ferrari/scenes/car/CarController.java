@@ -1,6 +1,7 @@
 package dk.eamv.ferrari.scenes.car;
 
 import dk.eamv.ferrari.sharedcomponents.filter.FilteredTableBuilder;
+import dk.eamv.ferrari.sharedcomponents.filter.forms.FormFactory;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -37,10 +38,8 @@ public class CarController {
     }
 
     //TODO: create car dialog calls this method
-    protected static void createCar(Car car) {
-        System.out.println("Call method in CarModel create car with id: ");
-
-        CarView.refreshTableView();
+    protected static void createCar() {
+        FormFactory.createCarFormDialogBox();
     }
 
     protected static void updateCar(Car car) {
@@ -54,5 +53,9 @@ public class CarController {
 
         // When removing the car from the ObservableList, the TableView updates automatically
         cars.remove(car);
+    }
+
+    public ObservableList<Car> getCars() {
+        return cars;
     }
 }
