@@ -1,6 +1,7 @@
 package dk.eamv.ferrari.scenes.customer;
 
 import dk.eamv.ferrari.sharedcomponents.filter.FilteredTableBuilder;
+import dk.eamv.ferrari.sharedcomponents.filter.forms.FormFactory;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import java.util.ArrayList;
@@ -25,10 +26,8 @@ public class CustomerController {
                 .withButtonColumn("", "Slet", CustomerController::deleteCustomer);
     }
 
-    protected static void createCustomer(Customer customer) {
-        System.out.println("Call method in CustomerModel create customer with id: " + customer.getId());
-
-        CustomerView.refreshTableView();
+    protected static void createCustomer() {
+        FormFactory.createCustomerFormDialogBox();
     }
 
     protected static void updateCustomer(Customer customer) {
@@ -47,5 +46,9 @@ public class CustomerController {
     protected static void createLoan(Customer customer) {
         //TODO: Open dialog to create loan agreement for this customer
         System.out.println("opening new loan dialog for customer: " + customer.getId());
+    }
+
+    public static ObservableList<Customer> getCustomers() {
+        return customers;
     }
 }

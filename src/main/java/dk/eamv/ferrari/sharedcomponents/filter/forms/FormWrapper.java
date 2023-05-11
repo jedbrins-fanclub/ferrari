@@ -7,6 +7,7 @@ import dk.eamv.ferrari.scenes.car.Car;
 import dk.eamv.ferrari.scenes.car.CarController;
 import dk.eamv.ferrari.scenes.car.CarModel;
 import dk.eamv.ferrari.scenes.customer.Customer;
+import dk.eamv.ferrari.scenes.customer.CustomerController;
 import dk.eamv.ferrari.scenes.customer.CustomerModel;
 import dk.eamv.ferrari.scenes.loan.Loan;
 import dk.eamv.ferrari.scenes.loan.LoanModel;
@@ -79,7 +80,8 @@ public final class FormWrapper {
                         String address = getString(form, 3);
                         String cpr = getString(form, 5);
                         Customer customer = new Customer(firstName, lastName, phoneNumber, email, address, cpr);
-                        CustomerModel.create(customer);
+                        CustomerController.getCustomers().add(customer); //add to TableView
+                        CustomerModel.create(customer); //add to DB
                         dialog.close();
                     } else {
                         missingInput.setVisible(true);

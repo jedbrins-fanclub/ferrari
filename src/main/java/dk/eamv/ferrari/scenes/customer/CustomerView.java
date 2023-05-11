@@ -82,7 +82,7 @@ public class CustomerView {
     private static void initButtonCreate() {
         buttonCreate = new Button("Registrer ny kunde");
 
-        buttonCreate.setOnAction(e -> {}); //TODO: open dialog here
+        buttonCreate.setOnAction(e -> CustomerController.createCustomer());
     }
 
     private static void initButtonEdit() {
