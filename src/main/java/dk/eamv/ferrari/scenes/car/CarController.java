@@ -31,9 +31,7 @@ public class CarController {
     }
 
     protected static ObservableList<Car> fetchCars() {
-        for (int i = 1; i <= 28; i++) {
-            cars.add(CarModel.read(i));
-        }
+        cars.addAll(0, CarModel.readAll());
         return cars;
     }
 
