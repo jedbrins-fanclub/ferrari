@@ -208,7 +208,7 @@ public class Form {
                     .withFieldsInt(this.form, 0, 0, "Stelnummer", "Kunde CPR", "Lånets størrelse", "Udbetaling")
                     .withFieldsInt(this.form, this.form.getColumn(), this.form.getRow(), "Rente", "Start dato", "Forfaldsdag")
                     .withDropDownBoxes(this.form, CarController.getCars(), this.form.getColumn(), this.form.getRow(),"Bil")
-                    .withDropDownBoxes(this.form, CustomerController.getCustomers(), this.form.getColumn(), this.form.getRow(), "Kunde")
+                    .withDropDownBoxes(this.form, CustomerController.getCustomers(), this.form.getColumn(), this.form.getRow(), "CPR & Kunde")
                     .build();
             return form;
         }

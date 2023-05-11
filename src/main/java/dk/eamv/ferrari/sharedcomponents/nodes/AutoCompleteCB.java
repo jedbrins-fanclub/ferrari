@@ -46,6 +46,7 @@ public class AutoCompleteCB {
         });
 
         cb.setItems(filteredItems);
+        cb.setStyle("-fx-font-family: \"COURIER NEW\";");
         return cb;
     }
 }
