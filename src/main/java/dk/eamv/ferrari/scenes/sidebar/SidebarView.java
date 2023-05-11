@@ -23,6 +23,7 @@ public class SidebarView extends VBox {
     public SidebarView() {
         setButtonMap();
         configureButtons();
+        attachToggleButtonListeners();
 
         setMinWidth(250);
         setSpacing(50);
@@ -37,6 +38,16 @@ public class SidebarView extends VBox {
             buttons.put(button, toggleButton);
             icons.put(button, button.getIcon());
         }
+    }
+
+    protected void attachToggleButtonListeners() {
+        buttons.get(SidebarButton.DASHBOARD).setOnAction(SidebarController::onDashboardButtonClick);
+        buttons.get(SidebarButton.LOANS).setOnAction(SidebarController::onLoansButtonClick);
+        buttons.get(SidebarButton.REPORTS).setOnAction(SidebarController::onReportsButtonClick);
+        buttons.get(SidebarButton.CARS).setOnAction(SidebarController::onCarsButtonClick);
+        buttons.get(SidebarButton.CUSTOMERS).setOnAction(SidebarController::onCustomersButtonClick);
+        buttons.get(SidebarButton.SELLERS).setOnAction(SidebarController::onSellersButtonClick);
+        buttons.get(SidebarButton.SETTINGS).setOnAction(SidebarController::onSettingsButtonClick);
     }
 
     private HBox getHeader() {
