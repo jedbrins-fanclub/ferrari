@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.sql.Date;
 
 import dk.eamv.ferrari.scenes.car.Car;
+import dk.eamv.ferrari.scenes.car.CarController;
 import dk.eamv.ferrari.scenes.car.CarModel;
 import dk.eamv.ferrari.scenes.customer.Customer;
 import dk.eamv.ferrari.scenes.customer.CustomerModel;
@@ -96,7 +97,8 @@ public final class FormWrapper {
                         int year = getInt(form, 0);
                         double price = getDouble(form, 1);
                         Car car = new Car(frameNumber, model, year, price);
-                        CarModel.create(car);
+                        CarController.getCars().add(car); //add to TableView
+                        CarModel.create(car); //add to DB
                         dialog.close();
                     } else {
                         missingInput.setVisible(true);

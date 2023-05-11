@@ -55,7 +55,7 @@ public class CarController {
         cars.remove(car);
     }
 
-    public ObservableList<Car> getCars() {
+    public static ObservableList<Car> getCars() {
         return cars;
     }
 }
