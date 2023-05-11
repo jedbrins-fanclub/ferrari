@@ -13,13 +13,14 @@ public class CustomerController {
     protected static void initFilterBuilder() {
         filteredTableBuilder = new FilteredTableBuilder<Customer>()
                 .withData(customers)
-                .withColumn("Kundenummer", Customer::getId)
+                .withColumn("Kundenr", Customer::getId)
                 .withColumn("Fornavn", Customer::getFirstName)
                 .withColumn("Efternavn", Customer::getLastName)
                 .withColumn("Telefonnummer", Customer::getPhoneNumber)
-                .withColumn("Email", Customer::getPhoneNumber)
+                .withColumn("Email", Customer::getEmail)
                 .withColumn("Adresse", Customer::getAddress)
                 .withColumn("CPR-nummer", Customer::getCpr)
+                .withButtonColumn("", "Ny låneaftale", CustomerController::createLoan)
                 .withButtonColumn("", "Rediger", CustomerView::showEditCustomerDialog)
                 .withButtonColumn("", "Slet", CustomerController::deleteCustomer);
     }
@@ -35,7 +36,7 @@ public class CustomerController {
     }
 
     protected static void updateCustomer(Customer customer) {
-        System.out.println("Call method in CustomerModel update customer with id: " + customer.getId());
+        //TODO: Open dialog to update this customer
 
         CustomerView.refreshTableView();
     }
@@ -45,5 +46,10 @@ public class CustomerController {
 
         // When removing the customer from the ObservableList, the TableView updates automatically
         customers.remove(customer);
+    }
+
+    protected static void createLoan(Customer customer) {
+        //TODO: Open dialog to create loan agreement for this customer
+        System.out.println("opening new loan dialog for customer: " + customer.getId());
     }
 }

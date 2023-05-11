@@ -3,6 +3,8 @@ package dk.eamv.ferrari.scenes.loan;
 import dk.eamv.ferrari.sharedcomponents.filter.FilteredTableBuilder;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ChoiceBox;
 
 import java.util.ArrayList;
 
@@ -24,6 +26,7 @@ public class LoanController {
                 .withColumn("Start", Loan::getStartDate)
                 .withColumn("Slut", Loan::getEndDate)
                 .withColumn("Status", loan -> loan.getStatus().getDisplayName())
+                .withButtonColumn("", "Opdater status", LoanController::updateLoanStatus)
                 .withButtonColumn("", "Rediger", LoanView::showEditLoanDialog)
                 .withButtonColumn("", "Slet", LoanController::deleteLoan);
     }
@@ -49,5 +52,37 @@ public class LoanController {
 
         // When removing the Loan from the ObservableList, the TableView updates automatically
         loans.remove(loan);
+    }
+
+    protected static void updateLoanStatus(Loan loan) {
+        // Create a ChoiceBox to enable the user to set the status of this loan
+        ChoiceBox<String> choiceBox = new ChoiceBox<>();
+        for (LoanState state : LoanState.values()) {
+            choiceBox.getItems().add(new LoanStatus(state).getDisplayName());
+        }
+
+        // Initial value of the ChoiceBox is set to the current status of the loan
+        choiceBox.setValue(loan.getStatus().getDisplayName());
+
+        // If a different status is selected in the ChoiceBox, it is observed and the Loan is updated
+        choiceBox.getSelectionModel().selectedItemProperty().addListener((obs, oldStatus, newStatus) -> {
+            if (newStatus != null) {
+                for (LoanState state : LoanState.values()) {
+                    if (new LoanStatus(state).getDisplayName().equals(newStatus)) {
+                        loan.setStatus(new LoanStatus(state));
+                        LoanController.updateLoan(loan);
+                        LoanView.refreshTableView(); // TableView is refreshed so the new status is shown
+                        break;
+                    }
+                }
+            }
+        });
+
+        // Use a dialog for the ChoiceBox
+        Alert dialog = new Alert(Alert.AlertType.CONFIRMATION);
+        dialog.setTitle("Opdater status");
+        dialog.setHeaderText("Vælg ny status for dette lån");
+        dialog.getDialogPane().setContent(choiceBox);
+        dialog.showAndWait();
     }
 }

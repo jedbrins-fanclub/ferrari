@@ -41,6 +41,8 @@
 
 .table-row-cell:selected {
     -fx-text-background-color: #323232;
+    -fx-background-color: #F0F0F0;
+    -fx-background-insets: 1px 0 2px 0;
 }
 
 .table-view .virtual-flow .scroll-bar:vertical,

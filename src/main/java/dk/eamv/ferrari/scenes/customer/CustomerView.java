@@ -71,7 +71,6 @@ public class CustomerView {
     private static void initTableView() {
         tableView = CustomerController.filteredTableBuilder.build();
         tableView.setPrefHeight(700);
-        tableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
     }
 
     private static void initSearchContainer() {
