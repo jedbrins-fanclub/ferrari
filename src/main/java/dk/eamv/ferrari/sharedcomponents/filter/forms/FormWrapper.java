@@ -9,6 +9,7 @@ import dk.eamv.ferrari.scenes.car.CarModel;
 import dk.eamv.ferrari.scenes.customer.Customer;
 import dk.eamv.ferrari.scenes.customer.CustomerModel;
 import dk.eamv.ferrari.scenes.loan.Loan;
+import dk.eamv.ferrari.scenes.loan.LoanController;
 import dk.eamv.ferrari.scenes.loan.LoanModel;
 import dk.eamv.ferrari.scenes.loan.LoanStatus;
 import javafx.geometry.Insets;
@@ -58,7 +59,9 @@ public final class FormWrapper {
                         Date startDate = new Date(2025, 1, 1);
                         Date endDate = new Date(2025, 1, 1);
                         LoanStatus loanStatus = new LoanStatus(3);
-                        Loan loan = new Loan(carID, customerID, employeeID, loanSize, downPayment, interestRate, startDate, endDate, loanStatus);
+                        Loan loan = new Loan(carID, customerID, employeeID, loanSize, downPayment, interestRate,
+                                startDate, endDate, loanStatus);
+                        LoanController.getLoans().add(loan);
                         LoanModel.create(loan);
                         dialog.close();
                     } else {
