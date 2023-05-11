@@ -55,4 +55,9 @@ public class Car {
     public void setPrice(double price) {
         this.price = price;
     }
+
+    @Override
+    public String toString() {
+        return String.format("%-25s %-10d %,.2f", model, year, price);
+    }
 }

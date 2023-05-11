@@ -86,4 +86,9 @@ public class Customer {
     public void setCpr(String cpr) {
         this.cpr = cpr;
     }
+
+    @Override
+    public String toString() {
+        return String.format("%s %s %s", cpr, firstName, lastName);
+    }
 }

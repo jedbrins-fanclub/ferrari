@@ -1,6 +1,7 @@
 package dk.eamv.ferrari.scenes.loan;
 
 import dk.eamv.ferrari.sharedcomponents.filter.FilteredTableBuilder;
+import dk.eamv.ferrari.sharedcomponents.forms.FormFactory;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.Alert;
@@ -11,7 +12,7 @@ import java.util.ArrayList;
 public class LoanController {
 
     protected static FilteredTableBuilder<Loan> filteredTableBuilder;
-    private static final ObservableList<Loan> loans = FXCollections.observableArrayList(fetchLoans());
+    private static final ObservableList<Loan> loans = FXCollections.observableArrayList(LoanModel.readAll());
 
     protected static void initFilterBuilder() {
         filteredTableBuilder = new FilteredTableBuilder<Loan>()
@@ -31,14 +32,8 @@ public class LoanController {
                 .withButtonColumn("", "Slet", LoanController::deleteLoan);
     }
 
-    protected static ArrayList<Loan> fetchLoans() {
-        return LoanModel.readAll();
-    }
-
-    protected static void createLoan(Loan loan) {
-        System.out.println("Call method in LoanModel create loan with id: " + loan.getId());
-
-        LoanView.refreshTableView();
+    protected static void createLoan() {
+        FormFactory.createLoanFormDialogBox();
     }
 
     protected static void updateLoan(Loan loan) {
@@ -84,5 +79,9 @@ public class LoanController {
         dialog.setHeaderText("Vælg ny status for dette lån");
         dialog.getDialogPane().setContent(choiceBox);
         dialog.showAndWait();
+    }
+
+    public static ObservableList<Loan> getLoans() {
+        return loans;
     }
 }

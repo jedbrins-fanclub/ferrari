@@ -10,6 +10,7 @@ public class CustomerController {
 
     protected static FilteredTableBuilder<Customer> filteredTableBuilder;
     private static final ObservableList<Customer> customers = FXCollections.observableArrayList(CustomerModel.readAll());
+    private static final ObservableList<Customer> customers = FXCollections.observableArrayList(CustomerModel.readAll());
 
     protected static void initFilterBuilder() {
         filteredTableBuilder = new FilteredTableBuilder<Customer>()
@@ -46,6 +47,10 @@ public class CustomerController {
     protected static void createLoan(Customer customer) {
         //TODO: Open dialog to create loan agreement for this customer
         System.out.println("opening new loan dialog for customer: " + customer.getId());
+    }
+
+    public static ObservableList<Customer> getCustomers() {
+        return customers;
     }
 
     public static ObservableList<Customer> getCustomers() {
