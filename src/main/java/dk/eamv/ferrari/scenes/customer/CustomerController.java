@@ -1,6 +1,7 @@
 package dk.eamv.ferrari.scenes.customer;
 
 import dk.eamv.ferrari.sharedcomponents.filter.FilteredTableBuilder;
+import dk.eamv.ferrari.sharedcomponents.filter.forms.FormFactory;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import java.util.ArrayList;
@@ -8,7 +9,7 @@ import java.util.ArrayList;
 public class CustomerController {
 
     protected static FilteredTableBuilder<Customer> filteredTableBuilder;
-    private static final ObservableList<Customer> customers = FXCollections.observableArrayList(fetchCustomers());
+    private static final ObservableList<Customer> customers = FXCollections.observableArrayList(CustomerModel.readAll());
 
     protected static void initFilterBuilder() {
         filteredTableBuilder = new FilteredTableBuilder<Customer>()
@@ -25,14 +26,8 @@ public class CustomerController {
                 .withButtonColumn("", "Slet", CustomerController::deleteCustomer);
     }
 
-    protected static ArrayList<Customer> fetchCustomers() {
-        return CustomerModel.readAll();
-    }
-
-    protected static void createCustomer(Customer customer) {
-        System.out.println("Call method in CustomerModel create customer with id: " + customer.getId());
-
-        CustomerView.refreshTableView();
+    protected static void createCustomer() {
+        FormFactory.createCustomerFormDialogBox();
     }
 
     protected static void updateCustomer(Customer customer) {
@@ -51,5 +46,9 @@ public class CustomerController {
     protected static void createLoan(Customer customer) {
         //TODO: Open dialog to create loan agreement for this customer
         System.out.println("opening new loan dialog for customer: " + customer.getId());
+    }
+
+    public static ObservableList<Customer> getCustomers() {
+        return customers;
     }
 }
