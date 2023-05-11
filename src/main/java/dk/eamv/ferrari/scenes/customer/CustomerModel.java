@@ -12,7 +12,10 @@ import java.sql.PreparedStatement;
  * Checked by:
  * Modified by:
  */
-public class CustomerModel {
+public final class CustomerModel {
+    // Private constructor to disallow instantiation
+    private CustomerModel() {}
+
     /**
      * Creates a new customer in the database.
      * @param customer an Customer object containing all the customer data

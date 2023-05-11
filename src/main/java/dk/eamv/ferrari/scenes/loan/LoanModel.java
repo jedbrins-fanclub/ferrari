@@ -12,7 +12,10 @@ import java.sql.PreparedStatement;
  * Checked by:
  * Modified by:
  */
-public class LoanModel {
+public final class LoanModel {
+    // Private constructor to disallow instantiation
+    private LoanModel() {}
+
     /**
      * Creates a loan in the database based on the loan.
      * @param loan Loan containing all the data to add to database

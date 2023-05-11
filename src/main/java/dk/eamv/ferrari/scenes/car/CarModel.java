@@ -12,7 +12,10 @@ import java.sql.PreparedStatement;
  * Checked by:
  * Modified by:
  */
-public class CarModel {
+public final class CarModel {
+    // Private constructor to disallow instantiation
+    private CarModel() {}
+
     /**
      * Read a car from the database, based on the id.
      * @param id the id of the car to get from the database

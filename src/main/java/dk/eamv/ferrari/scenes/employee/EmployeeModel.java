@@ -12,7 +12,10 @@ import java.sql.SQLException;
  * Checked by:
  * Modified by:
  */
-public class EmployeeModel {
+public final class EmployeeModel {
+    // Private constructor to disallow instantiation
+    private EmployeeModel() {}
+
     /**
      * Creates a new employee in the database.
      * @param employee an Employee object containing all the employee data
