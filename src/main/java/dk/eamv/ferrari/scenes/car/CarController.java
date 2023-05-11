@@ -12,11 +12,11 @@ import javafx.collections.ObservableList;
 public class CarController {
 
     protected static FilteredTableBuilder<Car> filteredTableBuilder;
-    private static ObservableList<Car> cars = FXCollections.observableArrayList();
+    private static ObservableList<Car> cars = FXCollections.observableArrayList(CarModel.readAll());
 
     protected static void initFilterBuilder() {
         filteredTableBuilder = new FilteredTableBuilder<Car>()
-                .withData(fetchCars())
+                .withData(cars)
                 .withColumn("Stelnummer", Car::getId)
                 .withColumn("Model", Car::getModel)
                 .withColumn("Årgang", Car::getYear)
@@ -28,11 +28,6 @@ public class CarController {
 
     private static void buttonIsClicked(Car car) {
         System.out.println("Controller method is called with car: " + car);
-    }
-
-    protected static ObservableList<Car> fetchCars() {
-        cars.addAll(0, CarModel.readAll());
-        return cars;
     }
 
     //TODO: create car dialog calls this method

@@ -8,7 +8,7 @@ import java.util.ArrayList;
 public class CustomerController {
 
     protected static FilteredTableBuilder<Customer> filteredTableBuilder;
-    private static final ObservableList<Customer> customers = FXCollections.observableArrayList(fetchCustomers());
+    private static final ObservableList<Customer> customers = FXCollections.observableArrayList(CustomerModel.readAll());
 
     protected static void initFilterBuilder() {
         filteredTableBuilder = new FilteredTableBuilder<Customer>()
@@ -23,10 +23,6 @@ public class CustomerController {
                 .withButtonColumn("", "Ny låneaftale", CustomerController::createLoan)
                 .withButtonColumn("", "Rediger", CustomerView::showEditCustomerDialog)
                 .withButtonColumn("", "Slet", CustomerController::deleteCustomer);
-    }
-
-    protected static ArrayList<Customer> fetchCustomers() {
-        return CustomerModel.readAll();
     }
 
     protected static void createCustomer(Customer customer) {
