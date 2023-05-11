@@ -1,7 +1,7 @@
 package dk.eamv.ferrari.scenes.customer;
 
 import dk.eamv.ferrari.sharedcomponents.filter.FilteredTableBuilder;
-import dk.eamv.ferrari.sharedcomponents.filter.forms.FormFactory;
+import dk.eamv.ferrari.sharedcomponents.forms.FormFactory;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import java.util.ArrayList;
@@ -9,7 +9,6 @@ import java.util.ArrayList;
 public class CustomerController {
 
     protected static FilteredTableBuilder<Customer> filteredTableBuilder;
-    private static final ObservableList<Customer> customers = FXCollections.observableArrayList(CustomerModel.readAll());
     private static final ObservableList<Customer> customers = FXCollections.observableArrayList(CustomerModel.readAll());
 
     protected static void initFilterBuilder() {
@@ -47,10 +46,6 @@ public class CustomerController {
     protected static void createLoan(Customer customer) {
         //TODO: Open dialog to create loan agreement for this customer
         System.out.println("opening new loan dialog for customer: " + customer.getId());
-    }
-
-    public static ObservableList<Customer> getCustomers() {
-        return customers;
     }
 
     public static ObservableList<Customer> getCustomers() {
