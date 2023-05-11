@@ -1,10 +1,19 @@
-package dk.eamv.ferrari.sharedcomponents.filter.forms;
+package dk.eamv.ferrari.sharedcomponents.forms;
 
 import java.util.ArrayList;
 
+import dk.eamv.ferrari.scenes.car.Car;
+import dk.eamv.ferrari.scenes.car.CarController;
+import dk.eamv.ferrari.scenes.customer.CustomerController;
+import dk.eamv.ferrari.sharedcomponents.nodes.AutoCompleteCB;
+import dk.eamv.ferrari.sharedcomponents.nodes.NumericTextField;
+import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.skin.ComboBoxListViewSkin;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 
@@ -16,12 +25,14 @@ import javafx.scene.layout.VBox;
 public class Form {
     private GridPane gridPane;
     private ArrayList<TextField> fieldsList;
+    private ArrayList<ComboBox<?>> boxList;
     private int column;
     private int row;
 
     private Form() {
         gridPane = createGridPane();
         fieldsList = new ArrayList<TextField>();
+        boxList = new ArrayList<ComboBox<?>>();
         column = 0;
         row = 0;
     }
@@ -43,9 +54,21 @@ public class Form {
         return fieldsList;
     }
 
-    protected boolean hasFilledFields() {
+    protected ArrayList<ComboBox<?>> getBoxlist() {
+        return boxList;
+    }
+
+    protected boolean hasFilledFields(Form form) {
         for (TextField i : fieldsList) {
             if (i.getText().isEmpty()) {
+                FormWrapper.setFieldsRed(form);
+                return false;
+            }
+        }
+        
+        for (ComboBox i : boxList) {
+            if (i.getSelectionModel().getSelectedItem() == null) {
+                FormWrapper.setFieldsRed(form);
                 return false;
             }
         }
@@ -140,6 +163,26 @@ public class Form {
             return this;
         }
 
+        protected Builder withDropDownBoxes(Form form, ObservableList<?> content, int column, int row, String... input) {
+            for (String i : input) {
+                VBox vBox = new VBox();
+                Label heading = new Label(i);
+                ComboBox<?> dropDown = AutoCompleteCB.create(content);
+                vBox.getChildren().addAll(heading, dropDown);
+                if (column > 2) {
+                    column = 0;
+                    row++;
+                }
+                this.form.getGridPane().add(vBox, column, row);
+                this.form.boxList.add(dropDown);
+                column++;
+            }
+
+            form.setColumn(column);
+            form.setRow(row);
+            return this;
+        }
+        
         protected Form build() {
             return form;
         }
@@ -162,9 +205,11 @@ public class Form {
 
         protected Form buildLoanForm() {
             form = new Form.Builder()
-                .withFieldsInt(this.form, 0, 0, "Stelnummer", "Kunde CPR", "Lånets størrelse", "Udbetaling")
-                .withFieldsInt(this.form, this.form.getColumn(), this.form.getRow(), "Rente", "Start dato", "Forfaldsdag")
-                .build();
+                    .withFieldsInt(this.form, 0, 0, "Stelnummer", "Kunde CPR", "Lånets størrelse", "Udbetaling")
+                    .withFieldsInt(this.form, this.form.getColumn(), this.form.getRow(), "Rente", "Start dato", "Forfaldsdag")
+                    .withDropDownBoxes(this.form, CarController.getCars(), this.form.getColumn(), this.form.getRow(),"Bil")
+                    .withDropDownBoxes(this.form, CustomerController.getCustomers(), this.form.getColumn(), this.form.getRow(), "Kunde")
+                    .build();
             return form;
         }
     }

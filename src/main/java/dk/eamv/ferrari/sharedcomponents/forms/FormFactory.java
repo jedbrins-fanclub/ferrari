@@ -1,4 +1,4 @@
-package dk.eamv.ferrari.sharedcomponents.filter.forms;
+package dk.eamv.ferrari.sharedcomponents.forms;
 
 import javafx.scene.control.Dialog;
 

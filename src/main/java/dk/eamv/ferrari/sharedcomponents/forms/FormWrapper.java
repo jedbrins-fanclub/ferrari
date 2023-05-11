@@ -1,4 +1,4 @@
-package dk.eamv.ferrari.sharedcomponents.filter.forms;
+package dk.eamv.ferrari.sharedcomponents.forms;
 
 import java.util.ArrayList;
 import java.sql.Date;
@@ -14,6 +14,9 @@ import dk.eamv.ferrari.scenes.loan.LoanModel;
 import dk.eamv.ferrari.scenes.loan.LoanStatus;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -44,7 +47,7 @@ public final class FormWrapper {
             //TODO: Loan should be considered a placeholder until MVP is done, then think of a better implementation.
             case LOAN:
                 buttonOK.setOnMouseClicked(e -> {
-                    if (form.hasFilledFields()) {
+                    if (form.hasFilledFields(form)) {
                         dialog.setResult(true);
                         //TODO: The ID's should be gotten from a dropdown menu that queries the relative table, instead of random.
                         //TODO: Consider if this should be autoincremented in DB instead, else add a field for manual ID input.
@@ -66,14 +69,13 @@ public final class FormWrapper {
                         dialog.close();
                     } else {
                         missingInput.setVisible(true);
-                        setFieldsRed(form);
                     }
                 });
                 break;
 
             case CUSTOMER:
                 buttonOK.setOnMouseClicked(e -> {
-                    if (form.hasFilledFields()) {
+                    if (form.hasFilledFields(form)) {
                         dialog.setResult(true);
                         String firstName = getString(form, 0);
                         String lastName = getString(form, 1);
@@ -86,14 +88,13 @@ public final class FormWrapper {
                         dialog.close();
                     } else {
                         missingInput.setVisible(true);
-                        setFieldsRed(form);
                     }
                 });
                 break;
 
             case CAR:
                 buttonOK.setOnMouseClicked(e -> {
-                    if (form.hasFilledFields()) {
+                    if (form.hasFilledFields(form)) {
                         dialog.setResult(true);
                         int frameNumber = getInt(form, 2);
                         String model = getString(form, 3);
@@ -105,7 +106,6 @@ public final class FormWrapper {
                         dialog.close();
                     } else {
                         missingInput.setVisible(true);
-                        setFieldsRed(form);
                     }
                 });
                 break;
@@ -124,15 +124,23 @@ public final class FormWrapper {
         return dialog;
     }
     
-    private static void setFieldsRed(Form form) {
+    protected static void setFieldsRed(Form form) {
+        String redStyle = """
+                    -fx-prompt-text-fill: F50000;
+                    -fx-background-color: #f7adb1;
+                    -fx-border-color: F50000;
+                """;
         ArrayList<TextField> fieldsList = form.getFieldsList();
+        ArrayList<ComboBox<?>> boxList = form.getBoxlist();
         for (TextField textField : fieldsList) {
             if (textField.getText().isEmpty()) {
-                textField.setStyle("""
-                            -fx-prompt-text-fill: F50000;
-                            -fx-background-color: #f7adb1;
-                            -fx-border-color: F50000;
-                        """);
+                textField.setStyle(redStyle);
+            }
+        }
+
+        for (ComboBox comboBox : boxList) {
+            if (comboBox.getSelectionModel().getSelectedItem() == null) {
+                comboBox.setStyle(redStyle);
             }
         }
     }

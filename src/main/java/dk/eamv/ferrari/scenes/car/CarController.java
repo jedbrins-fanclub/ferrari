@@ -1,7 +1,7 @@
 package dk.eamv.ferrari.scenes.car;
 
 import dk.eamv.ferrari.sharedcomponents.filter.FilteredTableBuilder;
-import dk.eamv.ferrari.sharedcomponents.filter.forms.FormFactory;
+import dk.eamv.ferrari.sharedcomponents.forms.FormFactory;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -12,7 +12,7 @@ import javafx.collections.ObservableList;
 public class CarController {
 
     protected static FilteredTableBuilder<Car> filteredTableBuilder;
-    private static ObservableList<Car> cars = FXCollections.observableArrayList();
+    private static ObservableList<Car> cars = FXCollections.observableArrayList(CarModel.readAll());
 
     protected static void initFilterBuilder() {
         filteredTableBuilder = new FilteredTableBuilder<Car>()
