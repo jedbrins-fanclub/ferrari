@@ -82,7 +82,7 @@ public class LoanView {
     private static void initButtonCreate() {
         buttonCreate = new Button("Opret ny låneaftale");
 
-        buttonCreate.setOnAction(e -> {}); //TODO: open dialog here
+        buttonCreate.setOnAction(e -> LoanController.createLoan());
     }
 
     private static void initButtonEdit() {
