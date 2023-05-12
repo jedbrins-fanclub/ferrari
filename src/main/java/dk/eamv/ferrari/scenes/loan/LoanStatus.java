@@ -55,4 +55,8 @@ public class LoanStatus {
             default        -> "Invalid";
         };
     }
+
+    public LoanState getState() {
+        return state;
+    }
 }
