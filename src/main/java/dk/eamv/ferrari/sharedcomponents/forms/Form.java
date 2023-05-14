@@ -197,7 +197,7 @@ public class Form {
 
         protected Form buildCarForm() {
             form = new Form.Builder()
-                .withFieldsInt(this.form, 0, 0, "Årgang", "Pris", "Stelnummer")
+                .withFieldsInt(this.form, 0, 0, "Årgang", "Pris")
                 .withFieldsString(this.form, this.form.getColumn(), this.form.getRow(), "Model")
                 .build();
             return form;
