@@ -72,6 +72,7 @@ public class Form {
                 fieldsAreValid = false;
             } else {
                 widget.setStyle(null);
+                FormWrapper.getMissingInput().setVisible(true);
             }
         }
 
@@ -81,6 +82,7 @@ public class Form {
                 fieldsAreValid = false;
             } else {
                 widget.setStyle(null);
+                FormWrapper.getMissingInput().setVisible(true);
             }
         }
 

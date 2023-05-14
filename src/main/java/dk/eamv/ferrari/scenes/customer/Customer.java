@@ -1,5 +1,7 @@
 package dk.eamv.ferrari.scenes.customer;
 
+import java.util.ArrayList;
+
 public class Customer {
 
     private int id;
@@ -85,6 +87,18 @@ public class Customer {
 
     public void setCpr(String cpr) {
         this.cpr = cpr;
+    }
+
+    public ArrayList<String> getPropperties() {
+        ArrayList<String> propperties = new ArrayList<String>();
+        propperties.add(firstName);
+        propperties.add(lastName);
+        propperties.add(phoneNumber);
+        propperties.add(email);
+        propperties.add(address);
+        propperties.add(cpr);
+
+        return propperties;
     }
 
     @Override

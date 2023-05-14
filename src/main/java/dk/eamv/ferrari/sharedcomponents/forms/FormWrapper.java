@@ -15,7 +15,6 @@ import dk.eamv.ferrari.scenes.loan.LoanModel;
 import dk.eamv.ferrari.scenes.loan.LoanStatus;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -30,7 +29,48 @@ public final class FormWrapper {
      * Checks if all fields are full, then ok button runs the query into the database.
      */
 
+    private static Label missingInput = new Label("Fejl: manglede input");
+
     protected static Dialog wrapCreate(Form form, CRUDType type) {
+        Button buttonOK = new Button("OK");
+        Dialog dialog = createStandardDialog(form, buttonOK);
+
+        setCreateMouseListener(type, buttonOK, form, dialog);
+
+        return dialog;
+    }
+
+    protected static Dialog wrapUpdate(Form form, Car car) {
+        Button buttonOK = new Button("OK");
+        Dialog dialog = createStandardDialog(form, buttonOK);
+        setFieldsCar(form, car);
+        buttonOK.setOnMouseClicked(e -> {
+            if (form.verifyFilledFields()) {
+                Car newCar = getFieldsCar(form, dialog); //create new object based on updated fields.
+                newCar.setId(car.getId()); //set the new objects id to the old, so that .update() targets correct ID in DB.
+                CarModel.update(newCar); //update in DB     
+            } 
+        });
+
+        return dialog;
+    }
+
+    protected static Dialog wrapUpdate(Form form, Customer customer) {
+        Button buttonOK = new Button("OK");
+        Dialog dialog = createStandardDialog(form, buttonOK);
+        setFieldsCustomer(form, customer);
+        buttonOK.setOnMouseClicked(e -> {
+            if (form.verifyFilledFields()) {
+                Customer newCustomer = getFieldsCustomer(form, dialog); //create new object based on updated fields.
+                newCustomer.setId(customer.getId()); //set the new objects id to the old, so that .update() targets correct ID in DB.
+                CustomerModel.update(newCustomer); //update in DB     
+            } 
+        });
+
+        return dialog;
+    }
+
+    private static Dialog createStandardDialog(Form form, Button buttonOK) {
         Dialog dialog = new Dialog<>();
 
         // Close the dialog when pressing X
@@ -38,16 +78,24 @@ public final class FormWrapper {
         Window window = dialog.getDialogPane().getScene().getWindow();
         window.setOnCloseRequest(event -> window.hide());
 
-        Label missingInput = new Label("Fejl: manglede input");
         missingInput.setVisible(false);
         missingInput.setPadding(new Insets(0, 0, 0, 100));
-        Button buttonOK = new Button("OK");
         Button buttonCancel = new Button("Cancel");
         buttonCancel.setOnMouseClicked(e -> {
             dialog.setResult(true);
             dialog.close();
         });
+        HBox buttons = new HBox(buttonCancel, buttonOK, missingInput);
+        buttons.setSpacing(25);
+        VBox vBox = new VBox(form.getGridPane(), buttons);
+        vBox.setSpacing(50);
+        dialog.getDialogPane().setContent(vBox);
+        dialog.setResizable(true);
 
+        return dialog;
+    }
+
+    private static void setCreateMouseListener(CRUDType type, Button buttonOK, Form form, Dialog dialog) {
         switch (type) {
             case LOAN:
                 buttonOK.setOnMouseClicked(e -> {
@@ -68,46 +116,26 @@ public final class FormWrapper {
                         LoanController.getLoans().add(loan);
                         LoanModel.create(loan);
                         dialog.close();
-                    } else {
-                        missingInput.setVisible(true);
-                    }
+                    } 
                 });
                 break;
 
             case CUSTOMER:
                 buttonOK.setOnMouseClicked(e -> {
                     if (form.verifyFilledFields()) {
-                        dialog.setResult(true);
-                        String firstName = getString(form, 0);
-                        String lastName = getString(form, 1);
-                        String phoneNumber = getString(form, 4);
-                        String email = getString(form, 2);
-                        String address = getString(form, 3);
-                        String cpr = getString(form, 5);
-                        Customer customer = new Customer(firstName, lastName, phoneNumber, email, address, cpr);
-                        CustomerController.getCustomers().add(customer); //add to TableView
-                        CustomerModel.create(customer); //add to DB
-                        dialog.close();
-                    } else {
-                        missingInput.setVisible(true);
-                    }
+                        Customer customer = getFieldsCustomer(form, dialog);
+                        CustomerController.getCustomers().add(customer);
+                        CustomerModel.create(customer);
+                    } 
                 });
                 break;
 
             case CAR:
                 buttonOK.setOnMouseClicked(e -> {
                     if (form.verifyFilledFields()) {
-                        dialog.setResult(true);
-                        int frameNumber = getInt(form, 2);
-                        String model = getString(form, 3);
-                        int year = getInt(form, 0);
-                        double price = getDouble(form, 1);
-                        Car car = new Car(frameNumber, model, year, price);
-                        dialog.close();
-                        CarController.getCars().add(car); //add to TableView
-                        CarModel.create(car); //add to DB
-                    } else {
-                        missingInput.setVisible(true);
+                        Car car = getFieldsCar(form, dialog);
+                        CarController.getCars().add(car);
+                        CarModel.create(car);
                     }
                 });
                 break;
@@ -115,88 +143,39 @@ public final class FormWrapper {
             default:
                 break;
         }
-
-        HBox buttons = new HBox(buttonCancel, buttonOK, missingInput);
-        buttons.setSpacing(25);
-        VBox vBox = new VBox(form.getGridPane(), buttons);
-        vBox.setSpacing(50);
-        dialog.getDialogPane().setContent(vBox);
-        dialog.setResizable(true);
-
-        return dialog;
-    }
-
-    protected static Dialog wrapUpdate(Form form, Car car) {
-        Dialog dialog = new Dialog<>();
-
-        Label missingInput = new Label("Fejl: manglede input");
-        missingInput.setVisible(false);
-        missingInput.setPadding(new Insets(0, 0, 0, 100));
-        Button buttonOK = new Button("OK");
-        Button buttonCancel = new Button("Cancel");
-        buttonCancel.setOnMouseClicked(e -> {
-            dialog.setResult(true);
-            dialog.close();
-        });
-        setFieldsCar(form, car);
-        buttonOK.setOnMouseClicked(e -> {
-            if (form.verifyFilledFields()) {
-                Car newCar = getFieldsCar(form, dialog); //create new object based on updated fields.
-                newCar.setId(car.getId()); //set the new objects id to the old, so that .update() targets correct ID in DB.
-                CarModel.update(newCar); //update in DB     
-            } else {
-                missingInput.setVisible(true);
-            }
-        });
-
-        HBox buttons = new HBox(buttonCancel, buttonOK, missingInput);
-        buttons.setSpacing(25);
-        VBox vBox = new VBox(form.getGridPane(), buttons);
-        vBox.setSpacing(50);
-        dialog.getDialogPane().setContent(vBox);
-        dialog.setResizable(true);
-
-        return dialog;
-    }
-    
-    protected static void setFieldsRed(Form form) {
-        String redStyle = """
-                    -fx-prompt-text-fill: F50000;
-                    -fx-background-color: #f7adb1;
-                    -fx-border-color: F50000;
-                """;
-        ArrayList<TextField> fieldsList = form.getFieldsList();
-        ArrayList<ComboBox<?>> boxList = form.getBoxlist();
-        for (TextField textField : fieldsList) {
-            if (textField.getText().isEmpty()) {
-                textField.setStyle(redStyle);
-            }
-        }
-
-        for (ComboBox comboBox : boxList) {
-            if (comboBox.getSelectionModel().getSelectedItem() == null) {
-                comboBox.setStyle(redStyle);
-            }
-        }
     }
 
     private static void setFieldsCar(Form form, Car car) {
         ArrayList<String> input = car.getPropperties();
-        for (int i = 0; i < form.getFieldsList().size(); i++) {
-            form.getFieldsList().get(i).setText(input.get(i));
+        ArrayList<TextField> fieldsList = form.getFieldsList();
+        for (int i = 0; i < fieldsList.size(); i++) {
+            fieldsList.get(i).setText(input.get(i));
         }
     }
 
     private static Car getFieldsCar(Form form, Dialog dialog) {
         dialog.setResult(true);
-        String model = getString(form, 2);
-        int year = getInt(form, 0);
-        double price = getDouble(form, 1);
-        Car car = new Car(model, year, price);
         dialog.close();
+        Car car = new Car(getString(form, 2), getInt(form, 0), getDouble(form, 1));
 
         return car;
     }
+
+    private static void setFieldsCustomer(Form form, Customer customer) {
+        ArrayList<String> input = customer.getPropperties();
+        ArrayList<TextField> fieldsList = form.getFieldsList();
+        for (int i = 0; i < fieldsList.size(); i++) {
+            fieldsList.get(i).setText(input.get(i));
+        }
+    }
+
+    private static Customer getFieldsCustomer(Form form, Dialog dialog) {
+        dialog.setResult(true);
+        dialog.close();
+        Customer customer = new Customer(null, null, null, null, null, null);
+
+        return customer;
+    }  
     
     private static String getString(Form form, int index) {
         return form.getFieldsList().get(index).getText();
@@ -208,5 +187,9 @@ public final class FormWrapper {
 
     private static double getDouble(Form form, int index) {
         return Double.valueOf(form.getFieldsList().get(index).getText());
+    }
+
+    protected static Label getMissingInput() {
+        return missingInput;
     }
 }
