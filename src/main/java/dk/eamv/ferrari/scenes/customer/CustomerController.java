@@ -31,7 +31,7 @@ public class CustomerController {
     }
 
     protected static void updateCustomer(Customer customer) {
-        //TODO: Open dialog to update this customer
+        FormFactory.updateCustomerFormDialogBox(customer);
 
         CustomerView.refreshTableView();
     }

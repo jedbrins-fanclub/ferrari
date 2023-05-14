@@ -106,7 +106,7 @@ public class CustomerView {
     }
 
     protected static void showEditCustomerDialog(Customer selectedCustomer) {
-        //TODO: Insert dialog for editing customers here
+        CustomerController.updateCustomer(selectedCustomer);
     }
 
     public static void refreshTableView() {

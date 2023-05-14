@@ -1,6 +1,7 @@
 package dk.eamv.ferrari.sharedcomponents.forms;
 
 import dk.eamv.ferrari.scenes.car.Car;
+import dk.eamv.ferrari.scenes.customer.Customer;
 import javafx.scene.control.Dialog;
 
 public final class FormFactory {
@@ -30,6 +31,12 @@ public final class FormFactory {
 
     public static void updateCarFormDialogBox(Car car) {
         Dialog<Void> dialog = FormWrapper.wrapUpdate(builder.buildCarForm(), car);
+        dialog.setTitle("Opdater bil");
+        dialog.show();
+    }
+
+    public static void updateCustomerFormDialogBox(Customer customer) {
+        Dialog<Void> dialog = FormWrapper.wrapUpdate(builder.buildCustomerForm(), customer);
         dialog.setTitle("Opdater bil");
         dialog.show();
     }

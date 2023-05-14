@@ -202,8 +202,10 @@ public class Form {
 
         protected Form buildCustomerForm() {
             form = new Form.Builder()
-                .withFieldsString(this.form, 0, 0, "Fornavn", "Efternavn", "Email", "Adresse")
-                .withFieldsInt(this.form, this.form.getColumn(), this.form.getRow(), "Telefonnummer", "CPR")
+                .withFieldsString(this.form, 0, 0, "Fornavn", "Efternavn")
+                .withFieldsInt(this.form, this.form.getColumn(), this.form.getRow(), "Telefonnummer")
+                .withFieldsString(this.form, this.form.getColumn(), this.form.getRow(), "Email", "Adresse")
+                .withFieldsInt(this.form, this.form.getColumn(), this.form.getRow(), "CPR")
                 .build();
             return form;
         }
