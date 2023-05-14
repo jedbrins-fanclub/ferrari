@@ -9,10 +9,12 @@ import dk.eamv.ferrari.scenes.car.CarModel;
 import dk.eamv.ferrari.scenes.customer.Customer;
 import dk.eamv.ferrari.scenes.customer.CustomerController;
 import dk.eamv.ferrari.scenes.customer.CustomerModel;
+import dk.eamv.ferrari.scenes.customer.CustomerView;
 import dk.eamv.ferrari.scenes.loan.Loan;
 import dk.eamv.ferrari.scenes.loan.LoanController;
 import dk.eamv.ferrari.scenes.loan.LoanModel;
 import dk.eamv.ferrari.scenes.loan.LoanStatus;
+import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.Dialog;
@@ -48,7 +50,13 @@ public final class FormWrapper {
             if (form.verifyFilledFields()) {
                 Car newCar = getFieldsCar(form, dialog); //create new object based on updated fields.
                 newCar.setId(car.getId()); //set the new objects id to the old, so that .update() targets correct ID in DB.
-                CarModel.update(newCar); //update in DB     
+                CarModel.update(newCar); //update in DB  
+                
+                //update in TableView
+                ObservableList<Car> cars = CarController.getCars();
+                int index = cars.indexOf(car);
+                cars.remove(index);
+                cars.add(index, newCar);   
             } 
         });
 
@@ -63,8 +71,14 @@ public final class FormWrapper {
             if (form.verifyFilledFields()) {
                 Customer newCustomer = getFieldsCustomer(form, dialog); //create new object based on updated fields.
                 newCustomer.setId(customer.getId()); //set the new objects id to the old, so that .update() targets correct ID in DB.
-                CustomerModel.update(newCustomer); //update in DB     
-            } 
+                CustomerModel.update(newCustomer); //update in DB   
+
+                //update in TableView 
+                ObservableList<Customer> customers = CustomerController.getCustomers();
+                int index = customers.indexOf(customer);
+                customers.remove(index);
+                customers.add(index, newCustomer); 
+            }
         });
 
         return dialog;
@@ -172,7 +186,7 @@ public final class FormWrapper {
     private static Customer getFieldsCustomer(Form form, Dialog dialog) {
         dialog.setResult(true);
         dialog.close();
-        Customer customer = new Customer(null, null, null, null, null, null);
+        Customer customer = new Customer(getString(form, 0), getString(form, 1), getString(form, 2), getString(form, 3), getString(form, 4), getString(form, 5));
 
         return customer;
     }  
