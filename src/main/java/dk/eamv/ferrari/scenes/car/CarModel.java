@@ -91,6 +91,8 @@ public final class CarModel {
             statement.setInt(2, car.getYear());
             statement.setDouble(3, car.getPrice());
             statement.setInt(4, car.getId());
+
+            statement.executeUpdate();
         } catch (SQLException exception) {
             exception.printStackTrace();
         }
