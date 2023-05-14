@@ -21,6 +21,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.stage.Window;
 
 public final class FormWrapper {
     /*
@@ -31,6 +32,11 @@ public final class FormWrapper {
 
     protected static Dialog wrapCreate(Form form, CRUDType type) {
         Dialog dialog = new Dialog<>();
+
+        // Close the dialog when pressing X
+        // https://stackoverflow.com/a/36262208
+        Window window = dialog.getDialogPane().getScene().getWindow();
+        window.setOnCloseRequest(event -> window.hide());
 
         Label missingInput = new Label("Fejl: manglede input");
         missingInput.setVisible(false);
@@ -45,7 +51,7 @@ public final class FormWrapper {
         switch (type) {
             case LOAN:
                 buttonOK.setOnMouseClicked(e -> {
-                    if (form.hasFilledFields(form)) {
+                    if (form.verifyFilledFields()) {
                         dialog.setResult(true);
                         //TODO: Actual implementation of selection from AutoCompleteCB
                         int carID = (int) Math.random() * 100000;
@@ -70,7 +76,7 @@ public final class FormWrapper {
 
             case CUSTOMER:
                 buttonOK.setOnMouseClicked(e -> {
-                    if (form.hasFilledFields(form)) {
+                    if (form.verifyFilledFields()) {
                         dialog.setResult(true);
                         String firstName = getString(form, 0);
                         String lastName = getString(form, 1);
@@ -90,7 +96,7 @@ public final class FormWrapper {
 
             case CAR:
                 buttonOK.setOnMouseClicked(e -> {
-                    if (form.hasFilledFields(form)) {
+                    if (form.verifyFilledFields()) {
                         dialog.setResult(true);
                         int frameNumber = getInt(form, 2);
                         String model = getString(form, 3);
@@ -132,12 +138,9 @@ public final class FormWrapper {
             dialog.setResult(true);
             dialog.close();
         });
-        //Fill fields here
-        form.getFieldsList().get(0).setText(Integer.toString(car.getYear()));
-        form.getFieldsList().get(1).setText(Double.toString(car.getPrice()));
-        form.getFieldsList().get(2).setText(car.getModel());
+        setFieldsCar(form, car);
         buttonOK.setOnMouseClicked(e -> {
-            if (form.hasFilledFields(form)) {
+            if (form.verifyFilledFields()) {
                 Car newCar = getFieldsCar(form, dialog); //create new object based on updated fields.
                 newCar.setId(car.getId()); //set the new objects id to the old, so that .update() targets correct ID in DB.
                 CarModel.update(newCar); //update in DB     
@@ -174,6 +177,13 @@ public final class FormWrapper {
             if (comboBox.getSelectionModel().getSelectedItem() == null) {
                 comboBox.setStyle(redStyle);
             }
+        }
+    }
+
+    private static void setFieldsCar(Form form, Car car) {
+        ArrayList<String> input = car.getPropperties();
+        for (int i = 0; i < form.getFieldsList().size(); i++) {
+            form.getFieldsList().get(i).setText(input.get(i));
         }
     }
 
