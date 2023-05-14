@@ -58,22 +58,33 @@ public class Form {
         return boxList;
     }
 
-    protected boolean hasFilledFields(Form form) {
-        for (TextField i : fieldsList) {
-            if (i.getText().isEmpty()) {
-                FormWrapper.setFieldsRed(form);
-                return false;
-            }
-        }
+    protected boolean verifyFilledFields() {
+        String redStyle = """
+            -fx-prompt-text-fill: F50000;
+            -fx-background-color: #f7adb1;
+            -fx-border-color: F50000;
+        """;
         
-        for (ComboBox i : boxList) {
-            if (i.getSelectionModel().getSelectedItem() == null) {
-                FormWrapper.setFieldsRed(form);
-                return false;
+        boolean fieldsAreValid = true;
+        for (TextField widget : fieldsList) {
+            if (widget.getText().isEmpty()) {
+                widget.setStyle(redStyle);
+                fieldsAreValid = false;
+            } else {
+                widget.setStyle(null);
             }
         }
 
-        return true;
+        for (ComboBox<?> widget : boxList) {
+            if (widget.getSelectionModel().getSelectedItem() == null) {
+                widget.setStyle(redStyle);
+                fieldsAreValid = false;
+            } else {
+                widget.setStyle(null);
+            }
+        }
+
+        return fieldsAreValid;
     }
 
     private void setColumn(int value) {
