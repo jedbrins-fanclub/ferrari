@@ -48,7 +48,7 @@ public final class FormWrapper {
             //TODO: Loan should be considered a placeholder until MVP is done, then think of a better implementation.
             case LOAN:
                 buttonOK.setOnMouseClicked(e -> {
-                    if (form.hasFilledFields(form)) {
+                    if (form.verifyFilledFields()) {
                         dialog.setResult(true);
                         //TODO: The ID's should be gotten from a dropdown menu that queries the relative table, instead of random.
                         //TODO: Consider if this should be autoincremented in DB instead, else add a field for manual ID input.
@@ -76,7 +76,7 @@ public final class FormWrapper {
 
             case CUSTOMER:
                 buttonOK.setOnMouseClicked(e -> {
-                    if (form.hasFilledFields(form)) {
+                    if (form.verifyFilledFields()) {
                         dialog.setResult(true);
                         String firstName = getString(form, 0);
                         String lastName = getString(form, 1);
@@ -96,7 +96,7 @@ public final class FormWrapper {
 
             case CAR:
                 buttonOK.setOnMouseClicked(e -> {
-                    if (form.hasFilledFields(form)) {
+                    if (form.verifyFilledFields()) {
                         dialog.setResult(true);
                         int frameNumber = getInt(form, 2);
                         String model = getString(form, 3);
@@ -124,27 +124,6 @@ public final class FormWrapper {
         dialog.setResizable(true);
 
         return dialog;
-    }
-    
-    protected static void setFieldsRed(Form form) {
-        String redStyle = """
-                    -fx-prompt-text-fill: F50000;
-                    -fx-background-color: #f7adb1;
-                    -fx-border-color: F50000;
-                """;
-        ArrayList<TextField> fieldsList = form.getFieldsList();
-        ArrayList<ComboBox<?>> boxList = form.getBoxlist();
-        for (TextField textField : fieldsList) {
-            if (textField.getText().isEmpty()) {
-                textField.setStyle(redStyle);
-            }
-        }
-
-        for (ComboBox comboBox : boxList) {
-            if (comboBox.getSelectionModel().getSelectedItem() == null) {
-                comboBox.setStyle(redStyle);
-            }
-        }
     }
     
     private static String getString(Form form, int index) {
