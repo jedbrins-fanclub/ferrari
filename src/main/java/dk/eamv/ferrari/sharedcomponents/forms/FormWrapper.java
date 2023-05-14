@@ -23,6 +23,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.stage.Window;
 
 public final class FormWrapper {
     /*
@@ -33,6 +34,11 @@ public final class FormWrapper {
 
     protected static Dialog wrap(Form form, CRUDType type) {
         Dialog dialog = new Dialog<>();
+
+        // Close the dialog when pressing X
+        // https://stackoverflow.com/a/36262208
+        Window window = dialog.getDialogPane().getScene().getWindow();
+        window.setOnCloseRequest(event -> window.hide());
 
         Label missingInput = new Label("Fejl: manglede input");
         missingInput.setVisible(false);
