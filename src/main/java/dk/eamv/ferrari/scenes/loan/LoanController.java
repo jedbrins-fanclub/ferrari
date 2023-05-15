@@ -29,7 +29,8 @@ public class LoanController {
                 .withColumn("Status", loan -> loan.getStatus().getDisplayName())
                 .withButtonColumn("", "Opdater status", LoanController::updateLoanStatus)
                 .withButtonColumn("", "Rediger", LoanView::showEditLoanDialog)
-                .withButtonColumn("", "Slet", LoanController::deleteLoan);
+                .withButtonColumn("", "Slet", LoanController::deleteLoan)
+                .withButtonColumn("", "Eksporter til CSV", LoanController::exportLoan);
     }
 
     protected static void createLoan() {
@@ -79,6 +80,10 @@ public class LoanController {
         dialog.setHeaderText("Vælg ny status for dette lån");
         dialog.getDialogPane().setContent(choiceBox);
         dialog.showAndWait();
+    }
+
+    private static void exportLoan(Loan loan) {
+        //TODO: Implement export to CSV here to export the selected loan which is passed as the parameter
     }
 
     public static ObservableList<Loan> getLoans() {
