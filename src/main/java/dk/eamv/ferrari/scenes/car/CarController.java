@@ -36,7 +36,7 @@ public class CarController {
     }
 
     protected static void updateCar(Car car) {
-        System.out.println("Call method in CarModel update car with id: " + car.getId());
+        FormFactory.updateCarFormDialogBox(car);
 
         CarView.refreshTableView();
     }

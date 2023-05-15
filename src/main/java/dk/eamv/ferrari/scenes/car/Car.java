@@ -1,6 +1,7 @@
 package dk.eamv.ferrari.scenes.car;
 
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 
 public class Car {
 
@@ -54,6 +55,15 @@ public class Car {
 
     public void setPrice(double price) {
         this.price = price;
+    }
+
+    public ArrayList<String> getPropperties() {
+        ArrayList<String> propperties = new ArrayList<String>();
+        propperties.add(String.valueOf(year));
+        propperties.add(String.valueOf(price));
+        propperties.add(model);
+
+        return propperties;
     }
 
     @Override

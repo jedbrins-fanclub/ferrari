@@ -72,6 +72,7 @@ public class Form {
                 fieldsAreValid = false;
             } else {
                 widget.setStyle(null);
+                FormWrapper.getMissingInput().setVisible(true);
             }
         }
 
@@ -81,6 +82,7 @@ public class Form {
                 fieldsAreValid = false;
             } else {
                 widget.setStyle(null);
+                FormWrapper.getMissingInput().setVisible(true);
             }
         }
 
@@ -200,15 +202,17 @@ public class Form {
 
         protected Form buildCustomerForm() {
             form = new Form.Builder()
-                .withFieldsString(this.form, 0, 0, "Fornavn", "Efternavn", "Email", "Adresse")
-                .withFieldsInt(this.form, this.form.getColumn(), this.form.getRow(), "Telefonnummer", "CPR")
+                .withFieldsString(this.form, 0, 0, "Fornavn", "Efternavn")
+                .withFieldsInt(this.form, this.form.getColumn(), this.form.getRow(), "Telefonnummer")
+                .withFieldsString(this.form, this.form.getColumn(), this.form.getRow(), "Email", "Adresse")
+                .withFieldsInt(this.form, this.form.getColumn(), this.form.getRow(), "CPR")
                 .build();
             return form;
         }
 
         protected Form buildCarForm() {
             form = new Form.Builder()
-                .withFieldsInt(this.form, 0, 0, "Årgang", "Pris", "Stelnummer")
+                .withFieldsInt(this.form, 0, 0, "Årgang", "Pris")
                 .withFieldsString(this.form, this.form.getColumn(), this.form.getRow(), "Model")
                 .build();
             return form;
