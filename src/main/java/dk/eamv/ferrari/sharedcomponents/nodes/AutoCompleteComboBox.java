@@ -10,10 +10,10 @@ import javafx.collections.transformation.FilteredList;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 
-public class AutocompleteComboBox<E> extends ComboBox<String> {
+public class AutoCompleteComboBox<E> extends ComboBox<String> {
     private HashMap<String, E> map = new HashMap<String, E>();
 
-    public AutocompleteComboBox(ObservableList<E> content) {
+    public AutoCompleteComboBox(ObservableList<E> content) {
         setEditable(true);
 
         ArrayList<String> items = new ArrayList<String>();

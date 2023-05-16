@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import dk.eamv.ferrari.scenes.car.Car;
 import dk.eamv.ferrari.scenes.car.CarController;
 import dk.eamv.ferrari.scenes.customer.CustomerController;
-import dk.eamv.ferrari.sharedcomponents.nodes.AutocompleteComboBox;
+import dk.eamv.ferrari.sharedcomponents.nodes.AutoCompleteComboBox;
 import dk.eamv.ferrari.sharedcomponents.nodes.NumericTextField;
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
@@ -22,14 +22,14 @@ import javafx.scene.layout.VBox;
 public class Form {
     private GridPane gridPane;
     private ArrayList<TextField> fieldsList;
-    private ArrayList<AutocompleteComboBox<?>> boxList;
+    private ArrayList<AutoCompleteComboBox<?>> boxList;
     private int column;
     private int row;
 
     private Form() {
         gridPane = createGridPane();
         fieldsList = new ArrayList<TextField>();
-        boxList = new ArrayList<AutocompleteComboBox<?>>();
+        boxList = new ArrayList<AutoCompleteComboBox<?>>();
         column = 0;
         row = 0;
     }
@@ -51,7 +51,7 @@ public class Form {
         return fieldsList;
     }
 
-    protected ArrayList<AutocompleteComboBox<?>> getBoxlist() {
+    protected ArrayList<AutoCompleteComboBox<?>> getBoxlist() {
         return boxList;
     }
 
@@ -73,7 +73,7 @@ public class Form {
             }
         }
 
-        for (AutocompleteComboBox<?> widget : boxList) {
+        for (AutoCompleteComboBox<?> widget : boxList) {
             if (widget.getSelectionModel().getSelectedItem() == null) {
                 widget.setStyle(redStyle);
                 fieldsAreValid = false;
@@ -177,7 +177,7 @@ public class Form {
             for (String i : input) {
                 VBox vBox = new VBox();
                 Label heading = new Label(i);
-                AutocompleteComboBox<E> dropDown = new AutocompleteComboBox<E>(content);
+                AutoCompleteComboBox<E> dropDown = new AutoCompleteComboBox<E>(content);
                 vBox.getChildren().addAll(heading, dropDown);
                 if (column > 2) {
                     column = 0;

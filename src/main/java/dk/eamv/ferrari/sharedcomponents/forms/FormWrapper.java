@@ -14,7 +14,7 @@ import dk.eamv.ferrari.scenes.loan.Loan;
 import dk.eamv.ferrari.scenes.loan.LoanController;
 import dk.eamv.ferrari.scenes.loan.LoanModel;
 import dk.eamv.ferrari.scenes.loan.LoanStatus;
-import dk.eamv.ferrari.sharedcomponents.nodes.AutocompleteComboBox;
+import dk.eamv.ferrari.sharedcomponents.nodes.AutoCompleteComboBox;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
