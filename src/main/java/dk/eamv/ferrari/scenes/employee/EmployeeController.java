@@ -17,7 +17,7 @@ public class EmployeeController {
                 .withColumn("Fornavn", Employee::getFirstName)
                 .withColumn("Efternavn", Employee::getLastName)
                 .withColumn("Telefonnummer", Employee::getPhoneNumber)
-                .withColumn("Email", Employee::getPhoneNumber)
+                .withColumn("Email", Employee::getEmail)
                 .withColumn("Max lån", Employee::getMaxLoan)
                 .withButtonColumn("", "Rediger", EmployeeView::showEditEmployeeDialog)
                 .withButtonColumn("", "Slet", EmployeeController::deleteEmployee);

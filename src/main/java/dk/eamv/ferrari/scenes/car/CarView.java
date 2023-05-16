@@ -91,7 +91,7 @@ public class CarView {
     }
 
     private static void initButtonCreate() {
-        buttonCreate = new Button("Create new car");
+        buttonCreate = new Button("Opret ny bil");
         
         buttonCreate.setOnAction(e -> CarController.createCar());
     }
