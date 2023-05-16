@@ -32,7 +32,7 @@ public final class FormWrapper {
      * Checks if all fields are full, then ok button runs the query into the database.
      */
 
-    private static Label missingInput = new Label("Fejl: manglede input");
+    private static Label errorLabel = new Label();
 
     protected static Dialog wrapCreate(Form form, CRUDType type) {
         Button buttonOK = new Button("OK");
@@ -93,14 +93,14 @@ public final class FormWrapper {
         Window window = dialog.getDialogPane().getScene().getWindow();
         window.setOnCloseRequest(event -> window.hide());
 
-        missingInput.setVisible(false);
-        missingInput.setPadding(new Insets(0, 0, 0, 100));
+        errorLabel.setVisible(false);
+        errorLabel.setPadding(new Insets(0, 0, 0, 100));
         Button buttonCancel = new Button("Cancel");
         buttonCancel.setOnMouseClicked(e -> {
             dialog.setResult(true);
             dialog.close();
         });
-        HBox buttons = new HBox(buttonCancel, buttonOK, missingInput);
+        HBox buttons = new HBox(buttonCancel, buttonOK, errorLabel);
         buttons.setSpacing(25);
         VBox vBox = new VBox(form.getGridPane(), buttons);
         vBox.setSpacing(50);
@@ -211,7 +211,7 @@ public final class FormWrapper {
         return Double.valueOf(form.getFieldsList().get(index).getText());
     }
 
-    protected static Label getMissingInput() {
-        return missingInput;
+    protected static Label getErrorLabel() {
+        return errorLabel;
     }
 }

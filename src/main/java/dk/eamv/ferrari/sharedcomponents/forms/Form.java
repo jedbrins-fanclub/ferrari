@@ -69,7 +69,6 @@ public class Form {
                 fieldsAreValid = false;
             } else {
                 widget.setStyle(null);
-                FormWrapper.getMissingInput().setVisible(true);
             }
         }
 
@@ -79,10 +78,13 @@ public class Form {
                 fieldsAreValid = false;
             } else {
                 widget.setStyle(null);
-                FormWrapper.getMissingInput().setVisible(true);
             }
         }
 
+        if (!fieldsAreValid) {
+            FormWrapper.getErrorLabel().setText("Mangler input i markerede felter");
+            FormWrapper.getErrorLabel().setVisible(true);
+        }
         return fieldsAreValid;
     }
 
