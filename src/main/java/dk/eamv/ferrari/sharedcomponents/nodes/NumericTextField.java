@@ -24,8 +24,8 @@ public class NumericTextField extends TextField {
             return true;
         }
 
-        // If it's blank (contains spaces) then it's not numeric
-        if (text.isBlank()) {
+        // If it's blank (contains spaces) or it contains letters then it's not numeric
+        if (text.isBlank() || text.contains("[a-zA-Z]+")) {
             return false;
         }
 
