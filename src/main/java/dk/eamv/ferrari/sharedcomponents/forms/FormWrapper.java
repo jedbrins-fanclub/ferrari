@@ -3,6 +3,8 @@ package dk.eamv.ferrari.sharedcomponents.forms;
 import java.util.ArrayList;
 import java.sql.Date;
 
+import dk.api.rki.CreditRator;
+import dk.api.rki.Rating;
 import dk.eamv.ferrari.scenes.car.Car;
 import dk.eamv.ferrari.scenes.car.CarController;
 import dk.eamv.ferrari.scenes.car.CarModel;
@@ -114,27 +116,35 @@ public final class FormWrapper {
         switch (type) {
             case LOAN:
                 buttonOK.setOnMouseClicked(e -> {
-                    if (form.verifyFilledFields()) {
-                        dialog.setResult(true);
-                        Customer customer = FormWrapper.getComboBox(form, 1);
-                        System.out.printf("FIRSTNAME %s, PHONE NUMBER %s\n", customer.getFirstName(), customer.getPhoneNumber());
+                    if (!form.verifyFilledFields()) {
+                        getErrorLabel().setText("Mangler input i markerede felter");
+                        getErrorLabel().setVisible(true);
+                        return;
+                    }
 
-                        //TODO: Actual implementation of selection from AutoCompleteCB
-                        int carID = (int) Math.random() * 100000;
-                        int customerID = (int) Math.random() * 100000;
-                        int employeeID = (int) Math.random() * 100000;
-                        int loanSize = getInt(form, 2);
-                        double downPayment = getDouble(form, 3);
-                        double interestRate = getDouble(form, 4);
-                        //TODO: Figure out how to select a data in the dialog. Placeholders for now.
-                        Date startDate = new Date(2025, 1, 1);
-                        Date endDate = new Date(2025, 1, 1);
-                        LoanStatus loanStatus = new LoanStatus(3);
-                        Loan loan = new Loan(carID, customerID, employeeID, loanSize, downPayment, interestRate, startDate, endDate, loanStatus);
-                        LoanController.getLoans().add(loan);
-                        LoanModel.create(loan);
-                        dialog.close();
-                    } 
+                    Customer customer = FormWrapper.getComboBox(form, 1);
+                    if (CreditRator.i().rate(customer.getCpr()).equals(Rating.D)) {
+                        getErrorLabel().setText("Kunde her kreditværdighed D");
+                        getErrorLabel().setVisible(true);
+                        return;
+                    }
+
+                    dialog.setResult(true);
+                    //TODO: Actual implementation of selection from AutoCompleteCB
+                    int carID = (int) Math.random() * 100000;
+                    int customerID = (int) Math.random() * 100000;
+                    int employeeID = (int) Math.random() * 100000;
+                    int loanSize = getInt(form, 2);
+                    double downPayment = getDouble(form, 3);
+                    double interestRate = getDouble(form, 4);
+                    //TODO: Figure out how to select a data in the dialog. Placeholders for now.
+                    Date startDate = new Date(2025, 1, 1);
+                    Date endDate = new Date(2025, 1, 1);
+                    LoanStatus loanStatus = new LoanStatus(3);
+                    Loan loan = new Loan(carID, customerID, employeeID, loanSize, downPayment, interestRate, startDate, endDate, loanStatus);
+                    LoanController.getLoans().add(loan);
+                    LoanModel.create(loan);
+                    dialog.close();
                 });
                 break;
 
