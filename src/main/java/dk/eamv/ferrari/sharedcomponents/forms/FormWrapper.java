@@ -124,7 +124,7 @@ public final class FormWrapper {
 
                     Customer customer = FormWrapper.getComboBox(form, 1);
                     if (CreditRator.i().rate(customer.getCpr()).equals(Rating.D)) {
-                        FormWrapper.getErrorLabel().setText("Kunde her kreditværdighed D");
+                        getErrorLabel().setText("Kunde her kreditværdighed D");
                         getErrorLabel().setVisible(true);
                         return;
                     }
