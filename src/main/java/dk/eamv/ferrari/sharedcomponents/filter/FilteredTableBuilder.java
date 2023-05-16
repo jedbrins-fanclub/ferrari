@@ -1,6 +1,7 @@
 package dk.eamv.ferrari.sharedcomponents.filter;
 
 import javafx.beans.property.ReadOnlyObjectWrapper;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.ObservableList;
 import javafx.scene.control.*;
@@ -118,8 +119,8 @@ public class FilteredTableBuilder<T> implements FilteredTableBuilderInfo<T> {
     public FilteredTable<T> build() {
         filteredTable = new FilteredTable<>(data);
         for (Pair<String, Function<T, Object>> info : columnInfo) {
-            TableColumn<T, String> column = new TableColumn<>(info.getKey());
-            column.setCellValueFactory(cellData -> new SimpleStringProperty(info.getValue().apply(cellData.getValue()).toString()));
+            TableColumn<T, Object> column = new TableColumn<>(info.getKey());
+            column.setCellValueFactory(cellData -> new SimpleObjectProperty<>(info.getValue().apply(cellData.getValue())));
             filteredTable.getColumns().add(column);
         }
 
