@@ -81,10 +81,6 @@ public class Form {
             }
         }
 
-        if (!fieldsAreValid) {
-            FormWrapper.getErrorLabel().setText("Mangler input i markerede felter");
-            FormWrapper.getErrorLabel().setVisible(true);
-        }
         return fieldsAreValid;
     }
 
