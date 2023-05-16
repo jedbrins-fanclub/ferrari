@@ -14,6 +14,7 @@ import dk.eamv.ferrari.scenes.loan.Loan;
 import dk.eamv.ferrari.scenes.loan.LoanController;
 import dk.eamv.ferrari.scenes.loan.LoanModel;
 import dk.eamv.ferrari.scenes.loan.LoanStatus;
+import dk.eamv.ferrari.sharedcomponents.nodes.AutoCompleteComboBox;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
@@ -115,6 +116,9 @@ public final class FormWrapper {
                 buttonOK.setOnMouseClicked(e -> {
                     if (form.verifyFilledFields()) {
                         dialog.setResult(true);
+                        Customer customer = FormWrapper.getComboBox(form, 1);
+                        System.out.printf("FIRSTNAME %s, PHONE NUMBER %s\n", customer.getFirstName(), customer.getPhoneNumber());
+
                         //TODO: Actual implementation of selection from AutoCompleteCB
                         int carID = (int) Math.random() * 100000;
                         int customerID = (int) Math.random() * 100000;
@@ -189,7 +193,11 @@ public final class FormWrapper {
         Customer customer = new Customer(getString(form, 0), getString(form, 1), getString(form, 2), getString(form, 3), getString(form, 4), getString(form, 5));
 
         return customer;
-    }  
+    }
+
+    private static <E> E getComboBox(Form form, int index) {
+        return (E)form.getBoxlist().get(index).getSelectedItem();
+    }
     
     private static String getString(Form form, int index) {
         return form.getFieldsList().get(index).getText();

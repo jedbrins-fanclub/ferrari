@@ -1,5 +1,8 @@
 package dk.eamv.ferrari.sharedcomponents.nodes;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -7,30 +10,29 @@ import javafx.collections.transformation.FilteredList;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 
-public class AutoCompleteCB {
-    /*
-     * https://stackoverflow.com/questions/19010619/javafx-filtered-combobox/34609439#34609439
-     */
-    public static <E> ComboBox<E> create(ObservableList<E> content) {
-        ComboBox<E> cb = new ComboBox<E>();
-        cb.setEditable(true);
+public class AutoCompleteComboBox<E> extends ComboBox<String> {
+    private HashMap<String, E> map = new HashMap<String, E>();
 
-        // Create a FilteredList wrapping the ObservableList.
-        FilteredList<E> filteredItems = new FilteredList<E>(content, p -> true);
+    public AutoCompleteComboBox(ObservableList<E> content) {
+        setEditable(true);
 
-        // Add a listener to the textProperty of the combobox editor. The
-        // listener will simply filter the list every time the input is changed
-        // as long as the user hasn't selected an item in the list.
-        cb.getEditor().textProperty().addListener((obs, oldValue, newValue) -> {
-            final TextField editor = cb.getEditor();
-            final E selected = cb.getSelectionModel().getSelectedItem();
+        ArrayList<String> items = new ArrayList<String>();
+        for (E element : content) {
+            map.put(element.toString(), element);
+            items.add(element.toString());
+        }
+
+        FilteredList<String> filteredItems = new FilteredList<String>(FXCollections.observableArrayList(items), p -> true);
+        getEditor().textProperty().addListener((obs, oldValue, newValue) -> {
+            final TextField editor = getEditor();
+            final String selected = getSelectionModel().getSelectedItem();
 
             // This needs run on the GUI thread to avoid the error described
             // here: https://bugs.openjdk.java.net/browse/JDK-8081700.
             Platform.runLater(() -> {
                 // If the no item in the list is selected or the selected item
                 // isn't equal to the current input, we refilter the list.
-                if (selected == null || !selected.toString().equals(editor.getText())) {
+                if (selected == null || !selected.equals(editor.getText())) {
                     filteredItems.setPredicate(item -> {
                         // We return true for any items that starts with the
                         // same letters as the input. We use toUpperCase to
@@ -45,8 +47,11 @@ public class AutoCompleteCB {
             });
         });
 
-        cb.setItems(filteredItems);
-        cb.setStyle("-fx-font-family: \"COURIER NEW\";");
-        return cb;
+        setItems(filteredItems);
+        setStyle("-fx-font-family: \"COURIER NEW\";");
+    }
+
+    public E getSelectedItem() {
+        return map.get(getSelectionModel().getSelectedItem());
     }
 }
