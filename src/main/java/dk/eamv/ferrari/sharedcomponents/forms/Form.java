@@ -5,15 +5,12 @@ import java.util.ArrayList;
 import dk.eamv.ferrari.scenes.car.Car;
 import dk.eamv.ferrari.scenes.car.CarController;
 import dk.eamv.ferrari.scenes.customer.CustomerController;
-import dk.eamv.ferrari.sharedcomponents.nodes.AutoCompleteCB;
+import dk.eamv.ferrari.sharedcomponents.nodes.AutocompleteComboBox;
 import dk.eamv.ferrari.sharedcomponents.nodes.NumericTextField;
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
-import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
-import javafx.scene.control.skin.ComboBoxListViewSkin;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 
@@ -25,14 +22,14 @@ import javafx.scene.layout.VBox;
 public class Form {
     private GridPane gridPane;
     private ArrayList<TextField> fieldsList;
-    private ArrayList<ComboBox<?>> boxList;
+    private ArrayList<AutocompleteComboBox<?>> boxList;
     private int column;
     private int row;
 
     private Form() {
         gridPane = createGridPane();
         fieldsList = new ArrayList<TextField>();
-        boxList = new ArrayList<ComboBox<?>>();
+        boxList = new ArrayList<AutocompleteComboBox<?>>();
         column = 0;
         row = 0;
     }
@@ -54,7 +51,7 @@ public class Form {
         return fieldsList;
     }
 
-    protected ArrayList<ComboBox<?>> getBoxlist() {
+    protected ArrayList<AutocompleteComboBox<?>> getBoxlist() {
         return boxList;
     }
 
@@ -76,7 +73,7 @@ public class Form {
             }
         }
 
-        for (ComboBox<?> widget : boxList) {
+        for (AutocompleteComboBox<?> widget : boxList) {
             if (widget.getSelectionModel().getSelectedItem() == null) {
                 widget.setStyle(redStyle);
                 fieldsAreValid = false;
@@ -176,11 +173,11 @@ public class Form {
             return this;
         }
 
-        protected Builder withDropDownBoxes(Form form, ObservableList<?> content, int column, int row, String... input) {
+        protected <E> Builder withDropDownBoxes(Form form, ObservableList<E> content, int column, int row, String... input) {
             for (String i : input) {
                 VBox vBox = new VBox();
                 Label heading = new Label(i);
-                ComboBox<?> dropDown = AutoCompleteCB.create(content);
+                AutocompleteComboBox<E> dropDown = new AutocompleteComboBox<E>(content);
                 vBox.getChildren().addAll(heading, dropDown);
                 if (column > 2) {
                     column = 0;
