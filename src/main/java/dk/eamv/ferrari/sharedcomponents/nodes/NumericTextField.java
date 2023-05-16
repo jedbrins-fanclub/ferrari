@@ -3,6 +3,13 @@ package dk.eamv.ferrari.sharedcomponents.nodes;
 import javafx.scene.control.TextField;
 
 public class NumericTextField extends TextField {
+    private boolean allowDecimals = true;
+
+    public NumericTextField() {}
+    public NumericTextField(boolean allowDecimals) {
+        this.allowDecimals = allowDecimals;
+    }
+
     @Override
     public void replaceText(int start, int end, String text) {
         // Save the previous text for restoration if invalid input
@@ -31,7 +38,12 @@ public class NumericTextField extends TextField {
 
         // If it can be parsed to a double, then it works
         try {
-            Double.parseDouble(text);
+            if (allowDecimals) {
+                Double.parseDouble(text);
+            } else {
+                Integer.parseInt(text);
+            }
+
             return true;
         } catch (NumberFormatException exception) {
             return false;
