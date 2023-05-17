@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import dk.eamv.ferrari.scenes.car.Car;
 import dk.eamv.ferrari.scenes.car.CarController;
 import dk.eamv.ferrari.scenes.customer.CustomerController;
+import dk.eamv.ferrari.scenes.employee.EmployeeController;
 import dk.eamv.ferrari.sharedcomponents.nodes.AutoCompleteComboBox;
 import dk.eamv.ferrari.sharedcomponents.nodes.NumericTextField;
 import javafx.collections.ObservableList;
@@ -220,6 +221,7 @@ public class Form {
                     .withFieldsInt(form, form.getColumn(), form.getRow(), "Rente", "Start dato", "Forfaldsdag")
                     .withDropDownBoxes(form, CarController.getCars(), form.getColumn(), form.getRow(),"Bil")
                     .withDropDownBoxes(form, CustomerController.getCustomers(), form.getColumn(), form.getRow(), "CPR & Kunde")
+                    .withDropDownBoxes(form, EmployeeController.getEmployees(), form.getColumn(), form.getRow(), "Medarbejder")
                     .build();
             return form;
         }

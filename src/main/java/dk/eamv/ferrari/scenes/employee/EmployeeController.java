@@ -8,7 +8,7 @@ import java.util.ArrayList;
 public class EmployeeController {
 
     protected static FilteredTableBuilder<Employee> filteredTableBuilder;
-    private static final ObservableList<Employee> employees = FXCollections.observableArrayList(fetchEmployees());
+    private static final ObservableList<Employee> employees = FXCollections.observableArrayList(EmployeeModel.readAll());
 
     protected static void initFilterBuilder() {
         filteredTableBuilder = new FilteredTableBuilder<Employee>()
@@ -21,10 +21,6 @@ public class EmployeeController {
                 .withColumn("Max lån", Employee::getMaxLoan)
                 .withButtonColumn("", "Rediger", EmployeeView::showEditEmployeeDialog)
                 .withButtonColumn("", "Slet", EmployeeController::deleteEmployee);
-    }
-
-    protected static ArrayList<Employee> fetchEmployees() {
-        return EmployeeModel.readAll(); //TODO: Create method in model to fetch only all sellers
     }
 
     protected static void createEmployee(Employee employee) {
@@ -44,5 +40,9 @@ public class EmployeeController {
 
         // When removing the Employee from the ObservableList, the TableView updates automatically
         employees.remove(employee);
+    }
+
+    public static ObservableList<Employee> getEmployees() {
+        return employees;
     }
 }
