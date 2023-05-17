@@ -7,7 +7,7 @@ import dk.eamv.ferrari.scenes.customer.CustomerModel;
 import dk.eamv.ferrari.scenes.employee.Employee;
 import dk.eamv.ferrari.scenes.employee.EmployeeModel;
 
-import java.sql.Date;
+import java.util.Date;
 import java.util.Objects;
 
 public class Loan {
