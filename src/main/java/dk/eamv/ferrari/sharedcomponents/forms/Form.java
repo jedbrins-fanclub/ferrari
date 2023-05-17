@@ -1,5 +1,6 @@
 package dk.eamv.ferrari.sharedcomponents.forms;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 import dk.eamv.ferrari.scenes.car.CarController;
@@ -10,9 +11,11 @@ import dk.eamv.ferrari.sharedcomponents.nodes.NumericTextField;
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 /*
@@ -166,7 +169,23 @@ public class Form {
             return this;
         }
 
-        private Builder withDatePicker(String... input) {
+        private HBox addDatePicker() {
+            DatePicker startDatePicker = new DatePicker();
+            DatePicker endDatePicker = new DatePicker();
+            Label labelStart = new Label("Start dato DD/MM/ÅÅÅÅ");
+            Label labelEnd = new Label("Slut dato DD/MM/ÅÅÅÅ");
+            VBox startVBox = new VBox(labelStart, startDatePicker);
+            VBox endVBox = new VBox(labelEnd, endDatePicker);
+
+            HBox datePickers = new HBox(startVBox, endVBox);
+            datePickers.setSpacing(60);
+
+            return datePickers;
+        }
+        
+        private Builder withManualNode(String input, Node node) {
+            addFieldToForm(input, node);
+
             return this;
         }
         
@@ -202,8 +221,8 @@ public class Form {
                 .withFieldsUneditable("Pris", "CPR", "ID")
                 .withFieldsUneditable("Stelnummer", "Telefon nr.", "Telefon nr.")
                 .withFieldsUneditable("Kundens Adresse", "Email", "Email")
-                .withFieldsInt("Lånets størrelse", "Udbetaling")
-                .withFieldsInt("Rente", "Start dato", "Forfaldsdag")
+                .withFieldsInt("Lånets størrelse", "Udbetaling", "Rente")
+                .withManualNode("", addDatePicker())
                 .build();
             return form;
         }
