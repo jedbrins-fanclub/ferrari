@@ -150,42 +150,37 @@ public class Form {
             return this;
         }
 
-        protected Builder withFieldsUneditable(Form form, int column, int row, String... input) {
-            for (String i : input) {
-                VBox vBox = new VBox();
-                Label heading = new Label(i);
-                TextField textField = new TextField();
-                textField.setDisable(true);
-                textField.setPromptText(i);
-                vBox.getChildren().addAll(heading, textField);
-                if (column > 2) {
-                    column = 0;
-                    row++;
-                }
-                this.form.getGridPane().add(vBox, column, row);
-                this.form.getFieldsList().add(textField);
-                column++;
+        protected Builder withFieldsUneditable(Form form, int column, int row, String input) {
+            VBox vBox = new VBox();
+            Label heading = new Label(input);
+            TextField textField = new TextField();
+            textField.setDisable(true);
+            vBox.getChildren().addAll(heading, textField);
+            if (column > 2) {
+                column = 0;
+                row++;
             }
+            this.form.getGridPane().add(vBox, column, row);
+            this.form.getFieldsList().add(textField);
+            column++;
 
             form.setColumn(column);
             form.setRow(row);
             return this;
         }
 
-        protected <E> Builder withDropDownBoxes(Form form, ObservableList<E> content, int column, int row, String... input) {
-            for (String i : input) {
-                VBox vBox = new VBox();
-                Label heading = new Label(i);
-                AutoCompleteComboBox<E> dropDown = new AutoCompleteComboBox<E>(content);
-                vBox.getChildren().addAll(heading, dropDown);
-                if (column > 2) {
-                    column = 0;
-                    row++;
-                }
-                this.form.getGridPane().add(vBox, column, row);
-                this.form.boxList.add(dropDown);
-                column++;
+        protected <E> Builder withDropDownBox(Form form, ObservableList<E> content, int column, int row, String input) {
+            VBox vBox = new VBox();
+            Label heading = new Label(input);
+            AutoCompleteComboBox<E> dropDown = new AutoCompleteComboBox<E>(content);
+            vBox.getChildren().addAll(heading, dropDown);
+            if (column > 2) {
+                column = 0;
+                row++;
             }
+            this.form.getGridPane().add(vBox, column, row);
+            this.form.boxList.add(dropDown);
+            column++;
 
             form.setColumn(column);
             form.setRow(row);
@@ -219,9 +214,9 @@ public class Form {
                     //.withFieldsUneditable(form, 0, 0, "Stelnummer", "Kundens CPR")
                     .withFieldsInt(form, form.getColumn(), form.getRow(), "Lånets størrelse", "Udbetaling")
                     .withFieldsInt(form, form.getColumn(), form.getRow(), "Rente", "Start dato", "Forfaldsdag")
-                    .withDropDownBoxes(form, CarController.getCars(), form.getColumn(), form.getRow(),"Bil")
-                    .withDropDownBoxes(form, CustomerController.getCustomers(), form.getColumn(), form.getRow(), "CPR & Kunde")
-                    .withDropDownBoxes(form, EmployeeController.getEmployees(), form.getColumn(), form.getRow(), "Medarbejder")
+                    .withDropDownBox(form, CarController.getCars(), form.getColumn(), form.getRow(),"Bil")
+                    .withDropDownBox(form, CustomerController.getCustomers(), form.getColumn(), form.getRow(), "CPR & Kunde")
+                    .withDropDownBox(form, EmployeeController.getEmployees(), form.getColumn(), form.getRow(), "Medarbejder")
                     .build();
             return form;
         }
