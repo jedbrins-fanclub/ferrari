@@ -98,7 +98,7 @@ public final class FormWrapper {
 
         errorLabel.setVisible(false);
         errorLabel.setPadding(new Insets(0, 0, 0, 100));
-        Button buttonCancel = new Button("Cancel");
+        Button buttonCancel = new Button("Fortryd");
         buttonCancel.setOnMouseClicked(e -> {
             dialog.setResult(true);
             dialog.close();
