@@ -206,10 +206,13 @@ public final class FormWrapper {
         Car car = getComboBox(form, 0);
         Customer customer = getComboBox(form, 1);
         Employee employee = getComboBox(form, 2);
-        Loan loan = new Loan(car.getId(), customer.getId(), employee.getId(), getDouble(form, 0), getDouble(form, 1), getDouble(form, 2), new Date(System.currentTimeMillis()), new Date(System.currentTimeMillis()), new LoanStatus(3));
+        Loan loan = new Loan(car.getId(), customer.getId(), employee.getId(), getDouble(form, 0), getDouble(form, 1),
+                getDouble(form, 2), new Date(System.currentTimeMillis()), new Date(System.currentTimeMillis()),
+                new LoanStatus(3));
         return loan;
     }
 
+    //TODO: Implement this.
     private static void setFieldsLoan() {
 
     }
