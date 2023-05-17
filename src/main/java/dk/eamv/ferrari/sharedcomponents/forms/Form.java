@@ -107,7 +107,7 @@ public class Form {
             form = new Form();
         }
 
-        protected Builder withFieldsString(String... input) {
+        private Builder withFieldsString(String... input) {
             int row = form.getRow();
             int column = form.getColumn();
             for (String i : input) {
@@ -130,7 +130,7 @@ public class Form {
             return this;
         }
 
-        protected Builder withFieldsInt(String... input) {
+        private Builder withFieldsInt(String... input) {
             int row = form.getRow();
             int column = form.getColumn();
             for (String i : input) {
@@ -153,7 +153,7 @@ public class Form {
             return this;
         }
 
-        protected Builder withFieldsUneditable(String... input) {
+        private Builder withFieldsUneditable(String... input) {
             int row = form.getRow();
             int column = form.getColumn();
             for (String i : input) {
@@ -176,7 +176,7 @@ public class Form {
             return this;
         }
 
-        protected <E> Builder withDropDownBox(ObservableList<E> content, String input) {
+        private <E> Builder withDropDownBox(ObservableList<E> content, String input) {
             int row = form.getRow();
             int column = form.getColumn();
             VBox vBox = new VBox();
@@ -195,8 +195,10 @@ public class Form {
             form.setRow(row);
             return this;
         }
+
+
         
-        protected Form build() {
+        private Form build() {
             return form;
         }
 
