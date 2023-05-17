@@ -9,6 +9,7 @@ import dk.eamv.ferrari.sharedcomponents.nodes.AutoCompleteComboBox;
 import dk.eamv.ferrari.sharedcomponents.nodes.NumericTextField;
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
@@ -107,88 +108,18 @@ public class Form {
             form = new Form();
         }
 
-        private Builder withFieldsString(String... input) {
+        private Builder addFieldToForm(String labelText, Node node) {
             int row = form.getRow();
             int column = form.getColumn();
-            for (String i : input) {
-                VBox vBox = new VBox();
-                Label heading = new Label(i);
-                TextField textField = new TextField();
-                textField.setPromptText(i);
-                vBox.getChildren().addAll(heading, textField);
-                if (column > 2) {
-                    column = 0;
-                    row++;
-                }
-                this.form.getGridPane().add(vBox, column, row);
-                this.form.getFieldsList().add(textField);
-                column++;
-            }
 
-            form.setColumn(column);
-            form.setRow(row);
-            return this;
-        }
-
-        private Builder withFieldsInt(String... input) {
-            int row = form.getRow();
-            int column = form.getColumn();
-            for (String i : input) {
-                VBox vBox = new VBox();
-                Label heading = new Label(i);
-                NumericTextField textField = new NumericTextField();
-                textField.setPromptText(i);
-                vBox.getChildren().addAll(heading, textField);
-                if (column > 2) {
-                    column = 0;
-                    row++;
-                }
-                this.form.getGridPane().add(vBox, column, row);
-                this.form.getFieldsList().add(textField);
-                column++;
-            }
-
-            form.setColumn(column);
-            form.setRow(row);
-            return this;
-        }
-
-        private Builder withFieldsUneditable(String... input) {
-            int row = form.getRow();
-            int column = form.getColumn();
-            for (String i : input) {
-                VBox vBox = new VBox();
-                Label heading = new Label(i);
-                TextField textField = new TextField();
-                textField.setDisable(true);
-                vBox.getChildren().addAll(heading, textField);
-                if (column > 2) {
-                    column = 0;
-                    row++;
-                }
-                this.form.getGridPane().add(vBox, column, row);
-                this.form.getFieldsList().add(textField);
-                column++;
-            }
-
-            form.setColumn(column);
-            form.setRow(row);
-            return this;
-        }
-
-        private <E> Builder withDropDownBox(ObservableList<E> content, String input) {
-            int row = form.getRow();
-            int column = form.getColumn();
             VBox vBox = new VBox();
-            Label heading = new Label(input);
-            AutoCompleteComboBox<E> dropDown = new AutoCompleteComboBox<E>(content);
-            vBox.getChildren().addAll(heading, dropDown);
+            Label heading = new Label(labelText);
+            vBox.getChildren().addAll(heading, node);
             if (column > 2) {
                 column = 0;
                 row++;
             }
             this.form.getGridPane().add(vBox, column, row);
-            this.form.boxList.add(dropDown);
             column++;
 
             form.setColumn(column);
@@ -196,7 +127,48 @@ public class Form {
             return this;
         }
 
+        private Builder withFieldsString(String... input) {
+            for (String i : input) {
+                TextField textField = new TextField(i);
+                this.form.getFieldsList().add(textField);
+            }
 
+            return this;
+        }
+
+        private Builder withFieldsInt(String... input) {
+            for (String i : input) {
+                NumericTextField numberField = new NumericTextField();
+                numberField.setPromptText(i);
+                form.getFieldsList().add(numberField);
+                addFieldToForm(i, numberField);
+            }
+            
+            return this;
+        }
+
+        private Builder withFieldsUneditable(String... input) {
+            for (String i : input) {
+                TextField textField = new TextField();
+                textField.setDisable(true);
+                form.getFieldsList().add(textField);
+                addFieldToForm(i, textField);
+            }
+
+            return this;
+        }
+
+        private <E> Builder withDropDownBox(ObservableList<E> content, String input) {
+            AutoCompleteComboBox dropDown = new AutoCompleteComboBox<>(content);
+            form.boxList.add(dropDown);
+            addFieldToForm(input, dropDown);
+        
+            return this;
+        }
+
+        private Builder withDatePicker(String... input) {
+            return this;
+        }
         
         private Form build() {
             return form;
@@ -222,17 +194,17 @@ public class Form {
 
         protected Form buildLoanForm() {
             form = new Form.Builder()
-                    .withDropDownBox(CarController.getCars(), "Bil")
-                    .withDropDownBox(CustomerController.getCustomers(), "CPR & Kunde")
-                    .withDropDownBox(EmployeeController.getEmployees(), "Medarbejder")
-                    .withFieldsUneditable("Model", "Fornavn", "Fornavn")
-                    .withFieldsUneditable("Årgang", "Efternavn", "Efternavn")
-                    .withFieldsUneditable("Pris", "CPR", "ID")
-                    .withFieldsUneditable("Stelnummer", "Telefon nr.", "Telefon nr.")
-                    .withFieldsUneditable("Kundens Adresse", "Email", "Email")
-                    .withFieldsInt("Lånets størrelse", "Udbetaling")
-                    .withFieldsInt("Rente", "Start dato", "Forfaldsdag")
-                    .build();
+                .withDropDownBox(CarController.getCars(), "Bil")
+                .withDropDownBox(CustomerController.getCustomers(), "CPR & Kunde")
+                .withDropDownBox(EmployeeController.getEmployees(), "Medarbejder")
+                .withFieldsUneditable("Model", "Fornavn", "Fornavn")
+                .withFieldsUneditable("Årgang", "Efternavn", "Efternavn")
+                .withFieldsUneditable("Pris", "CPR", "ID")
+                .withFieldsUneditable("Stelnummer", "Telefon nr.", "Telefon nr.")
+                .withFieldsUneditable("Kundens Adresse", "Email", "Email")
+                .withFieldsInt("Lånets størrelse", "Udbetaling")
+                .withFieldsInt("Rente", "Start dato", "Forfaldsdag")
+                .build();
             return form;
         }
     }
