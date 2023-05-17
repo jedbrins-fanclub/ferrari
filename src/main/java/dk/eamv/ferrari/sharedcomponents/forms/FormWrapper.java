@@ -15,6 +15,7 @@ import dk.eamv.ferrari.scenes.customer.CustomerView;
 import dk.eamv.ferrari.scenes.loan.Loan;
 import dk.eamv.ferrari.scenes.loan.LoanController;
 import dk.eamv.ferrari.scenes.loan.LoanModel;
+import dk.eamv.ferrari.scenes.loan.LoanState;
 import dk.eamv.ferrari.scenes.loan.LoanStatus;
 import dk.eamv.ferrari.sharedcomponents.nodes.AutoCompleteComboBox;
 import javafx.collections.ObservableList;
@@ -129,19 +130,7 @@ public final class FormWrapper {
                         return;
                     }
 
-                    dialog.setResult(true);
-                    //TODO: Actual implementation of selection from AutoCompleteCB
-                    int carID = (int) Math.random() * 100000;
-                    int customerID = (int) Math.random() * 100000;
-                    int employeeID = (int) Math.random() * 100000;
-                    int loanSize = getInt(form, 2);
-                    double downPayment = getDouble(form, 3);
-                    double interestRate = getDouble(form, 4);
-                    //TODO: Figure out how to select a data in the dialog. Placeholders for now.
-                    Date startDate = new Date(2025, 1, 1);
-                    Date endDate = new Date(2025, 1, 1);
-                    LoanStatus loanStatus = new LoanStatus(3);
-                    Loan loan = new Loan(carID, customerID, employeeID, loanSize, downPayment, interestRate, startDate, endDate, loanStatus);
+                    Loan loan = getFieldsLoan(form, dialog);
                     LoanController.getLoans().add(loan);
                     LoanModel.create(loan);
                     dialog.close();
@@ -200,9 +189,24 @@ public final class FormWrapper {
     private static Customer getFieldsCustomer(Form form, Dialog dialog) {
         dialog.setResult(true);
         dialog.close();
-        Customer customer = new Customer(getString(form, 0), getString(form, 1), getString(form, 2), getString(form, 3), getString(form, 4), getString(form, 5));
+        Customer customer = new Customer(getString(form, 0), getString(form, 1), getString(form, 2), getString(form, 3),
+                getString(form, 4), getString(form, 5));
 
         return customer;
+    }
+    
+    private static Loan getFieldsLoan(Form form, Dialog dialog) {
+        dialog.setResult(true);
+        dialog.close();
+        //TODO: Implement date, employee, loanstatus.
+        Car car = getComboBox(form, 0);
+        Customer customer = getComboBox(form, 1);
+        Loan loan = new Loan(car.getId(), customer.getId(), 1, getDouble(form, 0), getDouble(form, 1), getDouble(form, 2), new Date(System.currentTimeMillis()), new Date(System.currentTimeMillis()), new LoanStatus(3));
+        return loan;
+    }
+
+    private static void setFieldsLoan() {
+
     }
 
     private static <E> E getComboBox(Form form, int index) {

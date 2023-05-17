@@ -197,28 +197,29 @@ public class Form {
 
         protected Form buildCustomerForm() {
             form = new Form.Builder()
-                .withFieldsString(this.form, 0, 0, "Fornavn", "Efternavn")
-                .withFieldsInt(this.form, this.form.getColumn(), this.form.getRow(), "Telefonnummer")
-                .withFieldsString(this.form, this.form.getColumn(), this.form.getRow(), "Email", "Adresse")
-                .withFieldsInt(this.form, this.form.getColumn(), this.form.getRow(), "CPR")
+                .withFieldsString(form, 0, 0, "Fornavn", "Efternavn")
+                .withFieldsInt(form, form.getColumn(), form.getRow(), "Telefonnummer")
+                .withFieldsString(form, form.getColumn(), form.getRow(), "Email", "Adresse")
+                .withFieldsInt(form, form.getColumn(), form.getRow(), "CPR")
                 .build();
             return form;
         }
 
         protected Form buildCarForm() {
             form = new Form.Builder()
-                .withFieldsInt(this.form, 0, 0, "Årgang", "Pris")
-                .withFieldsString(this.form, this.form.getColumn(), this.form.getRow(), "Model")
+                .withFieldsInt(form, 0, 0, "Årgang", "Pris")
+                .withFieldsString(form, form.getColumn(), form.getRow(), "Model")
                 .build();
             return form;
         }
 
         protected Form buildLoanForm() {
             form = new Form.Builder()
-                    .withFieldsInt(this.form, 0, 0, "Stelnummer", "Kunde CPR", "Lånets størrelse", "Udbetaling")
-                    .withFieldsInt(this.form, this.form.getColumn(), this.form.getRow(), "Rente", "Start dato", "Forfaldsdag")
-                    .withDropDownBoxes(this.form, CarController.getCars(), this.form.getColumn(), this.form.getRow(),"Bil")
-                    .withDropDownBoxes(this.form, CustomerController.getCustomers(), this.form.getColumn(), this.form.getRow(), "CPR & Kunde")
+                    //.withFieldsUneditable(form, 0, 0, "Stelnummer", "Kundens CPR")
+                    .withFieldsInt(form, form.getColumn(), form.getRow(), "Lånets størrelse", "Udbetaling")
+                    .withFieldsInt(form, form.getColumn(), form.getRow(), "Rente", "Start dato", "Forfaldsdag")
+                    .withDropDownBoxes(form, CarController.getCars(), form.getColumn(), form.getRow(),"Bil")
+                    .withDropDownBoxes(form, CustomerController.getCustomers(), form.getColumn(), form.getRow(), "CPR & Kunde")
                     .build();
             return form;
         }
