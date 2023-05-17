@@ -11,17 +11,16 @@ import dk.eamv.ferrari.scenes.car.CarModel;
 import dk.eamv.ferrari.scenes.customer.Customer;
 import dk.eamv.ferrari.scenes.customer.CustomerController;
 import dk.eamv.ferrari.scenes.customer.CustomerModel;
-import dk.eamv.ferrari.scenes.customer.CustomerView;
 import dk.eamv.ferrari.scenes.employee.Employee;
 import dk.eamv.ferrari.scenes.loan.Loan;
 import dk.eamv.ferrari.scenes.loan.LoanController;
 import dk.eamv.ferrari.scenes.loan.LoanModel;
-import dk.eamv.ferrari.scenes.loan.LoanState;
 import dk.eamv.ferrari.scenes.loan.LoanStatus;
 import dk.eamv.ferrari.sharedcomponents.nodes.AutoCompleteComboBox;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -117,14 +116,18 @@ public final class FormWrapper {
     private static void setCreateMouseListener(CRUDType type, Button buttonOK, Form form, Dialog dialog) {
         switch (type) {
             case LOAN:
+                bindFieldsCar(form);
+                bindFieldsCustomer(form);
+                bindFieldsEmployee(form);
                 buttonOK.setOnMouseClicked(e -> {
+                    System.out.println("After bind");
                     if (!form.verifyFilledFields()) {
                         getErrorLabel().setText("Mangler input i markerede felter");
                         getErrorLabel().setVisible(true);
                         return;
                     }
 
-                    Customer customer = FormWrapper.getComboBox(form, 1);
+                    Customer customer = getComboBox(form, 1);
                     if (CreditRator.i().rate(customer.getCpr()).equals(Rating.D)) {
                         getErrorLabel().setText("Kunde her kreditværdighed D");
                         getErrorLabel().setVisible(true);
@@ -211,12 +214,58 @@ public final class FormWrapper {
 
     }
 
+
+    private static void bindFieldsCar(Form form) {
+        ArrayList<TextField> fields = form.getFieldsList();
+        AutoCompleteComboBox comboBox = form.getBoxlist().get(0);
+        comboBox.setOnAction(e -> {
+            Car car = getComboBox(form, 0);
+            if (car != null) {
+                fields.get(0).setText(car.getModel());
+                fields.get(3).setText(String.valueOf(car.getYear()));
+                fields.get(6).setText(String.valueOf(car.getPrice()));
+                fields.get(9).setText(String.valueOf(car.getId()));
+            }
+        });
+    }
+    
+    private static void bindFieldsCustomer(Form form) {
+        ArrayList<TextField> fields = form.getFieldsList();
+        AutoCompleteComboBox comboBox = form.getBoxlist().get(1);
+        comboBox.setOnAction(e -> {
+            Customer customer = getComboBox(form, 1);
+            if (customer != null) {
+                fields.get(1).setText(customer.getFirstName());
+                fields.get(4).setText(customer.getLastName());
+                fields.get(7).setText(customer.getCpr());
+                fields.get(10).setText(customer.getPhoneNumber());
+                fields.get(12).setText(customer.getAddress());
+                fields.get(13).setText(customer.getEmail());
+            }
+        });
+    }
+
+    private static void bindFieldsEmployee(Form form) {
+        ArrayList<TextField> fields = form.getFieldsList();
+        AutoCompleteComboBox comboBox = form.getBoxlist().get(2);
+        comboBox.setOnAction(e -> {
+            Employee employee = getComboBox(form, 2);
+            if (employee != null) {
+                fields.get(2).setText(employee.getFirstName());
+                fields.get(5).setText(employee.getLastName());
+                fields.get(8).setText(String.valueOf(employee.getId()));
+                fields.get(11).setText(employee.getPhoneNumber());
+                fields.get(14).setText(employee.getEmail());
+            }
+        });
+    }
+
     private static <E> E getComboBox(Form form, int index) {
         return (E)form.getBoxlist().get(index).getSelectedItem();
     }
     
-    private static String getString(Form form, int index) {
-        return form.getFieldsList().get(index).getText();
+    private static String getString(Form form, int comboBoxIndex) {
+        return form.getFieldsList().get(comboBoxIndex).getText();
     }
 
     private static int getInt(Form form, int index) {

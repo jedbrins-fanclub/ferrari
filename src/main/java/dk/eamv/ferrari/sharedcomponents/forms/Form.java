@@ -2,7 +2,6 @@ package dk.eamv.ferrari.sharedcomponents.forms;
 
 import java.util.ArrayList;
 
-import dk.eamv.ferrari.scenes.car.Car;
 import dk.eamv.ferrari.scenes.car.CarController;
 import dk.eamv.ferrari.scenes.customer.CustomerController;
 import dk.eamv.ferrari.scenes.employee.EmployeeController;
@@ -108,7 +107,9 @@ public class Form {
             form = new Form();
         }
 
-        protected Builder withFieldsString(Form form, int column, int row, String... input) {
+        protected Builder withFieldsString(String... input) {
+            int row = form.getRow();
+            int column = form.getColumn();
             for (String i : input) {
                 VBox vBox = new VBox();
                 Label heading = new Label(i);
@@ -129,7 +130,9 @@ public class Form {
             return this;
         }
 
-        protected Builder withFieldsInt(Form form, int column, int row, String... input) {
+        protected Builder withFieldsInt(String... input) {
+            int row = form.getRow();
+            int column = form.getColumn();
             for (String i : input) {
                 VBox vBox = new VBox();
                 Label heading = new Label(i);
@@ -150,26 +153,32 @@ public class Form {
             return this;
         }
 
-        protected Builder withFieldsUneditable(Form form, int column, int row, String input) {
-            VBox vBox = new VBox();
-            Label heading = new Label(input);
-            TextField textField = new TextField();
-            textField.setDisable(true);
-            vBox.getChildren().addAll(heading, textField);
-            if (column > 2) {
-                column = 0;
-                row++;
+        protected Builder withFieldsUneditable(String... input) {
+            int row = form.getRow();
+            int column = form.getColumn();
+            for (String i : input) {
+                VBox vBox = new VBox();
+                Label heading = new Label(i);
+                TextField textField = new TextField();
+                textField.setDisable(true);
+                vBox.getChildren().addAll(heading, textField);
+                if (column > 2) {
+                    column = 0;
+                    row++;
+                }
+                this.form.getGridPane().add(vBox, column, row);
+                this.form.getFieldsList().add(textField);
+                column++;
             }
-            this.form.getGridPane().add(vBox, column, row);
-            this.form.getFieldsList().add(textField);
-            column++;
 
             form.setColumn(column);
             form.setRow(row);
             return this;
         }
 
-        protected <E> Builder withDropDownBox(Form form, ObservableList<E> content, int column, int row, String input) {
+        protected <E> Builder withDropDownBox(ObservableList<E> content, String input) {
+            int row = form.getRow();
+            int column = form.getColumn();
             VBox vBox = new VBox();
             Label heading = new Label(input);
             AutoCompleteComboBox<E> dropDown = new AutoCompleteComboBox<E>(content);
@@ -193,30 +202,34 @@ public class Form {
 
         protected Form buildCustomerForm() {
             form = new Form.Builder()
-                .withFieldsString(form, 0, 0, "Fornavn", "Efternavn")
-                .withFieldsInt(form, form.getColumn(), form.getRow(), "Telefonnummer")
-                .withFieldsString(form, form.getColumn(), form.getRow(), "Email", "Adresse")
-                .withFieldsInt(form, form.getColumn(), form.getRow(), "CPR")
+                .withFieldsString("Fornavn", "Efternavn")
+                .withFieldsInt("Telefonnummer")
+                .withFieldsString("Email", "Adresse")
+                .withFieldsInt("CPR")
                 .build();
             return form;
         }
 
         protected Form buildCarForm() {
             form = new Form.Builder()
-                .withFieldsInt(form, 0, 0, "Årgang", "Pris")
-                .withFieldsString(form, form.getColumn(), form.getRow(), "Model")
+                .withFieldsInt("Årgang", "Pris")
+                .withFieldsString("Model")
                 .build();
             return form;
         }
 
         protected Form buildLoanForm() {
             form = new Form.Builder()
-                    //.withFieldsUneditable(form, 0, 0, "Stelnummer", "Kundens CPR")
-                    .withFieldsInt(form, form.getColumn(), form.getRow(), "Lånets størrelse", "Udbetaling")
-                    .withFieldsInt(form, form.getColumn(), form.getRow(), "Rente", "Start dato", "Forfaldsdag")
-                    .withDropDownBox(form, CarController.getCars(), form.getColumn(), form.getRow(),"Bil")
-                    .withDropDownBox(form, CustomerController.getCustomers(), form.getColumn(), form.getRow(), "CPR & Kunde")
-                    .withDropDownBox(form, EmployeeController.getEmployees(), form.getColumn(), form.getRow(), "Medarbejder")
+                    .withDropDownBox(CarController.getCars(), "Bil")
+                    .withDropDownBox(CustomerController.getCustomers(), "CPR & Kunde")
+                    .withDropDownBox(EmployeeController.getEmployees(), "Medarbejder")
+                    .withFieldsUneditable("Model", "Fornavn", "Fornavn")
+                    .withFieldsUneditable("Årgang", "Efternavn", "Efternavn")
+                    .withFieldsUneditable("Pris", "CPR", "ID")
+                    .withFieldsUneditable("Stelnummer", "Telefon nr.", "Telefon nr.")
+                    .withFieldsUneditable("Kundens Adresse", "Email", "Email")
+                    .withFieldsInt("Lånets størrelse", "Udbetaling")
+                    .withFieldsInt("Rente", "Start dato", "Forfaldsdag")
                     .build();
             return form;
         }

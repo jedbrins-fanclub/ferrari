@@ -17,7 +17,7 @@ public class LoanController {
     protected static void initFilterBuilder() {
         filteredTableBuilder = new FilteredTableBuilder<Loan>()
                 .withData(loans)
-                .withColumn("id", Loan::getId)
+                .withColumn("test", Loan::toString)
                 .withColumn("car_id", Loan::getCar_id)
                 .withColumn("customer_id", Loan::getCustomer_id)
                 .withColumn("employee_id", Loan::getEmployee_id)
