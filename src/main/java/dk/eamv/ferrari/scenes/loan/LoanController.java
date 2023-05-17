@@ -7,6 +7,7 @@ import javafx.collections.ObservableList;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ChoiceBox;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 public class LoanController {
@@ -18,9 +19,9 @@ public class LoanController {
         filteredTableBuilder = new FilteredTableBuilder<Loan>()
                 .withData(loans)
                 .withColumn("id", Loan::getId)
-                .withColumn("car_id", Loan::getCar_id)
-                .withColumn("customer_id", Loan::getCustomer_id)
-                .withColumn("employee_id", Loan::getEmployee_id)
+                .withColumn("Bil", Loan::getCarLabel)
+                .withColumn("Kunde", Loan::getCustomerLabel)
+                .withColumn("Sælger", Loan::getEmployeeLabel)
                 .withColumn("Lån", Loan::getLoanSize)
                 .withColumn("Udbetaling", Loan::getDownPayment)
                 .withColumn("Rente", Loan::getInterestRate)
