@@ -1,6 +1,14 @@
 package dk.eamv.ferrari.scenes.loan;
 
-import java.util.Date;
+import dk.eamv.ferrari.scenes.car.Car;
+import dk.eamv.ferrari.scenes.car.CarModel;
+import dk.eamv.ferrari.scenes.customer.Customer;
+import dk.eamv.ferrari.scenes.customer.CustomerModel;
+import dk.eamv.ferrari.scenes.employee.Employee;
+import dk.eamv.ferrari.scenes.employee.EmployeeModel;
+
+import java.sql.Date;
+import java.util.Objects;
 
 public class Loan {
 
@@ -120,5 +128,29 @@ public class Loan {
 
     public void setStatus(LoanStatus status) {
         this.status = status;
+    }
+
+    public String getCarLabel() {
+        Car car = CarModel.read(car_id);
+
+        assert car != null;
+
+        return car.getModel();
+    }
+
+    public String getCustomerLabel() {
+        Customer customer = CustomerModel.read(customer_id);
+
+        assert customer != null;
+
+        return customer.getFirstName() + " " + customer.getLastName();
+    }
+
+    public String getEmployeeLabel() {
+        Employee employee = EmployeeModel.read(employee_id);
+
+        assert employee != null;
+
+        return employee.getFirstName() + " " + employee.getLastName();
     }
 }
