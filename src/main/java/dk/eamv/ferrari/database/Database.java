@@ -19,11 +19,6 @@ public abstract class Database {
     }
 
     public static void init(String connectionString) {
-        if (connectionString.equals("ignore")) {
-            System.out.println("Ignoring SQL Server connection");
-            return;
-        }
-
         try {
             connection = DriverManager.getConnection(connectionString);
         } catch (SQLException exception) {
