@@ -12,6 +12,7 @@ import dk.eamv.ferrari.scenes.customer.Customer;
 import dk.eamv.ferrari.scenes.customer.CustomerController;
 import dk.eamv.ferrari.scenes.customer.CustomerModel;
 import dk.eamv.ferrari.scenes.customer.CustomerView;
+import dk.eamv.ferrari.scenes.employee.Employee;
 import dk.eamv.ferrari.scenes.loan.Loan;
 import dk.eamv.ferrari.scenes.loan.LoanController;
 import dk.eamv.ferrari.scenes.loan.LoanModel;
@@ -201,7 +202,8 @@ public final class FormWrapper {
         //TODO: Implement date, employee, loanstatus.
         Car car = getComboBox(form, 0);
         Customer customer = getComboBox(form, 1);
-        Loan loan = new Loan(car.getId(), customer.getId(), 1, getDouble(form, 0), getDouble(form, 1), getDouble(form, 2), new Date(System.currentTimeMillis()), new Date(System.currentTimeMillis()), new LoanStatus(3));
+        Employee employee = getComboBox(form, 2);
+        Loan loan = new Loan(car.getId(), customer.getId(), employee.getId(), getDouble(form, 0), getDouble(form, 1), getDouble(form, 2), new Date(System.currentTimeMillis()), new Date(System.currentTimeMillis()), new LoanStatus(3));
         return loan;
     }
 
