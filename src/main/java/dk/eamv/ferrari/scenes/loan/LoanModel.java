@@ -3,6 +3,7 @@ package dk.eamv.ferrari.scenes.loan;
 import dk.eamv.ferrari.database.Database;
 
 import java.util.ArrayList;
+import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.PreparedStatement;
@@ -35,8 +36,8 @@ public final class LoanModel {
             statement.setDouble(4, loan.getLoanSize());
             statement.setDouble(5, loan.getDownPayment());
             statement.setDouble(6, loan.getInterestRate());
-            statement.setDate(7, loan.getStartDate());
-            statement.setDate(8, loan.getEndDate());
+            statement.setDate(7, convertDate(loan.getStartDate()));
+            statement.setDate(8, convertDate(loan.getEndDate()));
             statement.setInt(9, loan.getStatus().getStatusNumber());
 
             statement.executeUpdate();
@@ -112,8 +113,8 @@ public final class LoanModel {
             statement.setDouble(4, loan.getLoanSize());
             statement.setDouble(5, loan.getDownPayment());
             statement.setDouble(6, loan.getInterestRate());
-            statement.setDate(7, loan.getStartDate());
-            statement.setDate(8, loan.getEndDate());
+            statement.setDate(7, convertDate(loan.getStartDate()));
+            statement.setDate(8, convertDate(loan.getEndDate()));
             statement.setInt(9, loan.getStatus().getStatusNumber());
             statement.setInt(10, loan.getId());
 
@@ -130,5 +131,9 @@ public final class LoanModel {
      */
     public static boolean delete(int id) {
         return Database.execute("DELETE FROM dbo.Loan WHERE id = " + id);
+    }
+
+    private static java.sql.Date convertDate(java.util.Date date) {
+        return new java.sql.Date(date.getTime());
     }
 }

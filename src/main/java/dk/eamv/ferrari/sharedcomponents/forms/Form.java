@@ -11,6 +11,8 @@ import dk.eamv.ferrari.sharedcomponents.nodes.NumericTextField;
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.Control;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -25,15 +27,13 @@ import javafx.scene.layout.VBox;
  */
 public class Form {
     private GridPane gridPane;
-    private ArrayList<TextField> fieldsList;
-    private ArrayList<AutoCompleteComboBox<?>> boxList;
+    private ArrayList<Control> fieldsList;
     private int column;
     private int row;
 
     private Form() {
         gridPane = createGridPane();
-        fieldsList = new ArrayList<TextField>();
-        boxList = new ArrayList<AutoCompleteComboBox<?>>();
+        fieldsList = new ArrayList<Control>();
         column = 0;
         row = 0;
     }
@@ -51,41 +51,38 @@ public class Form {
         return gridPane;
     }
 
-    protected ArrayList<TextField> getFieldsList() {
+    protected ArrayList<Control> getFieldsList() {
         return fieldsList;
     }
 
-    protected ArrayList<AutoCompleteComboBox<?>> getBoxlist() {
-        return boxList;
-    }
-
-    protected boolean verifyFilledFields() {
+    protected boolean verifyHasFilledFields() {
         String redStyle = """
             -fx-prompt-text-fill: F50000;
             -fx-background-color: #f7adb1;
             -fx-border-color: F50000;
         """;
         
-        boolean fieldsAreValid = true;
-        for (TextField widget : fieldsList) {
-            if (widget.getText().isEmpty()) {
+        boolean hasFilledFields = true;
+        for (Control widget : fieldsList) {
+            if (widget instanceof TextField) {
+                hasFilledFields = !((TextField) widget).getText().isEmpty();
+            } else if (widget instanceof ComboBox) {
+                hasFilledFields = !((AutoCompleteComboBox) widget).isEmpty();
+            } else if (widget instanceof DatePicker) {
+                DatePicker dp = ((DatePicker) widget);
+                hasFilledFields = !(((DatePicker) widget).getValue() == null);
+                System.out.println(dp.getValue());
+                System.out.println(dp.getValue() == null);
+            }
+
+            if (!hasFilledFields) {
                 widget.setStyle(redStyle);
-                fieldsAreValid = false;
+                hasFilledFields = false;
             } else {
                 widget.setStyle(null);
             }
         }
-
-        for (AutoCompleteComboBox<?> widget : boxList) {
-            if (widget.getSelectionModel().getSelectedItem() == null) {
-                widget.setStyle(redStyle);
-                fieldsAreValid = false;
-            } else {
-                widget.setStyle(null);
-            }
-        }
-
-        return fieldsAreValid;
+        return hasFilledFields;
     }
 
     private void setColumn(int value) {
@@ -111,18 +108,19 @@ public class Form {
             form = new Form();
         }
 
-        private Builder addFieldToForm(String labelText, Node node) {
+        private Builder addFieldToForm(String labelText, Control control) {
             int row = form.getRow();
             int column = form.getColumn();
 
             VBox vBox = new VBox();
             Label heading = new Label(labelText);
-            vBox.getChildren().addAll(heading, node);
+            vBox.getChildren().addAll(heading, control);
             if (column > 2) {
                 column = 0;
                 row++;
             }
-            this.form.getGridPane().add(vBox, column, row);
+            form.getGridPane().add(vBox, column, row);
+            form.getFieldsList().add(control);
             column++;
 
             form.setColumn(column);
@@ -133,7 +131,7 @@ public class Form {
         private Builder withFieldsString(String... input) {
             for (String i : input) {
                 TextField textField = new TextField(i);
-                this.form.getFieldsList().add(textField);
+                addFieldToForm(i, textField);
             }
 
             return this;
@@ -143,7 +141,6 @@ public class Form {
             for (String i : input) {
                 NumericTextField numberField = new NumericTextField();
                 numberField.setPromptText(i);
-                form.getFieldsList().add(numberField);
                 addFieldToForm(i, numberField);
             }
             
@@ -154,7 +151,6 @@ public class Form {
             for (String i : input) {
                 TextField textField = new TextField();
                 textField.setDisable(true);
-                form.getFieldsList().add(textField);
                 addFieldToForm(i, textField);
             }
 
@@ -163,28 +159,17 @@ public class Form {
 
         private <E> Builder withDropDownBox(ObservableList<E> content, String input) {
             AutoCompleteComboBox dropDown = new AutoCompleteComboBox<>(content);
-            form.boxList.add(dropDown);
             addFieldToForm(input, dropDown);
         
             return this;
         }
 
-        private HBox addDatePicker() {
+        private Builder withFieldsDatePicker(Form form) {
             DatePicker startDatePicker = new DatePicker();
             DatePicker endDatePicker = new DatePicker();
-            Label labelStart = new Label("Start dato DD/MM/ÅÅÅÅ");
-            Label labelEnd = new Label("Slut dato DD/MM/ÅÅÅÅ");
-            VBox startVBox = new VBox(labelStart, startDatePicker);
-            VBox endVBox = new VBox(labelEnd, endDatePicker);
 
-            HBox datePickers = new HBox(startVBox, endVBox);
-            datePickers.setSpacing(60);
-
-            return datePickers;
-        }
-        
-        private Builder withManualNode(String input, Node node) {
-            addFieldToForm(input, node);
+            addFieldToForm("Start dato DD/MM/ÅÅÅÅ", startDatePicker);
+            addFieldToForm("Slut dato DD/MM/ÅÅÅÅ", endDatePicker);
 
             return this;
         }
@@ -222,7 +207,7 @@ public class Form {
                 .withFieldsUneditable("Stelnummer", "Telefon nr.", "Telefon nr.")
                 .withFieldsUneditable("Kundens Adresse", "Email", "Email")
                 .withFieldsInt("Lånets størrelse", "Udbetaling", "Rente")
-                .withManualNode("", addDatePicker())
+                .withFieldsDatePicker(form)
                 .build();
             return form;
         }
