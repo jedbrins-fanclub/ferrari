@@ -8,9 +8,6 @@ import javafx.collections.ObservableList;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ChoiceBox;
 
-import java.text.DecimalFormat;
-import java.util.ArrayList;
-
 public class LoanController {
 
     protected static FilteredTableBuilder<Loan> filteredTableBuilder;
