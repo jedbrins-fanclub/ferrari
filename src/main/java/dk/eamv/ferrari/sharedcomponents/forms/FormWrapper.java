@@ -1,7 +1,10 @@
 package dk.eamv.ferrari.sharedcomponents.forms;
 
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
-import java.sql.Date;
+import java.util.Date;
 
 import dk.api.rki.CreditRator;
 import dk.api.rki.Rating;
@@ -11,7 +14,7 @@ import dk.eamv.ferrari.scenes.car.CarModel;
 import dk.eamv.ferrari.scenes.customer.Customer;
 import dk.eamv.ferrari.scenes.customer.CustomerController;
 import dk.eamv.ferrari.scenes.customer.CustomerModel;
-import dk.eamv.ferrari.scenes.customer.CustomerView;
+import dk.eamv.ferrari.scenes.employee.Employee;
 import dk.eamv.ferrari.scenes.loan.Loan;
 import dk.eamv.ferrari.scenes.loan.LoanController;
 import dk.eamv.ferrari.scenes.loan.LoanModel;
@@ -20,6 +23,9 @@ import dk.eamv.ferrari.sharedcomponents.nodes.AutoCompleteComboBox;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.Control;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -50,7 +56,7 @@ public final class FormWrapper {
         Dialog dialog = createStandardDialog(form, buttonOK);
         setFieldsCar(form, car);
         buttonOK.setOnMouseClicked(e -> {
-            if (form.verifyFilledFields()) {
+            if (form.verifyHasFilledFields()) {
                 Car newCar = getFieldsCar(form, dialog); //create new object based on updated fields.
                 newCar.setId(car.getId()); //set the new objects id to the old, so that .update() targets correct ID in DB.
                 CarModel.update(newCar); //update in DB  
@@ -71,7 +77,7 @@ public final class FormWrapper {
         Dialog dialog = createStandardDialog(form, buttonOK);
         setFieldsCustomer(form, customer);
         buttonOK.setOnMouseClicked(e -> {
-            if (form.verifyFilledFields()) {
+            if (form.verifyHasFilledFields()) {
                 Customer newCustomer = getFieldsCustomer(form, dialog); //create new object based on updated fields.
                 newCustomer.setId(customer.getId()); //set the new objects id to the old, so that .update() targets correct ID in DB.
                 CustomerModel.update(newCustomer); //update in DB   
@@ -97,7 +103,7 @@ public final class FormWrapper {
 
         errorLabel.setVisible(false);
         errorLabel.setPadding(new Insets(0, 0, 0, 100));
-        Button buttonCancel = new Button("Cancel");
+        Button buttonCancel = new Button("Fortryd");
         buttonCancel.setOnMouseClicked(e -> {
             dialog.setResult(true);
             dialog.close();
@@ -115,33 +121,25 @@ public final class FormWrapper {
     private static void setCreateMouseListener(CRUDType type, Button buttonOK, Form form, Dialog dialog) {
         switch (type) {
             case LOAN:
+                bindFieldsCar(form);
+                bindFieldsCustomer(form);
+                bindFieldsEmployee(form);
                 buttonOK.setOnMouseClicked(e -> {
-                    if (!form.verifyFilledFields()) {
+
+                    if (!form.verifyHasFilledFields()) {
                         getErrorLabel().setText("Mangler input i markerede felter");
                         getErrorLabel().setVisible(true);
                         return;
                     }
 
-                    Customer customer = FormWrapper.getComboBox(form, 1);
+                    Customer customer = getComboBox(form, 1);
                     if (CreditRator.i().rate(customer.getCpr()).equals(Rating.D)) {
                         getErrorLabel().setText("Kunde her kreditværdighed D");
                         getErrorLabel().setVisible(true);
                         return;
                     }
-
-                    dialog.setResult(true);
-                    //TODO: Actual implementation of selection from AutoCompleteCB
-                    int carID = (int) Math.random() * 100000;
-                    int customerID = (int) Math.random() * 100000;
-                    int employeeID = (int) Math.random() * 100000;
-                    int loanSize = getInt(form, 2);
-                    double downPayment = getDouble(form, 3);
-                    double interestRate = getDouble(form, 4);
-                    //TODO: Figure out how to select a data in the dialog. Placeholders for now.
-                    Date startDate = new Date(2025, 1, 1);
-                    Date endDate = new Date(2025, 1, 1);
-                    LoanStatus loanStatus = new LoanStatus(3);
-                    Loan loan = new Loan(carID, customerID, employeeID, loanSize, downPayment, interestRate, startDate, endDate, loanStatus);
+                    
+                    Loan loan = getFieldsLoan(form, dialog);
                     LoanController.getLoans().add(loan);
                     LoanModel.create(loan);
                     dialog.close();
@@ -150,7 +148,7 @@ public final class FormWrapper {
 
             case CUSTOMER:
                 buttonOK.setOnMouseClicked(e -> {
-                    if (form.verifyFilledFields()) {
+                    if (form.verifyHasFilledFields()) {
                         Customer customer = getFieldsCustomer(form, dialog);
                         CustomerController.getCustomers().add(customer);
                         CustomerModel.create(customer);
@@ -160,7 +158,7 @@ public final class FormWrapper {
 
             case CAR:
                 buttonOK.setOnMouseClicked(e -> {
-                    if (form.verifyFilledFields()) {
+                    if (form.verifyHasFilledFields()) {
                         Car car = getFieldsCar(form, dialog);
                         CarController.getCars().add(car);
                         CarModel.create(car);
@@ -175,9 +173,9 @@ public final class FormWrapper {
 
     private static void setFieldsCar(Form form, Car car) {
         ArrayList<String> input = car.getPropperties();
-        ArrayList<TextField> fieldsList = form.getFieldsList();
+        ArrayList<Control> fieldsList = form.getFieldsList();
         for (int i = 0; i < fieldsList.size(); i++) {
-            fieldsList.get(i).setText(input.get(i));
+            ((TextField) fieldsList.get(i)).setText(input.get(i));
         }
     }
 
@@ -191,9 +189,9 @@ public final class FormWrapper {
 
     private static void setFieldsCustomer(Form form, Customer customer) {
         ArrayList<String> input = customer.getPropperties();
-        ArrayList<TextField> fieldsList = form.getFieldsList();
+        ArrayList<Control> fieldsList = form.getFieldsList();
         for (int i = 0; i < fieldsList.size(); i++) {
-            fieldsList.get(i).setText(input.get(i));
+            ((TextField) fieldsList.get(i)).setText(input.get(i));
         }
     }
 
@@ -204,21 +202,91 @@ public final class FormWrapper {
 
         return customer;
     }
+    
+    private static Loan getFieldsLoan(Form form, Dialog dialog) {
+        dialog.setResult(true);
+        dialog.close();
+        //TODO: Implement date, employee, loanstatus.
+        Car car = getComboBox(form, 0);
+        Customer customer = getComboBox(form, 1);
+        Employee employee = getComboBox(form, 2);
+        Loan loan = new Loan(car.getId(), customer.getId(), employee.getId(), getDouble(form, 18), getDouble(form, 19), getDouble(form, 20), getSelectedDate(form, 21), getSelectedDate(form, 22), new LoanStatus(3));
+        return loan;
+    }
 
-    private static <E> E getComboBox(Form form, int index) {
-        return (E)form.getBoxlist().get(index).getSelectedItem();
+    //TODO: Implement this.
+    private static void setFieldsLoan() {
+
+    }
+
+    private static void bindFieldsCar(Form form) {
+        ArrayList<Control> fields = form.getFieldsList();
+        AutoCompleteComboBox<Car> comboBox = (AutoCompleteComboBox) fields.get(0);
+        comboBox.setOnAction(e -> {
+            Car car = getComboBox(form, 0);
+            if (car != null) {
+                ((TextField) fields.get(3)).setText(car.getModel());
+                ((TextField) fields.get(6)).setText(String.valueOf(car.getYear()));
+                ((TextField) fields.get(9)).setText(String.valueOf(car.getPrice()));
+                ((TextField) fields.get(12)).setText(String.valueOf(car.getId()));
+            }
+        });
     }
     
-    private static String getString(Form form, int index) {
-        return form.getFieldsList().get(index).getText();
+    private static void bindFieldsCustomer(Form form) {
+        ArrayList<Control> fields = form.getFieldsList();
+        AutoCompleteComboBox<Customer> comboBox = (AutoCompleteComboBox) fields.get(1);
+        comboBox.setOnAction(e -> {
+            Customer customer = getComboBox(form, 1);
+            if (customer != null) {
+                ((TextField) fields.get(4)).setText(customer.getFirstName());
+                ((TextField) fields.get(7)).setText(customer.getLastName());
+                ((TextField) fields.get(10)).setText(customer.getCpr());
+                ((TextField) fields.get(13)).setText(customer.getPhoneNumber());
+                ((TextField) fields.get(15)).setText(customer.getAddress());
+                ((TextField) fields.get(16)).setText(customer.getEmail());
+            }
+        });
+    }
+
+    private static void bindFieldsEmployee(Form form) {
+        ArrayList<Control> fields = form.getFieldsList();
+        AutoCompleteComboBox<Employee> comboBox = (AutoCompleteComboBox<Employee>) fields.get(2);
+        comboBox.setOnAction(e -> {
+            Employee employee = getComboBox(form, 2);
+            if (employee != null) {
+                ((TextField) fields.get(5)).setText(employee.getFirstName());
+                ((TextField) fields.get(8)).setText(employee.getLastName());
+                ((TextField) fields.get(11)).setText(String.valueOf(employee.getId()));
+                ((TextField) fields.get(14)).setText(employee.getPhoneNumber());
+                ((TextField) fields.get(17)).setText(employee.getEmail());
+            }
+        });
+    }
+
+    private static <E> E getComboBox(Form form, int index) {
+        //Hej Flemming den her vil vi ikke have til eksamen.
+        AutoCompleteComboBox<E> acb = ((AutoCompleteComboBox)form.getFieldsList().get(index));
+        return acb.getSelectedItem();
+    }
+    
+    private static String getString(Form form, int comboBoxIndex) {
+        return ((TextField) form.getFieldsList().get(comboBoxIndex)).getText();
     }
 
     private static int getInt(Form form, int index) {
-        return Integer.valueOf(form.getFieldsList().get(index).getText());
+        return Integer.valueOf(((TextField) form.getFieldsList().get(index)).getText());
     }
 
     private static double getDouble(Form form, int index) {
-        return Double.valueOf(form.getFieldsList().get(index).getText());
+        return Double.valueOf(((TextField) form.getFieldsList().get(index)).getText());
+    }
+
+    private static Date getSelectedDate(Form form, int index) {
+        DatePicker datePicker = ((DatePicker) form.getFieldsList().get(index));
+        LocalDate localDate = datePicker.getValue();
+        Instant instant = Instant.from(localDate.atStartOfDay(ZoneId.systemDefault()));
+        return Date.from(instant);
     }
 
     protected static Label getErrorLabel() {

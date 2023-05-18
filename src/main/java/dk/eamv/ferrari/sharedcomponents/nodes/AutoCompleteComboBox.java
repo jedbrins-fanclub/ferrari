@@ -54,4 +54,8 @@ public class AutoCompleteComboBox<E> extends ComboBox<String> {
     public E getSelectedItem() {
         return map.get(getSelectionModel().getSelectedItem());
     }
+
+    public boolean isEmpty() {
+        return map.get(getSelectionModel().getSelectedItem()) == null;
+    }
 }

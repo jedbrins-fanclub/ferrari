@@ -103,6 +103,6 @@ public class Customer {
 
     @Override
     public String toString() {
-        return String.format("%s %s %s", cpr, firstName, lastName);
+        return String.format("%-15s %s %s", cpr, firstName, lastName);
     }
 }

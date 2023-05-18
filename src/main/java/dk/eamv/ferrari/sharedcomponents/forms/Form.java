@@ -1,17 +1,23 @@
 package dk.eamv.ferrari.sharedcomponents.forms;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 
-import dk.eamv.ferrari.scenes.car.Car;
 import dk.eamv.ferrari.scenes.car.CarController;
 import dk.eamv.ferrari.scenes.customer.CustomerController;
+import dk.eamv.ferrari.scenes.employee.EmployeeController;
 import dk.eamv.ferrari.sharedcomponents.nodes.AutoCompleteComboBox;
 import dk.eamv.ferrari.sharedcomponents.nodes.NumericTextField;
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.Control;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 /*
@@ -21,15 +27,13 @@ import javafx.scene.layout.VBox;
  */
 public class Form {
     private GridPane gridPane;
-    private ArrayList<TextField> fieldsList;
-    private ArrayList<AutoCompleteComboBox<?>> boxList;
+    private ArrayList<Control> fieldsList;
     private int column;
     private int row;
 
     private Form() {
         gridPane = createGridPane();
-        fieldsList = new ArrayList<TextField>();
-        boxList = new ArrayList<AutoCompleteComboBox<?>>();
+        fieldsList = new ArrayList<Control>();
         column = 0;
         row = 0;
     }
@@ -47,41 +51,38 @@ public class Form {
         return gridPane;
     }
 
-    protected ArrayList<TextField> getFieldsList() {
+    protected ArrayList<Control> getFieldsList() {
         return fieldsList;
     }
 
-    protected ArrayList<AutoCompleteComboBox<?>> getBoxlist() {
-        return boxList;
-    }
-
-    protected boolean verifyFilledFields() {
+    protected boolean verifyHasFilledFields() {
         String redStyle = """
             -fx-prompt-text-fill: F50000;
             -fx-background-color: #f7adb1;
             -fx-border-color: F50000;
         """;
         
-        boolean fieldsAreValid = true;
-        for (TextField widget : fieldsList) {
-            if (widget.getText().isEmpty()) {
+        boolean hasFilledFields = true;
+        for (Control widget : fieldsList) {
+            if (widget instanceof TextField) {
+                hasFilledFields = !((TextField) widget).getText().isEmpty();
+            } else if (widget instanceof ComboBox) {
+                hasFilledFields = !((AutoCompleteComboBox) widget).isEmpty();
+            } else if (widget instanceof DatePicker) {
+                DatePicker dp = ((DatePicker) widget);
+                hasFilledFields = !(((DatePicker) widget).getValue() == null);
+                System.out.println(dp.getValue());
+                System.out.println(dp.getValue() == null);
+            }
+
+            if (!hasFilledFields) {
                 widget.setStyle(redStyle);
-                fieldsAreValid = false;
+                hasFilledFields = false;
             } else {
                 widget.setStyle(null);
             }
         }
-
-        for (AutoCompleteComboBox<?> widget : boxList) {
-            if (widget.getSelectionModel().getSelectedItem() == null) {
-                widget.setStyle(redStyle);
-                fieldsAreValid = false;
-            } else {
-                widget.setStyle(null);
-            }
-        }
-
-        return fieldsAreValid;
+        return hasFilledFields;
     }
 
     private void setColumn(int value) {
@@ -107,119 +108,107 @@ public class Form {
             form = new Form();
         }
 
-        protected Builder withFieldsString(Form form, int column, int row, String... input) {
-            for (String i : input) {
-                VBox vBox = new VBox();
-                Label heading = new Label(i);
-                TextField textField = new TextField();
-                textField.setPromptText(i);
-                vBox.getChildren().addAll(heading, textField);
-                if (column > 2) {
-                    column = 0;
-                    row++;
-                }
-                this.form.getGridPane().add(vBox, column, row);
-                this.form.getFieldsList().add(textField);
-                column++;
+        private Builder addFieldToForm(String labelText, Control control) {
+            int row = form.getRow();
+            int column = form.getColumn();
+
+            VBox vBox = new VBox();
+            Label heading = new Label(labelText);
+            vBox.getChildren().addAll(heading, control);
+            if (column > 2) {
+                column = 0;
+                row++;
             }
+            form.getGridPane().add(vBox, column, row);
+            form.getFieldsList().add(control);
+            column++;
 
             form.setColumn(column);
             form.setRow(row);
             return this;
         }
 
-        protected Builder withFieldsInt(Form form, int column, int row, String... input) {
+        private Builder withFieldsString(String... input) {
             for (String i : input) {
-                VBox vBox = new VBox();
-                Label heading = new Label(i);
-                NumericTextField textField = new NumericTextField();
-                textField.setPromptText(i);
-                vBox.getChildren().addAll(heading, textField);
-                if (column > 2) {
-                    column = 0;
-                    row++;
-                }
-                this.form.getGridPane().add(vBox, column, row);
-                this.form.getFieldsList().add(textField);
-                column++;
+                TextField textField = new TextField(i);
+                addFieldToForm(i, textField);
             }
 
-            form.setColumn(column);
-            form.setRow(row);
             return this;
         }
 
-        protected Builder withFieldsUneditable(Form form, int column, int row, String... input) {
+        private Builder withFieldsInt(String... input) {
             for (String i : input) {
-                VBox vBox = new VBox();
-                Label heading = new Label(i);
+                NumericTextField numberField = new NumericTextField();
+                numberField.setPromptText(i);
+                addFieldToForm(i, numberField);
+            }
+            
+            return this;
+        }
+
+        private Builder withFieldsUneditable(String... input) {
+            for (String i : input) {
                 TextField textField = new TextField();
                 textField.setDisable(true);
-                textField.setPromptText(i);
-                vBox.getChildren().addAll(heading, textField);
-                if (column > 2) {
-                    column = 0;
-                    row++;
-                }
-                this.form.getGridPane().add(vBox, column, row);
-                this.form.getFieldsList().add(textField);
-                column++;
+                addFieldToForm(i, textField);
             }
 
-            form.setColumn(column);
-            form.setRow(row);
             return this;
         }
 
-        protected <E> Builder withDropDownBoxes(Form form, ObservableList<E> content, int column, int row, String... input) {
-            for (String i : input) {
-                VBox vBox = new VBox();
-                Label heading = new Label(i);
-                AutoCompleteComboBox<E> dropDown = new AutoCompleteComboBox<E>(content);
-                vBox.getChildren().addAll(heading, dropDown);
-                if (column > 2) {
-                    column = 0;
-                    row++;
-                }
-                this.form.getGridPane().add(vBox, column, row);
-                this.form.boxList.add(dropDown);
-                column++;
-            }
+        private <E> Builder withDropDownBox(ObservableList<E> content, String input) {
+            AutoCompleteComboBox dropDown = new AutoCompleteComboBox<>(content);
+            addFieldToForm(input, dropDown);
+        
+            return this;
+        }
 
-            form.setColumn(column);
-            form.setRow(row);
+        private Builder withFieldsDatePicker(Form form) {
+            DatePicker startDatePicker = new DatePicker();
+            DatePicker endDatePicker = new DatePicker();
+
+            addFieldToForm("Start dato DD/MM/ÅÅÅÅ", startDatePicker);
+            addFieldToForm("Slut dato DD/MM/ÅÅÅÅ", endDatePicker);
+
             return this;
         }
         
-        protected Form build() {
+        private Form build() {
             return form;
         }
 
         protected Form buildCustomerForm() {
             form = new Form.Builder()
-                .withFieldsString(this.form, 0, 0, "Fornavn", "Efternavn")
-                .withFieldsInt(this.form, this.form.getColumn(), this.form.getRow(), "Telefonnummer")
-                .withFieldsString(this.form, this.form.getColumn(), this.form.getRow(), "Email", "Adresse")
-                .withFieldsInt(this.form, this.form.getColumn(), this.form.getRow(), "CPR")
+                .withFieldsString("Fornavn", "Efternavn")
+                .withFieldsInt("Telefonnummer")
+                .withFieldsString("Email", "Adresse")
+                .withFieldsInt("CPR")
                 .build();
             return form;
         }
 
         protected Form buildCarForm() {
             form = new Form.Builder()
-                .withFieldsInt(this.form, 0, 0, "Årgang", "Pris")
-                .withFieldsString(this.form, this.form.getColumn(), this.form.getRow(), "Model")
+                .withFieldsInt("Årgang", "Pris")
+                .withFieldsString("Model")
                 .build();
             return form;
         }
 
         protected Form buildLoanForm() {
             form = new Form.Builder()
-                    .withFieldsInt(this.form, 0, 0, "Stelnummer", "Kunde CPR", "Lånets størrelse", "Udbetaling")
-                    .withFieldsInt(this.form, this.form.getColumn(), this.form.getRow(), "Rente", "Start dato", "Forfaldsdag")
-                    .withDropDownBoxes(this.form, CarController.getCars(), this.form.getColumn(), this.form.getRow(),"Bil")
-                    .withDropDownBoxes(this.form, CustomerController.getCustomers(), this.form.getColumn(), this.form.getRow(), "CPR & Kunde")
-                    .build();
+                .withDropDownBox(CarController.getCars(), "Bil")
+                .withDropDownBox(CustomerController.getCustomers(), "CPR & Kunde")
+                .withDropDownBox(EmployeeController.getEmployees(), "Medarbejder")
+                .withFieldsUneditable("Model", "Fornavn", "Fornavn")
+                .withFieldsUneditable("Årgang", "Efternavn", "Efternavn")
+                .withFieldsUneditable("Pris", "CPR", "ID")
+                .withFieldsUneditable("Stelnummer", "Telefon nr.", "Telefon nr.")
+                .withFieldsUneditable("Kundens Adresse", "Email", "Email")
+                .withFieldsInt("Lånets størrelse", "Udbetaling", "Rente")
+                .withFieldsDatePicker(form)
+                .build();
             return form;
         }
     }

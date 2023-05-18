@@ -7,7 +7,7 @@ import dk.eamv.ferrari.scenes.customer.CustomerModel;
 import dk.eamv.ferrari.scenes.employee.Employee;
 import dk.eamv.ferrari.scenes.employee.EmployeeModel;
 
-import java.sql.Date;
+import java.util.Date;
 import java.util.Objects;
 
 public class Loan {
@@ -19,8 +19,8 @@ public class Loan {
     private double loanSize;
     private double downPayment;
     private double interestRate;
-    private java.sql.Date startDate;
-    private java.sql.Date endDate;
+    private Date startDate;
+    private Date endDate;
     private LoanStatus status;
 
     public Loan(int id, int car_id, int customer_id, int employee_id, double loanSize, double downPayment,

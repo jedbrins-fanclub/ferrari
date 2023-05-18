@@ -78,4 +78,9 @@ public class Employee {
     public boolean isSalesManager() {
         return maxLoan >= 0;
     }
+
+    @Override
+    public String toString() {
+        return String.format("%-4d %s %s", id, firstName, lastName);
+    }
 }
