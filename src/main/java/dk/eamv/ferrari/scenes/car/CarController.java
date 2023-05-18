@@ -20,17 +20,11 @@ public class CarController {
                 .withColumn("Stelnummer", Car::getId)
                 .withColumn("Model", Car::getModel)
                 .withColumn("Årgang", Car::getYear)
-                .withColumn("Pris", Car::getPrice) //TODO: Decide how to display price (maybe store in Ks)
+                .withColumn("Pris (DKK)", Car::getPrice) //TODO: Decide how to display price (maybe store in Ks)
                 .withButtonColumn("", "Rediger", CarView::showEditCarDialog)
-                .withButtonColumn("", "Slet", CarController::deleteCar)
-                .withButtonColumn("...", "...", CarController::buttonIsClicked);
+                .withButtonColumn("", "Slet", CarController::deleteCar);
     }
 
-    private static void buttonIsClicked(Car car) {
-        System.out.println("Controller method is called with car: " + car);
-    }
-
-    //TODO: create car dialog calls this method
     protected static void createCar() {
         FormFactory.createCarFormDialogBox();
     }
@@ -42,7 +36,7 @@ public class CarController {
     }
 
     protected static void deleteCar(Car car) {
-        System.out.println("Call method in CarModel to delete car with id: " + car.getId());
+        CarModel.delete(car.getId());
 
         // When removing the car from the ObservableList, the TableView updates automatically
         cars.remove(car);
