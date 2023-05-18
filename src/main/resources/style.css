@@ -162,3 +162,21 @@
     -fx-background-radius: 20px;
     -fx-background-color: F7F7F7;
 }
+
+.icon-button {
+    -fx-background-color: transparent;
+    -fx-border-color: #d3d3d3;
+    -fx-border-radius: 7px;
+    -fx-fill: #d3d3d3;
+}
+
+.icon-button:hover {
+    -fx-background-color: #d3d3d3;
+    -fx-background-radius: 7px;
+    -fx-fill: #323232;
+}
+
+.icon-button:pressed {
+    -fx-background-color: #d3d3d3;
+    -fx-border-color: #d3d3d3;
+}

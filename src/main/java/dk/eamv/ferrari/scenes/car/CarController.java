@@ -1,5 +1,6 @@
 package dk.eamv.ferrari.scenes.car;
 
+import dk.eamv.ferrari.resources.SVGResources;
 import dk.eamv.ferrari.sharedcomponents.filter.FilteredTableBuilder;
 import dk.eamv.ferrari.sharedcomponents.forms.FormFactory;
 import javafx.collections.FXCollections;
@@ -21,8 +22,8 @@ public class CarController {
                 .withColumn("Model", Car::getModel)
                 .withColumn("Årgang", Car::getYear)
                 .withColumn("Pris (DKK)", Car::getPrice) //TODO: Decide how to display price (maybe store in Ks)
-                .withButtonColumn("", "Rediger", CarView::showEditCarDialog)
-                .withButtonColumn("", "Slet", CarController::deleteCar);
+                .withIconButtonColumn(SVGResources.getEditIcon(), CarView::showEditCarDialog)
+                .withIconButtonColumn(SVGResources.getDeleteIcon(), CarController::deleteCar);
     }
 
     protected static void createCar() {

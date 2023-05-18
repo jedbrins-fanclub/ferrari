@@ -1,5 +1,6 @@
 package dk.eamv.ferrari.scenes.employee;
 
+import dk.eamv.ferrari.resources.SVGResources;
 import dk.eamv.ferrari.sharedcomponents.filter.FilteredTableBuilder;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -19,8 +20,8 @@ public class EmployeeController {
                 .withColumn("Telefonnummer", Employee::getPhoneNumber)
                 .withColumn("Email", Employee::getEmail)
                 .withColumn("Max lån (DKK)", Employee::getMaxLoan)
-                .withButtonColumn("", "Rediger", EmployeeView::showEditEmployeeDialog)
-                .withButtonColumn("", "Slet", EmployeeController::deleteEmployee);
+                .withIconButtonColumn(SVGResources.getEditIcon(), EmployeeView::showEditEmployeeDialog)
+                .withIconButtonColumn(SVGResources.getDeleteIcon(), EmployeeController::deleteEmployee);
     }
 
     protected static void createEmployee(Employee employee) {

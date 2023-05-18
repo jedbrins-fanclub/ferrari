@@ -1,5 +1,6 @@
 package dk.eamv.ferrari.scenes.loan;
 
+import dk.eamv.ferrari.resources.SVGResources;
 import dk.eamv.ferrari.sharedcomponents.filter.FilteredTableBuilder;
 import dk.eamv.ferrari.sharedcomponents.forms.FormFactory;
 import javafx.collections.FXCollections;
@@ -28,10 +29,10 @@ public class LoanController {
                 .withColumn("Start", Loan::getStartDate)
                 .withColumn("Slut", Loan::getEndDate)
                 .withColumn("Status", loan -> loan.getStatus().getDisplayName())
-                .withButtonColumn("", "Opdater status", LoanController::updateLoanStatus)
-                .withButtonColumn("", "Rediger", LoanView::showEditLoanDialog)
-                .withButtonColumn("", "Slet", LoanController::deleteLoan)
-                .withButtonColumn("", "Eksporter til CSV", LoanController::exportLoan);
+                .withIconButtonColumn(SVGResources.getChangeStatusIcon(), LoanController::updateLoanStatus)
+                .withIconButtonColumn(SVGResources.getEditIcon(), LoanView::showEditLoanDialog)
+                .withIconButtonColumn(SVGResources.getDeleteIcon(), LoanController::deleteLoan)
+                .withIconButtonColumn(SVGResources.getExportCSVIcon(), LoanController::exportLoan);
     }
 
     protected static void createLoan() {

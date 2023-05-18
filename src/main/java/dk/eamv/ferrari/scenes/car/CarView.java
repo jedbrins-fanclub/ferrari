@@ -81,7 +81,6 @@ public class CarView {
     private static void initTableView() {
         tableView = CarController.filteredTableBuilder.build();
         tableView.setPrefHeight(700);
-        tableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
     }
 
     private static void initSearchContainer() {

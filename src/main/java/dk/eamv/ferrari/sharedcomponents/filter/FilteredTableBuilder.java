@@ -117,6 +117,13 @@ public class FilteredTableBuilder<T> implements FilteredTableBuilderInfo<T> {
         return this;
     }
 
+    public FilteredTableBuilder<T> withIconButtonColumn(String svg, Consumer<T> onButtonClick) {
+        TableColumn<T, Void> buttonColumn = new TableColumn<>();
+        buttonColumn.setCellFactory(param -> new ButtonTableCell<>(onButtonClick, svg));
+        buttonColumns.add(buttonColumn);
+        return this;
+    }
+
     public FilteredTable<T> build() {
         filteredTable = new FilteredTable<>(data);
         for (Pair<String, Function<T, Object>> info : columnInfo) {

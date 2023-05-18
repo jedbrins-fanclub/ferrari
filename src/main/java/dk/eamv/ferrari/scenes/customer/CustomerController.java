@@ -1,5 +1,6 @@
 package dk.eamv.ferrari.scenes.customer;
 
+import dk.eamv.ferrari.resources.SVGResources;
 import dk.eamv.ferrari.sharedcomponents.filter.FilteredTableBuilder;
 import dk.eamv.ferrari.sharedcomponents.forms.FormFactory;
 import javafx.collections.FXCollections;
@@ -21,8 +22,8 @@ public class CustomerController {
                 .withColumn("Email", Customer::getEmail)
                 .withColumn("Adresse", Customer::getAddress)
                 .withColumn("CPR-nummer", Customer::getCpr)
-                .withButtonColumn("", "Rediger", CustomerView::showEditCustomerDialog)
-                .withButtonColumn("", "Slet", CustomerController::deleteCustomer);
+                .withIconButtonColumn(SVGResources.getEditIcon(), CustomerView::showEditCustomerDialog)
+                .withIconButtonColumn(SVGResources.getDeleteIcon(), CustomerController::deleteCustomer);
     }
 
     protected static void createCustomer() {
