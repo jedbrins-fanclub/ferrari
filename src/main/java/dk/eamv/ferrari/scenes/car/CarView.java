@@ -60,7 +60,7 @@ public class CarView {
 
 
         StackPane window = new StackPane(parentContainer);
-        window.setPadding(new Insets(75));
+        window.setPadding(new Insets(50));
         window.setStyle("-fx-background-color: lightgrey");
 
         return window;
