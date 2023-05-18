@@ -145,12 +145,10 @@ public class Form {
             return this;
         }
 
-        private Builder withFieldsInt(String... input) {
-            for (String i : input) {
-                NumericTextField numberField = new NumericTextField();
-                numberField.setPromptText(i);
-                addFieldToForm(i, numberField);
-            }
+        private Builder withFieldInt(int maxLength, boolean decimals, String input) {
+                NumericTextField numberField = new NumericTextField(decimals, maxLength);
+                numberField.setPromptText(input);
+                addFieldToForm(input, numberField);
             
             return this;
         }
@@ -189,16 +187,17 @@ public class Form {
         protected Form buildCustomerForm() {
             form = new Form.Builder()
                 .withFieldsString("Fornavn", "Efternavn")
-                .withFieldsInt("Telefonnummer")
+                .withFieldInt(12, false, "Telefonnummer")
                 .withFieldsString("Email", "Adresse")
-                .withFieldsInt("CPR")
+                .withFieldInt(10, false, "CPR")
                 .build();
             return form;
         }
 
         protected Form buildCarForm() {
             form = new Form.Builder()
-                .withFieldsInt("Årgang", "Pris")
+                .withFieldInt(4, false, "Årgang")
+                .withFieldInt(-1, true, "Pris") //-1 = no maxlength
                 .withFieldsString("Model")
                 .build();
             return form;
@@ -214,7 +213,9 @@ public class Form {
                 .withFieldsUneditable("Pris", "CPR", "ID")
                 .withFieldsUneditable("Stelnummer", "Telefon nr.", "Telefon nr.")
                 .withFieldsUneditable("Kundens Adresse", "Email", "Email")
-                .withFieldsInt("Lånets størrelse", "Udbetaling", "Rente")
+                .withFieldInt(-1, true, "Lånets størrelse")
+                .withFieldInt(-1, true, "Udbetaling")
+                .withFieldInt(5, true, "Rente")
                 .withFieldsDatePicker(form)
                 .build();
             return form;
