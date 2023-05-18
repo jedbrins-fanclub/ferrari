@@ -31,17 +31,16 @@
 
 .table-row-cell:odd {
     -fx-border-color: transparent transparent lightgrey transparent;
-    -fx-background-color: transparent;
+    -fx-background-color: #f7f7f7;
 }
 
 .table-row-cell:even {
     -fx-border-color: transparent transparent lightgrey transparent;
-    -fx-background-color: transparent;
+    -fx-background-color: #F0F0F0;
 }
 
 .table-row-cell:selected {
     -fx-text-background-color: #323232;
-    -fx-background-color: #F0F0F0;
     -fx-background-insets: 1px 0 2px 0;
 }
 
