@@ -37,7 +37,7 @@ public class LoanController {
     }
 
     protected static void updateLoan(Loan loan) {
-        System.out.println("Call method in LoanModel update loan with id: " + loan.getId());
+        LoanModel.update(loan);
 
         LoanView.refreshTableView();
     }

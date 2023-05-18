@@ -38,9 +38,10 @@ public class EmployeeView {
         initButtonCreate();
 
         HBox containerAboveTable = new HBox();
-        containerAboveTable.setAlignment(Pos.CENTER_RIGHT);
+        containerAboveTable.setAlignment(Pos.CENTER_LEFT);
         containerAboveTable.setPadding(new Insets(0, 10, 0, 0));
-        containerAboveTable.getChildren().addAll(buttonCreate, searchContainer); // Put search box top right of table
+        containerAboveTable.setSpacing(10);
+        containerAboveTable.getChildren().addAll(searchContainer, buttonCreate); // Put search box top right of table
 
         VBox tableContainer = new VBox();
         tableContainer.setAlignment(Pos.BOTTOM_CENTER);
