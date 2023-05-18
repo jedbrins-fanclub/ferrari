@@ -27,6 +27,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Control;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Dialog;
+import javafx.scene.control.DialogPane;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
@@ -101,6 +102,9 @@ public final class FormWrapper {
         Window window = dialog.getDialogPane().getScene().getWindow();
         window.setOnCloseRequest(event -> window.hide());
 
+        DialogPane dialogPane = dialog.getDialogPane();
+        dialogPane.getStylesheets().add("dialog.css");
+        dialogPane.getStyleClass().add("dialog");
         errorLabel.setVisible(false);
         errorLabel.setPadding(new Insets(0, 0, 0, 100));
         Button buttonCancel = new Button("Fortryd");
