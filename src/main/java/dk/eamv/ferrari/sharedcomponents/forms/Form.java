@@ -187,7 +187,7 @@ public class Form {
         protected Form buildCustomerForm() {
             form = new Form.Builder()
                 .withFieldsString("Fornavn", "Efternavn")
-                .withFieldInt(12, false, "Telefonnummer")
+                .withFieldInt(8, false, "Telefonnummer")
                 .withFieldsString("Email", "Adresse")
                 .withFieldInt(10, false, "CPR")
                 .build();

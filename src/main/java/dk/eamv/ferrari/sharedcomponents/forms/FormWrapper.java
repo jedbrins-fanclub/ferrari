@@ -269,7 +269,6 @@ public final class FormWrapper {
     }
 
     private static <E> E getComboBox(Form form, int index) {
-        //Hej Flemming den her vil vi ikke have til eksamen.
         AutoCompleteComboBox<E> acb = ((AutoCompleteComboBox)form.getFieldsList().get(index));
         return acb.getSelectedItem();
     }
