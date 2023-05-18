@@ -76,6 +76,7 @@ public class CustomerView {
 
     private static void initButtonCreate() {
         buttonCreate = new Button("Registrer ny kunde");
+        buttonCreate.getStyleClass().add("create-button");
 
         buttonCreate.setOnAction(e -> CustomerController.createCustomer());
     }

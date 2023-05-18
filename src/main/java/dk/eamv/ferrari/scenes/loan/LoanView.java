@@ -74,6 +74,7 @@ public class LoanView {
 
     private static void initButtonCreate() {
         buttonCreate = new Button("Opret ny låneaftale");
+        buttonCreate.getStyleClass().add("create-button");
 
         buttonCreate.setOnAction(e -> LoanController.createLoan());
     }

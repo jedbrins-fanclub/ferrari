@@ -43,6 +43,7 @@ public class CarView {
         HBox containerAboveTable = new HBox();
         containerAboveTable.setAlignment(Pos.CENTER_RIGHT);
         containerAboveTable.setPadding(new Insets(0, 10, 0, 0));
+        containerAboveTable.setSpacing(10);
         containerAboveTable.getChildren().addAll(buttonCreate, searchContainer); // Put search box top right of table
 
         VBox tableContainer = new VBox();
@@ -79,6 +80,7 @@ public class CarView {
 
     private static void initButtonCreate() {
         buttonCreate = new Button("Opret ny bil");
+        buttonCreate.getStyleClass().add("create-button");
         
         buttonCreate.setOnAction(e -> CarController.createCar());
     }

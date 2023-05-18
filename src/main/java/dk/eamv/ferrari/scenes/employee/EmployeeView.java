@@ -74,6 +74,7 @@ public class EmployeeView {
 
     private static void initButtonCreate() {
         buttonCreate = new Button("Registrer ny medarbejder");
+        buttonCreate.getStyleClass().add("create-button");
 
         buttonCreate.setOnAction(e -> {}); //TODO: open dialog here
     }
