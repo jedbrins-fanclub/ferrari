@@ -274,16 +274,35 @@ public final class FormWrapper {
         return ((TextField) form.getFieldsList().get(comboBoxIndex)).getText();
     }
 
+    private static String getString(Form form, String key) {
+        return ((TextField)form.getFieldMap().get(key.toLowerCase())).getText();
+    }
+
     private static int getInt(Form form, int index) {
         return Integer.valueOf(((TextField) form.getFieldsList().get(index)).getText());
+    }
+
+    private static int getInt(Form form, String key) {
+        return Integer.valueOf(((TextField)form.getFieldMap().get(key.toLowerCase())).getText());
     }
 
     private static double getDouble(Form form, int index) {
         return Double.valueOf(((TextField) form.getFieldsList().get(index)).getText());
     }
 
+    private static double getDouble(Form form, String key) {
+        return Double.valueOf(((TextField)form.getFieldMap().get(key.toLowerCase())).getText());
+    }
+
     private static Date getSelectedDate(Form form, int index) {
         DatePicker datePicker = ((DatePicker) form.getFieldsList().get(index));
+        LocalDate localDate = datePicker.getValue();
+        Instant instant = Instant.from(localDate.atStartOfDay(ZoneId.systemDefault()));
+        return Date.from(instant);
+    }
+
+    private static Date getSelectedDate(Form form, String key) {
+        DatePicker datePicker = ((DatePicker) form.getFieldMap().get(key.toLowerCase()));
         LocalDate localDate = datePicker.getValue();
         Instant instant = Instant.from(localDate.atStartOfDay(ZoneId.systemDefault()));
         return Date.from(instant);

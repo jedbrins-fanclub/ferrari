@@ -2,6 +2,7 @@ package dk.eamv.ferrari.sharedcomponents.forms;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import dk.eamv.ferrari.scenes.car.CarController;
 import dk.eamv.ferrari.scenes.customer.CustomerController;
@@ -28,12 +29,14 @@ import javafx.scene.layout.VBox;
 public class Form {
     private GridPane gridPane;
     private ArrayList<Control> fieldsList;
+    private HashMap<String, Control> fieldMap;
     private int column;
     private int row;
 
     private Form() {
         gridPane = createGridPane();
         fieldsList = new ArrayList<Control>();
+        fieldMap = new HashMap<String, Control>();
         column = 0;
         row = 0;
     }
@@ -53,6 +56,10 @@ public class Form {
 
     protected ArrayList<Control> getFieldsList() {
         return fieldsList;
+    }
+
+    protected HashMap<String, Control> getFieldMap() {
+        return fieldMap;
     }
 
     protected boolean verifyHasFilledFields() {
@@ -120,6 +127,7 @@ public class Form {
                 row++;
             }
             form.getGridPane().add(vBox, column, row);
+            form.getFieldMap().put(labelText.toLowerCase(), control);
             form.getFieldsList().add(control);
             column++;
 
