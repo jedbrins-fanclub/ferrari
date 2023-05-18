@@ -7,7 +7,7 @@
     -fx-border-color: #71717a;
     -fx-border-width: 0.5;
     -fx-prompt-text-fill: #404040;
-    -fx-background-radius: 5px;
+    -fx-border-radius: 5px;
 }
 
 .dialog TextField:disabled {
