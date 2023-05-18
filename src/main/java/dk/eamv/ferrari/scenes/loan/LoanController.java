@@ -1,14 +1,12 @@
 package dk.eamv.ferrari.scenes.loan;
 
+import dk.eamv.ferrari.resources.SVGResources;
 import dk.eamv.ferrari.sharedcomponents.filter.FilteredTableBuilder;
 import dk.eamv.ferrari.sharedcomponents.forms.FormFactory;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ChoiceBox;
-
-import java.text.DecimalFormat;
-import java.util.ArrayList;
 
 public class LoanController {
 
@@ -22,16 +20,16 @@ public class LoanController {
                 .withColumn("Bil", Loan::getCarLabel)
                 .withColumn("Kunde", Loan::getCustomerLabel)
                 .withColumn("Sælger", Loan::getEmployeeLabel)
-                .withColumn("Lån", Loan::getLoanSize)
-                .withColumn("Udbetaling", Loan::getDownPayment)
-                .withColumn("Rente", Loan::getInterestRate)
+                .withColumn("Lån (DKK)", Loan::getLoanSize)
+                .withColumn("Udbetaling (DKK)", Loan::getDownPayment)
+                .withColumn("Rente (%)", Loan::getInterestRate)
                 .withColumn("Start", Loan::getStartDate)
                 .withColumn("Slut", Loan::getEndDate)
                 .withColumn("Status", loan -> loan.getStatus().getDisplayName())
-                .withButtonColumn("", "Opdater status", LoanController::updateLoanStatus)
-                .withButtonColumn("", "Rediger", LoanView::showEditLoanDialog)
-                .withButtonColumn("", "Slet", LoanController::deleteLoan)
-                .withButtonColumn("", "Eksporter til CSV", LoanController::exportLoan);
+                .withIconButtonColumn(SVGResources.getChangeStatusIcon(), LoanController::updateLoanStatus)
+                .withIconButtonColumn(SVGResources.getEditIcon(), LoanView::showEditLoanDialog)
+                .withIconButtonColumn(SVGResources.getDeleteIcon(), LoanController::deleteLoan)
+                .withIconButtonColumn(SVGResources.getExportCSVIcon(), LoanController::exportLoan);
     }
 
     protected static void createLoan() {
@@ -39,7 +37,7 @@ public class LoanController {
     }
 
     protected static void updateLoan(Loan loan) {
-        System.out.println("Call method in LoanModel update loan with id: " + loan.getId());
+        LoanModel.update(loan);
 
         LoanView.refreshTableView();
     }

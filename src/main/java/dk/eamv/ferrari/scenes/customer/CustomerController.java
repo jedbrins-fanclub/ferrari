@@ -1,10 +1,10 @@
 package dk.eamv.ferrari.scenes.customer;
 
+import dk.eamv.ferrari.resources.SVGResources;
 import dk.eamv.ferrari.sharedcomponents.filter.FilteredTableBuilder;
 import dk.eamv.ferrari.sharedcomponents.forms.FormFactory;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import java.util.ArrayList;
 
 public class CustomerController {
 
@@ -21,9 +21,8 @@ public class CustomerController {
                 .withColumn("Email", Customer::getEmail)
                 .withColumn("Adresse", Customer::getAddress)
                 .withColumn("CPR-nummer", Customer::getCpr)
-                .withButtonColumn("", "Ny låneaftale", CustomerController::createLoan)
-                .withButtonColumn("", "Rediger", CustomerView::showEditCustomerDialog)
-                .withButtonColumn("", "Slet", CustomerController::deleteCustomer);
+                .withIconButtonColumn(SVGResources.getEditIcon(), CustomerView::showEditCustomerDialog)
+                .withIconButtonColumn(SVGResources.getDeleteIcon(), CustomerController::deleteCustomer);
     }
 
     protected static void createCustomer() {
@@ -41,11 +40,6 @@ public class CustomerController {
 
         // When removing the customer from the ObservableList, the TableView updates automatically
         customers.remove(customer);
-    }
-
-    protected static void createLoan(Customer customer) {
-        //TODO: Open dialog to create loan agreement for this customer
-        System.out.println("opening new loan dialog for customer: " + customer.getId());
     }
 
     public static ObservableList<Customer> getCustomers() {
