@@ -138,7 +138,8 @@ public class Form {
 
         private Builder withFieldsString(String... input) {
             for (String i : input) {
-                TextField textField = new TextField(i);
+                TextField textField = new TextField();
+                textField.setPromptText(i);
                 addFieldToForm(i, textField);
             }
 
