@@ -108,6 +108,7 @@ public final class FormWrapper {
         dialogPane.getStyleClass().add("dialog");
         errorLabel.setVisible(false);
         errorLabel.setPadding(new Insets(0, 0, 0, 100));
+        errorLabel.getStyleClass().add("errorLabel");
         Button buttonCancel = new Button("Fortryd");
         buttonCancel.setOnMouseClicked(e -> {
             dialog.setResult(true);
@@ -167,21 +168,29 @@ public final class FormWrapper {
 
             case CUSTOMER:
                 buttonOK.setOnMouseClicked(e -> {
-                    if (form.verifyHasFilledFields()) {
-                        Customer customer = getFieldsCustomer(form, dialog);
-                        CustomerController.getCustomers().add(customer);
-                        CustomerModel.create(customer);
-                    } 
+                    if (!form.verifyHasFilledFields()) {
+                        getErrorLabel().setText("Mangler input i markerede felter");
+                        getErrorLabel().setVisible(true);
+                        return;
+                    }
+                
+                    Customer customer = getFieldsCustomer(form, dialog);
+                    CustomerController.getCustomers().add(customer);
+                    CustomerModel.create(customer);
                 });
                 break;
 
             case CAR:
                 buttonOK.setOnMouseClicked(e -> {
-                    if (form.verifyHasFilledFields()) {
-                        Car car = getFieldsCar(form, dialog);
-                        CarController.getCars().add(car);
-                        CarModel.create(car);
+                    if (!form.verifyHasFilledFields()) {
+                        getErrorLabel().setText("Mangler input i markerede felter");
+                        getErrorLabel().setVisible(true);
+                        return;
                     }
+                    
+                    Car car = getFieldsCar(form, dialog);
+                    CarController.getCars().add(car);
+                    CarModel.create(car);
                 });
                 break;
 
@@ -282,8 +291,8 @@ public final class FormWrapper {
         comboBox.setOnAction(e -> {
             Employee employee = getFromComboBox(form, "Medarbejder");
             if (employee != null) {
-                setText(form, "Medarbejderens fornavn", employee.getFirstName());
-                setText(form, "Medarbejderens efternavn", employee.getLastName());
+                setText(form, "Medarbejderens Fornavn", employee.getFirstName());
+                setText(form, "Medarbejderens Efternavn", employee.getLastName());
                 setText(form, "Medarbejderens ID", String.valueOf(employee.getId()));
                 setText(form, "Medarbejderens Telefon nr.", employee.getPhoneNumber());
                 setText(form, "Medarbejderens Email", employee.getEmail());
