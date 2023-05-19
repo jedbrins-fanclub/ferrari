@@ -37,7 +37,7 @@ public final class FormFactory {
 
     public static void updateCustomerFormDialogBox(Customer customer) {
         Dialog<Void> dialog = FormWrapper.wrapUpdate(builder.buildCustomerForm(), customer);
-        dialog.setTitle("Opdater bil");
+        dialog.setTitle("Opdater kunde");
         dialog.show();
     }
 }

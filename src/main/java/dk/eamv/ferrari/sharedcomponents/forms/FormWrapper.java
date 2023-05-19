@@ -226,7 +226,7 @@ public final class FormWrapper {
     private static Customer getFieldsCustomer(Form form, Dialog dialog) {
         dialog.setResult(true);
         dialog.close();
-        Customer customer = new Customer(getString(form, "Fornavn"), getString(form, "Efternavn"), getString(form, "Telefon nr."), getString(form, "Email"), getString(form, "Adresse"), getString(form, "CPR"));
+        Customer customer = new Customer(getString(form, "Fornavn"), getString(form, "Efternavn"), getString(form, "Telefonnummer"), getString(form, "Email"), getString(form, "Adresse"), getString(form, "CPR"));
 
         return customer;
     }
@@ -267,7 +267,6 @@ public final class FormWrapper {
         comboBox.setOnAction(e -> {
             Customer customer = getFromComboBox(form, "CPR & Kunde");
             if (customer != null) {
-                TextField loanSize = (TextField) form.getFieldMap().get("Lånets størrelse");
                 setText(form, "Kundens Fornavn", customer.getFirstName());
                 setText(form, "Kundens Efternavn", customer.getLastName());
                 setText(form, "Kundens CPR", customer.getCpr());
