@@ -152,7 +152,7 @@ public final class FormWrapper {
                     }
 
                     Employee employee = getFromComboBox(form, "Medarbejder");
-                    if (employee.getMaxLoan() < getDouble(form, "Lånets størrelse".toLowerCase())) {
+                    if (employee.getMaxLoan() < getDouble(form, "Lånets størrelse")) {
                         getErrorLabel().setText("Lånet's størrelse overskrider medarbejderens beføjelser.");
                         getErrorLabel().setVisible(true);
                         return;
@@ -249,7 +249,7 @@ public final class FormWrapper {
 
     private static void bindFieldsCar(Form form) {
         TextField loanSize = (TextField) form.getFieldMap().get("Lånets størrelse");
-        AutoCompleteComboBox<Car> comboBox = (AutoCompleteComboBox) form.getFieldMap().get("Bil".toLowerCase());
+        AutoCompleteComboBox<Car> comboBox = (AutoCompleteComboBox) form.getFieldMap().get("Bil");
         comboBox.setOnAction(e -> {
             Car car = getFromComboBox(form, "Bil");
             if (car != null) {
@@ -263,11 +263,11 @@ public final class FormWrapper {
     }
     
     private static void bindFieldsCustomer(Form form) {
-        AutoCompleteComboBox<Customer> comboBox = (AutoCompleteComboBox) form.getFieldMap().get("CPR & Kunde".toLowerCase());
+        AutoCompleteComboBox<Customer> comboBox = (AutoCompleteComboBox) form.getFieldMap().get("CPR & Kunde");
         comboBox.setOnAction(e -> {
             Customer customer = getFromComboBox(form, "CPR & Kunde");
             if (customer != null) {
-                TextField loanSize = (TextField) form.getFieldMap().get("Lånets størrelse".toLowerCase());
+                TextField loanSize = (TextField) form.getFieldMap().get("Lånets størrelse");
                 setText(form, "Kundens Fornavn", customer.getFirstName());
                 setText(form, "Kundens Efternavn", customer.getLastName());
                 setText(form, "Kundens CPR", customer.getCpr());
@@ -279,7 +279,7 @@ public final class FormWrapper {
     }
 
     private static void bindFieldsEmployee(Form form) {
-        AutoCompleteComboBox<Customer> comboBox = (AutoCompleteComboBox) form.getFieldMap().get("Medarbejder".toLowerCase());
+        AutoCompleteComboBox<Customer> comboBox = (AutoCompleteComboBox) form.getFieldMap().get("Medarbejder");
         comboBox.setOnAction(e -> {
             Employee employee = getFromComboBox(form, "Medarbejder");
             if (employee != null) {
@@ -293,20 +293,20 @@ public final class FormWrapper {
     }
     
     private static void bindLoanSize(Form form) {
-        TextField loanSize = (TextField) form.getFieldMap().get("Lånets størrelse".toLowerCase());
-        ((TextField) form.getFieldMap().get("Udbetaling".toLowerCase())).setOnKeyPressed(e -> loanSize.setText(calculateLoanSize(form)));
+        TextField loanSize = (TextField) form.getFieldMap().get("Lånets størrelse");
+        ((TextField) form.getFieldMap().get("Udbetaling")).setOnKeyPressed(e -> loanSize.setText(calculateLoanSize(form)));
     }
     
     private static String calculateLoanSize(Form form) {
         double price = 0;
         double downpayment = 0;
         
-        Car car = getFromComboBox(form, "Bil".toLowerCase());
+        Car car = getFromComboBox(form, "Bil");
         if (car != null) {
             price = car.getPrice();
         } 
 
-        TextField textField = ((TextField) form.getFieldMap().get("Udbetaling".toLowerCase()));
+        TextField textField = ((TextField) form.getFieldMap().get("Udbetaling"));
         if (!textField.getText().isEmpty()) {
             downpayment = Double.valueOf(textField.getText());
         } 
@@ -315,12 +315,12 @@ public final class FormWrapper {
     }
 
     private static <E> E getFromComboBox(Form form, String key) {
-        AutoCompleteComboBox<E> acb = ((AutoCompleteComboBox) form.getFieldMap().get(key.toLowerCase()));
+        AutoCompleteComboBox<E> acb = ((AutoCompleteComboBox) form.getFieldMap().get(key));
         return acb.getSelectedItem();
     }
     
     private static void setText(Form form, String key, String text) {
-        TextField textField = (TextField) form.getFieldMap().get(key.toLowerCase());
+        TextField textField = (TextField) form.getFieldMap().get(key);
         textField.setText(text);
     }
 
@@ -333,7 +333,7 @@ public final class FormWrapper {
     }
 
     private static String getString(Form form, String key) {
-        return ((TextField)form.getFieldMap().get(key.toLowerCase())).getText();
+        return ((TextField)form.getFieldMap().get(key)).getText();
     }
 
     private static int getInt(Form form, String key) {
@@ -345,7 +345,7 @@ public final class FormWrapper {
     }
 
     private static Date getSelectedDate(Form form, String key) {
-        DatePicker datePicker = ((DatePicker) form.getFieldMap().get(key.toLowerCase()));
+        DatePicker datePicker = ((DatePicker) form.getFieldMap().get(key));
         LocalDate localDate = datePicker.getValue();
         Instant instant = Instant.from(localDate.atStartOfDay(ZoneId.systemDefault()));
         return Date.from(instant);
