@@ -134,28 +134,24 @@ public final class FormWrapper {
                 buttonOK.setOnMouseClicked(e -> {
 
                     if (!form.verifyHasFilledFields()) {
-                        getErrorLabel().setText("Mangler input i markerede felter");
-                        getErrorLabel().setVisible(true);
+                        displayErrorMessage("Mangler input i de markerede felter");getErrorLabel().setText("Mangler input i markerede felter");
                         return;
                     }
 
                     Customer customer = getFromComboBox(form, "CPR & Kunde");
                     if (CreditRator.i().rate(customer.getCpr()).equals(Rating.D)) {
-                        getErrorLabel().setText("Kunde her kreditværdighed D");
-                        getErrorLabel().setVisible(true);
+                        displayErrorMessage("Kunden har kreditværdighed D");
                         return;
                     }
 
                     if (Double.valueOf(calculateLoanSize(form)) < 0) {
-                        getErrorLabel().setText("Lånet kan ikke være mindre end det udbetalte beløb");
-                        getErrorLabel().setVisible(true);
+                        displayErrorMessage("Lånets størrelse kan ikke være mindre end det udbetalte beløb");
                         return;
                     }
 
                     Employee employee = getFromComboBox(form, "Medarbejder");
                     if (employee.getMaxLoan() < getDouble(form, "Lånets størrelse")) {
-                        getErrorLabel().setText("Lånet's størrelse overskrider medarbejderens beføjelser.");
-                        getErrorLabel().setVisible(true);
+                        displayErrorMessage("Lånets størrelse overskrider medarbejderens beføjelser.");
                         return;
                     }
                     
@@ -169,8 +165,7 @@ public final class FormWrapper {
             case CUSTOMER:
                 buttonOK.setOnMouseClicked(e -> {
                     if (!form.verifyHasFilledFields()) {
-                        getErrorLabel().setText("Mangler input i markerede felter");
-                        getErrorLabel().setVisible(true);
+                        displayErrorMessage("Mangler input i de markerede felter");getErrorLabel().setText("Mangler input i markerede felter");
                         return;
                     }
                 
@@ -183,8 +178,7 @@ public final class FormWrapper {
             case CAR:
                 buttonOK.setOnMouseClicked(e -> {
                     if (!form.verifyHasFilledFields()) {
-                        getErrorLabel().setText("Mangler input i markerede felter");
-                        getErrorLabel().setVisible(true);
+                        displayErrorMessage("Mangler input i de markerede felter");
                         return;
                     }
                     
@@ -361,5 +355,10 @@ public final class FormWrapper {
 
     protected static Label getErrorLabel() {
         return errorLabel;
+    }
+
+    private static void displayErrorMessage(String message) {
+        errorLabel.setText(message);
+        errorLabel.setVisible(true);
     }
 }
