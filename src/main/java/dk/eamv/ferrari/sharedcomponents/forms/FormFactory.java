@@ -10,33 +10,39 @@ public final class FormFactory {
      */
 
     private static Form.Builder builder = new Form.Builder();
+    private static Dialog<?> dialog;
 
     public static void createCustomerFormDialogBox() {
-        Dialog<Void> dialog = FormWrapper.wrapCreate(builder.buildCustomerForm(), CRUDType.CUSTOMER);
+        FormWrapper.wrapCreate(builder.buildCustomerForm(), CRUDType.CUSTOMER);
+        dialog = FormWrapper.getDialog();
         dialog.setTitle("Opret kunde");
         dialog.show();
     }
 
     public static void createCarFormDialogBox() {
-        Dialog<Void> dialog = FormWrapper.wrapCreate(builder.buildCarForm(), CRUDType.CAR);
+        FormWrapper.wrapCreate(builder.buildCarForm(), CRUDType.CAR);
+        dialog = FormWrapper.getDialog();
         dialog.setTitle("Opret bil");
         dialog.show();
     }
 
     public static void createLoanFormDialogBox() {
-        Dialog<Void> dialog = FormWrapper.wrapCreate(builder.buildLoanForm(), CRUDType.LOAN);
+        FormWrapper.wrapCreate(builder.buildLoanForm(), CRUDType.LOAN);
+        dialog = FormWrapper.getDialog();
         dialog.setTitle("Opret lån");
         dialog.show();
     }
 
     public static void updateCarFormDialogBox(Car car) {
-        Dialog<Void> dialog = FormWrapper.wrapUpdate(builder.buildCarForm(), car);
+        FormWrapper.wrapUpdate(builder.buildCarForm(), car);
+        dialog = FormWrapper.getDialog();
         dialog.setTitle("Opdater bil");
         dialog.show();
     }
 
     public static void updateCustomerFormDialogBox(Customer customer) {
-        Dialog<Void> dialog = FormWrapper.wrapUpdate(builder.buildCustomerForm(), customer);
+        FormWrapper.wrapUpdate(builder.buildCustomerForm(), customer);
+        dialog = FormWrapper.getDialog();
         dialog.setTitle("Opdater kunde");
         dialog.show();
     }
