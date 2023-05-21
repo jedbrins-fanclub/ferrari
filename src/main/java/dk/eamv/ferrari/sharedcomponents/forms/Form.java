@@ -40,13 +40,13 @@ public class Form {
     }
 
     private static GridPane createGridPane() {
-            GridPane gridPane = new GridPane();
-            gridPane.setVgap(25);
-            gridPane.setHgap(50);
-            gridPane.setAlignment(Pos.CENTER);
+        GridPane gridPane = new GridPane();
+        gridPane.setVgap(25);
+        gridPane.setHgap(50);
+        gridPane.setAlignment(Pos.CENTER);
 
-            return gridPane;
-        }
+        return gridPane;
+    }
 
     protected GridPane getGridPane() {
         return gridPane;
@@ -58,11 +58,11 @@ public class Form {
 
     protected boolean verifyHasFilledFields() {
         String redStyle = """
-            -fx-prompt-text-fill: F50000;
-            -fx-background-color: #f7adb1;
-            -fx-border-color: F50000;
-        """;
-        
+                    -fx-prompt-text-fill: F50000;
+                    -fx-background-color: #f7adb1;
+                    -fx-border-color: F50000;
+                """;
+
         boolean hasFilledFields = true;
         for (Control widget : fieldMap.values()) {
             if (widget instanceof TextField) {
@@ -72,8 +72,6 @@ public class Form {
             } else if (widget instanceof DatePicker) {
                 DatePicker dp = ((DatePicker) widget);
                 hasFilledFields = !(((DatePicker) widget).getValue() == null);
-                System.out.println(dp.getValue());
-                System.out.println(dp.getValue() == null);
             }
 
             if (!hasFilledFields) {
@@ -85,7 +83,7 @@ public class Form {
         }
         return hasFilledFields;
     }
-
+    
     private void setColumn(int value) {
         column = value;
     }
@@ -103,7 +101,7 @@ public class Form {
     }
 
     public static class Builder {
-        private Form form; 
+        private Form form;
 
         public Builder() {
             form = new Form();
@@ -140,10 +138,10 @@ public class Form {
         }
 
         private Builder withFieldNumbers(int maxLength, boolean decimals, String input) {
-                NumericTextField numberField = new NumericTextField(decimals, maxLength);
-                numberField.setPromptText(input);
-                addFieldToForm(input, numberField);
-            
+            NumericTextField numberField = new NumericTextField(decimals, maxLength);
+            numberField.setPromptText(input);
+            addFieldToForm(input, numberField);
+
             return this;
         }
 
@@ -160,7 +158,7 @@ public class Form {
         private <E> Builder withDropDownBox(ObservableList<E> content, String input) {
             AutoCompleteComboBox dropDown = new AutoCompleteComboBox<>(content);
             addFieldToForm(input, dropDown);
-        
+
             return this;
         }
 
@@ -173,7 +171,7 @@ public class Form {
 
             return this;
         }
-        
+
         private Form build() {
             return form;
         }
@@ -213,19 +211,13 @@ public class Form {
                 .build();
             return form;
         }
-        
+
         protected Form buildEmployeeForm() {
-             private String firstName;
-    private String lastName;
-    private String phoneNumber;
-    private String email;
-    private String password;
-    private double maxLoan;
             form = new Form.Builder()
                 .withFieldsString("Fornavn", "Efternavn")
                 .withFieldNumbers(8, false, "Telefon nr.")
                 .withFieldsString("Email", "Kodeord")
-                .withFieldNumbers(, false, null)
+                .withFieldNumbers(-1, false, "Lånings beføjelse")   
                 .build();
             return form;
         }

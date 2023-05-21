@@ -134,7 +134,7 @@ public final class FormWrapper {
                 buttonOK.setOnMouseClicked(e -> {
 
                     if (!form.verifyHasFilledFields()) {
-                        displayErrorMessage("Mangler input i de markerede felter");getErrorLabel().setText("Mangler input i markerede felter");
+                        displayErrorMessage("Mangler input i de markerede felter");
                         return;
                     }
 
