@@ -139,7 +139,7 @@ public class Form {
             return this;
         }
 
-        private Builder withFieldInt(int maxLength, boolean decimals, String input) {
+        private Builder withFieldNumbers(int maxLength, boolean decimals, String input) {
                 NumericTextField numberField = new NumericTextField(decimals, maxLength);
                 numberField.setPromptText(input);
                 addFieldToForm(input, numberField);
@@ -181,17 +181,17 @@ public class Form {
         protected Form buildCustomerForm() {
             form = new Form.Builder()
                 .withFieldsString("Fornavn", "Efternavn")
-                .withFieldInt(8, false, "Telefonnummer")
+                .withFieldNumbers(8, false, "Telefonnummer")
                 .withFieldsString("Email", "Adresse")
-                .withFieldInt(10, false, "CPR")
+                .withFieldNumbers(10, false, "CPR")
                 .build();
             return form;
         }
 
         protected Form buildCarForm() {
             form = new Form.Builder()
-                .withFieldInt(4, false, "Årgang")
-                .withFieldInt(-1, true, "Pris") //-1 = no maxlength constraint
+                .withFieldNumbers(4, false, "Årgang")
+                .withFieldNumbers(-1, true, "Pris") //-1 = no maxlength constraint
                 .withFieldsString("Model")
                 .build();
             return form;
@@ -207,9 +207,25 @@ public class Form {
                 .withFieldsUneditable("Pris", "Kundens CPR", "Medarbejderens ID")
                 .withFieldsUneditable("Stelnummer", "Kundens Telefon nr.", "Medarbejderens Telefon nr.")
                 .withFieldsUneditable("Kundens Adresse", "Kundens Email", "Medarbejderens Email", "Lånets størrelse")
-                .withFieldInt(-1, true, "Udbetaling")
-                .withFieldInt(5, true, "Rente")
+                .withFieldNumbers(-1, true, "Udbetaling")
+                .withFieldNumbers(5, true, "Rente")
                 .withFieldsDatePicker(form)
+                .build();
+            return form;
+        }
+        
+        protected Form buildEmployeeForm() {
+             private String firstName;
+    private String lastName;
+    private String phoneNumber;
+    private String email;
+    private String password;
+    private double maxLoan;
+            form = new Form.Builder()
+                .withFieldsString("Fornavn", "Efternavn")
+                .withFieldNumbers(8, false, "Telefon nr.")
+                .withFieldsString("Email", "Kodeord")
+                .withFieldNumbers(, false, null)
                 .build();
             return form;
         }
