@@ -41,24 +41,20 @@ public class NumericTextField extends TextField {
             return false;
         }
 
-        //validate that input is shorter than max
-        System.out.println(text.length());
-        System.out.println(maxLength);
-        System.out.println(text.length() <= maxLength);
-        if (text.length() <= maxLength || maxLength == -1) {
-            // If it can be parsed to a double, then it works
-            try {
-                if (allowDecimals) {
-                    Double.parseDouble(text);
-                } else {
-                    Integer.parseInt(text);
-                }
+        // Validate that input is shorter than max
+        if (maxLength > 0 && text.length() > maxLength) {
+            return false;
+        }
 
-                return true;
-            } catch (NumberFormatException exception) {
-                return false;
+        // If it can be parsed to a double, then it works
+        try {
+            if (allowDecimals) {
+                Double.parseDouble(text);
+            } else {
+                Integer.parseInt(text);
             }
-        } else {
+            return true;
+        } catch (NumberFormatException exception) {
             return false;
         }
     }
