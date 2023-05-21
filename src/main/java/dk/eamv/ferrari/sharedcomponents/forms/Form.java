@@ -28,14 +28,12 @@ import javafx.scene.layout.VBox;
  */
 public class Form {
     private GridPane gridPane;
-    private ArrayList<Control> fieldsList;
     private HashMap<String, Control> fieldMap;
     private int column;
     private int row;
 
     private Form() {
         gridPane = createGridPane();
-        fieldsList = new ArrayList<Control>();
         fieldMap = new HashMap<String, Control>();
         column = 0;
         row = 0;
@@ -54,10 +52,6 @@ public class Form {
         return gridPane;
     }
 
-    protected ArrayList<Control> getFieldsList() {
-        return fieldsList;
-    }
-
     protected HashMap<String, Control> getFieldMap() {
         return fieldMap;
     }
@@ -70,7 +64,7 @@ public class Form {
         """;
         
         boolean hasFilledFields = true;
-        for (Control widget : fieldsList) {
+        for (Control widget : fieldMap.values()) {
             if (widget instanceof TextField) {
                 hasFilledFields = !((TextField) widget).getText().isEmpty();
             } else if (widget instanceof ComboBox) {
@@ -127,8 +121,7 @@ public class Form {
                 row++;
             }
             form.getGridPane().add(vBox, column, row);
-            form.getFieldMap().put(labelText.toLowerCase(), control);
-            form.getFieldsList().add(control);
+            form.getFieldMap().put(labelText, control);
             column++;
 
             form.setColumn(column);
@@ -138,7 +131,8 @@ public class Form {
 
         private Builder withFieldsString(String... input) {
             for (String i : input) {
-                TextField textField = new TextField(i);
+                TextField textField = new TextField();
+                textField.setPromptText(i);
                 addFieldToForm(i, textField);
             }
 
@@ -187,7 +181,7 @@ public class Form {
         protected Form buildCustomerForm() {
             form = new Form.Builder()
                 .withFieldsString("Fornavn", "Efternavn")
-                .withFieldInt(12, false, "Telefonnummer")
+                .withFieldInt(8, false, "Telefonnummer")
                 .withFieldsString("Email", "Adresse")
                 .withFieldInt(10, false, "CPR")
                 .build();
@@ -197,7 +191,7 @@ public class Form {
         protected Form buildCarForm() {
             form = new Form.Builder()
                 .withFieldInt(4, false, "Årgang")
-                .withFieldInt(-1, true, "Pris") //-1 = no maxlength
+                .withFieldInt(-1, true, "Pris") //-1 = no maxlength constraint
                 .withFieldsString("Model")
                 .build();
             return form;
@@ -208,12 +202,11 @@ public class Form {
                 .withDropDownBox(CarController.getCars(), "Bil")
                 .withDropDownBox(CustomerController.getCustomers(), "CPR & Kunde")
                 .withDropDownBox(EmployeeController.getEmployees(), "Medarbejder")
-                .withFieldsUneditable("Model", "Fornavn", "Fornavn")
-                .withFieldsUneditable("Årgang", "Efternavn", "Efternavn")
-                .withFieldsUneditable("Pris", "CPR", "ID")
-                .withFieldsUneditable("Stelnummer", "Telefon nr.", "Telefon nr.")
-                .withFieldsUneditable("Kundens Adresse", "Email", "Email")
-                .withFieldInt(-1, true, "Lånets størrelse")
+                .withFieldsUneditable("Model", "Kundens Fornavn", "Medarbejderens Fornavn")
+                .withFieldsUneditable("Årgang", "Kundens Efternavn", "Medarbejderens Efternavn")
+                .withFieldsUneditable("Pris", "Kundens CPR", "Medarbejderens ID")
+                .withFieldsUneditable("Stelnummer", "Kundens Telefon nr.", "Medarbejderens Telefon nr.")
+                .withFieldsUneditable("Kundens Adresse", "Kundens Email", "Medarbejderens Email", "Lånets størrelse")
                 .withFieldInt(-1, true, "Udbetaling")
                 .withFieldInt(5, true, "Rente")
                 .withFieldsDatePicker(form)

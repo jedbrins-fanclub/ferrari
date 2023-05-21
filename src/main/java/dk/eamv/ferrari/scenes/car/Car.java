@@ -60,8 +60,8 @@ public class Car {
     public ArrayList<String> getPropperties() {
         ArrayList<String> propperties = new ArrayList<String>();
         propperties.add(String.valueOf(year));
-        propperties.add(String.valueOf(price));
         propperties.add(model);
+        propperties.add(String.valueOf(price));
 
         return propperties;
     }

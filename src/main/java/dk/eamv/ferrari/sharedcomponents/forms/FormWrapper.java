@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 
 import dk.api.rki.CreditRator;
 import dk.api.rki.Rating;
@@ -107,6 +108,7 @@ public final class FormWrapper {
         dialogPane.getStyleClass().add("dialog");
         errorLabel.setVisible(false);
         errorLabel.setPadding(new Insets(0, 0, 0, 100));
+        errorLabel.getStyleClass().add("errorLabel");
         Button buttonCancel = new Button("Fortryd");
         buttonCancel.setOnMouseClicked(e -> {
             dialog.setResult(true);
@@ -125,6 +127,7 @@ public final class FormWrapper {
     private static void setCreateMouseListener(CRUDType type, Button buttonOK, Form form, Dialog dialog) {
         switch (type) {
             case LOAN:
+                bindLoanSize(form);
                 bindFieldsCar(form);
                 bindFieldsCustomer(form);
                 bindFieldsEmployee(form);
@@ -136,9 +139,22 @@ public final class FormWrapper {
                         return;
                     }
 
-                    Customer customer = getComboBox(form, 1);
+                    Customer customer = getFromComboBox(form, "CPR & Kunde");
                     if (CreditRator.i().rate(customer.getCpr()).equals(Rating.D)) {
                         getErrorLabel().setText("Kunde her kreditværdighed D");
+                        getErrorLabel().setVisible(true);
+                        return;
+                    }
+
+                    if (Double.valueOf(calculateLoanSize(form)) < 0) {
+                        getErrorLabel().setText("Lånet kan ikke være mindre end det udbetalte beløb");
+                        getErrorLabel().setVisible(true);
+                        return;
+                    }
+
+                    Employee employee = getFromComboBox(form, "Medarbejder");
+                    if (employee.getMaxLoan() < getDouble(form, "Lånets størrelse")) {
+                        getErrorLabel().setText("Lånet's størrelse overskrider medarbejderens beføjelser.");
                         getErrorLabel().setVisible(true);
                         return;
                     }
@@ -152,21 +168,29 @@ public final class FormWrapper {
 
             case CUSTOMER:
                 buttonOK.setOnMouseClicked(e -> {
-                    if (form.verifyHasFilledFields()) {
-                        Customer customer = getFieldsCustomer(form, dialog);
-                        CustomerController.getCustomers().add(customer);
-                        CustomerModel.create(customer);
-                    } 
+                    if (!form.verifyHasFilledFields()) {
+                        getErrorLabel().setText("Mangler input i markerede felter");
+                        getErrorLabel().setVisible(true);
+                        return;
+                    }
+                
+                    Customer customer = getFieldsCustomer(form, dialog);
+                    CustomerController.getCustomers().add(customer);
+                    CustomerModel.create(customer);
                 });
                 break;
 
             case CAR:
                 buttonOK.setOnMouseClicked(e -> {
-                    if (form.verifyHasFilledFields()) {
-                        Car car = getFieldsCar(form, dialog);
-                        CarController.getCars().add(car);
-                        CarModel.create(car);
+                    if (!form.verifyHasFilledFields()) {
+                        getErrorLabel().setText("Mangler input i markerede felter");
+                        getErrorLabel().setVisible(true);
+                        return;
                     }
+                    
+                    Car car = getFieldsCar(form, dialog);
+                    CarController.getCars().add(car);
+                    CarModel.create(car);
                 });
                 break;
 
@@ -177,32 +201,41 @@ public final class FormWrapper {
 
     private static void setFieldsCar(Form form, Car car) {
         ArrayList<String> input = car.getPropperties();
-        ArrayList<Control> fieldsList = form.getFieldsList();
-        for (int i = 0; i < fieldsList.size(); i++) {
-            ((TextField) fieldsList.get(i)).setText(input.get(i));
+        HashMap<String, Control> fieldMap = form.getFieldMap();
+
+        int counter = 0;
+
+        for (Control field : fieldMap.values()) {
+            ((TextField) field).setText(input.get(counter));
+            counter++;
         }
     }
+
 
     private static Car getFieldsCar(Form form, Dialog dialog) {
         dialog.setResult(true);
         dialog.close();
-        Car car = new Car(getString(form, 2), getInt(form, 0), getDouble(form, 1));
+        Car car = new Car(getString(form, "Model"), getInt(form, "Årgang"), getDouble(form, "Pris"));
 
         return car;
     }
 
     private static void setFieldsCustomer(Form form, Customer customer) {
         ArrayList<String> input = customer.getPropperties();
-        ArrayList<Control> fieldsList = form.getFieldsList();
-        for (int i = 0; i < fieldsList.size(); i++) {
-            ((TextField) fieldsList.get(i)).setText(input.get(i));
+        HashMap<String, Control> fieldMap = form.getFieldMap();
+
+        int counter = 0;
+
+        for (Control field : fieldMap.values()) {
+            ((TextField) field).setText(input.get(counter));
+            counter++;
         }
     }
 
     private static Customer getFieldsCustomer(Form form, Dialog dialog) {
         dialog.setResult(true);
         dialog.close();
-        Customer customer = new Customer(getString(form, 0), getString(form, 1), getString(form, 2), getString(form, 3), getString(form, 4), getString(form, 5));
+        Customer customer = new Customer(getString(form, "Fornavn"), getString(form, "Efternavn"), getString(form, "Telefonnummer"), getString(form, "Email"), getString(form, "Adresse"), getString(form, "CPR"));
 
         return customer;
     }
@@ -211,10 +244,10 @@ public final class FormWrapper {
         dialog.setResult(true);
         dialog.close();
         //TODO: Implement date, employee, loanstatus.
-        Car car = getComboBox(form, 0);
-        Customer customer = getComboBox(form, 1);
-        Employee employee = getComboBox(form, 2);
-        Loan loan = new Loan(car.getId(), customer.getId(), employee.getId(), getDouble(form, 18), getDouble(form, 19), getDouble(form, 20), getSelectedDate(form, 21), getSelectedDate(form, 22), new LoanStatus(3));
+        Car car = getFromComboBox(form, "Bil");
+        Customer customer = getFromComboBox(form, "CPR & Kunde");
+        Employee employee = getFromComboBox(form, "Medarbejder");
+        Loan loan = new Loan(car.getId(), customer.getId(), employee.getId(), getDouble(form, "Lånets størrelse"), getDouble(form, "Udbetaling"), getDouble(form, "Rente"), getSelectedDate(form, "Start dato DD/MM/ÅÅÅÅ"), getSelectedDate(form, "Slut dato DD/MM/ÅÅÅÅ"), new LoanStatus(3));
         return loan;
     }
 
@@ -224,89 +257,103 @@ public final class FormWrapper {
     }
 
     private static void bindFieldsCar(Form form) {
-        ArrayList<Control> fields = form.getFieldsList();
-        AutoCompleteComboBox<Car> comboBox = (AutoCompleteComboBox) fields.get(0);
+        TextField loanSize = (TextField) form.getFieldMap().get("Lånets størrelse");
+        AutoCompleteComboBox<Car> comboBox = (AutoCompleteComboBox) form.getFieldMap().get("Bil");
         comboBox.setOnAction(e -> {
-            Car car = getComboBox(form, 0);
+            Car car = getFromComboBox(form, "Bil");
             if (car != null) {
-                ((TextField) fields.get(3)).setText(car.getModel());
-                ((TextField) fields.get(6)).setText(String.valueOf(car.getYear()));
-                ((TextField) fields.get(9)).setText(String.valueOf(car.getPrice()));
-                ((TextField) fields.get(12)).setText(String.valueOf(car.getId()));
+                setText(form, "Model", car.getModel());
+                setText(form, "Årgang", String.valueOf(car.getYear()));
+                setText(form, "Pris", String.valueOf(car.getPrice()));
+                setText(form, "Stelnummer", String.valueOf(car.getId()));
+                loanSize.setText(calculateLoanSize(form));
             }
         });
     }
     
     private static void bindFieldsCustomer(Form form) {
-        ArrayList<Control> fields = form.getFieldsList();
-        AutoCompleteComboBox<Customer> comboBox = (AutoCompleteComboBox) fields.get(1);
+        AutoCompleteComboBox<Customer> comboBox = (AutoCompleteComboBox) form.getFieldMap().get("CPR & Kunde");
         comboBox.setOnAction(e -> {
-            Customer customer = getComboBox(form, 1);
+            Customer customer = getFromComboBox(form, "CPR & Kunde");
             if (customer != null) {
-                ((TextField) fields.get(4)).setText(customer.getFirstName());
-                ((TextField) fields.get(7)).setText(customer.getLastName());
-                ((TextField) fields.get(10)).setText(customer.getCpr());
-                ((TextField) fields.get(13)).setText(customer.getPhoneNumber());
-                ((TextField) fields.get(15)).setText(customer.getAddress());
-                ((TextField) fields.get(16)).setText(customer.getEmail());
+                setText(form, "Kundens Fornavn", customer.getFirstName());
+                setText(form, "Kundens Efternavn", customer.getLastName());
+                setText(form, "Kundens CPR", customer.getCpr());
+                setText(form, "Kundens Telefon nr.", customer.getPhoneNumber());
+                setText(form, "Kundens Adresse", customer.getAddress());
+                setText(form, "Kundens Email", customer.getEmail());
             }
         });
     }
 
     private static void bindFieldsEmployee(Form form) {
-        ArrayList<Control> fields = form.getFieldsList();
-        AutoCompleteComboBox<Employee> comboBox = (AutoCompleteComboBox<Employee>) fields.get(2);
+        AutoCompleteComboBox<Customer> comboBox = (AutoCompleteComboBox) form.getFieldMap().get("Medarbejder");
         comboBox.setOnAction(e -> {
-            Employee employee = getComboBox(form, 2);
+            Employee employee = getFromComboBox(form, "Medarbejder");
             if (employee != null) {
-                ((TextField) fields.get(5)).setText(employee.getFirstName());
-                ((TextField) fields.get(8)).setText(employee.getLastName());
-                ((TextField) fields.get(11)).setText(String.valueOf(employee.getId()));
-                ((TextField) fields.get(14)).setText(employee.getPhoneNumber());
-                ((TextField) fields.get(17)).setText(employee.getEmail());
+                setText(form, "Medarbejderens Fornavn", employee.getFirstName());
+                setText(form, "Medarbejderens Efternavn", employee.getLastName());
+                setText(form, "Medarbejderens ID", String.valueOf(employee.getId()));
+                setText(form, "Medarbejderens Telefon nr.", employee.getPhoneNumber());
+                setText(form, "Medarbejderens Email", employee.getEmail());
             }
         });
     }
+    
+    private static void bindLoanSize(Form form) {
+        TextField loanSize = (TextField) form.getFieldMap().get("Lånets størrelse");
+        ((TextField) form.getFieldMap().get("Udbetaling")).setOnKeyPressed(e -> loanSize.setText(calculateLoanSize(form)));
+    }
+    
+    private static String calculateLoanSize(Form form) {
+        double price = 0;
+        double downpayment = 0;
+        
+        Car car = getFromComboBox(form, "Bil");
+        if (car != null) {
+            price = car.getPrice();
+        } 
 
-    private static <E> E getComboBox(Form form, int index) {
-        //Hej Flemming den her vil vi ikke have til eksamen.
-        AutoCompleteComboBox<E> acb = ((AutoCompleteComboBox)form.getFieldsList().get(index));
+        TextField textField = ((TextField) form.getFieldMap().get("Udbetaling"));
+        if (!textField.getText().isEmpty()) {
+            downpayment = Double.valueOf(textField.getText());
+        } 
+
+        return String.valueOf(price - downpayment);
+    }
+
+    private static <E> E getFromComboBox(Form form, String key) {
+        AutoCompleteComboBox<E> acb = ((AutoCompleteComboBox) form.getFieldMap().get(key));
         return acb.getSelectedItem();
     }
     
-    private static String getString(Form form, int comboBoxIndex) {
-        return ((TextField) form.getFieldsList().get(comboBoxIndex)).getText();
+    private static void setText(Form form, String key, String text) {
+        TextField textField = (TextField) form.getFieldMap().get(key);
+        textField.setText(text);
+    }
+
+    private static void setChoice(Form form, String key, String choice) {
+
+    }
+
+    private static void setDate(Form form, String key, String date) {
+
     }
 
     private static String getString(Form form, String key) {
-        return ((TextField)form.getFieldMap().get(key.toLowerCase())).getText();
-    }
-
-    private static int getInt(Form form, int index) {
-        return Integer.valueOf(((TextField) form.getFieldsList().get(index)).getText());
+        return ((TextField)form.getFieldMap().get(key)).getText();
     }
 
     private static int getInt(Form form, String key) {
-        return Integer.valueOf(((TextField)form.getFieldMap().get(key.toLowerCase())).getText());
-    }
-
-    private static double getDouble(Form form, int index) {
-        return Double.valueOf(((TextField) form.getFieldsList().get(index)).getText());
+        return Integer.valueOf(getString(form, key));
     }
 
     private static double getDouble(Form form, String key) {
-        return Double.valueOf(((TextField)form.getFieldMap().get(key.toLowerCase())).getText());
-    }
-
-    private static Date getSelectedDate(Form form, int index) {
-        DatePicker datePicker = ((DatePicker) form.getFieldsList().get(index));
-        LocalDate localDate = datePicker.getValue();
-        Instant instant = Instant.from(localDate.atStartOfDay(ZoneId.systemDefault()));
-        return Date.from(instant);
+        return Double.valueOf(getString(form, key));
     }
 
     private static Date getSelectedDate(Form form, String key) {
-        DatePicker datePicker = ((DatePicker) form.getFieldMap().get(key.toLowerCase()));
+        DatePicker datePicker = ((DatePicker) form.getFieldMap().get(key));
         LocalDate localDate = datePicker.getValue();
         Instant instant = Instant.from(localDate.atStartOfDay(ZoneId.systemDefault()));
         return Date.from(instant);
