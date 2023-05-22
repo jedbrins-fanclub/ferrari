@@ -41,6 +41,16 @@
             <artifactId>mssql-jdbc</artifactId>
             <version>12.2.0.jre11</version>
         </dependency>
+        <dependency>
+            <groupId>org.simplejavamail</groupId>
+            <artifactId>simple-java-mail</artifactId>
+            <version>7.7.1</version>
+        </dependency>
+        <dependency> <!-- Added for simplejavamail to prevent an error -->
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>1.2.9</version>
+        </dependency>
     </dependencies>
 
     <build>
