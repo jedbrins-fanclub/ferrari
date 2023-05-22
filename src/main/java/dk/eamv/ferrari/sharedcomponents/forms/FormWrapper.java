@@ -9,6 +9,7 @@ import java.util.HashMap;
 
 import dk.api.rki.CreditRator;
 import dk.api.rki.Rating;
+import dk.api.bank.InterestRate;
 import dk.eamv.ferrari.scenes.car.Car;
 import dk.eamv.ferrari.scenes.car.CarController;
 import dk.eamv.ferrari.scenes.car.CarModel;
@@ -51,6 +52,7 @@ public final class FormWrapper {
     private static Button buttonOK = new Button("OK");
     private static Button buttonCancel = new Button("Fortryd");
     private static Rating creditRating = null;
+    private static double interestRate = 0.0;
 
     public static Dialog<Object> getDialog() {
         return dialog;
@@ -59,6 +61,9 @@ public final class FormWrapper {
     protected static void wrapCreate(Form form, CRUDType type) {
         setDialog(form);
         setCreateMouseListener(type, form, dialog);
+        if (type == CRUDType.LOAN) {
+            checkRate();
+        }
     }
 
     protected static void wrapUpdate(Form form, Car car) {
@@ -129,34 +134,57 @@ public final class FormWrapper {
     }
 
     private static void checkRKI(Form form) {
-        Customer customer = getFromComboBox(form, "CPR & Kunde");
-        if (customer == null) {
-            return;
-        }
-
-        Window window = dialog.getDialogPane().getScene().getWindow();
-        EventHandler<WindowEvent> prev = window.getOnCloseRequest();
-        Platform.runLater(() -> {
-            buttonOK.setDisable(true);
-            window.setOnCloseRequest(event -> {});
-
-            errorLabel.setText("Finder kreditværdighed for kunde");
-            errorLabel.setVisible(true);
-        });
-
-        String cpr = customer.getCpr();
-        creditRating = CreditRator.i().rate(cpr);
-
-        Platform.runLater(() -> {
-            if (creditRating.equals(Rating.D)) {
-                showCreditRatingError();
-            } else {
-                errorLabel.setVisible(false);
+        new Thread(() -> {
+            Customer customer = getFromComboBox(form, "CPR & Kunde");
+            if (customer == null) {
+                return;
             }
 
-            window.setOnCloseRequest(prev);
-            buttonOK.setDisable(false);
-        });
+            Window window = dialog.getDialogPane().getScene().getWindow();
+            EventHandler<WindowEvent> prev = window.getOnCloseRequest();
+            Platform.runLater(() -> {
+                buttonOK.setDisable(true);
+                window.setOnCloseRequest(event -> {});
+
+                errorLabel.setText("Finder kreditværdighed for kunde");
+                errorLabel.setVisible(true);
+            });
+
+            String cpr = customer.getCpr();
+            creditRating = CreditRator.i().rate(cpr);
+
+            Platform.runLater(() -> {
+                if (creditRating.equals(Rating.D)) {
+                    showCreditRatingError();
+                } else {
+                    errorLabel.setVisible(false);
+                }
+
+                window.setOnCloseRequest(prev);
+                buttonOK.setDisable(false);
+            });
+        }).start();
+    }
+
+    private static void checkRate() {
+        new Thread(() -> {
+            Window window = dialog.getDialogPane().getScene().getWindow();
+            EventHandler<WindowEvent> prev = window.getOnCloseRequest();
+            Platform.runLater(() -> {
+                buttonOK.setDisable(true);
+                window.setOnCloseRequest(event -> {});
+
+                errorLabel.setText("Finder dagens rente");
+                errorLabel.setVisible(true);
+            });
+
+            interestRate = InterestRate.i().todaysRate();
+            Platform.runLater(() -> {
+                errorLabel.setVisible(false);
+                window.setOnCloseRequest(prev);
+                buttonOK.setDisable(false);
+            });
+        }).start();
     }
 
     private static void setCreateMouseListener(CRUDType type, Form form, Dialog dialog) {
@@ -309,7 +337,7 @@ public final class FormWrapper {
         comboBox.setOnAction(e -> {
             Customer customer = getFromComboBox(form, "CPR & Kunde");
             if (customer != null) {
-                new Thread(() -> checkRKI(form)).start();
+                checkRKI(form);
                 setText(form, "Kundens Fornavn", customer.getFirstName());
                 setText(form, "Kundens Efternavn", customer.getLastName());
                 setText(form, "Kundens CPR", customer.getCpr());
