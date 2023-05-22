@@ -24,7 +24,6 @@ import dk.eamv.ferrari.sharedcomponents.nodes.AutoCompleteComboBox;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
 import javafx.scene.control.Control;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Dialog;
@@ -113,7 +112,7 @@ public final class FormWrapper {
         buttonCancel.setOnMouseClicked(e -> {
             dialog.setResult(true);
             dialog.close();
-        });
+        }); 
         HBox buttons = new HBox(buttonCancel, buttonOK, errorLabel);
         buttons.setSpacing(25);
         VBox vBox = new VBox(form.getGridPane(), buttons);

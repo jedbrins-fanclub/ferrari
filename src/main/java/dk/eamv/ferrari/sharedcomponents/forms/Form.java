@@ -12,6 +12,7 @@ import dk.eamv.ferrari.sharedcomponents.nodes.NumericTextField;
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Control;
 import javafx.scene.control.DatePicker;
@@ -27,6 +28,7 @@ import javafx.scene.layout.VBox;
  * Made so that we can iterate over the list of fields to check if theres content, when "OK" button is clicked.
  */
 public class Form {
+    private Button forwardBoss;
     private GridPane gridPane;
     private HashMap<String, Control> fieldMap;
     private int column;
@@ -48,6 +50,13 @@ public class Form {
         return gridPane;
     }
 
+    protected Button getForwardBoss() {
+        forwardBoss = new Button("Forward to boss");
+        forwardBoss.setOnMouseClicked(e -> {
+            //TODO:
+        });
+        return getForwardBoss();
+    }
     protected GridPane getGridPane() {
         return gridPane;
     }
