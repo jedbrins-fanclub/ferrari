@@ -22,8 +22,8 @@ public class CarController {
                 .withColumn("Model", Car::getModel)
                 .withColumn("Årgang", Car::getYear)
                 .withColumn("Pris (DKK)", Car::getPrice) //TODO: Decide how to display price (maybe store in Ks)
-                .withIconButtonColumn(SVGResources.getEditIcon(), CarView::showEditCarDialog)
-                .withIconButtonColumn(SVGResources.getDeleteIcon(), CarController::deleteCar);
+                .withButtonColumn(SVGResources.getEditIcon(), CarView::showEditCarDialog)
+                .withButtonColumn(SVGResources.getDeleteIcon(), CarController::deleteCar);
     }
 
     protected static void createCar() {

@@ -22,6 +22,7 @@ import dk.eamv.ferrari.scenes.loan.LoanModel;
 import dk.eamv.ferrari.scenes.loan.LoanStatus;
 import dk.eamv.ferrari.sharedcomponents.nodes.AutoCompleteComboBox;
 import javafx.collections.ObservableList;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.Control;
@@ -33,6 +34,9 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Window;
+import javafx.stage.WindowEvent;
+import javafx.application.Platform;
+import java.lang.Runnable;
 
 public final class FormWrapper {
     /*
@@ -41,20 +45,23 @@ public final class FormWrapper {
      * Checks if all fields are full, then ok button runs the query into the database.
      */
 
+    private static Dialog<Object> dialog;
     private static Label errorLabel = new Label();
+    private static Button buttonOK = new Button("OK");
+    private static Button buttonCancel = new Button("Fortryd");
+    private static Rating creditRating = null;
 
-    protected static Dialog wrapCreate(Form form, CRUDType type) {
-        Button buttonOK = new Button("OK");
-        Dialog dialog = createStandardDialog(form, buttonOK);
-
-        setCreateMouseListener(type, buttonOK, form, dialog);
-
+    public static Dialog<Object> getDialog() {
         return dialog;
     }
 
-    protected static Dialog wrapUpdate(Form form, Car car) {
-        Button buttonOK = new Button("OK");
-        Dialog dialog = createStandardDialog(form, buttonOK);
+    protected static void wrapCreate(Form form, CRUDType type) {
+        setDialog(form);
+        setCreateMouseListener(type, form, dialog);
+    }
+
+    protected static void wrapUpdate(Form form, Car car) {
+        setDialog(form);
         setFieldsCar(form, car);
         buttonOK.setOnMouseClicked(e -> {
             if (form.verifyHasFilledFields()) {
@@ -69,17 +76,14 @@ public final class FormWrapper {
                 cars.add(index, newCar);   
             } 
         });
-
-        return dialog;
     }
 
-    protected static Dialog wrapUpdate(Form form, Customer customer) {
-        Button buttonOK = new Button("OK");
-        Dialog dialog = createStandardDialog(form, buttonOK);
+    protected static void wrapUpdate(Form form, Customer customer) {
+        setDialog(form);
         setFieldsCustomer(form, customer);
         buttonOK.setOnMouseClicked(e -> {
             if (form.verifyHasFilledFields()) {
-                Customer newCustomer = getFieldsCustomer(form, dialog); //create new object based on updated fields.
+                Customer newCustomer = getFieldsCustomer(form); //create new object based on updated fields.
                 newCustomer.setId(customer.getId()); //set the new objects id to the old, so that .update() targets correct ID in DB.
                 CustomerModel.update(newCustomer); //update in DB   
 
@@ -90,12 +94,10 @@ public final class FormWrapper {
                 customers.add(index, newCustomer); 
             }
         });
-
-        return dialog;
     }
 
-    private static Dialog createStandardDialog(Form form, Button buttonOK) {
-        Dialog dialog = new Dialog<>();
+    private static void setDialog(Form form) {
+        dialog = new Dialog<>();
 
         // Close the dialog when pressing X
         // https://stackoverflow.com/a/36262208
@@ -108,7 +110,6 @@ public final class FormWrapper {
         errorLabel.setVisible(false);
         errorLabel.setPadding(new Insets(0, 0, 0, 100));
         errorLabel.getStyleClass().add("errorLabel");
-        Button buttonCancel = new Button("Fortryd");
         buttonCancel.setOnMouseClicked(e -> {
             dialog.setResult(true);
             dialog.close();
@@ -119,18 +120,57 @@ public final class FormWrapper {
         vBox.setSpacing(50);
         dialog.getDialogPane().setContent(vBox);
         dialog.setResizable(true);
-
-        return dialog;
     }
 
-    private static void setCreateMouseListener(CRUDType type, Button buttonOK, Form form, Dialog dialog) {
+    private static void showCreditRatingError() {
+        errorLabel.setText("Kunde har kreditværdighed D");
+        errorLabel.setVisible(true);
+    }
+
+    private static void checkRKI(Form form) {
+        Customer customer = getFromComboBox(form, "CPR & Kunde");
+        if (customer == null) {
+            return;
+        }
+
+        Window window = dialog.getDialogPane().getScene().getWindow();
+        EventHandler<WindowEvent> prev = window.getOnCloseRequest();
+        Platform.runLater(() -> {
+            buttonOK.setDisable(true);
+            window.setOnCloseRequest(event -> {});
+
+            errorLabel.setText("Finder kreditværdighed for kunde");
+            errorLabel.setVisible(true);
+        });
+
+        String cpr = customer.getCpr();
+        creditRating = CreditRator.i().rate(cpr);
+
+        Platform.runLater(() -> {
+            if (creditRating.equals(Rating.D)) {
+                showCreditRatingError();
+            } else {
+                errorLabel.setVisible(false);
+            }
+
+            window.setOnCloseRequest(prev);
+            buttonOK.setDisable(false);
+        });
+    }
+
+    private static void setCreateMouseListener(CRUDType type, Form form, Dialog dialog) {
         switch (type) {
             case LOAN:
                 bindLoanSize(form);
                 bindFieldsCar(form);
                 bindFieldsCustomer(form);
                 bindFieldsEmployee(form);
+
                 buttonOK.setOnMouseClicked(e -> {
+                    if (creditRating.equals(Rating.D)) {
+                        showCreditRatingError();
+                        return;
+                    }
 
                     if (!form.verifyHasFilledFields()) {
                         displayErrorMessage("Mangler input i de markerede felter");
@@ -168,7 +208,7 @@ public final class FormWrapper {
                         return;
                     }
                 
-                    Customer customer = getFieldsCustomer(form, dialog);
+                    Customer customer = getFieldsCustomer(form);
                     CustomerController.getCustomers().add(customer);
                     CustomerModel.create(customer);
                 });
@@ -225,7 +265,7 @@ public final class FormWrapper {
         }
     }
 
-    private static Customer getFieldsCustomer(Form form, Dialog dialog) {
+    private static Customer getFieldsCustomer(Form form) {
         dialog.setResult(true);
         dialog.close();
         Customer customer = new Customer(getString(form, "Fornavn"), getString(form, "Efternavn"), getString(form, "Telefonnummer"), getString(form, "Email"), getString(form, "Adresse"), getString(form, "CPR"));
@@ -269,6 +309,7 @@ public final class FormWrapper {
         comboBox.setOnAction(e -> {
             Customer customer = getFromComboBox(form, "CPR & Kunde");
             if (customer != null) {
+                new Thread(() -> checkRKI(form)).start();
                 setText(form, "Kundens Fornavn", customer.getFirstName());
                 setText(form, "Kundens Efternavn", customer.getLastName());
                 setText(form, "Kundens CPR", customer.getCpr());

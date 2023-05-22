@@ -6,37 +6,42 @@ import javafx.scene.control.Dialog;
 
 public final class FormFactory {
     /*
-     * Lavet af: Christian & Stefan
+     * Lavet af: Christian, Stefan og Benjamin
      */
 
     private static Form.Builder builder = new Form.Builder();
 
     public static void createCustomerFormDialogBox() {
-        Dialog<Void> dialog = FormWrapper.wrapCreate(builder.buildCustomerForm(), CRUDType.CUSTOMER);
+        FormWrapper.wrapCreate(builder.buildCustomerForm(), CRUDType.CUSTOMER);
+        Dialog<?> dialog = FormWrapper.getDialog();
         dialog.setTitle("Opret kunde");
         dialog.show();
     }
 
     public static void createCarFormDialogBox() {
-        Dialog<Void> dialog = FormWrapper.wrapCreate(builder.buildCarForm(), CRUDType.CAR);
+        FormWrapper.wrapCreate(builder.buildCarForm(), CRUDType.CAR);
+        Dialog<?> dialog = FormWrapper.getDialog();
         dialog.setTitle("Opret bil");
         dialog.show();
     }
 
     public static void createLoanFormDialogBox() {
-        Dialog<Void> dialog = FormWrapper.wrapCreate(builder.buildLoanForm(), CRUDType.LOAN);
+        FormWrapper.wrapCreate(builder.buildLoanForm(), CRUDType.LOAN);
+        Dialog<?> dialog = FormWrapper.getDialog();
         dialog.setTitle("Opret lån");
         dialog.show();
     }
 
     public static void updateCarFormDialogBox(Car car) {
-        Dialog<Void> dialog = FormWrapper.wrapUpdate(builder.buildCarForm(), car);
+        FormWrapper.wrapUpdate(builder.buildCarForm(), car);
+        Dialog<?> dialog = FormWrapper.getDialog();
         dialog.setTitle("Opdater bil");
         dialog.show();
     }
 
     public static void updateCustomerFormDialogBox(Customer customer) {
-        Dialog<Void> dialog = FormWrapper.wrapUpdate(builder.buildCustomerForm(), customer);
+        FormWrapper.wrapUpdate(builder.buildCustomerForm(), customer);
+        Dialog<?> dialog = FormWrapper.getDialog();
         dialog.setTitle("Opdater kunde");
         dialog.show();
     }

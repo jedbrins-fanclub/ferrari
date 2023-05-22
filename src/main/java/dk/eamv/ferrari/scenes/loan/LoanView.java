@@ -8,6 +8,8 @@ import dk.eamv.ferrari.sharedcomponents.filter.SearchContainer;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
+import javafx.scene.control.TableRow;
+import javafx.scene.input.MouseButton;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
@@ -67,6 +69,16 @@ public class LoanView {
     private static void initTableView() {
         tableView = LoanController.filteredTableBuilder.build();
         tableView.setPrefHeight(1200);
+        tableView.setRowFactory(tableview -> {
+            TableRow<Loan> row = new TableRow<>();
+            row.setOnMouseClicked(event -> {
+                if (!row.isEmpty()) {
+                    Loan clickedLoan = row.getItem();
+                    LoanController.expandLoan(clickedLoan);
+                }
+            });
+            return row ;
+        });
     }
 
     private static void initSearchContainer() {
