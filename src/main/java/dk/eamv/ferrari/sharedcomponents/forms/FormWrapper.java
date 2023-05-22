@@ -52,12 +52,16 @@ public final class FormWrapper {
     private static Button buttonOK = new Button("OK");
     private static Button buttonCancel = new Button("Fortryd");
     private static Rating creditRating = null;
+    private static double interestRate = 0.0;
 
     public static Dialog<Object> getDialog() {
         return dialog;
     }
 
     protected static void wrapCreate(Form form, CRUDType type) {
+        if (type == CRUDType.LOAN) {
+            checkRate();
+        }
         setDialog(form);
         setCreateMouseListener(type, form, dialog);
     }
@@ -162,7 +166,7 @@ public final class FormWrapper {
         }).start();
     }
 
-    private static void checkRate(Form form) {
+    private static void checkRate() {
         new Thread(() -> {
             Window window = dialog.getDialogPane().getScene().getWindow();
             EventHandler<WindowEvent> prev = window.getOnCloseRequest();
@@ -174,9 +178,7 @@ public final class FormWrapper {
                 errorLabel.setVisible(true);
             });
 
-            double rate = InterestRate.i().todaysRate();
-            // TODO: Use rate here
-            // NOTE: If updating JavaFX GUI elements, do this in Platform.runLater()!
+            interestRate = InterestRate.i().todaysRate();
 
             Platform.runLater(() -> {
                 errorLabel.setVisible(false);
