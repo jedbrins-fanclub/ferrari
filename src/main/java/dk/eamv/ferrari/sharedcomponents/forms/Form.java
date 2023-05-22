@@ -12,6 +12,7 @@ import dk.eamv.ferrari.sharedcomponents.nodes.NumericTextField;
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Control;
 import javafx.scene.control.DatePicker;
@@ -27,6 +28,7 @@ import javafx.scene.layout.VBox;
  * Made so that we can iterate over the list of fields to check if theres content, when "OK" button is clicked.
  */
 public class Form {
+    private Button forwardBoss;
     private GridPane gridPane;
     private HashMap<String, Control> fieldMap;
     private int column;
@@ -35,19 +37,25 @@ public class Form {
     private Form() {
         gridPane = createGridPane();
         fieldMap = new HashMap<String, Control>();
+        forwardBoss = new Button("Videresend til chefen");
+        setForwardToBossListener();
         column = 0;
         row = 0;
     }
 
     private static GridPane createGridPane() {
-            GridPane gridPane = new GridPane();
-            gridPane.setVgap(25);
-            gridPane.setHgap(50);
-            gridPane.setAlignment(Pos.CENTER);
+        GridPane gridPane = new GridPane();
+        gridPane.setVgap(25);
+        gridPane.setHgap(50);
+        gridPane.setAlignment(Pos.CENTER);
 
-            return gridPane;
-        }
+        return gridPane;
+    }
 
+    protected Button getForwardBoss() {
+        return forwardBoss;
+    }
+    
     protected GridPane getGridPane() {
         return gridPane;
     }
@@ -56,13 +64,22 @@ public class Form {
         return fieldMap;
     }
 
+    private void setForwardToBossListener() {
+        forwardBoss.setOnMouseClicked(e -> {
+            System.out.println("Clicked send to boss");
+            //TODO: Implement email function here
+        });
+
+        forwardBoss.setVisible(false);
+    }
+
     protected boolean verifyHasFilledFields() {
         String redStyle = """
-            -fx-prompt-text-fill: F50000;
-            -fx-background-color: #f7adb1;
-            -fx-border-color: F50000;
-        """;
-        
+                    -fx-prompt-text-fill: F50000;
+                    -fx-background-color: #f7adb1;
+                    -fx-border-color: F50000;
+                """;
+
         boolean hasFilledFields = true;
         for (Control widget : fieldMap.values()) {
             if (widget instanceof TextField) {
@@ -72,8 +89,6 @@ public class Form {
             } else if (widget instanceof DatePicker) {
                 DatePicker dp = ((DatePicker) widget);
                 hasFilledFields = !(((DatePicker) widget).getValue() == null);
-                System.out.println(dp.getValue());
-                System.out.println(dp.getValue() == null);
             }
 
             if (!hasFilledFields) {
@@ -85,7 +100,7 @@ public class Form {
         }
         return hasFilledFields;
     }
-
+    
     private void setColumn(int value) {
         column = value;
     }
@@ -103,7 +118,7 @@ public class Form {
     }
 
     public static class Builder {
-        private Form form; 
+        private Form form;
 
         public Builder() {
             form = new Form();
@@ -139,11 +154,11 @@ public class Form {
             return this;
         }
 
-        private Builder withFieldInt(int maxLength, boolean decimals, String input) {
-                NumericTextField numberField = new NumericTextField(decimals, maxLength);
-                numberField.setPromptText(input);
-                addFieldToForm(input, numberField);
-            
+        private Builder withFieldNumbers(int maxLength, boolean decimals, String input) {
+            NumericTextField numberField = new NumericTextField(decimals, maxLength);
+            numberField.setPromptText(input);
+            addFieldToForm(input, numberField);
+
             return this;
         }
 
@@ -160,7 +175,7 @@ public class Form {
         private <E> Builder withDropDownBox(ObservableList<E> content, String input) {
             AutoCompleteComboBox dropDown = new AutoCompleteComboBox<>(content);
             addFieldToForm(input, dropDown);
-        
+
             return this;
         }
 
@@ -173,7 +188,7 @@ public class Form {
 
             return this;
         }
-        
+
         private Form build() {
             return form;
         }
@@ -181,17 +196,17 @@ public class Form {
         protected Form buildCustomerForm() {
             form = new Form.Builder()
                 .withFieldsString("Fornavn", "Efternavn")
-                .withFieldInt(8, false, "Telefonnummer")
+                .withFieldNumbers(8, false, "Telefonnummer")
                 .withFieldsString("Email", "Adresse")
-                .withFieldInt(10, false, "CPR")
+                .withFieldNumbers(10, false, "CPR")
                 .build();
             return form;
         }
 
         protected Form buildCarForm() {
             form = new Form.Builder()
-                .withFieldInt(4, false, "Årgang")
-                .withFieldInt(-1, true, "Pris") //-1 = no maxlength constraint
+                .withFieldNumbers(4, false, "Årgang")
+                .withFieldNumbers(-1, true, "Pris") //-1 = no maxlength constraint
                 .withFieldsString("Model")
                 .build();
             return form;
@@ -207,9 +222,19 @@ public class Form {
                 .withFieldsUneditable("Pris", "Kundens CPR", "Medarbejderens ID")
                 .withFieldsUneditable("Stelnummer", "Kundens Telefon nr.", "Medarbejderens Telefon nr.")
                 .withFieldsUneditable("Kundens Adresse", "Kundens Email", "Medarbejderens Email", "Lånets størrelse")
-                .withFieldInt(-1, true, "Udbetaling")
-                .withFieldInt(5, true, "Rente")
+                .withFieldNumbers(-1, true, "Udbetaling")
+                .withFieldsUneditable("Rente")
                 .withFieldsDatePicker(form)
+                .build();
+            return form;
+        }
+
+        protected Form buildEmployeeForm() {
+            form = new Form.Builder()
+                .withFieldsString("Fornavn", "Efternavn")
+                .withFieldNumbers(8, false, "Telefon nr.")
+                .withFieldsString("Email", "Kodeord")
+                .withFieldNumbers(-1, false, "Lånings beføjelse")   
                 .build();
             return form;
         }

@@ -2,6 +2,7 @@ package dk.eamv.ferrari.sharedcomponents.forms;
 
 import java.time.Instant;
 import java.time.LocalDate;
+import java.time.Period;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
@@ -9,6 +10,7 @@ import java.util.HashMap;
 
 import dk.api.rki.CreditRator;
 import dk.api.rki.Rating;
+import dk.api.bank.InterestRate;
 import dk.eamv.ferrari.scenes.car.Car;
 import dk.eamv.ferrari.scenes.car.CarController;
 import dk.eamv.ferrari.scenes.car.CarModel;
@@ -25,7 +27,6 @@ import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
 import javafx.scene.control.Control;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Dialog;
@@ -38,6 +39,7 @@ import javafx.stage.Window;
 import javafx.stage.WindowEvent;
 import javafx.application.Platform;
 import java.lang.Runnable;
+import java.text.DecimalFormat;
 
 public final class FormWrapper {
     /*
@@ -51,6 +53,7 @@ public final class FormWrapper {
     private static Button buttonOK = new Button("OK");
     private static Button buttonCancel = new Button("Fortryd");
     private static Rating creditRating = null;
+    private static double interestRate;
 
     public static Dialog<Object> getDialog() {
         return dialog;
@@ -59,6 +62,9 @@ public final class FormWrapper {
     protected static void wrapCreate(Form form, CRUDType type) {
         setDialog(form);
         setCreateMouseListener(type, form, dialog);
+        if (type == CRUDType.LOAN) {
+            checkRate(form);
+        }
     }
 
     protected static void wrapUpdate(Form form, Car car) {
@@ -104,6 +110,7 @@ public final class FormWrapper {
         // https://stackoverflow.com/a/36262208
         Window window = dialog.getDialogPane().getScene().getWindow();
         window.setOnCloseRequest(event -> window.hide());
+        interestRate = 0.0;
 
         DialogPane dialogPane = dialog.getDialogPane();
         dialogPane.getStylesheets().add("dialog.css");
@@ -115,7 +122,7 @@ public final class FormWrapper {
             dialog.setResult(true);
             dialog.close();
         });
-        HBox buttons = new HBox(buttonCancel, buttonOK, errorLabel);
+        HBox buttons = new HBox(buttonCancel, buttonOK, form.getForwardBoss(), errorLabel);
         buttons.setSpacing(25);
         VBox vBox = new VBox(form.getGridPane(), buttons);
         vBox.setSpacing(50);
@@ -129,34 +136,58 @@ public final class FormWrapper {
     }
 
     private static void checkRKI(Form form) {
-        Customer customer = getFromComboBox(form, "CPR & Kunde");
-        if (customer == null) {
-            return;
-        }
-
-        Window window = dialog.getDialogPane().getScene().getWindow();
-        EventHandler<WindowEvent> prev = window.getOnCloseRequest();
-        Platform.runLater(() -> {
-            buttonOK.setDisable(true);
-            window.setOnCloseRequest(event -> {});
-
-            errorLabel.setText("Finder kreditværdighed for kunde");
-            errorLabel.setVisible(true);
-        });
-
-        String cpr = customer.getCpr();
-        creditRating = CreditRator.i().rate(cpr);
-
-        Platform.runLater(() -> {
-            if (creditRating.equals(Rating.D)) {
-                showCreditRatingError();
-            } else {
-                errorLabel.setVisible(false);
+        new Thread(() -> {
+            Customer customer = getFromComboBox(form, "CPR & Kunde");
+            if (customer == null) {
+                return;
             }
 
-            window.setOnCloseRequest(prev);
-            buttonOK.setDisable(false);
-        });
+            Window window = dialog.getDialogPane().getScene().getWindow();
+            EventHandler<WindowEvent> prev = window.getOnCloseRequest();
+            Platform.runLater(() -> {
+                buttonOK.setDisable(true);
+                window.setOnCloseRequest(event -> {});
+
+                errorLabel.setText("Finder kreditværdighed for kunde");
+                errorLabel.setVisible(true);
+            });
+
+            String cpr = customer.getCpr();
+            creditRating = CreditRator.i().rate(cpr);
+
+            Platform.runLater(() -> {
+                calculateInterestRate(form);
+                if (creditRating.equals(Rating.D)) {
+                    showCreditRatingError();
+                } else {
+                    errorLabel.setVisible(false);
+                }
+
+                window.setOnCloseRequest(prev);
+                buttonOK.setDisable(false);
+            });
+        }).start();
+    }
+
+    private static void checkRate(Form form) {
+        new Thread(() -> {
+            Window window = dialog.getDialogPane().getScene().getWindow();
+            EventHandler<WindowEvent> prev = window.getOnCloseRequest();
+            Platform.runLater(() -> {
+                buttonOK.setDisable(true);
+                window.setOnCloseRequest(event -> {});
+
+                errorLabel.setText("Finder dagens rente");
+                errorLabel.setVisible(true);
+            });
+
+            interestRate = InterestRate.i().todaysRate();
+            Platform.runLater(() -> {
+                errorLabel.setVisible(false);
+                window.setOnCloseRequest(prev);
+                buttonOK.setDisable(false);
+            });
+        }).start();
     }
 
     private static void setCreateMouseListener(CRUDType type, Form form, Dialog dialog) {
@@ -164,31 +195,36 @@ public final class FormWrapper {
             case LOAN:
                 bindLoanSize(form);
                 bindFieldsCar(form);
+                bindDatepickers(form);
                 bindFieldsCustomer(form);
                 bindFieldsEmployee(form);
 
                 buttonOK.setOnMouseClicked(e -> {
+                    if (!form.verifyHasFilledFields()) {
+                        displayErrorMessage("Mangler input i de markerede felter");
+                        return;
+                    }
+                    
                     if (creditRating.equals(Rating.D)) {
                         showCreditRatingError();
                         return;
                     }
 
-                    if (!form.verifyHasFilledFields()) {
-                        getErrorLabel().setText("Mangler input i markerede felter");
-                        getErrorLabel().setVisible(true);
+                    Customer customer = getFromComboBox(form, "CPR & Kunde");
+                    if (CreditRator.i().rate(customer.getCpr()).equals(Rating.D)) {
+                        displayErrorMessage("Kunden har kreditværdighed D");
                         return;
                     }
 
                     if (Double.valueOf(calculateLoanSize(form)) < 0) {
-                        getErrorLabel().setText("Lånet kan ikke være mindre end det udbetalte beløb");
-                        getErrorLabel().setVisible(true);
+                        displayErrorMessage("Lånets størrelse kan ikke være mindre end det udbetalte beløb");
                         return;
                     }
 
                     Employee employee = getFromComboBox(form, "Medarbejder");
                     if (employee.getMaxLoan() < getDouble(form, "Lånets størrelse")) {
-                        getErrorLabel().setText("Lånet's størrelse overskrider medarbejderens beføjelser.");
-                        getErrorLabel().setVisible(true);
+                        displayErrorMessage("Lånets størrelse overskrider medarbejderens beføjelser.");
+                        form.getForwardBoss().setVisible(true);
                         return;
                     }
                     
@@ -202,8 +238,7 @@ public final class FormWrapper {
             case CUSTOMER:
                 buttonOK.setOnMouseClicked(e -> {
                     if (!form.verifyHasFilledFields()) {
-                        getErrorLabel().setText("Mangler input i markerede felter");
-                        getErrorLabel().setVisible(true);
+                        displayErrorMessage("Mangler input i de markerede felter");getErrorLabel().setText("Mangler input i markerede felter");
                         return;
                     }
                 
@@ -216,8 +251,7 @@ public final class FormWrapper {
             case CAR:
                 buttonOK.setOnMouseClicked(e -> {
                     if (!form.verifyHasFilledFields()) {
-                        getErrorLabel().setText("Mangler input i markerede felter");
-                        getErrorLabel().setVisible(true);
+                        displayErrorMessage("Mangler input i de markerede felter");
                         return;
                     }
                     
@@ -300,6 +334,7 @@ public final class FormWrapper {
                 setText(form, "Pris", String.valueOf(car.getPrice()));
                 setText(form, "Stelnummer", String.valueOf(car.getId()));
                 loanSize.setText(calculateLoanSize(form));
+                calculateInterestRate(form);
             }
         });
     }
@@ -309,7 +344,7 @@ public final class FormWrapper {
         comboBox.setOnAction(e -> {
             Customer customer = getFromComboBox(form, "CPR & Kunde");
             if (customer != null) {
-                new Thread(() -> checkRKI(form)).start();
+                checkRKI(form);
                 setText(form, "Kundens Fornavn", customer.getFirstName());
                 setText(form, "Kundens Efternavn", customer.getLastName());
                 setText(form, "Kundens CPR", customer.getCpr());
@@ -336,7 +371,11 @@ public final class FormWrapper {
     
     private static void bindLoanSize(Form form) {
         TextField loanSize = (TextField) form.getFieldMap().get("Lånets størrelse");
-        ((TextField) form.getFieldMap().get("Udbetaling")).setOnKeyPressed(e -> loanSize.setText(calculateLoanSize(form)));
+        TextField downPayment = (TextField) form.getFieldMap().get("Udbetaling");
+        downPayment.setOnKeyTyped(e -> {
+            loanSize.setText(calculateLoanSize(form));
+            calculateInterestRate(form);
+        });
     }
     
     private static String calculateLoanSize(Form form) {
@@ -356,9 +395,86 @@ public final class FormWrapper {
         return String.valueOf(price - downpayment);
     }
 
+    private static void calculateInterestRate(Form form) {
+        double totalInterestRate = 0.0;
+        
+        totalInterestRate += interestRate; //add banks rate
+
+        if (creditRating != null) {
+            switch (creditRating) { //add based on creditscore
+                case A:
+                    totalInterestRate += 1;
+                    break;
+
+                case B:
+                    totalInterestRate += 2;
+                    break;
+
+                case C:
+                    totalInterestRate += 3;
+                    break;
+
+                default:
+                    break;
+            }
+        }
+        
+        TextField downpaymentField = (TextField) form.getFieldMap().get("Udbetaling");
+        double downpayment = 0;
+        if (!downpaymentField.getText().isEmpty()) {
+            downpayment = Double.valueOf(downpaymentField.getText());
+        }
+
+        Car selectedCar = (Car) getFromComboBox(form, "Bil");
+        double carPrice = 0;
+        if (selectedCar != null) {
+            carPrice = selectedCar.getPrice();
+        }
+        
+        if (!downpaymentField.getText().isEmpty() && selectedCar != null) {
+            if (downpayment / carPrice < 0.5) { //add 1% if loansize > 50%
+                totalInterestRate += 1;
+            }
+        }
+
+        DatePicker start = (DatePicker) form.getFieldMap().get("Start dato DD/MM/ÅÅÅÅ");
+        DatePicker end = (DatePicker) form.getFieldMap().get("Slut dato DD/MM/ÅÅÅÅ");
+
+        if (start.getValue() != null && end.getValue() != null) {
+            if (calculateDaysBetween(start, end) > 3 * 365) { //add 1% if loan period > 3 years.
+                totalInterestRate += 1;
+            }
+        }
+
+
+
+        TextField interestField = (TextField) form.getFieldMap().get("Rente");
+        interestField.setText(String.format("%.2f", totalInterestRate));
+    }   
+
+    private static void bindDatepickers(Form form) {
+        DatePicker starDatePicker = ((DatePicker) form.getFieldMap().get("Start dato DD/MM/ÅÅÅÅ"));
+        starDatePicker.setOnAction(e -> calculateInterestRate(form));
+        DatePicker endDatePicker = ((DatePicker) form.getFieldMap().get("Slut dato DD/MM/ÅÅÅÅ"));
+        endDatePicker.setOnAction(e -> calculateInterestRate(form));
+    }
+
+    private static int calculateDaysBetween(DatePicker start, DatePicker end) {
+        LocalDate startDate = start.getValue();
+        LocalDate endDate = end.getValue();
+        Period period = Period.between(startDate, endDate);
+        int days = period.getDays();
+        int months = period.getMonths();
+        int years = period.getYears();
+
+        double totalDays = days + months * 30.5 + years * 365;
+        
+        return (int) totalDays;
+    }
+
     private static <E> E getFromComboBox(Form form, String key) {
         AutoCompleteComboBox<E> acb = ((AutoCompleteComboBox) form.getFieldMap().get(key));
-        return acb.getSelectedItem();
+        return acb.getSelectedItem();   
     }
     
     private static void setText(Form form, String key, String text) {
@@ -383,7 +499,9 @@ public final class FormWrapper {
     }
 
     private static double getDouble(Form form, String key) {
-        return Double.valueOf(getString(form, key));
+        String raw = getString(form, key);
+        String formatted = raw.replace(",", ".");
+        return Double.valueOf(formatted);
     }
 
     private static Date getSelectedDate(Form form, String key) {
@@ -395,5 +513,10 @@ public final class FormWrapper {
 
     protected static Label getErrorLabel() {
         return errorLabel;
+    }
+
+    private static void displayErrorMessage(String message) {
+        errorLabel.setText(message);
+        errorLabel.setVisible(true);
     }
 }
