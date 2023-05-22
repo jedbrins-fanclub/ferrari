@@ -466,9 +466,14 @@ public final class FormWrapper {
     private static int calculateDaysBetween(DatePicker start, DatePicker end) {
         LocalDate startDate = start.getValue();
         LocalDate endDate = end.getValue();
+        Period period = Period.between(startDate, endDate);
+        int days = period.getDays();
+        int months = period.getMonths();
+        int years = period.getYears();
+
+        double totalDays = days + months * 30.5 + years * 365;
         
-        System.out.println("Days between " + Period.between(startDate, endDate).getDays());
-        return Period.between(startDate, endDate).getDays();
+        return (int) totalDays;
     }
 
     private static <E> E getFromComboBox(Form form, String key) {
