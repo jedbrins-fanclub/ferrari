@@ -59,11 +59,11 @@ public final class FormWrapper {
     }
 
     protected static void wrapCreate(Form form, CRUDType type) {
+        setDialog(form);
+        setCreateMouseListener(type, form, dialog);
         if (type == CRUDType.LOAN) {
             checkRate();
         }
-        setDialog(form);
-        setCreateMouseListener(type, form, dialog);
     }
 
     protected static void wrapUpdate(Form form, Car car) {
@@ -179,7 +179,6 @@ public final class FormWrapper {
             });
 
             interestRate = InterestRate.i().todaysRate();
-
             Platform.runLater(() -> {
                 errorLabel.setVisible(false);
                 window.setOnCloseRequest(prev);
