@@ -1,11 +1,13 @@
 package dk.eamv.ferrari.sharedcomponents.filter;
 
+import dk.eamv.ferrari.scenes.loan.LoanStatus;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.ObservableList;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
+import javafx.scene.paint.Color;
 import javafx.util.Pair;
 
 import java.util.ArrayList;
@@ -35,6 +37,7 @@ public class FilteredTableBuilder<T> implements FilteredTableBuilderInfo<T> {
      * <p>For more details go to: {@link #withColumn(String, Function)}</p>
      */
     private final List<Pair<String, Function<T, Object>>> columnInfo;
+    private final List<TableColumn<T, ?>> statusColumns;
     private final List<TableColumn<T, ?>> progressColumns;
     private final List<TableColumn<T, ?>> buttonColumns;
     private FilteredTable<T> filteredTable;
@@ -52,6 +55,7 @@ public class FilteredTableBuilder<T> implements FilteredTableBuilderInfo<T> {
      */
     public FilteredTableBuilder() {
         columnInfo = new ArrayList<>();
+        statusColumns = new ArrayList<>();
         progressColumns = new ArrayList<>();
         buttonColumns = new ArrayList<>();
     }
@@ -76,6 +80,36 @@ public class FilteredTableBuilder<T> implements FilteredTableBuilderInfo<T> {
 
         // Every time this method is called, a specific column and its list of Value Getter methods is added to the list
         columnInfo.add(new Pair<>(columnName, propertyValueGetter));
+        return this;
+    }
+
+    public FilteredTableBuilder<T> withStatusColumn(String columnName, Function<T, LoanStatus> loanStatusGetter) {
+        TableColumn<T, LoanStatus> statusColumn = new TableColumn<>(columnName);
+        statusColumn.setCellValueFactory(cellData -> new ReadOnlyObjectWrapper<>(loanStatusGetter.apply(cellData.getValue())));
+
+        statusColumn.setCellFactory(column -> new TableCell<>() {
+            @Override
+            protected void updateItem(LoanStatus item, boolean empty) {
+                super.updateItem(item, empty);
+
+                if (item == null || empty) {
+                    setText(null);
+                } else {
+                    // Update the text and colour depending on LoanState enum
+                    setText(item.getDisplayName());
+                    switch (item.getState()) {
+                        case PENDING -> setTextFill(Color.ORANGE);
+                        case APPROVED -> setTextFill(Color.GREEN);
+                        case REJECTED -> setTextFill(Color.RED);
+                        case ACTIVE -> setTextFill(Color.web("#323232"));
+                        case COMPLETED -> setTextFill(Color.GRAY);
+                        default -> setTextFill(Color.BLACK);
+                    }
+                }
+            }
+        });
+
+        statusColumns.add(statusColumn);
         return this;
     }
 
@@ -132,7 +166,9 @@ public class FilteredTableBuilder<T> implements FilteredTableBuilderInfo<T> {
             filteredTable.getColumns().add(column);
         }
 
-        // Add progress columns to the TableView
+        // Adding columns like below hardcodes the order of the columns in this class which is not optimal
+        // Add other columns to the view
+        filteredTable.getColumns().addAll(statusColumns);
         filteredTable.getColumns().addAll(progressColumns);
         filteredTable.getColumns().addAll(buttonColumns);
 

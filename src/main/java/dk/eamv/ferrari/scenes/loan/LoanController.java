@@ -25,7 +25,7 @@ public class LoanController {
                 .withColumn("Rente (%)", Loan::getInterestRate)
                 .withColumn("Start", Loan::getStartDate)
                 .withColumn("Slut", Loan::getEndDate)
-                .withColumn("Status", loan -> loan.getStatus().getDisplayName())
+                .withStatusColumn("Status", Loan::getStatus)
                 .withIconButtonColumn(SVGResources.getChangeStatusIcon(), LoanController::updateLoanStatus)
                 .withIconButtonColumn(SVGResources.getEditIcon(), LoanView::showEditLoanDialog)
                 .withIconButtonColumn(SVGResources.getDeleteIcon(), LoanController::deleteLoan)
