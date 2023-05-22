@@ -233,7 +233,7 @@ public class Form {
                 .withFieldsString("Fornavn", "Efternavn")
                 .withFieldNumbers(8, false, "Telefon nr.")
                 .withFieldsString("Email", "Kodeord")
-                .withFieldNumbers(-1, false, "Lånings beføjelse")   
+                .withFieldNumbers(-1, false, "Udlånsgrænse")   
                 .build();
             return form;
         }

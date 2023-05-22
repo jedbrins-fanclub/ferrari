@@ -18,6 +18,8 @@ import dk.eamv.ferrari.scenes.customer.Customer;
 import dk.eamv.ferrari.scenes.customer.CustomerController;
 import dk.eamv.ferrari.scenes.customer.CustomerModel;
 import dk.eamv.ferrari.scenes.employee.Employee;
+import dk.eamv.ferrari.scenes.employee.EmployeeController;
+import dk.eamv.ferrari.scenes.employee.EmployeeModel;
 import dk.eamv.ferrari.scenes.loan.Loan;
 import dk.eamv.ferrari.scenes.loan.LoanController;
 import dk.eamv.ferrari.scenes.loan.LoanModel;
@@ -38,8 +40,6 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Window;
 import javafx.stage.WindowEvent;
 import javafx.application.Platform;
-import java.lang.Runnable;
-import java.text.DecimalFormat;
 
 public final class FormWrapper {
     /*
@@ -81,6 +81,24 @@ public final class FormWrapper {
                 int index = cars.indexOf(car);
                 cars.remove(index);
                 cars.add(index, newCar);   
+            } 
+        });
+    }
+
+    protected static void wrapUpdate(Form form, Employee employee) {
+        setDialog(form);
+        setFieldsEmployee(form, employee);
+        buttonOK.setOnMouseClicked(e -> {
+            if (form.verifyHasFilledFields()) {
+                Employee newEmployee = getFieldsEmployee(form, dialog); //create new object based on updated fields.
+                newEmployee.setId(employee.getId()); //set the new objects id to the old, so that .update() targets correct ID in DB.
+                EmployeeModel.update(newEmployee); //update in DB  
+                
+                //update in TableView
+                ObservableList<Employee> employees = EmployeeController.getEmployees();
+                int index = employees.indexOf(employee);
+                employees.remove(index);
+                employees.add(index, newEmployee);   
             } 
         });
     }
@@ -261,6 +279,19 @@ public final class FormWrapper {
                 });
                 break;
 
+            case EMPLOYEE:
+                buttonOK.setOnMouseClicked(e -> {
+                    if (!form.verifyHasFilledFields()) {
+                        displayErrorMessage("Mangler input i de markerede felter");
+                        return;
+                    }
+                    
+                    Employee employee = getFieldsEmployee(form, dialog);
+                    EmployeeController.getEmployees().add(employee);
+                    EmployeeModel.create(employee);
+                });
+                break;
+            
             default:
                 break;
         }
@@ -310,7 +341,6 @@ public final class FormWrapper {
     private static Loan getFieldsLoan(Form form, Dialog dialog) {
         dialog.setResult(true);
         dialog.close();
-        //TODO: Implement date, employee, loanstatus.
         Car car = getFromComboBox(form, "Bil");
         Customer customer = getFromComboBox(form, "CPR & Kunde");
         Employee employee = getFromComboBox(form, "Medarbejder");
@@ -321,6 +351,25 @@ public final class FormWrapper {
     //TODO: Implement this.
     private static void setFieldsLoan() {
 
+    }
+
+    private static Employee getFieldsEmployee(Form form, Dialog dialog) {
+        dialog.setResult(true);
+        dialog.close();
+        Employee employee = new Employee(getString(form, "Fornavn"), getString(form, "Efternavn"), getString(form, "Telefon nr."), getString(form, "Email"), getString(form, "Kodeord"), getDouble(form, "Udlånsgrænse"));
+        return employee;
+    }
+    
+    private static void setFieldsEmployee(Form form, Employee employee) {
+        ArrayList<String> input = employee.getPropperties();
+        HashMap<String, Control> fieldMap = form.getFieldMap();
+
+        int counter = 0;
+
+        for (Control field : fieldMap.values()) {
+            ((TextField) field).setText(input.get(counter));
+            counter++;
+        }
     }
 
     private static void bindFieldsCar(Form form) {

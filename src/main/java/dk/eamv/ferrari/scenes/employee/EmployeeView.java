@@ -77,11 +77,13 @@ public class EmployeeView {
         buttonCreate = new Button("Registrer ny medarbejder");
         buttonCreate.getStyleClass().add("create-button");
 
-        buttonCreate.setOnAction(e -> {}); //TODO: open dialog here
+        buttonCreate.setOnAction(e -> {
+            EmployeeController.createEmployee();
+        }); 
     }
 
     protected static void showEditEmployeeDialog(Employee selectedEmployee) {
-        //TODO: Insert dialog for editing Employees here
+        EmployeeController.updateEmployee(selectedEmployee);
     }
 
     public static void refreshTableView() {
