@@ -113,8 +113,8 @@ public final class FormWrapper {
         buttonCancel.setOnMouseClicked(e -> {
             dialog.setResult(true);
             dialog.close();
-        }); 
-        HBox buttons = new HBox(buttonCancel, buttonOK, errorLabel);
+        });
+        HBox buttons = new HBox(buttonCancel, buttonOK, form.getForwardBoss(), errorLabel);
         buttons.setSpacing(25);
         VBox vBox = new VBox(form.getGridPane(), buttons);
         vBox.setSpacing(50);
@@ -163,6 +163,7 @@ public final class FormWrapper {
             case LOAN:
                 bindLoanSize(form);
                 bindFieldsCar(form);
+                bindInterestRate(form);
                 bindFieldsCustomer(form);
                 bindFieldsEmployee(form);
 
@@ -191,6 +192,7 @@ public final class FormWrapper {
                     Employee employee = getFromComboBox(form, "Medarbejder");
                     if (employee.getMaxLoan() < getDouble(form, "Lånets størrelse")) {
                         displayErrorMessage("Lånets størrelse overskrider medarbejderens beføjelser.");
+                        form.getForwardBoss().setVisible(true);
                         return;
                     }
                     
@@ -316,6 +318,7 @@ public final class FormWrapper {
                 setText(form, "Kundens Telefon nr.", customer.getPhoneNumber());
                 setText(form, "Kundens Adresse", customer.getAddress());
                 setText(form, "Kundens Email", customer.getEmail());
+                calculateInterestRate();
             }
         });
     }
@@ -356,9 +359,54 @@ public final class FormWrapper {
         return String.valueOf(price - downpayment);
     }
 
+    private static void calculateInterestRate() {
+        double interestRate = 0.0; 
+        
+
+        //get bank API as base.
+
+        switch (creditRating) {
+            case A:
+                
+                break;
+
+            case B:
+                
+                break;
+            
+            case C:
+                
+                break;
+            
+            default:
+                break;
+        }
+        
+        //Som udgangspunkt benyttes bankens rentesatsplus et tillæg, der fastsættes ud fra kundens kreditværdighed:
+        //Hvis kundens kreditværdighed er A, bruges bankens rentesats +1procentpoint.
+        //Hvis kundens kreditværdighed er B, bruges bankens rentesats +2 procentpoint.
+        //Hvis kundens kreditværdighed er C, bruges bankens rentesats +3 procentpoint.
+        //Hvis udbetalingen er under 50 % tillægges +1procentpoint.
+        //Hvis tilbagebetalingen planlægges over mere end 3 år tillægges +1 procentpoint.
+    }
+
+    private static void bindInterestRate(Form form) {
+        //Bound in bindFieldCustomer(). if we do it here, we override the other bind.
+
+        //Bind to downpayment 
+        TextField downpayment = ((TextField) form.getFieldMap().get("Udbetaling"));
+        downpayment.setOnKeyPressed(e -> calculateInterestRate());
+
+        //Bind to timespan
+        DatePicker starDatePicker = ((DatePicker) form.getFieldMap().get("Start dato DD/MM/ÅÅÅÅ"));
+        starDatePicker.setOnAction(e -> calculateInterestRate());
+        DatePicker endDatePicker = ((DatePicker) form.getFieldMap().get("Slut dato DD/MM/ÅÅÅÅ"));
+        endDatePicker.setOnAction(e -> calculateInterestRate());
+    }
+
     private static <E> E getFromComboBox(Form form, String key) {
         AutoCompleteComboBox<E> acb = ((AutoCompleteComboBox) form.getFieldMap().get(key));
-        return acb.getSelectedItem();
+        return acb.getSelectedItem();   
     }
     
     private static void setText(Form form, String key, String text) {

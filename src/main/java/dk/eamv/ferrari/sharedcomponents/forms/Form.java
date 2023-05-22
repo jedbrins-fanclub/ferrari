@@ -37,6 +37,8 @@ public class Form {
     private Form() {
         gridPane = createGridPane();
         fieldMap = new HashMap<String, Control>();
+        forwardBoss = new Button("Videresend til chefen");
+        setForwardToBossListener();
         column = 0;
         row = 0;
     }
@@ -51,18 +53,24 @@ public class Form {
     }
 
     protected Button getForwardBoss() {
-        forwardBoss = new Button("Forward to boss");
-        forwardBoss.setOnMouseClicked(e -> {
-            //TODO:
-        });
-        return getForwardBoss();
+        return forwardBoss;
     }
+    
     protected GridPane getGridPane() {
         return gridPane;
     }
 
     protected HashMap<String, Control> getFieldMap() {
         return fieldMap;
+    }
+
+    private void setForwardToBossListener() {
+        forwardBoss.setOnMouseClicked(e -> {
+            System.out.println("Clicked send to boss");
+            //TODO: Implement email function here
+        });
+
+        forwardBoss.setVisible(false);
     }
 
     protected boolean verifyHasFilledFields() {
