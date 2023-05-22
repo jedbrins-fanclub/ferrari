@@ -129,34 +129,36 @@ public final class FormWrapper {
     }
 
     private static void checkRKI(Form form) {
-        Customer customer = getFromComboBox(form, "CPR & Kunde");
-        if (customer == null) {
-            return;
-        }
-
-        Window window = dialog.getDialogPane().getScene().getWindow();
-        EventHandler<WindowEvent> prev = window.getOnCloseRequest();
-        Platform.runLater(() -> {
-            buttonOK.setDisable(true);
-            window.setOnCloseRequest(event -> {});
-
-            errorLabel.setText("Finder kreditværdighed for kunde");
-            errorLabel.setVisible(true);
-        });
-
-        String cpr = customer.getCpr();
-        creditRating = CreditRator.i().rate(cpr);
-
-        Platform.runLater(() -> {
-            if (creditRating.equals(Rating.D)) {
-                showCreditRatingError();
-            } else {
-                errorLabel.setVisible(false);
+        new Thread(() -> {
+            Customer customer = getFromComboBox(form, "CPR & Kunde");
+            if (customer == null) {
+                return;
             }
 
-            window.setOnCloseRequest(prev);
-            buttonOK.setDisable(false);
-        });
+            Window window = dialog.getDialogPane().getScene().getWindow();
+            EventHandler<WindowEvent> prev = window.getOnCloseRequest();
+            Platform.runLater(() -> {
+                buttonOK.setDisable(true);
+                window.setOnCloseRequest(event -> {});
+
+                errorLabel.setText("Finder kreditværdighed for kunde");
+                errorLabel.setVisible(true);
+            });
+
+            String cpr = customer.getCpr();
+            creditRating = CreditRator.i().rate(cpr);
+
+            Platform.runLater(() -> {
+                if (creditRating.equals(Rating.D)) {
+                    showCreditRatingError();
+                } else {
+                    errorLabel.setVisible(false);
+                }
+
+                window.setOnCloseRequest(prev);
+                buttonOK.setDisable(false);
+            });
+        }).start();
     }
 
     private static void setCreateMouseListener(CRUDType type, Form form, Dialog dialog) {
@@ -309,7 +311,7 @@ public final class FormWrapper {
         comboBox.setOnAction(e -> {
             Customer customer = getFromComboBox(form, "CPR & Kunde");
             if (customer != null) {
-                new Thread(() -> checkRKI(form)).start();
+                checkRKI(form);
                 setText(form, "Kundens Fornavn", customer.getFirstName());
                 setText(form, "Kundens Efternavn", customer.getLastName());
                 setText(form, "Kundens CPR", customer.getCpr());
