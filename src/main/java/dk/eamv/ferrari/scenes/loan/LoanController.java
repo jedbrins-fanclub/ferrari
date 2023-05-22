@@ -27,10 +27,10 @@ public class LoanController {
                 .withColumn("Slut", Loan::getEndDate)
                 .withProgressColumn("", Loan::getStartDate, Loan::getEndDate)
                 .withStatusColumn("Status", Loan::getStatus)
-                .withIconButtonColumn(SVGResources.getChangeStatusIcon(), LoanController::updateLoanStatus)
-                .withIconButtonColumn(SVGResources.getEditIcon(), LoanView::showEditLoanDialog)
-                .withIconButtonColumn(SVGResources.getDeleteIcon(), LoanController::deleteLoan)
-                .withIconButtonColumn(SVGResources.getExportCSVIcon(), LoanController::exportLoan);
+                .withButtonColumn(SVGResources.getChangeStatusIcon(), LoanController::updateLoanStatus)
+                .withButtonColumn(SVGResources.getEditIcon(), LoanView::showEditLoanDialog)
+                .withButtonColumn(SVGResources.getDeleteIcon(), LoanController::deleteLoan)
+                .withButtonColumn(SVGResources.getExportCSVIcon(), LoanController::exportLoan);
     }
 
     protected static void createLoan() {

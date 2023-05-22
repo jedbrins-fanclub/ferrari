@@ -165,7 +165,8 @@ public class FilteredTableBuilder<T> implements FilteredTableBuilderInfo<T> {
         return this;
     }
 
-    public FilteredTableBuilder<T> withIconButtonColumn(String svg, Consumer<T> onButtonClick) {
+    // Method is overloaded to allow for buttons with text and with an icon
+    public FilteredTableBuilder<T> withButtonColumn(String svg, Consumer<T> onButtonClick) {
         TableColumn<T, Void> buttonColumn = new TableColumn<>();
         buttonColumn.setCellFactory(param -> new ButtonTableCell<>(onButtonClick, svg));
         buttonColumns.add(buttonColumn);

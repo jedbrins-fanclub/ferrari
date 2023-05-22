@@ -19,8 +19,8 @@ public class EmployeeController {
                 .withColumn("Telefonnummer", Employee::getPhoneNumber)
                 .withColumn("Email", Employee::getEmail)
                 .withColumn("Max lån (DKK)", Employee::getMaxLoan)
-                .withIconButtonColumn(SVGResources.getEditIcon(), EmployeeView::showEditEmployeeDialog)
-                .withIconButtonColumn(SVGResources.getDeleteIcon(), EmployeeController::deleteEmployee);
+                .withButtonColumn(SVGResources.getEditIcon(), EmployeeView::showEditEmployeeDialog)
+                .withButtonColumn(SVGResources.getDeleteIcon(), EmployeeController::deleteEmployee);
     }
 
     protected static void createEmployee(Employee employee) {

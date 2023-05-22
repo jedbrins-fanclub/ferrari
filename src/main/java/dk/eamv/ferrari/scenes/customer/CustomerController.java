@@ -21,8 +21,8 @@ public class CustomerController {
                 .withColumn("Email", Customer::getEmail)
                 .withColumn("Adresse", Customer::getAddress)
                 .withColumn("CPR-nummer", Customer::getCpr)
-                .withIconButtonColumn(SVGResources.getEditIcon(), CustomerView::showEditCustomerDialog)
-                .withIconButtonColumn(SVGResources.getDeleteIcon(), CustomerController::deleteCustomer);
+                .withButtonColumn(SVGResources.getEditIcon(), CustomerView::showEditCustomerDialog)
+                .withButtonColumn(SVGResources.getDeleteIcon(), CustomerController::deleteCustomer);
     }
 
     protected static void createCustomer() {
