@@ -223,7 +223,7 @@ public class Form {
                 .withFieldsUneditable("Stelnummer", "Kundens Telefon nr.", "Medarbejderens Telefon nr.")
                 .withFieldsUneditable("Kundens Adresse", "Kundens Email", "Medarbejderens Email", "Lånets størrelse")
                 .withFieldNumbers(-1, true, "Udbetaling")
-                .withFieldNumbers(5, true, "Rente")
+                .withFieldsUneditable("Rente")
                 .withFieldsDatePicker(form)
                 .build();
             return form;

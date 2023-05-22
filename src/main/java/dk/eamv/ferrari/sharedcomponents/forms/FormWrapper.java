@@ -2,6 +2,7 @@ package dk.eamv.ferrari.sharedcomponents.forms;
 
 import java.time.Instant;
 import java.time.LocalDate;
+import java.time.Period;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
@@ -51,7 +52,7 @@ public final class FormWrapper {
     private static Button buttonOK = new Button("OK");
     private static Button buttonCancel = new Button("Fortryd");
     private static Rating creditRating = null;
-    private static double interestRate = 0.0;
+    private static double interestRate;
 
     public static Dialog<Object> getDialog() {
         return dialog;
@@ -61,7 +62,7 @@ public final class FormWrapper {
         setDialog(form);
         setCreateMouseListener(type, form, dialog);
         if (type == CRUDType.LOAN) {
-            checkRate();
+            checkRate(form);
         }
     }
 
@@ -108,6 +109,7 @@ public final class FormWrapper {
         // https://stackoverflow.com/a/36262208
         Window window = dialog.getDialogPane().getScene().getWindow();
         window.setOnCloseRequest(event -> window.hide());
+        interestRate = 0.0;
 
         DialogPane dialogPane = dialog.getDialogPane();
         dialogPane.getStylesheets().add("dialog.css");
@@ -153,6 +155,7 @@ public final class FormWrapper {
             creditRating = CreditRator.i().rate(cpr);
 
             Platform.runLater(() -> {
+                calculateInterestRate(form);
                 if (creditRating.equals(Rating.D)) {
                     showCreditRatingError();
                 } else {
@@ -165,7 +168,7 @@ public final class FormWrapper {
         }).start();
     }
 
-    private static void checkRate() {
+    private static void checkRate(Form form) {
         new Thread(() -> {
             Window window = dialog.getDialogPane().getScene().getWindow();
             EventHandler<WindowEvent> prev = window.getOnCloseRequest();
@@ -196,13 +199,13 @@ public final class FormWrapper {
                 bindFieldsEmployee(form);
 
                 buttonOK.setOnMouseClicked(e -> {
-                    if (creditRating.equals(Rating.D)) {
-                        showCreditRatingError();
-                        return;
-                    }
-
                     if (!form.verifyHasFilledFields()) {
                         displayErrorMessage("Mangler input i de markerede felter");
+                        return;
+                    }
+                    
+                    if (creditRating.equals(Rating.D)) {
+                        showCreditRatingError();
                         return;
                     }
 
@@ -330,6 +333,7 @@ public final class FormWrapper {
                 setText(form, "Pris", String.valueOf(car.getPrice()));
                 setText(form, "Stelnummer", String.valueOf(car.getId()));
                 loanSize.setText(calculateLoanSize(form));
+                calculateInterestRate(form);
             }
         });
     }
@@ -346,7 +350,6 @@ public final class FormWrapper {
                 setText(form, "Kundens Telefon nr.", customer.getPhoneNumber());
                 setText(form, "Kundens Adresse", customer.getAddress());
                 setText(form, "Kundens Email", customer.getEmail());
-                calculateInterestRate();
             }
         });
     }
@@ -367,7 +370,7 @@ public final class FormWrapper {
     
     private static void bindLoanSize(Form form) {
         TextField loanSize = (TextField) form.getFieldMap().get("Lånets størrelse");
-        ((TextField) form.getFieldMap().get("Udbetaling")).setOnKeyPressed(e -> loanSize.setText(calculateLoanSize(form)));
+        ((TextField) form.getFieldMap().get("Udbetaling")).setOnKeyTyped(e -> loanSize.setText(calculateLoanSize(form)));
     }
     
     private static String calculateLoanSize(Form form) {
@@ -387,49 +390,85 @@ public final class FormWrapper {
         return String.valueOf(price - downpayment);
     }
 
-    private static void calculateInterestRate() {
-        double interestRate = 0.0; 
+    private static void calculateInterestRate(Form form) {
+        double totalInterestRate = 0.0;
         
+        totalInterestRate += interestRate; //add banks rate
 
-        //get bank API as base.
+        if (creditRating != null) {
+            switch (creditRating) { //add based on creditscore
+                case A:
+                    totalInterestRate += 1;
+                    break;
 
-        switch (creditRating) {
-            case A:
-                
-                break;
+                case B:
+                    totalInterestRate += 2;
+                    break;
 
-            case B:
-                
-                break;
-            
-            case C:
-                
-                break;
-            
-            default:
-                break;
+                case C:
+                    totalInterestRate += 3;
+                    break;
+
+                default:
+                    break;
+            }
         }
         
-        //Som udgangspunkt benyttes bankens rentesatsplus et tillæg, der fastsættes ud fra kundens kreditværdighed:
-        //Hvis kundens kreditværdighed er A, bruges bankens rentesats +1procentpoint.
-        //Hvis kundens kreditværdighed er B, bruges bankens rentesats +2 procentpoint.
-        //Hvis kundens kreditværdighed er C, bruges bankens rentesats +3 procentpoint.
-        //Hvis udbetalingen er under 50 % tillægges +1procentpoint.
-        //Hvis tilbagebetalingen planlægges over mere end 3 år tillægges +1 procentpoint.
-    }
+        TextField downpaymentField = (TextField) form.getFieldMap().get("Udbetaling");
+        double downpayment = 0;
+        if (!downpaymentField.getText().isEmpty()) {
+            downpayment = Double.valueOf(downpaymentField.getText());
+        }
+
+        Car selectedCar = (Car) getFromComboBox(form, "Bil");
+        double carPrice = 0;
+        if (selectedCar != null) {
+            carPrice = selectedCar.getPrice();
+        }
+        
+        if (!downpaymentField.getText().isEmpty() && selectedCar != null) {
+            if (downpayment / carPrice < 0.5) { //add 1% if loansize > 50%
+                totalInterestRate += 1;
+            }
+        }
+
+        DatePicker start = (DatePicker) form.getFieldMap().get("Start dato DD/MM/ÅÅÅÅ");
+        DatePicker end = (DatePicker) form.getFieldMap().get("Slut dato DD/MM/ÅÅÅÅ");
+
+        if (start.getValue() != null && end.getValue() != null) {
+            if (calculateDaysBetween(start, end) > 3 * 365) { //add 1% if loan period > 3 years.
+                totalInterestRate += 1;
+            }
+        }
+
+        TextField interestField = (TextField) form.getFieldMap().get("Rente");
+        interestField.setText(String.format("%.2f", totalInterestRate));
+    }   
 
     private static void bindInterestRate(Form form) {
+        //Bind customer for creditscore.
         //Bound in bindFieldCustomer(). if we do it here, we override the other bind.
+
+        //Bind car for price (to check if downpayment > 50%)
+        //Bound in bindFieldCar(). if we do it here, we override the other bind.
 
         //Bind to downpayment 
         TextField downpayment = ((TextField) form.getFieldMap().get("Udbetaling"));
-        downpayment.setOnKeyPressed(e -> calculateInterestRate());
+        downpayment.setOnKeyTyped(e -> calculateInterestRate(form));
 
         //Bind to timespan
         DatePicker starDatePicker = ((DatePicker) form.getFieldMap().get("Start dato DD/MM/ÅÅÅÅ"));
-        starDatePicker.setOnAction(e -> calculateInterestRate());
+        starDatePicker.setOnAction(e -> calculateInterestRate(form));
         DatePicker endDatePicker = ((DatePicker) form.getFieldMap().get("Slut dato DD/MM/ÅÅÅÅ"));
-        endDatePicker.setOnAction(e -> calculateInterestRate());
+        endDatePicker.setOnAction(e -> calculateInterestRate(form));
+    }
+
+    private static int calculateDaysBetween(DatePicker start, DatePicker end) {
+        LocalDate startDate = start.getValue();
+        LocalDate endDate = end.getValue();
+        
+        System.out.println("Days between " + Period.between(startDate, endDate).getDays());
+        return Period.between(startDate, endDate).getDays();
     }
 
     private static <E> E getFromComboBox(Form form, String key) {
