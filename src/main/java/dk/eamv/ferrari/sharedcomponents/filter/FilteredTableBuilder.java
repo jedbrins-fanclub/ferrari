@@ -11,6 +11,7 @@ import javafx.scene.paint.Color;
 import javafx.util.Pair;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -113,17 +114,27 @@ public class FilteredTableBuilder<T> implements FilteredTableBuilderInfo<T> {
         return this;
     }
 
-    public FilteredTableBuilder<T> withProgressColumn(String columnName, Function<T, Double> startValueGetter, Function<T, Double> endValueGetter, Function<T, Double> currentValueGetter) {
+    public FilteredTableBuilder<T> withProgressColumn(String columnName, Function<T, Date> startDateGetter, Function<T, Date> endDateGetter) {
         TableColumn<T, Double> progressColumn = new TableColumn<>(columnName);
         progressColumn.setCellValueFactory(cellData -> {
-            double start = startValueGetter.apply(cellData.getValue());
-            double end = endValueGetter.apply(cellData.getValue());
-            double current = currentValueGetter.apply(cellData.getValue());
-            double progress = (current - start) / (end - start);
+            long start = startDateGetter.apply(cellData.getValue()).getTime();
+            long end = endDateGetter.apply(cellData.getValue()).getTime();
+            long current = new Date().getTime();
+            double progress = (double) (current - start) / (end - start);
+
+            /* We make sure the progress is not below 0 or above 1
+             * The main problem it is solving is the progress being negative, if: current date < start date
+             * In this case the progress cannot be negative, and it will set to and shown as 0 instead.
+             * If this is not normalized, the progressbar will display a loading animation.
+             * Whether it should show 0 progress or a loading bar seems a design choice.
+             */
+            progress = Math.max(0, Math.min(1, progress));
+
+
             return new ReadOnlyObjectWrapper<>(progress);
         });
 
-        progressColumn.setCellFactory(column -> new TableCell<T, Double>() {
+        progressColumn.setCellFactory(column -> new TableCell<>() {
             private final ProgressBar progressBar = new ProgressBar();
 
             @Override
@@ -134,6 +145,9 @@ public class FilteredTableBuilder<T> implements FilteredTableBuilderInfo<T> {
                     setGraphic(null);
                 } else {
                     progressBar.setProgress(progress);
+                    if (progress == 1) {
+                        progressBar.getStyleClass().add("progress-bar-finished");
+                    }
                     setGraphic(progressBar);
                 }
             }
