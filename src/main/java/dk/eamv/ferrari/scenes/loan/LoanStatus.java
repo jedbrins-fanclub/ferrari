@@ -47,12 +47,11 @@ public class LoanStatus {
      */
     public String getDisplayName() {
         return switch (state) {
-            case PENDING   -> "Afventer godkendelse";
-            case APPROVED  -> "Godkendt";
-            case REJECTED  -> "Afvist";
-            case ACTIVE    -> "Aktiv";
-            case COMPLETED -> "Fuldført";
-            default        -> "Invalid";
+            case PENDING   -> "Afventer " + "\u231B"; // ⌛ (U+231B) hourglass
+            case APPROVED  -> "Godkendt " + "\u2714"; // ✔ (U+2714) checkmark
+            case REJECTED  -> "Afvist " + "\u2716"; // ✖ (U+2716) cross
+            case ACTIVE    -> "Aktiv " + "\u23F3"; // ⏳ (U+23F3) hourglass
+            case COMPLETED -> "Fuldført " + "\u2714"; // ✔ (U+2714) checkmark
         };
     }
 

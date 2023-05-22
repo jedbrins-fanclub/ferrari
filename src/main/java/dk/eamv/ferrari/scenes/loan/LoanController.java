@@ -25,11 +25,12 @@ public class LoanController {
                 .withColumn("Rente (%)", Loan::getInterestRate)
                 .withColumn("Start", Loan::getStartDate)
                 .withColumn("Slut", Loan::getEndDate)
-                .withColumn("Status", loan -> loan.getStatus().getDisplayName())
-                .withIconButtonColumn(SVGResources.getChangeStatusIcon(), LoanController::updateLoanStatus)
-                .withIconButtonColumn(SVGResources.getEditIcon(), LoanView::showEditLoanDialog)
-                .withIconButtonColumn(SVGResources.getDeleteIcon(), LoanController::deleteLoan)
-                .withIconButtonColumn(SVGResources.getExportCSVIcon(), LoanController::exportLoan);
+                .withProgressColumn("", Loan::getStartDate, Loan::getEndDate)
+                .withStatusColumn("Status", Loan::getStatus)
+                .withButtonColumn(SVGResources.getChangeStatusIcon(), LoanController::updateLoanStatus)
+                .withButtonColumn(SVGResources.getEditIcon(), LoanView::showEditLoanDialog)
+                .withButtonColumn(SVGResources.getDeleteIcon(), LoanController::deleteLoan)
+                .withButtonColumn(SVGResources.getExportCSVIcon(), LoanController::exportLoan);
     }
 
     protected static void createLoan() {
@@ -79,6 +80,13 @@ public class LoanController {
         dialog.setHeaderText("Vælg ny status for dette lån");
         dialog.getDialogPane().setContent(choiceBox);
         dialog.showAndWait();
+    }
+
+    protected static void expandLoan(Loan loan) {
+        // If a row is clicked in the table, this method is called and the clicked loan is passed as the parameter
+
+        //TODO: Implement dialog or something similar to display details about the loan
+        System.out.println("Clicked: " + loan);
     }
 
     private static void exportLoan(Loan loan) {

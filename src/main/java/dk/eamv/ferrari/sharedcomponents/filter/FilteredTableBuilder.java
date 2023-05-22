@@ -1,14 +1,17 @@
 package dk.eamv.ferrari.sharedcomponents.filter;
 
+import dk.eamv.ferrari.scenes.loan.LoanStatus;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.ObservableList;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
+import javafx.scene.paint.Color;
 import javafx.util.Pair;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -35,6 +38,7 @@ public class FilteredTableBuilder<T> implements FilteredTableBuilderInfo<T> {
      * <p>For more details go to: {@link #withColumn(String, Function)}</p>
      */
     private final List<Pair<String, Function<T, Object>>> columnInfo;
+    private final List<TableColumn<T, ?>> statusColumns;
     private final List<TableColumn<T, ?>> progressColumns;
     private final List<TableColumn<T, ?>> buttonColumns;
     private FilteredTable<T> filteredTable;
@@ -52,6 +56,7 @@ public class FilteredTableBuilder<T> implements FilteredTableBuilderInfo<T> {
      */
     public FilteredTableBuilder() {
         columnInfo = new ArrayList<>();
+        statusColumns = new ArrayList<>();
         progressColumns = new ArrayList<>();
         buttonColumns = new ArrayList<>();
     }
@@ -79,17 +84,57 @@ public class FilteredTableBuilder<T> implements FilteredTableBuilderInfo<T> {
         return this;
     }
 
-    public FilteredTableBuilder<T> withProgressColumn(String columnName, Function<T, Double> startValueGetter, Function<T, Double> endValueGetter, Function<T, Double> currentValueGetter) {
+    public FilteredTableBuilder<T> withStatusColumn(String columnName, Function<T, LoanStatus> loanStatusGetter) {
+        TableColumn<T, LoanStatus> statusColumn = new TableColumn<>(columnName);
+        statusColumn.setCellValueFactory(cellData -> new ReadOnlyObjectWrapper<>(loanStatusGetter.apply(cellData.getValue())));
+
+        statusColumn.setCellFactory(column -> new TableCell<>() {
+            @Override
+            protected void updateItem(LoanStatus item, boolean empty) {
+                super.updateItem(item, empty);
+
+                if (item == null || empty) {
+                    setText(null);
+                } else {
+                    // Update the text and colour depending on LoanState enum
+                    setText(item.getDisplayName());
+                    switch (item.getState()) {
+                        case PENDING -> setTextFill(Color.ORANGE);
+                        case APPROVED -> setTextFill(Color.GREEN);
+                        case REJECTED -> setTextFill(Color.RED);
+                        case ACTIVE -> setTextFill(Color.web("#323232"));
+                        case COMPLETED -> setTextFill(Color.GRAY);
+                        default -> setTextFill(Color.BLACK);
+                    }
+                }
+            }
+        });
+
+        statusColumns.add(statusColumn);
+        return this;
+    }
+
+    public FilteredTableBuilder<T> withProgressColumn(String columnName, Function<T, Date> startDateGetter, Function<T, Date> endDateGetter) {
         TableColumn<T, Double> progressColumn = new TableColumn<>(columnName);
         progressColumn.setCellValueFactory(cellData -> {
-            double start = startValueGetter.apply(cellData.getValue());
-            double end = endValueGetter.apply(cellData.getValue());
-            double current = currentValueGetter.apply(cellData.getValue());
-            double progress = (current - start) / (end - start);
+            long start = startDateGetter.apply(cellData.getValue()).getTime();
+            long end = endDateGetter.apply(cellData.getValue()).getTime();
+            long current = new Date().getTime();
+            double progress = (double) (current - start) / (end - start);
+
+            /* We make sure the progress is not below 0 or above 1
+             * The main problem it is solving is the progress being negative, if: current date < start date
+             * In this case the progress cannot be negative, and it will set to and shown as 0 instead.
+             * If this is not normalized, the progressbar will display a loading animation.
+             * Whether it should show 0 progress or a loading bar seems a design choice.
+             */
+            progress = Math.max(0, Math.min(1, progress));
+
+
             return new ReadOnlyObjectWrapper<>(progress);
         });
 
-        progressColumn.setCellFactory(column -> new TableCell<T, Double>() {
+        progressColumn.setCellFactory(column -> new TableCell<>() {
             private final ProgressBar progressBar = new ProgressBar();
 
             @Override
@@ -100,6 +145,9 @@ public class FilteredTableBuilder<T> implements FilteredTableBuilderInfo<T> {
                     setGraphic(null);
                 } else {
                     progressBar.setProgress(progress);
+                    if (progress == 1) {
+                        progressBar.getStyleClass().add("progress-bar-finished");
+                    }
                     setGraphic(progressBar);
                 }
             }
@@ -117,7 +165,8 @@ public class FilteredTableBuilder<T> implements FilteredTableBuilderInfo<T> {
         return this;
     }
 
-    public FilteredTableBuilder<T> withIconButtonColumn(String svg, Consumer<T> onButtonClick) {
+    // Method is overloaded to allow for buttons with text and with an icon
+    public FilteredTableBuilder<T> withButtonColumn(String svg, Consumer<T> onButtonClick) {
         TableColumn<T, Void> buttonColumn = new TableColumn<>();
         buttonColumn.setCellFactory(param -> new ButtonTableCell<>(onButtonClick, svg));
         buttonColumns.add(buttonColumn);
@@ -132,7 +181,9 @@ public class FilteredTableBuilder<T> implements FilteredTableBuilderInfo<T> {
             filteredTable.getColumns().add(column);
         }
 
-        // Add progress columns to the TableView
+        // Adding columns like below hardcodes the order of the columns in this class which is not optimal
+        // Add other columns to the view
+        filteredTable.getColumns().addAll(statusColumns);
         filteredTable.getColumns().addAll(progressColumns);
         filteredTable.getColumns().addAll(buttonColumns);
 

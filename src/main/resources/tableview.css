@@ -66,3 +66,11 @@
     -fx-opacity: 0;
     -fx-padding: 2;
 }
+
+.progress-bar .bar {
+    -fx-accent: orange;
+}
+
+.progress-bar-finished .bar {
+    -fx-accent: green;
+}
