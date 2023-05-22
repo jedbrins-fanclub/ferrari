@@ -39,6 +39,7 @@ import javafx.stage.Window;
 import javafx.stage.WindowEvent;
 import javafx.application.Platform;
 import java.lang.Runnable;
+import java.text.DecimalFormat;
 
 public final class FormWrapper {
     /*
@@ -194,7 +195,7 @@ public final class FormWrapper {
             case LOAN:
                 bindLoanSize(form);
                 bindFieldsCar(form);
-                bindInterestRate(form);
+                bindDatepickers(form);
                 bindFieldsCustomer(form);
                 bindFieldsEmployee(form);
 
@@ -370,7 +371,11 @@ public final class FormWrapper {
     
     private static void bindLoanSize(Form form) {
         TextField loanSize = (TextField) form.getFieldMap().get("Lånets størrelse");
-        ((TextField) form.getFieldMap().get("Udbetaling")).setOnKeyTyped(e -> loanSize.setText(calculateLoanSize(form)));
+        TextField downPayment = (TextField) form.getFieldMap().get("Udbetaling");
+        downPayment.setOnKeyTyped(e -> {
+            loanSize.setText(calculateLoanSize(form));
+            calculateInterestRate(form);
+        });
     }
     
     private static String calculateLoanSize(Form form) {
@@ -441,22 +446,13 @@ public final class FormWrapper {
             }
         }
 
+
+
         TextField interestField = (TextField) form.getFieldMap().get("Rente");
         interestField.setText(String.format("%.2f", totalInterestRate));
     }   
 
-    private static void bindInterestRate(Form form) {
-        //Bind customer for creditscore.
-        //Bound in bindFieldCustomer(). if we do it here, we override the other bind.
-
-        //Bind car for price (to check if downpayment > 50%)
-        //Bound in bindFieldCar(). if we do it here, we override the other bind.
-
-        //Bind to downpayment 
-        TextField downpayment = ((TextField) form.getFieldMap().get("Udbetaling"));
-        downpayment.setOnKeyTyped(e -> calculateInterestRate(form));
-
-        //Bind to timespan
+    private static void bindDatepickers(Form form) {
         DatePicker starDatePicker = ((DatePicker) form.getFieldMap().get("Start dato DD/MM/ÅÅÅÅ"));
         starDatePicker.setOnAction(e -> calculateInterestRate(form));
         DatePicker endDatePicker = ((DatePicker) form.getFieldMap().get("Slut dato DD/MM/ÅÅÅÅ"));
@@ -503,7 +499,9 @@ public final class FormWrapper {
     }
 
     private static double getDouble(Form form, String key) {
-        return Double.valueOf(getString(form, key));
+        String raw = getString(form, key);
+        String formatted = raw.replace(",", ".");
+        return Double.valueOf(formatted);
     }
 
     private static Date getSelectedDate(Form form, String key) {
