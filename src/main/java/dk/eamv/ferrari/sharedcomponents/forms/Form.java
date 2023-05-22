@@ -7,6 +7,8 @@ import java.util.HashMap;
 import dk.eamv.ferrari.scenes.car.CarController;
 import dk.eamv.ferrari.scenes.customer.CustomerController;
 import dk.eamv.ferrari.scenes.employee.EmployeeController;
+import dk.eamv.ferrari.scenes.loan.LoanController;
+import dk.eamv.ferrari.sharedcomponents.email.EmailService;
 import dk.eamv.ferrari.sharedcomponents.nodes.AutoCompleteComboBox;
 import dk.eamv.ferrari.sharedcomponents.nodes.NumericTextField;
 import javafx.collections.ObservableList;
@@ -65,10 +67,7 @@ public class Form {
     }
 
     private void setForwardToBossListener() {
-        forwardBoss.setOnMouseClicked(e -> {
-            System.out.println("Clicked send to boss");
-            //TODO: Implement email function here
-        });
+        forwardBoss.setOnMouseClicked(e -> EmailService.sendEmail());
 
         forwardBoss.setVisible(false);
     }

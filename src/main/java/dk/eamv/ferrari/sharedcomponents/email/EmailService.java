@@ -15,7 +15,7 @@ public class EmailService {
                 .withPlainText("""
                         Hej salgschef
                         
-                        Jeg har modtaget oprette et lånetilbud som overskrider min tilladte beløbsgrænse.
+                        Jeg har oprettet et lånetilbud som overskrider min tilladte beløbsgrænse.
                         Vil du godkende aftalen?
                         
                         Mvh
