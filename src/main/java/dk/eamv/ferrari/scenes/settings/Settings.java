@@ -9,8 +9,11 @@ import javafx.scene.layout.VBox;
 public class Settings{
 
     
-    public static VBox getScene(){ 
+    public static VBox getScene(){
     
+        Label rettelse = new Label("Indtast en ny adgangskode!");
+        rettelse.setVisible(false);
+
         Label indstilling = new Label("Indstillinger");
         Label rediger = new Label("Rediger oplysninger");
         
@@ -21,8 +24,7 @@ public class Settings{
         TextField tlfInput = new TextField();
         
         Label updateKode = new Label("Opdater adgangskode");
-        PasswordField updateKodeInput = new PasswordField();
-        
+            
         Label glKode = new Label("Nuværende adgangskode");
         PasswordField glKodeInput = new PasswordField();
         
@@ -34,14 +36,27 @@ public class Settings{
         
         Button update = new Button("Opdater oplysninger");
         update.setOnAction((event) -> {
-                System.out.println(bekræftInput.getText());
+            if(bekræftInput.getText().equals(nyKodeInput.getText())){
+
+                System.out.println("Koden er ok");
+            } else {
+                System.out.println("Koden er ikke ok");
+            }
+
+            if(glKodeInput.getText().equals(nyKodeInput.getText())){
+
+                rettelse.setVisible(true);
+            } else {
+                System.out.println("koden ok");
+            }
+
         });
 
         VBox vbox  = new VBox();
         vbox.setAlignment(Pos.CENTER);
         vbox.getChildren().addAll(
             indstilling, rediger, email, emailInput,
-            tlf, tlfInput, updateKode, updateKodeInput,
+            tlf, tlfInput, updateKode, rettelse,
             glKode, glKodeInput, nyKode, nyKodeInput,
             bekræftKode, bekræftInput, update
         );
