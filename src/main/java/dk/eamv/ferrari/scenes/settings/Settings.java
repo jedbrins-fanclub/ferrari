@@ -1,15 +1,24 @@
 package dk.eamv.ferrari.scenes.settings;
+import dk.eamv.ferrari.scenes.sidebar.SidebarButton;
+import dk.eamv.ferrari.scenes.sidebar.SidebarView;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.Border;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 
+/**
+ * Made by: Benjamin og Stefan
+ * Checked by:
+ * Modified by:
+ */
 public class Settings{
 
     
-    public static VBox getScene(){
+    public static BorderPane getScene(){
     
         Label rettelse = new Label("Indtast en ny adgangskode!");
         rettelse.setVisible(false);
@@ -52,6 +61,7 @@ public class Settings{
 
         });
 
+
         VBox vbox  = new VBox();
         vbox.setAlignment(Pos.CENTER);
         vbox.getChildren().addAll(
@@ -59,15 +69,14 @@ public class Settings{
             tlf, tlfInput, updateKode, rettelse,
             glKode, glKodeInput, nyKode, nyKodeInput,
             bekræftKode, bekræftInput, update
-        );
-
-    
-        return vbox;
         
+            );
 
+        BorderPane bpane = new BorderPane(vbox);
+        bpane.setLeft(SidebarView.getSidebarView());
+        SidebarView.getSidebarView().setActiveToggleButton(SidebarButton.SETTINGS);
 
-
-
-
+        return bpane;
+        
     }
 }
