@@ -53,7 +53,7 @@
 }
 
 
-.login TextField, PasswordField {
+.login TextField, .login PasswordField {
     -fx-prompt-text-fill: #555555;
     -fx-background-color: transparent;
     -fx-pref-width: 400;
