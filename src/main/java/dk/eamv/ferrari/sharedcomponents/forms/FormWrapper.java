@@ -4,6 +4,8 @@ import java.time.Instant;
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -18,6 +20,8 @@ import dk.eamv.ferrari.scenes.customer.Customer;
 import dk.eamv.ferrari.scenes.customer.CustomerController;
 import dk.eamv.ferrari.scenes.customer.CustomerModel;
 import dk.eamv.ferrari.scenes.employee.Employee;
+import dk.eamv.ferrari.scenes.employee.EmployeeController;
+import dk.eamv.ferrari.scenes.employee.EmployeeModel;
 import dk.eamv.ferrari.scenes.loan.Loan;
 import dk.eamv.ferrari.scenes.loan.LoanController;
 import dk.eamv.ferrari.scenes.loan.LoanModel;
@@ -37,9 +41,8 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Window;
 import javafx.stage.WindowEvent;
+import javafx.util.StringConverter;
 import javafx.application.Platform;
-import java.lang.Runnable;
-import java.text.DecimalFormat;
 
 public final class FormWrapper {
     /*
@@ -49,6 +52,7 @@ public final class FormWrapper {
      */
 
     private static Dialog<Object> dialog;
+    private static Form form;
     private static Label errorLabel = new Label();
     private static Button buttonOK = new Button("OK");
     private static Button buttonCancel = new Button("Fortryd");
@@ -82,6 +86,45 @@ public final class FormWrapper {
                 cars.remove(index);
                 cars.add(index, newCar);   
             } 
+        });
+    }
+
+    protected static void wrapUpdate(Form form, Employee employee) {
+        setDialog(form);
+        setFieldsEmployee(form, employee);
+        buttonOK.setOnMouseClicked(e -> {
+            if (form.verifyHasFilledFields()) {
+                Employee newEmployee = getFieldsEmployee(form, dialog); //create new object based on updated fields.
+                newEmployee.setId(employee.getId()); //set the new objects id to the old, so that .update() targets correct ID in DB.
+                EmployeeModel.update(newEmployee); //update in DB  
+                
+                //update in TableView
+                ObservableList<Employee> employees = EmployeeController.getEmployees();
+                int index = employees.indexOf(employee);
+                employees.remove(index);
+                employees.add(index, newEmployee);   
+            } 
+        });
+    }
+
+    protected static void wrapUpdate(Form form, Loan loan) {
+        setDialog(form);
+        Car car = CarModel.read(loan.getCar_id());
+        Customer customer = CustomerModel.read(loan.getCustomer_id());
+        Employee employee = EmployeeModel.read(loan.getEmployee_id());
+        setFieldsLoan(form, car, customer, employee, loan);
+        buttonOK.setOnMouseClicked(e -> {
+            if (form.verifyHasFilledFields()) {
+                Loan newLoan = getFieldsLoan(form); //create new object based on updated fields.
+                newLoan.setId(loan.getId()); //set the new objects id to the old, so that .update() targets correct ID in DB.
+                LoanModel.update(newLoan); //update in DB   
+
+                //update in TableView 
+                ObservableList<Loan> loans = LoanController.getLoans();
+                int index = loans.indexOf(loan);
+                loans.remove(index);
+                loans.add(index, newLoan); 
+            }
         });
     }
 
@@ -228,7 +271,7 @@ public final class FormWrapper {
                         return;
                     }
                     
-                    Loan loan = getFieldsLoan(form, dialog);
+                    Loan loan = getFieldsLoan(form);
                     LoanController.getLoans().add(loan);
                     LoanModel.create(loan);
                     dialog.close();
@@ -261,6 +304,19 @@ public final class FormWrapper {
                 });
                 break;
 
+            case EMPLOYEE:
+                buttonOK.setOnMouseClicked(e -> {
+                    if (!form.verifyHasFilledFields()) {
+                        displayErrorMessage("Mangler input i de markerede felter");
+                        return;
+                    }
+                    
+                    Employee employee = getFieldsEmployee(form, dialog);
+                    EmployeeController.getEmployees().add(employee);
+                    EmployeeModel.create(employee);
+                });
+                break;
+            
             default:
                 break;
         }
@@ -307,10 +363,9 @@ public final class FormWrapper {
         return customer;
     }
     
-    private static Loan getFieldsLoan(Form form, Dialog dialog) {
+    private static Loan getFieldsLoan(Form form) {
         dialog.setResult(true);
         dialog.close();
-        //TODO: Implement date, employee, loanstatus.
         Car car = getFromComboBox(form, "Bil");
         Customer customer = getFromComboBox(form, "CPR & Kunde");
         Employee employee = getFromComboBox(form, "Medarbejder");
@@ -319,8 +374,36 @@ public final class FormWrapper {
     }
 
     //TODO: Implement this.
-    private static void setFieldsLoan() {
+    private static void setFieldsLoan(Form form, Car car, Customer customer, Employee employee, Loan loan) {
+        setChoice(form, "Bil", car.toString());
+        setFieldsLoanCar(form, car);
+        setChoice(form, "CPR & Kunde", customer.toString());
+        setFieldsLoanCustomer(form, customer);
+        setChoice(form, "Medarbejder", employee.toString());
+        setFieldsLoanEmployee(form, employee);
+        setFieldsLoanDownpayment(form, loan);
+        setFieldsMiscLoan(form, loan);
+        setDate(form, "Start dato DD/MM/ÅÅÅÅ", String.valueOf(loan.getStartDate()));
+        setDate(form, "Slut dato DD/MM/ÅÅÅÅ", String.valueOf(loan.getEndDate()));
+    }
 
+    private static Employee getFieldsEmployee(Form form, Dialog dialog) {
+        dialog.setResult(true);
+        dialog.close();
+        Employee employee = new Employee(getString(form, "Fornavn"), getString(form, "Efternavn"), getString(form, "Telefon nr."), getString(form, "Email"), getString(form, "Kodeord"), getDouble(form, "Udlånsgrænse"));
+        return employee;
+    }
+    
+    private static void setFieldsEmployee(Form form, Employee employee) {
+        ArrayList<String> input = employee.getPropperties();
+        HashMap<String, Control> fieldMap = form.getFieldMap();
+
+        int counter = 0;
+
+        for (Control field : fieldMap.values()) {
+            ((TextField) field).setText(input.get(counter));
+            counter++;
+        }
     }
 
     private static void bindFieldsCar(Form form) {
@@ -329,14 +412,18 @@ public final class FormWrapper {
         comboBox.setOnAction(e -> {
             Car car = getFromComboBox(form, "Bil");
             if (car != null) {
-                setText(form, "Model", car.getModel());
-                setText(form, "Årgang", String.valueOf(car.getYear()));
-                setText(form, "Pris", String.valueOf(car.getPrice()));
-                setText(form, "Stelnummer", String.valueOf(car.getId()));
+                setFieldsLoanCar(form, car);
                 loanSize.setText(calculateLoanSize(form));
                 calculateInterestRate(form);
             }
         });
+    }
+    
+    private static void setFieldsLoanCar(Form form, Car car) {
+        setText(form, "Model", car.getModel());
+        setText(form, "Årgang", String.valueOf(car.getYear()));
+        setText(form, "Pris", String.valueOf(car.getPrice()));
+        setText(form, "Stelnummer", String.valueOf(car.getId()));
     }
     
     private static void bindFieldsCustomer(Form form) {
@@ -345,14 +432,18 @@ public final class FormWrapper {
             Customer customer = getFromComboBox(form, "CPR & Kunde");
             if (customer != null) {
                 checkRKI(form);
-                setText(form, "Kundens Fornavn", customer.getFirstName());
-                setText(form, "Kundens Efternavn", customer.getLastName());
-                setText(form, "Kundens CPR", customer.getCpr());
-                setText(form, "Kundens Telefon nr.", customer.getPhoneNumber());
-                setText(form, "Kundens Adresse", customer.getAddress());
-                setText(form, "Kundens Email", customer.getEmail());
+                setFieldsCustomer(form, customer);
             }
         });
+    }
+
+    private static void setFieldsLoanCustomer(Form form, Customer customer) {
+        setText(form, "Kundens Fornavn", customer.getFirstName());
+        setText(form, "Kundens Efternavn", customer.getLastName());
+        setText(form, "Kundens CPR", customer.getCpr());
+        setText(form, "Kundens Telefon nr.", customer.getPhoneNumber());
+        setText(form, "Kundens Adresse", customer.getAddress());
+        setText(form, "Kundens Email", customer.getEmail());
     }
 
     private static void bindFieldsEmployee(Form form) {
@@ -360,13 +451,32 @@ public final class FormWrapper {
         comboBox.setOnAction(e -> {
             Employee employee = getFromComboBox(form, "Medarbejder");
             if (employee != null) {
-                setText(form, "Medarbejderens Fornavn", employee.getFirstName());
-                setText(form, "Medarbejderens Efternavn", employee.getLastName());
-                setText(form, "Medarbejderens ID", String.valueOf(employee.getId()));
-                setText(form, "Medarbejderens Telefon nr.", employee.getPhoneNumber());
-                setText(form, "Medarbejderens Email", employee.getEmail());
+                setFieldsLoanEmployee(form, employee);
             }
         });
+    }
+
+    private static void setFieldsLoanEmployee(Form form, Employee employee) {
+        setText(form, "Medarbejderens Fornavn", employee.getFirstName());
+        setText(form, "Medarbejderens Efternavn", employee.getLastName());
+        setText(form, "Medarbejderens ID", String.valueOf(employee.getId()));
+        setText(form, "Medarbejderens Telefon nr.", employee.getPhoneNumber());
+        setText(form, "Medarbejderens Email", employee.getEmail());
+    }
+
+    private static void setFieldsMiscLoan(Form form, Loan loan) {
+        getTextField(form, "Rente").setText(String.valueOf(loan.getInterestRate()));
+        getTextField(form, "Lånets størrelse").setText(String.valueOf(loan.getLoanSize()));
+        getTextField(form, "Udbetaling").setText(String.valueOf(loan.getDownPayment()));
+    }
+
+    private static void setFieldsLoanDownpayment(Form form, Loan loan) {
+        TextField textField = ((TextField) form.getFieldMap().get("Udbetaling"));
+        textField.setText(String.valueOf(loan.getDownPayment()));
+    }
+
+    private static TextField getTextField(Form form, String key) {
+        return ((TextField) form.getFieldMap().get(key));
     }
     
     private static void bindLoanSize(Form form) {
@@ -446,8 +556,6 @@ public final class FormWrapper {
             }
         }
 
-
-
         TextField interestField = (TextField) form.getFieldMap().get("Rente");
         interestField.setText(String.format("%.2f", totalInterestRate));
     }   
@@ -483,11 +591,49 @@ public final class FormWrapper {
     }
 
     private static void setChoice(Form form, String key, String choice) {
-
+        AutoCompleteComboBox<?> comboBox = (AutoCompleteComboBox) form.getFieldMap().get(key);
+        comboBox.getSelectionModel().select(choice);
     }
 
     private static void setDate(Form form, String key, String date) {
-
+        DatePicker datePicker = ((DatePicker) form.getFieldMap().get(key));
+        datePicker.setConverter(new StringConverter<LocalDate>() {
+            String pattern = "dd/MM/yyyy"; // Updated pattern
+            DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(pattern);
+    
+            {
+                datePicker.setPromptText(pattern.toLowerCase());
+            }
+    
+            @Override
+            public String toString(LocalDate date) {
+                if (date != null) {
+                    return dateFormatter.format(date);
+                } else {
+                    return "";
+                }
+            }
+    
+            @Override
+            public LocalDate fromString(String string) {
+                if (string != null && !string.isEmpty()) {
+                    try {
+                        // Convert from "yyyy-MM-dd" to "dd/MM/yyyy"
+                        LocalDate originalDate = LocalDate.parse(string, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+                        String formattedDate = dateFormatter.format(originalDate);
+                        return LocalDate.parse(formattedDate, dateFormatter);
+                    } catch (DateTimeParseException e) {
+                        // Handle the parsing exception
+                        System.out.println("Error parsing date: " + string);
+                        return null;
+                    }
+                } else {
+                    return null;
+                }
+            }
+        });
+        LocalDate localDate = datePicker.getConverter().fromString(date);
+        datePicker.setValue(localDate);
     }
 
     private static String getString(Form form, String key) {
