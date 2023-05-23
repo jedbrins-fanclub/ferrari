@@ -373,7 +373,6 @@ public final class FormWrapper {
         return loan;
     }
 
-    //TODO: Implement this.
     private static void setFieldsLoan(Form form, Car car, Customer customer, Employee employee, Loan loan) {
         setChoice(form, "Bil", car.toString());
         setFieldsLoanCar(form, car);

@@ -116,10 +116,10 @@ public class Form {
         return row;
     }
 
-    public static class Builder {
+    protected static class Builder {
         private Form form;
 
-        public Builder() {
+        protected Builder() {
             form = new Form();
         }
 
