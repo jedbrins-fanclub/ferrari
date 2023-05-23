@@ -1,5 +1,6 @@
 package dk.eamv.ferrari.scenes.loan;
 
+import dk.eamv.ferrari.csv.CSVWriter;
 import dk.eamv.ferrari.resources.SVGResources;
 import dk.eamv.ferrari.sharedcomponents.filter.FilteredTableBuilder;
 import dk.eamv.ferrari.sharedcomponents.forms.FormFactory;
@@ -90,7 +91,22 @@ public class LoanController {
     }
 
     private static void exportLoan(Loan loan) {
-        //TODO: Implement export to CSV here to export the selected loan which is passed as the parameter
+        new Thread(() -> {
+            // TODO: Tilbagebetalingsplan?
+            CSVWriter writer = new CSVWriter("out.csv");
+            writer.writeHeader(
+                "car id", "customer id", "employee id",
+                "loan size", "downpayment", "interest rate",
+                "start date", "end date", "status"
+            );
+
+            writer.writeRow(
+                loan.getCar_id(), loan.getCustomer_id(), loan.getEmployee_id(),
+                loan.getLoanSize(), loan.getDownPayment(), loan.getInterestRate(),
+                loan.getStartDate(), loan.getEndDate(), loan.getStatus().getDisplayName()
+            );
+            writer.close();
+        }).start();
     }
 
     public static ObservableList<Loan> getLoans() {
