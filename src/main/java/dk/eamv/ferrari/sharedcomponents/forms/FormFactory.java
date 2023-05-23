@@ -55,12 +55,12 @@ public final class FormFactory {
         dialog.show();
     }
 
-    /*public static void updateLoanFormDialogBox(Loan loan) {
+    public static void updateLoanFormDialogBox(Loan loan) {
         FormWrapper.wrapUpdate(builder.buildLoanForm(), loan);
         Dialog<?> dialog = FormWrapper.getDialog();
         dialog.setTitle("Opdater lån");
         dialog.show();
-    }*/
+    }
 
     public static void updateEmployeeFormDialogBox(Employee employee) {
         FormWrapper.wrapUpdate(builder.buildEmployeeForm(), employee);

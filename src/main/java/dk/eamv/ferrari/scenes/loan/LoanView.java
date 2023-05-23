@@ -93,7 +93,7 @@ public class LoanView {
     }
 
     protected static void showEditLoanDialog(Loan selectedLoan) {
-        //TODO: Insert dialog for editing Loans here
+        LoanController.updateLoan(selectedLoan);
     }
 
     public static void refreshTableView() {
