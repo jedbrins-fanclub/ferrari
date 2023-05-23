@@ -6,6 +6,7 @@ import dk.eamv.ferrari.scenes.customer.CustomerView;
 import dk.eamv.ferrari.scenes.employee.EmployeeView;
 import dk.eamv.ferrari.scenes.frontpage.FrontpageView;
 import dk.eamv.ferrari.scenes.loan.LoanView;
+import dk.eamv.ferrari.scenes.settings.SettingsView;
 import javafx.event.ActionEvent;
 
 public class SidebarController {
@@ -35,6 +36,6 @@ public class SidebarController {
     }
 
     static void onSettingsButtonClick(ActionEvent event) {
-        System.out.println("Clicked: settings");
+        SceneManager.changeScene(SettingsView.getScene());
     }
 }
