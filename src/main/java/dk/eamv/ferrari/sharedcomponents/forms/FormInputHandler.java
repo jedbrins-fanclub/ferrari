@@ -31,6 +31,7 @@ import javafx.util.StringConverter;
 
 public class FormInputHandler {
     /**
+     * Reads the input of the fields and returns a Car object based on the input.
      * @param form - the active form.
      * @return the Car object based on the input of the form.
      */
@@ -39,6 +40,7 @@ public class FormInputHandler {
     }
 
     /**
+     * Reads the input of the fields and returns a Customer object based on the input.
      * @param form - the active form.
      * @return the Customer object based on the input of the form.
      */
@@ -47,6 +49,7 @@ public class FormInputHandler {
     }
     
     /**
+     * Reads the input of the fields and returns a Employee object based on the input.
      * @param form - the active form.
      * @return the Employee object based on the input of the form.
      */
@@ -55,85 +58,18 @@ public class FormInputHandler {
     }
     
     /**
+     * Reads the input of the fields and returns a Loan object based on the input.
      * @param form - the active form.
      * @return the Loan object based on the input of the form.
      */
     protected static Loan getFieldsLoan(Form form) {
-        Car car = getFromComboBox(form, "Bil");
-        Customer customer = getFromComboBox(form, "CPR & Kunde");
-        Employee employee = getFromComboBox(form, "Medarbejder");
+        Car car = getEntityFromComboBox(form, "Bil");
+        Customer customer = getEntityFromComboBox(form, "CPR & Kunde");
+        Employee employee = getEntityFromComboBox(form, "Medarbejder");
         Loan loan = new Loan(car.getId(), customer.getId(), employee.getId(), getDouble(form, "Lånets størrelse"), getDouble(form, "Udbetaling"), getDouble(form, "Rente"), getSelectedDate(form, "Start dato DD/MM/ÅÅÅÅ"), getSelectedDate(form, "Slut dato DD/MM/ÅÅÅÅ"), new LoanStatus(3));
         return loan;
     }
-
-    /**
-     * @param form - the active form.
-     * @param car - a Car object, whose propperties will fill the form.
-     */
-    protected static void setFieldsCar(Form form, Car car) {
-        ArrayList<String> input = car.getPropperties();
-        HashMap<String, Control> fieldMap = form.getFieldMap();
-
-        int counter = 0;
-
-        for (Control field : fieldMap.values()) {
-            ((TextField) field).setText(input.get(counter));
-            counter++;
-        }
-    }
-
-    /**
-     * @param form - the active form.
-     * @param customer - a Customer object, whose propperties will fill the form.
-     */
-    protected static void setFieldsCustomer(Form form, Customer customer) {
-        ArrayList<String> input = customer.getPropperties();
-        HashMap<String, Control> fieldMap = form.getFieldMap();
-
-        int counter = 0;
-
-        for (Control field : fieldMap.values()) {
-            ((TextField) field).setText(input.get(counter));
-            counter++;
-        }
-    }
-
-    /**
-     * @param form - the active form.
-     * @param employee - an Employee object, whose propperties will fill the form.
-     */
-    protected static void setFieldsEmployee(Form form, Employee employee) {
-        ArrayList<String> input = employee.getPropperties();
-        HashMap<String, Control> fieldMap = form.getFieldMap();
-
-        int counter = 0;
-
-        for (Control field : fieldMap.values()) {
-            ((TextField) field).setText(input.get(counter));
-            counter++;
-        }
-    }
     
-    /**
-     * @param form - the active form.
-     * @param car - a Car object, whose propperties will fill the form.
-     * @param customer - a Customer object, whose propperties will fill the form.
-     * @param employee - an Employee object, whose propperties will fill the form.
-     * @param loan - a Loan object, whose propperties will fill the form.
-     */
-    protected static void setFieldsLoan(Form form, Car car, Customer customer, Employee employee, Loan loan) {
-        setChoice(form, "Bil", car.toString());
-        //TODO: setFieldsLoanCar(form, car);
-        setChoice(form, "CPR & Kunde", customer.toString());
-        //TODO: setFieldsLoanCustomer(form, customer);
-        setChoice(form, "Medarbejder", employee.toString());
-        //TODO: setFieldsLoanEmployee(form, employee);
-        //TODO: setFieldsLoanDownpayment(form, loan);
-        //TODO: setFieldsMiscLoan(form, loan);
-        setDate(form, "Start dato DD/MM/ÅÅÅÅ", String.valueOf(loan.getStartDate()));
-        setDate(form, "Slut dato DD/MM/ÅÅÅÅ", String.valueOf(loan.getEndDate()));
-    }
-
     /**
      * Casts the Control of the fieldmap into a TextField, then returns the value.
      * @param form - the active form.
@@ -141,7 +77,7 @@ public class FormInputHandler {
      * @return the String value of the input.
      */
     private static String getString(Form form, String key) {
-        return ((TextField)form.getFieldMap().get(key)).getText();
+        return getTextField(form, key).getText();
     }
 
     /**
@@ -176,7 +112,7 @@ public class FormInputHandler {
      * @return the Date of DatePicker.
      */
     private static Date getSelectedDate(Form form, String key) {
-        DatePicker datePicker = ((DatePicker) form.getFieldMap().get(key));
+        DatePicker datePicker = getDatePicker(form, key);
         LocalDate localDate = datePicker.getValue();
         Instant instant = Instant.from(localDate.atStartOfDay(ZoneId.systemDefault()));
         return Date.from(instant);
@@ -190,45 +126,114 @@ public class FormInputHandler {
      * @param key - the String/Header of the ComboBox / dropdown.
      * @return the selected element of type <E>.
      */
-    protected static <E> E getFromComboBox(Form form, String key) {
+    protected static <E> E getEntityFromComboBox(Form form, String key) {
         AutoCompleteComboBox<E> acb = ((AutoCompleteComboBox) form.getFieldMap().get(key));
         return acb.getSelectedItem();
     }
+
+    /**
+     * Iterates over the ArrayList of properties, and sets each field in the hashmap to the property.
+     * @param form - the active form.
+     * @param car - a Car object, whose propperties will fill the form.
+     */
+    protected static void setFieldsCar(Form form, Car car) {
+        ArrayList<String> input = car.getPropperties();
+        HashMap<String, Control> fieldMap = form.getFieldMap();
+
+        int counter = 0;
+
+        for (Control field : fieldMap.values()) {
+            ((TextField) field).setText(input.get(counter));
+            counter++;
+        }
+    }
+
+    /**
+     * Iterates over the ArrayList of properties, and sets each field in the hashmap to the property.
+     * @param form - the active form.
+     * @param customer - a Customer object, whose propperties will fill the form.
+     */
+    protected static void setFieldsCustomer(Form form, Customer customer) {
+        ArrayList<String> input = customer.getPropperties();
+        HashMap<String, Control> fieldMap = form.getFieldMap();
+
+        int counter = 0;
+
+        for (Control field : fieldMap.values()) {
+            ((TextField) field).setText(input.get(counter));
+            counter++;
+        }
+    }
+
+    /**
+     * Iterates over the ArrayList of properties, and sets each field in the hashmap to the property.
+     * @param form - the active form.
+     * @param employee - an Employee object, whose propperties will fill the form.
+     */
+    protected static void setFieldsEmployee(Form form, Employee employee) {
+        ArrayList<String> input = employee.getPropperties();
+        HashMap<String, Control> fieldMap = form.getFieldMap();
+
+        int counter = 0;
+
+        for (Control field : fieldMap.values()) {
+            ((TextField) field).setText(input.get(counter));
+            counter++;
+        }
+    }
     
     /**
-     * Casts the Control into a TextField, then sets the text of it.
+     * @param form - the active form.
+     * @param car - a Car object, whose propperties will fill the form.
+     * @param customer - a Customer object, whose propperties will fill the form.
+     * @param employee - an Employee object, whose propperties will fill the form.
+     * @param loan - a Loan object, whose propperties will fill the form.
+     */
+    protected static void setFieldsLoan(Form form, Car car, Customer customer, Employee employee, Loan loan) {
+        setChoiceBox(form, "Bil", car.toString());
+        //TODO: setFieldsLoanCar(form, car);
+        setChoiceBox(form, "CPR & Kunde", customer.toString());
+        //TODO: setFieldsLoanCustomer(form, customer);
+        setChoiceBox(form, "Medarbejder", employee.toString());
+        //TODO: setFieldsLoanEmployee(form, employee);
+        //TODO: setFieldsLoanDownpayment(form, loan);
+        //TODO: setFieldsMiscLoan(form, loan);
+        setDatePicker(form, "Start dato DD/MM/ÅÅÅÅ", String.valueOf(loan.getStartDate()));
+        setDatePicker(form, "Slut dato DD/MM/ÅÅÅÅ", String.valueOf(loan.getEndDate()));
+    }
+    
+    /**
      * @param form - the active form.
      * @param key - the String/Header of the TextField.
      * @param text - the text to be set.
      */
     protected static void setText(Form form, String key, String text) {
-        TextField textField = (TextField) form.getFieldMap().get(key);
-        textField.setText(text);
+        getTextField(form, key).setText(text);
     }
 
     /**
-     * Casts the control into an AutoCompleteComboBox of generic type <?>, then sets the selected choice.
      * @param form - the active form.
      * @param key - the String/Header of the ComboBox/dropdown.
      * @param choice - the String matching the choice. Use toString().
      * @see #toString()
+     * @see #getAutoCompleteComboBox(Form, String)
      */
-    private static void setChoice(Form form, String key, String choice) {
-        AutoCompleteComboBox<?> comboBox = (AutoCompleteComboBox) form.getFieldMap().get(key);
-        comboBox.getSelectionModel().select(choice);
+    private static void setChoiceBox(Form form, String key, String choice) {
+        getAutoCompleteComboBox(form, key).getSelectionModel().select(choice);
     }
 
     //TODO: Add Javadoc here.
-    private static void setDate(Form form, String key, String date) {
-        DatePicker datePicker = ((DatePicker) form.getFieldMap().get(key));
+    //TODO: Understand this code better.
+    private static void setDatePicker(Form form, String key, String date) {
+        DatePicker datePicker = getDatePicker(form, key);
         datePicker.setConverter(new StringConverter<LocalDate>() {
             String pattern = "dd/MM/yyyy"; // Updated pattern
             DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(pattern);
-    
+
             {
                 datePicker.setPromptText(pattern.toLowerCase());
             }
-    
+
             @Override
             public String toString(LocalDate date) {
                 if (date != null) {
@@ -237,7 +242,7 @@ public class FormInputHandler {
                     return "";
                 }
             }
-    
+
             @Override
             public LocalDate fromString(String string) {
                 if (string != null && !string.isEmpty()) {
@@ -258,5 +263,35 @@ public class FormInputHandler {
         });
         LocalDate localDate = datePicker.getConverter().fromString(date);
         datePicker.setValue(localDate);
+    }
+    
+    /**
+     * Finds the Control in the hashmap, and casts it into a TextField.
+     * @param form - the active form.
+     * @param key - the String/Header of the TextField.
+     * @return the matching TextField.
+     */
+    protected static TextField getTextField(Form form, String key) {
+        return (TextField) form.getFieldMap().get(key);
+    }
+
+    /**
+     * Finds the Control in the hashmap, and casts it into an AutoCompleteComboBox of generic type <?>.
+     * @param form - the active form.
+     * @param key - the String/Header of the AutoCompleteComboBox.
+     * @return the matching AutoCompleteComboBox.
+     */
+    protected static AutoCompleteComboBox<?> getAutoCompleteComboBox(Form form, String key) {
+        return (AutoCompleteComboBox) form.getFieldMap().get(key);
+    }
+
+    /**
+     * Finds the Control in the hashmap, and casts it into a DatePicker.
+     * @param form - the active form.
+     * @param key - the String/Header of the DatePicker.
+     * @return the matching DatePicker.
+     */
+    protected static DatePicker getDatePicker(Form form, String key) {
+        return (DatePicker) form.getFieldMap().get(key);
     }
 }
