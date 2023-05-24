@@ -212,19 +212,17 @@ public class FormInputHandler {
         getAutoCompleteComboBox(key).getSelectionModel().select(choice);
     }
 
-    //TODO: Add Javadoc here.
-    //TODO: Understand this code better.
+    /**
+     * Takes the a String parameter, since it gets stored as yyyy/MM/dd, which is then converted to dd/MM/yyyy, and set as the value in the DatePicker.
+     * @param key - the String/Header of the DatePicker.
+     * @param date - the Date converted to a String.
+     */
     protected static void setDatePicker(String key, String date) {
         DatePicker datePicker = getDatePicker(key);
         datePicker.setConverter(new StringConverter<LocalDate>() {
-            String pattern = "dd/MM/yyyy"; // Updated pattern
-            DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(pattern);
-
-            {
-                datePicker.setPromptText(pattern.toLowerCase());
-            }
-
-            @Override
+            DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+            
+            @Override //Date -> String. Called when setting the date
             public String toString(LocalDate date) {
                 if (date != null) {
                     return dateFormatter.format(date);
@@ -233,7 +231,7 @@ public class FormInputHandler {
                 }
             }
 
-            @Override
+            @Override // Date <- String
             public LocalDate fromString(String string) {
                 if (string != null && !string.isEmpty()) {
                     try {
@@ -241,6 +239,7 @@ public class FormInputHandler {
                         LocalDate originalDate = LocalDate.parse(string, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
                         String formattedDate = dateFormatter.format(originalDate);
                         return LocalDate.parse(formattedDate, dateFormatter);
+
                     } catch (DateTimeParseException e) {
                         // Handle the parsing exception
                         System.out.println("Error parsing date: " + string);

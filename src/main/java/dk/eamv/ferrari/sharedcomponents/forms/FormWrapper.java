@@ -13,7 +13,6 @@ import dk.eamv.ferrari.scenes.loan.Loan;
 import dk.eamv.ferrari.scenes.loan.LoanController;
 import dk.eamv.ferrari.scenes.loan.LoanModel;
 import javafx.collections.ObservableList;
-import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.DialogPane;
@@ -31,19 +30,40 @@ public final class FormWrapper {
 
     private static Dialog<Object> dialog;
     private static Form form;
-    private static Label errorLabel = new Label();
     private static Button buttonOK = new Button("OK");
 
-    public static Dialog<Object> getDialog() {
-        return dialog;
+    /**
+     * Closes the active dialog.
+     */
+    protected static void closeDialog() {
+        dialog.setResult(true);
+        dialog.close();
     }
 
+    /**
+     * Shows the active dialog.
+     * @param title - the title that will be displayed in the dialog Header.
+     */
+    protected static void showDialog(String title) {
+        dialog.setTitle(title);
+        dialog.show();
+    }
+
+    /**
+     * Sets the active form in this class, and the other relevant helper classes.
+     * @param form - the form of the active dialog.
+     */
     protected static void initForm(Form form) {
         FormWrapper.form = form;
         FormInputHandler.setForm(form);
         FormBinder.setForm(form);
     }
     
+    /**
+     * Creates a dialog based on the CRUD type argument passed, then sets the mouselisteners for it.
+     * @param form - the form of the active dialog.
+     * @param type - (CRUDType. Car, Customer, Employee, Loan)
+     */
     protected static void wrapCreate(Form form, CRUDType type) {
         initForm(form);
         initDialog();
@@ -54,6 +74,11 @@ public final class FormWrapper {
         }
     }
 
+    /**
+     * Opens a dialog, then fills it with the properties of the Car object, allowing the user to change the fields.
+     * @param form - the form of the active dialog.
+     * @param car - the Car object to be updated.
+     */
     protected static void wrapUpdate(Form form, Car car) {
         initForm(form);
         initDialog();
@@ -73,48 +98,64 @@ public final class FormWrapper {
         });
     }
     
+    /**
+     * Opens a dialog, then fills it with the properties of the Customer object, allowing the user to change the fields.
+     * @param form - the form of the active dialog.
+     * @param customer - the Customer object to be updated.
+     */
     protected static void wrapUpdate(Form form, Customer customer) {
         initForm(form);
         initDialog();
         FormInputHandler.setFieldsCustomer(customer);
         buttonOK.setOnMouseClicked(e -> {
             if (form.verifyHasFilledFields()) {
-                Customer newCustomer = FormInputHandler.getFieldsCustomer(); 
-                newCustomer.setId(customer.getId()); 
+                Customer newCustomer = FormInputHandler.getFieldsCustomer();
+                newCustomer.setId(customer.getId());
                 CustomerModel.update(newCustomer);
 
                 //update in TableView 
                 ObservableList<Customer> customers = CustomerController.getCustomers();
                 int index = customers.indexOf(customer);
                 customers.remove(index);
-                customers.add(index, newCustomer); 
+                customers.add(index, newCustomer);
             }
         });
     }
 
+    /**
+     * Opens a dialog, then fills it with the properties of the Employee object, allowing the user to change the fields.
+     * @param form - the form of the active dialog.
+     * @param employee - the Employee object to be updated.
+     */
     protected static void wrapUpdate(Form form, Employee employee) {
         initForm(form);
         initDialog();
         FormInputHandler.setFieldsEmployee(employee);
         buttonOK.setOnMouseClicked(e -> {
             if (form.verifyHasFilledFields()) {
-                Employee newEmployee = FormInputHandler.getFieldsEmployee(); 
+                Employee newEmployee = FormInputHandler.getFieldsEmployee();
                 newEmployee.setId(employee.getId());
                 EmployeeModel.update(newEmployee);
-                
+
                 //update in TableView
                 ObservableList<Employee> employees = EmployeeController.getEmployees();
                 int index = employees.indexOf(employee);
                 employees.remove(index);
-                employees.add(index, newEmployee);   
-            } 
+                employees.add(index, newEmployee);
+            }
         });
     }
 
+    /**
+     * Opens a dialog, then fills it with the properties of the Loan object, allowing the user to change the fields.
+     * @param form - the form of the active dialog.
+     * @param loan - the Loan object to be updated.
+     */
     protected static void wrapUpdate(Form form, Loan loan) {
         initForm(form);
         initDialog();
 
+        //query DB for objects matching ID.
         Car car = CarModel.read(loan.getCar_id());
         Customer customer = CustomerModel.read(loan.getCustomer_id());
         Employee employee = EmployeeModel.read(loan.getEmployee_id());
@@ -125,19 +166,22 @@ public final class FormWrapper {
 
         buttonOK.setOnMouseClicked(e -> {
             if (form.verifyHasFilledFields()) {
-                Loan newLoan = FormInputHandler.getFieldsLoan(); 
-                newLoan.setId(loan.getId()); 
+                Loan newLoan = FormInputHandler.getFieldsLoan();
+                newLoan.setId(loan.getId());
                 LoanModel.update(newLoan);
 
                 //update in TableView 
                 ObservableList<Loan> loans = LoanController.getLoans();
                 int index = loans.indexOf(loan);
                 loans.remove(index);
-                loans.add(index, newLoan); 
+                loans.add(index, newLoan);
             }
         });
     }
 
+    /**
+     * Sets dialog to be the standard dialog to be wrapped.
+     */
     private static void initDialog() {
         dialog = new Dialog<>();
 
@@ -149,27 +193,25 @@ public final class FormWrapper {
         DialogPane dialogPane = dialog.getDialogPane();
         dialogPane.getStylesheets().add("dialog.css");
         dialogPane.getStyleClass().add("dialog");
-        errorLabel.setVisible(false);
-        errorLabel.setPadding(new Insets(0, 0, 0, 100));
-        errorLabel.getStyleClass().add("errorLabel");
+
         Button buttonCancel = new Button("Fortryd");
         buttonCancel.setOnMouseClicked(e -> {
-            dialog.setResult(true);
-            dialog.close();
+            closeDialog();
         });
-        HBox buttons = new HBox(buttonCancel, buttonOK, form.getForwardBoss(), errorLabel);
+
+        Label statusLabel = FormStatusHandler.getStatusLabel();
+        statusLabel.setVisible(false);
+
+        HBox buttons = new HBox(buttonCancel, buttonOK, form.getForwardBoss(), statusLabel);
         buttons.setSpacing(25);
+
         VBox vBox = new VBox(form.getGridPane(), buttons);
         vBox.setSpacing(50);
+        
         dialog.getDialogPane().setContent(vBox);
-        dialog.setResizable(true);
     }
 
     protected static Button getButtonOK() {
         return buttonOK;
-    }
-
-    protected static Label getErrorLabel() {
-        return errorLabel;
     }
 }

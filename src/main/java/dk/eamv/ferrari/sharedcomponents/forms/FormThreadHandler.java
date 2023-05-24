@@ -6,12 +6,9 @@ import dk.api.rki.Rating;
 import dk.eamv.ferrari.scenes.customer.Customer;
 import javafx.application.Platform;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 
 public class FormThreadHandler {
     private static Button buttonOK = FormWrapper.getButtonOK();
-    //TODO: Better status implementation here.
-    private static Label errorLabel = FormWrapper.getErrorLabel();
 
     //TODO: Benjamin write Javadoc
     protected static void checkRKI() {
@@ -23,10 +20,7 @@ public class FormThreadHandler {
 
             Platform.runLater(() -> {
                 buttonOK.setDisable(true);
-                
-                //TODO: Better status implementation here.
-                errorLabel.setText("Finder kreditværdighed for kunde");
-                errorLabel.setVisible(true);
+                FormStatusHandler.displayStatusMessage("Finder kreditværdighed for kunde");
             });
 
             String cpr = customer.getCpr();
@@ -37,11 +31,9 @@ public class FormThreadHandler {
             Platform.runLater(() -> {
                 FormBinder.calculateInterestRate();
                 if (creditRating.equals(Rating.D)) {
-                    //TODO: Better status implementation here.
-                    FormStatusHandler.showCreditRatingError();
+                    FormStatusHandler.displayErrorMessage("Kunden har kreditværdighed D");
                 } else {
-                    //TODO: Better status implementation here.
-                    errorLabel.setVisible(false);
+                    FormStatusHandler.hideStatusLabel();
                 }
                 
                 buttonOK.setDisable(false);
@@ -54,14 +46,12 @@ public class FormThreadHandler {
         new Thread(() -> {
             Platform.runLater(() -> {
                 buttonOK.setDisable(true);
-
-                errorLabel.setText("Finder dagens rente");
-                errorLabel.setVisible(true);
+                FormStatusHandler.displayStatusMessage("Finder dagens rente");
             });
 
             FormBinder.setBanksInterestRate(InterestRate.i().todaysRate());
             Platform.runLater(() -> {
-                errorLabel.setVisible(false);
+                FormStatusHandler.hideStatusLabel();
                 buttonOK.setDisable(false);
             });
         }).start();

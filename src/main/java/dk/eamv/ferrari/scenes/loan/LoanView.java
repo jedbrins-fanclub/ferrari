@@ -70,12 +70,6 @@ public class LoanView {
         tableView.setPrefHeight(1200);
         tableView.setRowFactory(tableview -> {
             TableRow<Loan> row = new TableRow<>();
-            row.setOnMouseClicked(event -> {
-                if (!row.isEmpty()) {
-                    Loan clickedLoan = row.getItem();
-                    LoanController.expandLoan(clickedLoan);
-                }
-            });
             return row ;
         });
     }

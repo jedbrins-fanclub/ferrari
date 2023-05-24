@@ -87,13 +87,6 @@ public class LoanController {
         dialog.showAndWait();
     }
 
-    protected static void expandLoan(Loan loan) {
-        // If a row is clicked in the table, this method is called and the clicked loan is passed as the parameter
-
-        //TODO: Implement dialog or something similar to display details about the loan
-        System.out.println("Clicked: " + loan);
-    }
-
     private static void exportLoan(Loan loan) {
         new Thread(() -> {
             // TODO: Tilbagebetalingsplan?

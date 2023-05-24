@@ -228,7 +228,7 @@ public class FormBinder {
                     }
 
                     if (customersCreditScore.equals(Rating.D)) {
-                        FormStatusHandler.showCreditRatingError();
+                        FormStatusHandler.displayErrorMessage("Kunden har kreditværdighed D");
                         return;
                     }
 
