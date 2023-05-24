@@ -34,7 +34,6 @@ public final class FormWrapper {
     private static Form form;
     private static Label errorLabel = new Label();
     private static Button buttonOK = new Button("OK");
-    private static Button buttonCancel = new Button("Fortryd");
     private static Rating creditRating = null;
     private static double interestRate;
 
@@ -150,5 +149,13 @@ public final class FormWrapper {
         vBox.setSpacing(50);
         dialog.getDialogPane().setContent(vBox);
         dialog.setResizable(true);
+    }
+
+    protected static Button getButtonOK() {
+        return buttonOK;
+    }
+
+    protected static Label getErrorLabel() {
+        return errorLabel;
     }
 }

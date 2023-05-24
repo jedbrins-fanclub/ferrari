@@ -1,19 +1,20 @@
 package dk.eamv.ferrari.sharedcomponents.forms;
 
+import dk.eamv.ferrari.scenes.customer.Customer;
+import javafx.application.Platform;
+import javafx.stage.Window;
+
 public class FormThreadHandler {
-    private static void checkRKI(Form form) {
+    protected static void checkRKI(Form form) {
         new Thread(() -> {
-            Customer customer = getFromComboBox(form, "CPR & Kunde");
+            Customer customer = FormInputHandler.getFromComboBox(form, "CPR & Kunde");
             if (customer == null) {
                 return;
             }
 
-            Window window = dialog.getDialogPane().getScene().getWindow();
-            EventHandler<WindowEvent> prev = window.getOnCloseRequest();
             Platform.runLater(() -> {
-                buttonOK.setDisable(true);
-                window.setOnCloseRequest(event -> {});
-
+                FormWrapper.getButtonOK().setDisable(true);
+                
                 errorLabel.setText("Finder kreditværdighed for kunde");
                 errorLabel.setVisible(true);
             });
@@ -35,7 +36,7 @@ public class FormThreadHandler {
         }).start();
     }
 
-    private static void checkRate(Form form) {
+    protected static void checkRate(Form form) {
         new Thread(() -> {
             Window window = dialog.getDialogPane().getScene().getWindow();
             EventHandler<WindowEvent> prev = window.getOnCloseRequest();

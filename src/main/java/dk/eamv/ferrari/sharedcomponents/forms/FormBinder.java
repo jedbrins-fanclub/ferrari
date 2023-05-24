@@ -25,7 +25,8 @@ public class FormBinder {
     // Lavet af Christian.
 
     /**
-     * Handles the logic of binding fields in loanforms.
+     * Handles the logic of binding fields in loanforms, manually setting the fields & 
+     * setting mouselisteners for the dialogboxes.
      */
 
     /**
@@ -38,6 +39,7 @@ public class FormBinder {
         TextField loanSize = (TextField) form.getFieldMap().get("Lånets størrelse");
         AutoCompleteComboBox<Car> comboBox = (AutoCompleteComboBox) form.getFieldMap().get("Bil");
         comboBox.setOnAction(e -> {
+            Car car = FormInputHandler.getFromComboBox(form, "Bil");
             Car car = FormInputHandler.getFromComboBox(form, "Bil");
             if (car != null) {
                 setFieldsLoanCar(form, car);

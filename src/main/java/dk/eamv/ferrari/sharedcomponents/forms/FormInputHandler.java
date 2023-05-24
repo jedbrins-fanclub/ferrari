@@ -1,5 +1,11 @@
 package dk.eamv.ferrari.sharedcomponents.forms;
 
+import dk.eamv.ferrari.scenes.car.Car;
+import dk.eamv.ferrari.scenes.customer.Customer;
+import dk.eamv.ferrari.scenes.employee.Employee;
+import dk.eamv.ferrari.scenes.loan.Loan;
+import dk.eamv.ferrari.scenes.loan.LoanStatus;
+
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -8,12 +14,6 @@ import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-
-import dk.eamv.ferrari.scenes.car.Car;
-import dk.eamv.ferrari.scenes.customer.Customer;
-import dk.eamv.ferrari.scenes.employee.Employee;
-import dk.eamv.ferrari.scenes.loan.Loan;
-import dk.eamv.ferrari.scenes.loan.LoanStatus;
 import dk.eamv.ferrari.sharedcomponents.nodes.AutoCompleteComboBox;
 import javafx.scene.control.Control;
 import javafx.scene.control.DatePicker;
