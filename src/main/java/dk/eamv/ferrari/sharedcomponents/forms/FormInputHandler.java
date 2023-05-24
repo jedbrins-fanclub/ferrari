@@ -190,7 +190,7 @@ public class FormInputHandler {
      * @param key - the String/Header of the ComboBox / dropdown.
      * @return the selected element of type <E>.
      */
-    private static <E> E getFromComboBox(Form form, String key) {
+    protected static <E> E getFromComboBox(Form form, String key) {
         AutoCompleteComboBox<E> acb = ((AutoCompleteComboBox) form.getFieldMap().get(key));
         return acb.getSelectedItem();
     }
@@ -201,7 +201,7 @@ public class FormInputHandler {
      * @param key - the String/Header of the TextField.
      * @param text - the text to be set.
      */
-    private static void setText(Form form, String key, String text) {
+    protected static void setText(Form form, String key, String text) {
         TextField textField = (TextField) form.getFieldMap().get(key);
         textField.setText(text);
     }

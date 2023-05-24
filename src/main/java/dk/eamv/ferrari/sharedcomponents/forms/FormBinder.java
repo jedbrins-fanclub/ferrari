@@ -1,18 +1,44 @@
 package dk.eamv.ferrari.sharedcomponents.forms;
 
+import java.time.LocalDate;
+import java.time.Period;
+
+import dk.api.rki.CreditRator;
+import dk.eamv.ferrari.scenes.car.Car;
+import dk.eamv.ferrari.scenes.car.CarController;
+import dk.eamv.ferrari.scenes.car.CarModel;
+import dk.eamv.ferrari.scenes.customer.Customer;
+import dk.eamv.ferrari.scenes.customer.CustomerController;
+import dk.eamv.ferrari.scenes.customer.CustomerModel;
+import dk.eamv.ferrari.scenes.employee.Employee;
+import dk.eamv.ferrari.scenes.employee.EmployeeController;
+import dk.eamv.ferrari.scenes.employee.EmployeeModel;
+import dk.eamv.ferrari.scenes.loan.Loan;
+import dk.eamv.ferrari.scenes.loan.LoanController;
+import dk.eamv.ferrari.scenes.loan.LoanModel;
+import dk.eamv.ferrari.sharedcomponents.nodes.AutoCompleteComboBox;
+import javafx.scene.control.DatePicker;
+import javafx.scene.control.Dialog;
+import javafx.scene.control.TextField;
+
 public class FormBinder {
     // Lavet af Christian.
 
     /**
      * Handles the logic of binding fields in loanforms.
-     * 
      */
 
+    /**
+     * Binds the fields related to the Car dropdown.
+     * Casts the Control into a TextField, then binds it to action (On dropdown selected)
+     * to autofill the fields related to the car.
+     * @param form - the active form.
+     */
     private static void bindFieldsCar(Form form) {
         TextField loanSize = (TextField) form.getFieldMap().get("Lånets størrelse");
         AutoCompleteComboBox<Car> comboBox = (AutoCompleteComboBox) form.getFieldMap().get("Bil");
         comboBox.setOnAction(e -> {
-            Car car = getFromComboBox(form, "Bil");
+            Car car = FormInputHandler.getFromComboBox(form, "Bil");
             if (car != null) {
                 setFieldsLoanCar(form, car);
                 loanSize.setText(calculateLoanSize(form));
@@ -21,27 +47,45 @@ public class FormBinder {
         });
     }
 
+    /**
+     * Binds the fields related to the Customer dropdown.
+     * Casts the Control into a TextField, then binds it to action (On dropdown selected)
+     * to autofill the fields related to the Customer.
+     * @param form - the active form.
+     */
     private static void bindFieldsCustomer(Form form) {
         AutoCompleteComboBox<Customer> comboBox = (AutoCompleteComboBox) form.getFieldMap().get("CPR & Kunde");
         comboBox.setOnAction(e -> {
-            Customer customer = getFromComboBox(form, "CPR & Kunde");
+            Customer customer = FormInputHandler.getFromComboBox(form, "CPR & Kunde");
             if (customer != null) {
-                checkRKI(form);
-                setFieldsCustomer(form, customer);
+                //TODO: checkRKI(form);
+                //TODO: setFieldsCustomer(form, customer);
             }
         });
     }
 
+    /**
+     * Binds the fields related to the Employee dropdown.
+     * Casts the Control into a TextField, then binds it to action (On dropdown selected)
+     * to autofill the fields related to the Employee.
+     * @param form - the active form.
+     */
     private static void bindFieldsEmployee(Form form) {
         AutoCompleteComboBox<Customer> comboBox = (AutoCompleteComboBox) form.getFieldMap().get("Medarbejder");
         comboBox.setOnAction(e -> {
-            Employee employee = getFromComboBox(form, "Medarbejder");
+            Employee employee = FormInputHandler.getFromComboBox(form, "Medarbejder");
             if (employee != null) {
                 setFieldsLoanEmployee(form, employee);
             }
         });
     }
 
+    /**
+     * Binds the fields related to the Loan dropdown.
+     * Casts the Control into a TextField, then binds it to action (On dropdown selected)
+     * to autofill the fields related to the Loan.
+     * @param form - the active form.
+     */
     private static void bindLoanSize(Form form) {
         TextField loanSize = (TextField) form.getFieldMap().get("Lånets størrelse");
         TextField downPayment = (TextField) form.getFieldMap().get("Udbetaling");
@@ -51,6 +95,12 @@ public class FormBinder {
         });
     }
 
+    /**
+     * Binds the fields related to the DatePickers.
+     * Casts the Controls into DatePickers, then binds it to action (On datepicked selected)
+     * to autofill the fields related to the Dates / loanperiod.
+     * @param form - the active form.
+     */
     private static void bindDatepickers(Form form) {
         DatePicker starDatePicker = ((DatePicker) form.getFieldMap().get("Start dato DD/MM/ÅÅÅÅ"));
         starDatePicker.setOnAction(e -> calculateInterestRate(form));
@@ -58,34 +108,54 @@ public class FormBinder {
         endDatePicker.setOnAction(e -> calculateInterestRate(form));
     }
 
+    /**
+     * Sets the fields related to Car, in the loan form, manually, when called.
+     * @param form - the active form.
+     * @param car - the Car object whose properties will fill the fields.
+     */
     private static void setFieldsLoanCar(Form form, Car car) {
-        setText(form, "Model", car.getModel());
-        setText(form, "Årgang", String.valueOf(car.getYear()));
-        setText(form, "Pris", String.valueOf(car.getPrice()));
-        setText(form, "Stelnummer", String.valueOf(car.getId()));
+        FormInputHandler.setText(form, "Model", car.getModel());
+        FormInputHandler.setText(form, "Årgang", String.valueOf(car.getYear()));
+        FormInputHandler.setText(form, "Pris", String.valueOf(car.getPrice()));
+        FormInputHandler.setText(form, "Stelnummer", String.valueOf(car.getId()));
     }
     
+    /**
+     * Sets the fields related to Customer, in the loan form, manually, when called.
+     * @param form - the active form.
+     * @param customer - the Customer object whose properties will fill the fields.
+     */
     private static void setFieldsLoanCustomer(Form form, Customer customer) {
-        setText(form, "Kundens Fornavn", customer.getFirstName());
-        setText(form, "Kundens Efternavn", customer.getLastName());
-        setText(form, "Kundens CPR", customer.getCpr());
-        setText(form, "Kundens Telefon nr.", customer.getPhoneNumber());
-        setText(form, "Kundens Adresse", customer.getAddress());
-        setText(form, "Kundens Email", customer.getEmail());
+        FormInputHandler.setText(form, "Kundens Fornavn", customer.getFirstName());
+        FormInputHandler.setText(form, "Kundens Efternavn", customer.getLastName());
+        FormInputHandler.setText(form, "Kundens CPR", customer.getCpr());
+        FormInputHandler.setText(form, "Kundens Telefon nr.", customer.getPhoneNumber());
+        FormInputHandler.setText(form, "Kundens Adresse", customer.getAddress());
+        FormInputHandler.setText(form, "Kundens Email", customer.getEmail());
     }
 
+    /**
+     * Sets the fields related to Employee, in the loan form, manually, when called.
+     * @param form - the active form.
+     * @param employee - the Employee object whose properties will fill the fields.
+     */
     private static void setFieldsLoanEmployee(Form form, Employee employee) {
-        setText(form, "Medarbejderens Fornavn", employee.getFirstName());
-        setText(form, "Medarbejderens Efternavn", employee.getLastName());
-        setText(form, "Medarbejderens ID", String.valueOf(employee.getId()));
-        setText(form, "Medarbejderens Telefon nr.", employee.getPhoneNumber());
-        setText(form, "Medarbejderens Email", employee.getEmail());
+        FormInputHandler.setText(form, "Medarbejderens Fornavn", employee.getFirstName());
+        FormInputHandler.setText(form, "Medarbejderens Efternavn", employee.getLastName());
+        FormInputHandler.setText(form, "Medarbejderens ID", String.valueOf(employee.getId()));
+        FormInputHandler.setText(form, "Medarbejderens Telefon nr.", employee.getPhoneNumber());
+        FormInputHandler.setText(form, "Medarbejderens Email", employee.getEmail());
     }
 
-    private static void setFieldsMiscLoan(Form form, Loan loan) {
-        getTextField(form, "Rente").setText(String.valueOf(loan.getInterestRate()));
-        getTextField(form, "Lånets størrelse").setText(String.valueOf(loan.getLoanSize()));
-        getTextField(form, "Udbetaling").setText(String.valueOf(loan.getDownPayment()));
+    /**
+     * Sets the fields related to Loan, in the loan form, manually, when called.
+     * @param form - the active form.
+     * @param loan - the Loan object whose propersties will fill the fields.
+     */
+    private static void setFieldsLoanLoan(Form form, Loan loan) {
+        FormInputHandler.setText(form, "Rente", String.valueOf(loan.getInterestRate()));
+        FormInputHandler.setText(form, "Lånets størrelse", String.valueOf(loan.getLoanSize()));
+        FormInputHandler.setText(form, "Udbetaling", String.valueOf(loan.getDownPayment()));
     }
 
     private static void setFieldsLoanDownpayment(Form form, Loan loan) {

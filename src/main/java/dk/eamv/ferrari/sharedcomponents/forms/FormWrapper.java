@@ -41,7 +41,7 @@ public final class FormWrapper {
     public static Dialog<Object> getDialog() {
         return dialog;
     }
-
+    
     protected static void wrapCreate(Form form, CRUDType type) {
         initDialog(form);
         setCreateMouseListener(type, form, dialog);
