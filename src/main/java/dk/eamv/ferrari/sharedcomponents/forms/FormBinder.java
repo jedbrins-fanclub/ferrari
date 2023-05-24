@@ -41,12 +41,21 @@ public class FormBinder {
      * Applies all the bind methods to the loan form.
      */
     protected static void applyLoanFormBinds() {
-        //TODO: Check the logic here.
         bindLoanSize();
         bindFieldsCar();
         bindDatepickers();
         bindFieldsCustomer();
         bindFieldsEmployee();
+    }
+
+    /**
+     * Manually refreshes the binds. Used when updating, since the binds dont automatically refresh when the update button is clicked.
+     */
+    protected static void refreshLoanFormBinds(Loan loan) {
+        setFieldsLoanCar(FormInputHandler.getEntityFromComboBox("Bil"));
+        setFieldsLoanCustomer(FormInputHandler.getEntityFromComboBox("CPR & Kunde"));
+        setFieldsLoanEmployee(FormInputHandler.getEntityFromComboBox("Medarbejder"));
+        setFieldsLoanLoan(loan);
     }
 
     /**
@@ -76,7 +85,7 @@ public class FormBinder {
             Customer customer = FormInputHandler.getEntityFromComboBox("CPR & Kunde");
             if (customer != null) {
                 FormThreadHandler.checkRKI();
-                FormInputHandler.setFieldsCustomer(customer);
+                setFieldsLoanCustomer(customer);
             }
         });
     }

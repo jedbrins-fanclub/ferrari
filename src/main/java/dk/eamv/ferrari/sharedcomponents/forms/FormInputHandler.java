@@ -37,7 +37,7 @@ public class FormInputHandler {
      * @param form - the active form.
      */
     protected static void setForm(Form form) {
-        FormInputHandler.form = form; //TODO: if decision to make classes not static, change to this. instead
+        FormInputHandler.form = form;
     }
 
     /**
@@ -188,13 +188,8 @@ public class FormInputHandler {
      */
     protected static void setFieldsLoan(Car car, Customer customer, Employee employee, Loan loan) {
         setChoiceBox("Bil", car.toString());
-        //TODO: setFieldsLoanCar(form, car);
         setChoiceBox("CPR & Kunde", customer.toString());
-        //TODO: setFieldsLoanCustomer(form, customer);
         setChoiceBox("Medarbejder", employee.toString());
-        //TODO: setFieldsLoanEmployee(form, employee);
-        //TODO: setFieldsLoanDownpayment(form, loan);
-        //TODO: setFieldsMiscLoan(form, loan);
         setDatePicker("Start dato DD/MM/ÅÅÅÅ", String.valueOf(loan.getStartDate()));
         setDatePicker("Slut dato DD/MM/ÅÅÅÅ", String.valueOf(loan.getEndDate()));
     }

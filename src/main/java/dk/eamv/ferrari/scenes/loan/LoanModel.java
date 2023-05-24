@@ -3,7 +3,6 @@ package dk.eamv.ferrari.scenes.loan;
 import dk.eamv.ferrari.database.Database;
 
 import java.util.ArrayList;
-import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.PreparedStatement;

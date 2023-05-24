@@ -1,19 +1,14 @@
 package dk.eamv.ferrari.sharedcomponents.forms;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.HashMap;
-
 import dk.eamv.ferrari.scenes.car.CarController;
 import dk.eamv.ferrari.scenes.customer.CustomerController;
 import dk.eamv.ferrari.scenes.employee.EmployeeController;
-import dk.eamv.ferrari.scenes.loan.LoanController;
 import dk.eamv.ferrari.sharedcomponents.email.EmailService;
 import dk.eamv.ferrari.sharedcomponents.nodes.AutoCompleteComboBox;
 import dk.eamv.ferrari.sharedcomponents.nodes.NumericTextField;
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Control;
@@ -21,7 +16,6 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 /*
@@ -84,9 +78,8 @@ public class Form {
             if (widget instanceof TextField) {
                 hasFilledFields = !((TextField) widget).getText().isEmpty();
             } else if (widget instanceof ComboBox) {
-                hasFilledFields = !((AutoCompleteComboBox) widget).isEmpty();
+                hasFilledFields = !((AutoCompleteComboBox<?>) widget).isEmpty();
             } else if (widget instanceof DatePicker) {
-                DatePicker dp = ((DatePicker) widget);
                 hasFilledFields = !(((DatePicker) widget).getValue() == null);
             }
 
@@ -172,7 +165,7 @@ public class Form {
         }
 
         private <E> Builder withDropDownBox(ObservableList<E> content, String input) {
-            AutoCompleteComboBox dropDown = new AutoCompleteComboBox<>(content);
+            AutoCompleteComboBox<E> dropDown = new AutoCompleteComboBox<>(content);
             addFieldToForm(input, dropDown);
 
             return this;

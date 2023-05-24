@@ -1,6 +1,5 @@
 package dk.eamv.ferrari.sharedcomponents.forms;
 
-import dk.api.rki.Rating;
 import dk.eamv.ferrari.scenes.car.Car;
 import dk.eamv.ferrari.scenes.car.CarController;
 import dk.eamv.ferrari.scenes.car.CarModel;
@@ -34,15 +33,20 @@ public final class FormWrapper {
     private static Form form;
     private static Label errorLabel = new Label();
     private static Button buttonOK = new Button("OK");
-    private static Rating creditRating = null;
-    private static double interestRate;
 
     public static Dialog<Object> getDialog() {
         return dialog;
     }
+
+    protected static void initForm(Form form) {
+        FormWrapper.form = form;
+        FormInputHandler.setForm(form);
+        FormBinder.setForm(form);
+    }
     
     protected static void wrapCreate(Form form, CRUDType type) {
-        initDialog(form);
+        initForm(form);
+        initDialog();
         FormBinder.setCreateMouseListener(type);
         if (type == CRUDType.LOAN) {
             FormBinder.applyLoanFormBinds();
@@ -51,31 +55,52 @@ public final class FormWrapper {
     }
 
     protected static void wrapUpdate(Form form, Car car) {
-        initDialog(form);
-        FormInputHandler.setFieldsCar(form, car);
+        initForm(form);
+        initDialog();
+        FormInputHandler.setFieldsCar(car);
         buttonOK.setOnMouseClicked(e -> {
             if (form.verifyHasFilledFields()) {
-                Car newCar = getFieldsCar(form, dialog); 
-                newCar.setId(car.getId()); 
-                CarModel.update(newCar); 
-                
+                Car newCar = FormInputHandler.getFieldsCar();
+                newCar.setId(car.getId());
+                CarModel.update(newCar);
+
                 //update in TableView
                 ObservableList<Car> cars = CarController.getCars();
                 int index = cars.indexOf(car);
                 cars.remove(index);
-                cars.add(index, newCar);   
-            } 
+                cars.add(index, newCar);
+            }
+        });
+    }
+    
+    protected static void wrapUpdate(Form form, Customer customer) {
+        initForm(form);
+        initDialog();
+        FormInputHandler.setFieldsCustomer(customer);
+        buttonOK.setOnMouseClicked(e -> {
+            if (form.verifyHasFilledFields()) {
+                Customer newCustomer = FormInputHandler.getFieldsCustomer(); 
+                newCustomer.setId(customer.getId()); 
+                CustomerModel.update(newCustomer);
+
+                //update in TableView 
+                ObservableList<Customer> customers = CustomerController.getCustomers();
+                int index = customers.indexOf(customer);
+                customers.remove(index);
+                customers.add(index, newCustomer); 
+            }
         });
     }
 
     protected static void wrapUpdate(Form form, Employee employee) {
-        initDialog(form);
-        setFieldsEmployee(form, employee);
+        initForm(form);
+        initDialog();
+        FormInputHandler.setFieldsEmployee(employee);
         buttonOK.setOnMouseClicked(e -> {
             if (form.verifyHasFilledFields()) {
-                Employee newEmployee = getFieldsEmployee(form, dialog); //create new object based on updated fields.
-                newEmployee.setId(employee.getId()); //set the new objects id to the old, so that .update() targets correct ID in DB.
-                EmployeeModel.update(newEmployee); //update in DB  
+                Employee newEmployee = FormInputHandler.getFieldsEmployee(); 
+                newEmployee.setId(employee.getId());
+                EmployeeModel.update(newEmployee);
                 
                 //update in TableView
                 ObservableList<Employee> employees = EmployeeController.getEmployees();
@@ -87,16 +112,22 @@ public final class FormWrapper {
     }
 
     protected static void wrapUpdate(Form form, Loan loan) {
-        initDialog(form);
+        initForm(form);
+        initDialog();
+
         Car car = CarModel.read(loan.getCar_id());
         Customer customer = CustomerModel.read(loan.getCustomer_id());
         Employee employee = EmployeeModel.read(loan.getEmployee_id());
-        setFieldsLoan(form, car, customer, employee, loan);
+
+        FormBinder.applyLoanFormBinds();
+        FormInputHandler.setFieldsLoan(car, customer, employee, loan);
+        FormBinder.refreshLoanFormBinds(loan);
+
         buttonOK.setOnMouseClicked(e -> {
             if (form.verifyHasFilledFields()) {
-                Loan newLoan = getFieldsLoan(form); //create new object based on updated fields.
-                newLoan.setId(loan.getId()); //set the new objects id to the old, so that .update() targets correct ID in DB.
-                LoanModel.update(newLoan); //update in DB   
+                Loan newLoan = FormInputHandler.getFieldsLoan(); 
+                newLoan.setId(loan.getId()); 
+                LoanModel.update(newLoan);
 
                 //update in TableView 
                 ObservableList<Loan> loans = LoanController.getLoans();
@@ -107,32 +138,13 @@ public final class FormWrapper {
         });
     }
 
-    protected static void wrapUpdate(Form form, Customer customer) {
-        initDialog(form);
-        setFieldsCustomer(form, customer);
-        buttonOK.setOnMouseClicked(e -> {
-            if (form.verifyHasFilledFields()) {
-                Customer newCustomer = getFieldsCustomer(form); //create new object based on updated fields.
-                newCustomer.setId(customer.getId()); //set the new objects id to the old, so that .update() targets correct ID in DB.
-                CustomerModel.update(newCustomer); //update in DB   
-
-                //update in TableView 
-                ObservableList<Customer> customers = CustomerController.getCustomers();
-                int index = customers.indexOf(customer);
-                customers.remove(index);
-                customers.add(index, newCustomer); 
-            }
-        });
-    }
-
-    private static void initDialog(Form form) {
+    private static void initDialog() {
         dialog = new Dialog<>();
 
         // Close the dialog when pressing X
         // https://stackoverflow.com/a/36262208
         Window window = dialog.getDialogPane().getScene().getWindow();
         window.setOnCloseRequest(event -> window.hide());
-        interestRate = 0.0;
 
         DialogPane dialogPane = dialog.getDialogPane();
         dialogPane.getStylesheets().add("dialog.css");
@@ -140,6 +152,7 @@ public final class FormWrapper {
         errorLabel.setVisible(false);
         errorLabel.setPadding(new Insets(0, 0, 0, 100));
         errorLabel.getStyleClass().add("errorLabel");
+        Button buttonCancel = new Button("Fortryd");
         buttonCancel.setOnMouseClicked(e -> {
             dialog.setResult(true);
             dialog.close();
