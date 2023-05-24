@@ -1,11 +1,13 @@
 package dk.eamv.ferrari.sharedcomponents.forms;
 
+import dk.api.bank.InterestRate;
+import dk.api.rki.CreditRator;
 import dk.eamv.ferrari.scenes.customer.Customer;
 import javafx.application.Platform;
 import javafx.stage.Window;
 
 public class FormThreadHandler {
-    protected static void checkRKI(Form form) {
+    protected static void checkRKI() {
         new Thread(() -> {
             Customer customer = FormInputHandler.getFromComboBox(form, "CPR & Kunde");
             if (customer == null) {
@@ -20,7 +22,7 @@ public class FormThreadHandler {
             });
 
             String cpr = customer.getCpr();
-            creditRating = CreditRator.i().rate(cpr);
+            FormBinder.setCustomersCreditScore(CreditRator.i().rate(cpr));
 
             Platform.runLater(() -> {
                 calculateInterestRate(form);
@@ -36,7 +38,7 @@ public class FormThreadHandler {
         }).start();
     }
 
-    protected static void checkRate(Form form) {
+    protected static void checkRate() {
         new Thread(() -> {
             Window window = dialog.getDialogPane().getScene().getWindow();
             EventHandler<WindowEvent> prev = window.getOnCloseRequest();
@@ -48,7 +50,7 @@ public class FormThreadHandler {
                 errorLabel.setVisible(true);
             });
 
-            interestRate = InterestRate.i().todaysRate();
+            FormBinder.setBanksInterestRate(InterestRate.i().todaysRate());
             Platform.runLater(() -> {
                 errorLabel.setVisible(false);
                 window.setOnCloseRequest(prev);

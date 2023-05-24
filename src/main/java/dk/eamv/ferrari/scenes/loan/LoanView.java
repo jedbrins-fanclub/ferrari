@@ -89,7 +89,7 @@ public class LoanView {
         buttonCreate = new Button("Opret ny låneaftale");
         buttonCreate.getStyleClass().add("create-button");
 
-        buttonCreate.setOnAction(e -> LoanController.createLoan());
+        buttonCreate.setOnAction(e -> LoanController.showCreateLoan());
     }
 
     protected static void showEditLoanDialog(Loan selectedLoan) {

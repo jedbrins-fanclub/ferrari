@@ -3,9 +3,10 @@ package dk.eamv.ferrari.sharedcomponents.forms;
 import javafx.scene.control.Label;
 
 public class FormStatusHandler {
+    //TODO: Figure a smarter way to display statuses
     private static Label errorLabel = FormWrapper.getErrorLabel();
 
-    private static void showCreditRatingError() {
+    protected static void showCreditRatingError() {
         errorLabel.setText("Kunde har kreditværdighed D");
         errorLabel.setVisible(true);
     }
@@ -14,7 +15,7 @@ public class FormStatusHandler {
         return errorLabel;
     }
 
-    private static void displayErrorMessage(String message) {
+    protected static void displayErrorMessage(String message) {
         errorLabel.setText(message);
         errorLabel.setVisible(true);
     }

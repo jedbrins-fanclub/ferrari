@@ -34,8 +34,12 @@ public class LoanController {
                 .withButtonColumn(SVGResources.getExportCSVIcon(), LoanController::exportLoan);
     }
 
-    protected static void createLoan() {
+    protected static void showCreateLoan() {
         FormFactory.createLoanFormDialogBox();
+    }
+
+    public static void createLoan(Loan loan) {
+        LoanModel.create(loan);
     }
 
     protected static void updateLoan(Loan loan) {

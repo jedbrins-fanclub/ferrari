@@ -26,8 +26,12 @@ public class CarController {
                 .withButtonColumn(SVGResources.getDeleteIcon(), CarController::deleteCar);
     }
 
-    protected static void createCar() {
+    protected static void showCreateCar() {
         FormFactory.createCarFormDialogBox();
+    }
+
+    public static void createCar(Car car) {
+        CarModel.create(car);
     }
 
     protected static void updateCar(Car car) {

@@ -25,8 +25,12 @@ public class CustomerController {
                 .withButtonColumn(SVGResources.getDeleteIcon(), CustomerController::deleteCustomer);
     }
 
-    protected static void createCustomer() {
+    protected static void showCreateCustomer() {
         FormFactory.createCustomerFormDialogBox();
+    }
+
+    public static void createCustomer(Customer customer) {
+        CustomerModel.create(customer);
     }
 
     protected static void updateCustomer(Customer customer) {

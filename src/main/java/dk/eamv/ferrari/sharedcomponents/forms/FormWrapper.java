@@ -43,9 +43,10 @@ public final class FormWrapper {
     
     protected static void wrapCreate(Form form, CRUDType type) {
         initDialog(form);
-        setCreateMouseListener(type, form, dialog);
+        FormBinder.setCreateMouseListener(type);
         if (type == CRUDType.LOAN) {
-            checkRate(form);
+            FormBinder.applyLoanFormBinds();
+            FormThreadHandler.checkRate();
         }
     }
 
@@ -54,9 +55,9 @@ public final class FormWrapper {
         FormInputHandler.setFieldsCar(form, car);
         buttonOK.setOnMouseClicked(e -> {
             if (form.verifyHasFilledFields()) {
-                Car newCar = getFieldsCar(form, dialog); //create new object based on updated fields.
-                newCar.setId(car.getId()); //set the new objects id to the old, so that .update() targets correct ID in DB.
-                CarModel.update(newCar); //update in DB  
+                Car newCar = getFieldsCar(form, dialog); 
+                newCar.setId(car.getId()); 
+                CarModel.update(newCar); 
                 
                 //update in TableView
                 ObservableList<Car> cars = CarController.getCars();
