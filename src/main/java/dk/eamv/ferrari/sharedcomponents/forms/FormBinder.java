@@ -279,7 +279,7 @@ public class FormBinder {
      * Calculates the total interest rate, based on the listed conditions in the program requirements.
      * @see FormInputHandler#getDouble(String)
      */
-    private static void calculateInterestRate() {
+    protected static void calculateInterestRate() {
         double totalInterestRate = 0.0;
         double downpayment = 0;
         double carPrice = 0;

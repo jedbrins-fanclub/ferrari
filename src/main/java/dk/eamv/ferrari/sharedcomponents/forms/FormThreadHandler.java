@@ -2,49 +2,58 @@ package dk.eamv.ferrari.sharedcomponents.forms;
 
 import dk.api.bank.InterestRate;
 import dk.api.rki.CreditRator;
+import dk.api.rki.Rating;
 import dk.eamv.ferrari.scenes.customer.Customer;
 import javafx.application.Platform;
-import javafx.stage.Window;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 
 public class FormThreadHandler {
+    private static Button buttonOK = FormWrapper.getButtonOK();
+    //TODO: Better status implementation here.
+    private static Label errorLabel = FormWrapper.getErrorLabel();
+
+    //TODO: Benjamin write Javadoc
     protected static void checkRKI() {
         new Thread(() -> {
-            Customer customer = FormInputHandler.getFromComboBox(form, "CPR & Kunde");
+            Customer customer = FormInputHandler.getEntityFromComboBox("CPR & Kunde");
             if (customer == null) {
                 return;
             }
 
             Platform.runLater(() -> {
-                FormWrapper.getButtonOK().setDisable(true);
+                buttonOK.setDisable(true);
                 
+                //TODO: Better status implementation here.
                 errorLabel.setText("Finder kreditværdighed for kunde");
                 errorLabel.setVisible(true);
             });
 
             String cpr = customer.getCpr();
-            FormBinder.setCustomersCreditScore(CreditRator.i().rate(cpr));
+            Rating creditRating = CreditRator.i().rate(cpr);
+
+            FormBinder.setCustomersCreditScore(creditRating);
 
             Platform.runLater(() -> {
-                calculateInterestRate(form);
+                FormBinder.calculateInterestRate();
                 if (creditRating.equals(Rating.D)) {
-                    showCreditRatingError();
+                    //TODO: Better status implementation here.
+                    FormStatusHandler.showCreditRatingError();
                 } else {
+                    //TODO: Better status implementation here.
                     errorLabel.setVisible(false);
                 }
-
-                window.setOnCloseRequest(prev);
+                
                 buttonOK.setDisable(false);
             });
         }).start();
     }
 
+    //TODO: Benjamin write Javadoc
     protected static void checkRate() {
         new Thread(() -> {
-            Window window = dialog.getDialogPane().getScene().getWindow();
-            EventHandler<WindowEvent> prev = window.getOnCloseRequest();
             Platform.runLater(() -> {
                 buttonOK.setDisable(true);
-                window.setOnCloseRequest(event -> {});
 
                 errorLabel.setText("Finder dagens rente");
                 errorLabel.setVisible(true);
@@ -53,7 +62,6 @@ public class FormThreadHandler {
             FormBinder.setBanksInterestRate(InterestRate.i().todaysRate());
             Platform.runLater(() -> {
                 errorLabel.setVisible(false);
-                window.setOnCloseRequest(prev);
                 buttonOK.setDisable(false);
             });
         }).start();
