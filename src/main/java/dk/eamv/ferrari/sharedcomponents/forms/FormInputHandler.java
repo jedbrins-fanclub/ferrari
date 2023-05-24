@@ -76,7 +76,7 @@ public class FormInputHandler {
      * @param key - the String/Header of the TextField.
      * @return the String value of the input.
      */
-    private static String getString(Form form, String key) {
+    protected static String getString(Form form, String key) {
         return getTextField(form, key).getText();
     }
 
@@ -87,7 +87,7 @@ public class FormInputHandler {
      * @param key - the String/Header of the TextField.
      * @return the int value of the input.
      */
-    private static int getInt(Form form, String key) {
+    protected static int getInt(Form form, String key) {
         return Integer.valueOf(getString(form, key));
     }
     
@@ -98,7 +98,7 @@ public class FormInputHandler {
      * @param key - the String/Header of the TextField.
      * @return the double value of the input, with ","s converted to "."s.
      */
-    private static double getDouble(Form form, String key) {
+    protected static double getDouble(Form form, String key) {
         String rawValue = getString(form, key);
         String formattedValue = rawValue.replace(",", ".");
         return Double.valueOf(formattedValue);
@@ -111,7 +111,7 @@ public class FormInputHandler {
      * @param key - the String/Header og the DatePicker.
      * @return the Date of DatePicker.
      */
-    private static Date getSelectedDate(Form form, String key) {
+    protected static Date getSelectedDate(Form form, String key) {
         DatePicker datePicker = getDatePicker(form, key);
         LocalDate localDate = datePicker.getValue();
         Instant instant = Instant.from(localDate.atStartOfDay(ZoneId.systemDefault()));
@@ -218,13 +218,13 @@ public class FormInputHandler {
      * @see #toString()
      * @see #getAutoCompleteComboBox(Form, String)
      */
-    private static void setChoiceBox(Form form, String key, String choice) {
+    protected static void setChoiceBox(Form form, String key, String choice) {
         getAutoCompleteComboBox(form, key).getSelectionModel().select(choice);
     }
 
     //TODO: Add Javadoc here.
     //TODO: Understand this code better.
-    private static void setDatePicker(Form form, String key, String date) {
+    protected static void setDatePicker(Form form, String key, String date) {
         DatePicker datePicker = getDatePicker(form, key);
         datePicker.setConverter(new StringConverter<LocalDate>() {
             String pattern = "dd/MM/yyyy"; // Updated pattern
