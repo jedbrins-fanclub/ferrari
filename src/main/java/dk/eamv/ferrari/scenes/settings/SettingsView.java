@@ -1,7 +1,7 @@
 package dk.eamv.ferrari.scenes.settings;
-import dk.eamv.ferrari.scenemanager.SceneManager;
 import dk.eamv.ferrari.scenes.sidebar.SidebarButton;
 import dk.eamv.ferrari.scenes.sidebar.SidebarView;
+import dk.eamv.ferrari.sharedcomponents.nodes.NumericTextField;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -12,12 +12,10 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 
-import java.util.Objects;
-
 /**
  * Made by: Benjamin og Stefan
  * Checked by:
- * Modified by:
+ * Modified by: Mikkel og Stefan
  */
 public class SettingsView {
 
@@ -43,8 +41,8 @@ public class SettingsView {
         TextField emailInput = new TextField();
 
         Label tlf = new Label("Telefonnummer");
-        TextField tlfInput = new TextField();
-
+        NumericTextField tlfInput = new NumericTextField();
+        
         Label updateKode = new Label("Opdater adgangskode");
 
         Label glKode = new Label("Nuværende adgangskode");
@@ -87,7 +85,7 @@ public class SettingsView {
         vbox.setAlignment(Pos.BOTTOM_CENTER);
         vbox.setMaxWidth(Double.MAX_VALUE);
         vbox.setPadding(new Insets(25));
-        vbox.setSpacing(25);
+        vbox.setSpacing(5);
         vbox.getStyleClass().add("table-view-container");
         vbox.getStyleClass().add("settings");
 

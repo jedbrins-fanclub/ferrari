@@ -189,7 +189,7 @@
     -fx-border-color: #d3d3d3;
 }
 
-.settings TextField, .settings PasswordField {
+.settings TextField, .settings PasswordField, .settings NumericTextField {
     -fx-prompt-text-fill: #555555;
     -fx-background-color: white;
     -fx-max-width: 400;

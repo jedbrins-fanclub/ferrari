@@ -2,7 +2,7 @@ package dk.eamv.ferrari;
 
 import dk.eamv.ferrari.database.Database;
 import dk.eamv.ferrari.scenemanager.SceneManager;
-import dk.eamv.ferrari.scenes.car.CarView;
+import dk.eamv.ferrari.scenes.settings.SettingsView;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
@@ -11,7 +11,7 @@ public class Main extends Application {
     public void start(Stage stage) {
         Database.init();
         SceneManager.init(stage);
-        SceneManager.changeScene(CarView.getScene());
+        SceneManager.changeScene(SettingsView.getScene());
     }
 
     public static void main(String[] args) {
