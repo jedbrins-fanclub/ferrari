@@ -10,9 +10,9 @@ import dk.eamv.ferrari.scenes.login.LoginView;
 public class SceneManager {
     private static Stage stage;
 
-    public static void init(Stage initialStage) {
+    public static void init(Stage initialStage, Parent root) {
         stage = initialStage;
-        changeScene(LoginView.getScene());
+        changeScene(root);
         stage.setMaximized(true);
         stage.setTitle("Ferrari");
         stage.getIcons().add(new Image("file:src/main/resources/media/ferrari-emoji.png"));

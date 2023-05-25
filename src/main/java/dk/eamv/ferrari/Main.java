@@ -13,8 +13,7 @@ public class Main extends Application {
     @Override
     public void start(Stage stage) {
         Database.init();
-        SceneManager.init(stage);
-        SceneManager.changeScene(CarView.getScene());
+        SceneManager.init(stage, CarView.getScene());
     }
 
     public static void main(String[] args) {
