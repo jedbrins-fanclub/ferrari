@@ -44,6 +44,15 @@ public class SettingsView {
 
         Label tlf = new Label("Telefonnummer");
         NumericTextField tlfInput = new NumericTextField();
+
+        VBox tlfvbox = new VBox();
+        tlfvbox.setAlignment(Pos.CENTER);
+        tlfvbox.getChildren().addAll(
+        email, emailInput, 
+        tlf, tlfInput
+        );
+        tlfvbox.setSpacing(-2);
+
         
         Label updateKode = new Label("Opdater adgangskode");
 
@@ -56,15 +65,26 @@ public class SettingsView {
         Label bekræftKode = new Label("Gentag kode");
         PasswordField bekræftInput = new  PasswordField();
 
+        VBox kodevbox = new VBox();
+        kodevbox.setAlignment(Pos.CENTER);
+        kodevbox.getChildren().addAll(
+            glKode, glKodeInput, nyKode,
+            nyKodeInput, bekræftKode,
+            bekræftInput
+        );
+            kodevbox.setSpacing(-2);
+
         Button update = new Button("Opdater oplysninger");
         update.setOnAction((event) -> {
         
             if(!glKodeInput.getText().equals(SessionManager.getUser().getPassword())){
 
-                System.out.println("Koden er ikke ok");
+                rettelse.setText("Koden er IKKE ok");
+                rettelse.setVisible(true);
+                return;
             }
         
-            if(nyKodeInput.getText().equals(bekræftInput.getText())){
+                if(nyKodeInput.getText().equals(bekræftInput.getText())){
 
                 SessionManager.getUser().setPassword(bekræftInput.getText());
                 rettelse.setVisible(false);
@@ -85,16 +105,15 @@ public class SettingsView {
         VBox vbox  = new VBox();
         vbox.setAlignment(Pos.CENTER);
         vbox.getChildren().addAll(
-                indstilling, rediger, email, emailInput,
-                tlf, tlfInput, updateKode, rettelse,
-                glKode, glKodeInput, nyKode, nyKodeInput,
-                bekræftKode, bekræftInput, update
+                indstilling, rediger, tlfvbox,
+                rettelse,
+                kodevbox, update
 
         );
     
         vbox.setMaxWidth(Double.MAX_VALUE);
         vbox.setPadding(new Insets(25));
-        vbox.setSpacing(5);
+        vbox.setSpacing(15);
         vbox.getStyleClass().add("table-view-container");
         vbox.getStyleClass().add("settings");
 
