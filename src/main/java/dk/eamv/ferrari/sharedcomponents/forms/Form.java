@@ -82,24 +82,25 @@ public class Form {
             -fx-border-color: F50000;
         """;
 
-        boolean hasFilledFields = true;
+        boolean allFieldsFilled = true;
         for (Control widget : fieldMap.values()) {
+            boolean filledField = true;
             if (widget instanceof TextField) {
-                hasFilledFields = !((TextField) widget).getText().isEmpty();
+                filledField = !((TextField) widget).getText().isEmpty();
             } else if (widget instanceof ComboBox) {
-                hasFilledFields = !((AutoCompleteComboBox<?>) widget).isEmpty();
+                filledField = !((AutoCompleteComboBox<?>) widget).isEmpty();
             } else if (widget instanceof DatePicker) {
-                hasFilledFields = !(((DatePicker) widget).getValue() == null);
+                filledField = !(((DatePicker) widget).getValue() == null);
             }
 
-            if (!hasFilledFields) {
+            if (!filledField) {
                 widget.setStyle(redStyle);
-                hasFilledFields = false;
+                allFieldsFilled = false;
             } else {
                 widget.setStyle(null);
             }
         }
-        return hasFilledFields;
+        return allFieldsFilled;
     }
     
     private void setColumn(int value) {
