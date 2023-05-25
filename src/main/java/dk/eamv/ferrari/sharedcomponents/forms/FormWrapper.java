@@ -35,7 +35,7 @@ public final class FormWrapper {
     /**
      * Closes the active dialog.
      */
-    protected static void closeDialog() {
+    protected static void closeDialog(Dialog dialog) {
         dialog.setResult(true);
         dialog.close();
     }
@@ -47,6 +47,10 @@ public final class FormWrapper {
     protected static void showDialog(String title) {
         dialog.setTitle(title);
         dialog.show();
+    }
+
+    protected static Dialog getDialog() {
+        return dialog;
     }
 
     /**
@@ -94,6 +98,8 @@ public final class FormWrapper {
                 int index = cars.indexOf(car);
                 cars.remove(index);
                 cars.add(index, newCar);
+
+                closeDialog(dialog);
             }
         });
     }
@@ -118,6 +124,8 @@ public final class FormWrapper {
                 int index = customers.indexOf(customer);
                 customers.remove(index);
                 customers.add(index, newCustomer);
+
+                closeDialog(dialog);
             }
         });
     }
@@ -142,6 +150,8 @@ public final class FormWrapper {
                 int index = employees.indexOf(employee);
                 employees.remove(index);
                 employees.add(index, newEmployee);
+
+                closeDialog(dialog);
             }
         });
     }
@@ -196,7 +206,7 @@ public final class FormWrapper {
 
         Button buttonCancel = new Button("Fortryd");
         buttonCancel.setOnMouseClicked(e -> {
-            closeDialog();
+            closeDialog(dialog);
         });
 
         Label statusLabel = FormStatusHandler.getStatusLabel();

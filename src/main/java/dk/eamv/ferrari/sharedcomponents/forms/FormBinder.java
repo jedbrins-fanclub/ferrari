@@ -191,6 +191,7 @@ public class FormBinder {
                     Car car = FormInputHandler.getFieldsCar();
                     CarController.getCars().add(car);
                     CarController.createCar(car);
+                    FormWrapper.closeDialog(FormWrapper.getDialog());
                 });
                 break;
 
@@ -204,6 +205,7 @@ public class FormBinder {
                     Customer customer = FormInputHandler.getFieldsCustomer();
                     CustomerController.getCustomers().add(customer);
                     CustomerController.createCustomer(customer);
+                    FormWrapper.closeDialog(FormWrapper.getDialog());
                 });
                 break;
 
@@ -217,6 +219,7 @@ public class FormBinder {
                     Employee employee = FormInputHandler.getFieldsEmployee();
                     EmployeeController.getEmployees().add(employee);
                     EmployeeController.createEmployee(employee);
+                    FormWrapper.closeDialog(FormWrapper.getDialog());
                 });
                 break;
             
@@ -253,6 +256,7 @@ public class FormBinder {
                     Loan loan = FormInputHandler.getFieldsLoan();
                     LoanController.getLoans().add(loan);
                     LoanController.createLoan(loan);
+                    FormWrapper.closeDialog(FormWrapper.getDialog());
                 });
                 break;
 
