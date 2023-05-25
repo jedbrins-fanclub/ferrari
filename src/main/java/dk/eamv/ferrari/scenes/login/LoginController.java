@@ -2,6 +2,7 @@ package dk.eamv.ferrari.scenes.login;
 
 import dk.eamv.ferrari.scenes.employee.Employee;
 import dk.eamv.ferrari.scenes.frontpage.FrontpageView;
+import dk.eamv.ferrari.sessionmanager.SessionManager;
 import dk.eamv.ferrari.scenemanager.SceneManager;
 
 /**
@@ -13,7 +14,7 @@ public class LoginController {
     public static void authenticate() {
         Employee employee = LoginModel.authenticate(LoginView.getUsernameInput(), LoginView.getPasswordInput());
         if (employee != null) {
-            System.out.println("Changing to frontpage");
+            SessionManager.setUser(employee);
             SceneManager.changeScene(FrontpageView.getScene());
             LoginView.showErrorMessage(false);
         } else {
