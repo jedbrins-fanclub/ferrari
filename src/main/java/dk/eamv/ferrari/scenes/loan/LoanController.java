@@ -1,5 +1,7 @@
 package dk.eamv.ferrari.scenes.loan;
 
+import java.util.Optional;
+
 import dk.eamv.ferrari.csv.CSVWriter;
 import dk.eamv.ferrari.resources.SVGResources;
 import dk.eamv.ferrari.sharedcomponents.filter.FilteredTableBuilder;
@@ -7,6 +9,7 @@ import dk.eamv.ferrari.sharedcomponents.forms.FormFactory;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ChoiceBox;
 
 public class LoanController {
@@ -65,26 +68,26 @@ public class LoanController {
         // Initial value of the ChoiceBox is set to the current status of the loan
         choiceBox.setValue(loan.getStatus().getDisplayName());
 
-        // If a different status is selected in the ChoiceBox, it is observed and the Loan is updated
-        choiceBox.getSelectionModel().selectedItemProperty().addListener((obs, oldStatus, newStatus) -> {
-            if (newStatus != null) {
-                for (LoanState state : LoanState.values()) {
-                    if (new LoanStatus(state).getDisplayName().equals(newStatus)) {
-                        loan.setStatus(new LoanStatus(state));
-                        LoanController.updateLoan(loan);
-                        LoanView.refreshTableView(); // TableView is refreshed so the new status is shown
-                        break;
-                    }
-                }
-            }
-        });
-
         // Use a dialog for the ChoiceBox
         Alert dialog = new Alert(Alert.AlertType.CONFIRMATION);
         dialog.setTitle("Opdater status");
         dialog.setHeaderText("Vælg ny status for dette lån");
         dialog.getDialogPane().setContent(choiceBox);
-        dialog.showAndWait();
+        Optional<ButtonType> result = dialog.showAndWait();
+        if (!result.isPresent()) {
+            return;
+        }
+
+        if (result.get() == ButtonType.OK) {
+            for (LoanState state : LoanState.values()) {
+                if (new LoanStatus(state).getDisplayName().equals(choiceBox.getValue())) {
+                    loan.setStatus(new LoanStatus(state));
+                    LoanModel.update(loan);
+                    LoanView.refreshTableView(); // TableView is refreshed so the new status is shown
+                    break;
+                }
+            }
+        }
     }
 
     private static void exportLoan(Loan loan) {
