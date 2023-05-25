@@ -188,3 +188,32 @@
     -fx-background-color: #d3d3d3;
     -fx-border-color: #d3d3d3;
 }
+
+.settings TextField, .settings PasswordField {
+    -fx-prompt-text-fill: #555555;
+    -fx-background-color: white;
+    -fx-max-width: 400;
+    -fx-min-height: 30;
+}
+
+.settings TextField:hover, PasswordField:hover {
+    -fx-prompt-text-fill: -darker-gray;
+}
+
+.settings Button {
+    -fx-background-color: -darker-gray;
+    -fx-pref-width: 400;
+    -fx-pref-height: 40;
+    -fx-background-radius: 50;
+    -fx-text-fill: -text-color;
+    -fx-font-size: 24;
+    -fx-font-weight: bold;
+}
+
+.settings Button:hover {
+    -fx-background-color: -dark-gray;
+}
+
+.settings Label {
+    -fx-font-size: 18;
+}
