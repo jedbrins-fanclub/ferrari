@@ -14,9 +14,8 @@ public class LoginController {
     public static void authenticate() {
         Employee employee = LoginModel.authenticate(LoginView.getUsernameInput(), LoginView.getPasswordInput());
         if (employee != null) {
-            System.out.println("Changing to frontpage");
-            SceneManager.changeScene(FrontpageView.getScene());
             SessionManager.setUser(employee);
+            SceneManager.changeScene(FrontpageView.getScene());
             LoginView.showErrorMessage(false);
         } else {
             LoginView.showErrorMessage(true);
