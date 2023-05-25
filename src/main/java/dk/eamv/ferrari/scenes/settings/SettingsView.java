@@ -3,7 +3,6 @@ import dk.eamv.ferrari.scenes.employee.EmployeeModel;
 import dk.eamv.ferrari.scenes.sidebar.SidebarButton;
 import dk.eamv.ferrari.scenes.sidebar.SidebarView;
 import dk.eamv.ferrari.sessionmanager.SessionManager;
-import dk.eamv.ferrari.sharedcomponents.nodes.NumericTextField;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -40,15 +39,18 @@ public class SettingsView {
         Label rediger = new Label("Rediger oplysninger");
 
         Label email = new Label("email");
-        TextField emailInput = new TextField();
+        TextField emailInput = new TextField(SessionManager.getUser().getEmail());
 
+        
         Label tlf = new Label("Telefonnummer");
-        NumericTextField tlfInput = new NumericTextField();
+        TextField tlfInput = new TextField(SessionManager.getUser().getPhoneNumber());
+
+    
 
         VBox tlfvbox = new VBox();
         tlfvbox.setAlignment(Pos.CENTER);
         tlfvbox.getChildren().addAll(
-        email, emailInput, 
+        email, emailInput,
         tlf, tlfInput
         );
         tlfvbox.setSpacing(-2);
@@ -76,6 +78,21 @@ public class SettingsView {
 
         Button update = new Button("Opdater oplysninger");
         update.setOnAction((event) -> {
+
+            if(!emailInput.getText().equals(SessionManager.getUser().getEmail()))
+        {
+            SessionManager.getUser().setEmail(emailInput.getText());
+            EmployeeModel.update(SessionManager.getUser());
+        }
+        
+        if(!tlfInput.getText().equals(SessionManager.getUser().getPhoneNumber()))
+        {
+            SessionManager.getUser().setPhoneNumber(tlfInput.getText());
+            EmployeeModel.update(SessionManager.getUser());
+        }
+        System.out.println(SessionManager.getUser().getPhoneNumber());
+
+            
         
             if(!glKodeInput.getText().equals(SessionManager.getUser().getPassword())){
 
