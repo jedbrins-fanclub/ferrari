@@ -1,0 +1,35 @@
+name: Discord Notification
+
+on:
+  pull_request:
+    types: [opened]
+  workflow_run:
+    workflows: ["Maven Build"]
+    types:
+      - completed
+
+jobs:
+  discord_notification:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+
+      - name: Send Discord Notification on Pull Request Open
+        if: ${{ github.event_name == 'pull_request' }}
+        env:
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+        run: |
+          curl -X POST -H 'Content-type: application/json' \
+          --data '{"content":"@role-tag Pull request ${{ github.event.pull_request.number }} has been opened!"}' \
+          $DISCORD_WEBHOOK_URL
+
+      - name: Send Discord Notification on Failed Maven Build
+        if: ${{ github.event_name == 'workflow_run' && github.event.workflow_run.conclusion == 'failure' }}
+        env:
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+        run: |
+          curl -X POST -H 'Content-type: application/json' \
+          --data '{"content":"@role-tag Maven build failed in workflow ${{ github.event.workflow_run.name }}."}' \
+          $DISCORD_WEBHOOK_URL
