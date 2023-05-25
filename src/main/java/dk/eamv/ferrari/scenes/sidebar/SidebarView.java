@@ -5,6 +5,7 @@ import java.util.Map;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.geometry.Side;
 import javafx.scene.control.Label;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
@@ -48,6 +49,7 @@ public class SidebarView extends VBox {
         buttons.get(SidebarButton.CUSTOMERS).setOnAction(SidebarController::onCustomersButtonClick);
         buttons.get(SidebarButton.SELLERS).setOnAction(SidebarController::onSellersButtonClick);
         buttons.get(SidebarButton.SETTINGS).setOnAction(SidebarController::onSettingsButtonClick);
+        buttons.get(SidebarButton.LOGOUT).setOnAction(SidebarController::onLogOutButtonClick);
     }
 
     private HBox getHeader() {
@@ -107,8 +109,10 @@ public class SidebarView extends VBox {
         buttonGroupTwo.setSpacing(16);
 
         VBox buttonGroupThree = new VBox(
-                buttons.get(SidebarButton.SETTINGS));
+                buttons.get(SidebarButton.SETTINGS),
+                buttons.get(SidebarButton.LOGOUT));
         buttonGroupThree.setAlignment(Pos.CENTER_RIGHT);
+        buttonGroupThree.setSpacing(16);
 
         buttonsContainer.setSpacing(50); // buttons are grouped visually as they best relate
 
