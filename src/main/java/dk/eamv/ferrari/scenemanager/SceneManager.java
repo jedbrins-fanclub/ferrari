@@ -10,6 +10,10 @@ import dk.eamv.ferrari.scenes.login.LoginView;
 public class SceneManager {
     private static Stage stage;
 
+    public static void init(Stage initialStage) {
+        init(stage, LoginView.getScene());
+    }
+
     public static void init(Stage initialStage, Parent root) {
         stage = initialStage;
         changeScene(root);
