@@ -71,7 +71,7 @@ public class LoanController {
                 for (LoanState state : LoanState.values()) {
                     if (new LoanStatus(state).getDisplayName().equals(newStatus)) {
                         loan.setStatus(new LoanStatus(state));
-                        LoanController.updateLoan(loan);
+                        LoanModel.update(loan);
                         LoanView.refreshTableView(); // TableView is refreshed so the new status is shown
                         break;
                     }
