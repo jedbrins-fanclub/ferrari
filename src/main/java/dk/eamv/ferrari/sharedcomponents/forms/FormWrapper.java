@@ -182,9 +182,8 @@ public final class FormWrapper {
 
                 //update in TableView 
                 ObservableList<Loan> loans = LoanController.getLoans();
-                int index = loans.indexOf(loan);
-                loans.remove(index);
-                loans.add(index, newLoan);
+                loans.remove(loan);
+                loans.add(newLoan);
             }
         });
     }

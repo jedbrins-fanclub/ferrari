@@ -73,6 +73,8 @@ public class FormInputHandler {
         Customer customer = getEntityFromComboBox("CPR & Kunde");
         Employee employee = getEntityFromComboBox("Medarbejder");
         Loan loan = new Loan(car.getId(), customer.getId(), employee.getId(), getDouble("Lånets størrelse"), getDouble("Udbetaling"), getDouble("Rente"), getSelectedDate("Start dato DD/MM/ÅÅÅÅ"), getSelectedDate("Slut dato DD/MM/ÅÅÅÅ"), new LoanStatus(3));
+        System.out.println("Get selected date" + getSelectedDate("Start dato DD/MM/ÅÅÅÅ"));
+        System.out.println("Get selected date" + getSelectedDate("Slut dato DD/MM/ÅÅÅÅ"));
         return loan;
     }
     
@@ -115,8 +117,12 @@ public class FormInputHandler {
      */
     protected static Date getSelectedDate(String key) {
         DatePicker datePicker = getDatePicker(key);
+        System.out.println("DatePicker " + datePicker);
         LocalDate localDate = datePicker.getValue();
+        System.out.println("Local Date " + localDate);
         Instant instant = Instant.from(localDate.atStartOfDay(ZoneId.systemDefault()));
+        System.out.println("Instant " + instant);
+        System.out.println("Date from instant " + Date.from(instant));
         return Date.from(instant);
     }
 
@@ -218,9 +224,10 @@ public class FormInputHandler {
      * @param date - the Date converted to a String.
      */
     protected static void setDatePicker(String key, String date) {
+        System.out.println("date argument" + date);
         DatePicker datePicker = getDatePicker(key);
         datePicker.setConverter(new StringConverter<LocalDate>() {
-            DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+            DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
             
             @Override //Date -> String. Called when setting the date
             public String toString(LocalDate date) {
