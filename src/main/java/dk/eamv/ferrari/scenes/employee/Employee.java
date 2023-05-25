@@ -1,5 +1,7 @@
 package dk.eamv.ferrari.scenes.employee;
 
+import java.util.ArrayList;
+
 public class Employee {
     private int id;
     private String firstName;
@@ -9,8 +11,19 @@ public class Employee {
     private String password;
     private double maxLoan;
 
-    public Employee(int id, String firstName, String lastName, String phoneNumber, String email, String password, double maxLoan) {
+    public Employee(int id, String firstName, String lastName, String phoneNumber, String email, String password,
+            double maxLoan) {
         this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.phoneNumber = phoneNumber;
+        this.email = email;
+        this.password = password;
+        this.maxLoan = maxLoan;
+    }
+    
+    //Overloaded to account for CREATEs with no ID
+    public Employee(String firstName, String lastName, String phoneNumber, String email, String password, double maxLoan) { 
         this.firstName = firstName;
         this.lastName = lastName;
         this.phoneNumber = phoneNumber;
@@ -77,6 +90,18 @@ public class Employee {
 
     public boolean isSalesManager() {
         return maxLoan >= 0;
+    }
+
+    public ArrayList<String> getPropperties() {
+        ArrayList<String> propperties = new ArrayList<String>();
+        propperties.add(password);
+        propperties.add(email);
+        propperties.add(String.valueOf(maxLoan));
+        propperties.add(phoneNumber);
+        propperties.add(lastName);
+        propperties.add(firstName);
+
+        return propperties;
     }
 
     @Override

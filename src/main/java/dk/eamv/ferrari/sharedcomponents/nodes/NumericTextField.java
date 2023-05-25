@@ -3,11 +3,16 @@ package dk.eamv.ferrari.sharedcomponents.nodes;
 import javafx.scene.control.TextField;
 
 public class NumericTextField extends TextField {
-    private boolean allowDecimals = true;
+    private boolean allowDecimals;
+    private int maxLength;
 
-    public NumericTextField() {}
-    public NumericTextField(boolean allowDecimals) {
+    public NumericTextField() {
+        maxLength = -1;
+        allowDecimals = true;
+    }
+    public NumericTextField(boolean allowDecimals, int maxLength) {
         this.allowDecimals = allowDecimals;
+        this.maxLength = maxLength;
     }
 
     @Override
@@ -36,6 +41,11 @@ public class NumericTextField extends TextField {
             return false;
         }
 
+        // Validate that input is shorter than max
+        if (maxLength > 0 && text.length() > maxLength) {
+            return false;
+        }
+
         // If it can be parsed to a double, then it works
         try {
             if (allowDecimals) {
@@ -43,7 +53,6 @@ public class NumericTextField extends TextField {
             } else {
                 Integer.parseInt(text);
             }
-
             return true;
         } catch (NumberFormatException exception) {
             return false;

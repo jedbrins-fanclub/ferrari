@@ -2,15 +2,19 @@ package dk.eamv.ferrari.sharedcomponents.forms;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import dk.eamv.ferrari.scenes.car.CarController;
 import dk.eamv.ferrari.scenes.customer.CustomerController;
 import dk.eamv.ferrari.scenes.employee.EmployeeController;
+import dk.eamv.ferrari.scenes.loan.LoanController;
+import dk.eamv.ferrari.sharedcomponents.email.EmailService;
 import dk.eamv.ferrari.sharedcomponents.nodes.AutoCompleteComboBox;
 import dk.eamv.ferrari.sharedcomponents.nodes.NumericTextField;
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Control;
 import javafx.scene.control.DatePicker;
@@ -26,44 +30,57 @@ import javafx.scene.layout.VBox;
  * Made so that we can iterate over the list of fields to check if theres content, when "OK" button is clicked.
  */
 public class Form {
+    private Button forwardBoss;
     private GridPane gridPane;
-    private ArrayList<Control> fieldsList;
+    private HashMap<String, Control> fieldMap;
     private int column;
     private int row;
 
     private Form() {
         gridPane = createGridPane();
-        fieldsList = new ArrayList<Control>();
+        fieldMap = new HashMap<String, Control>();
+        forwardBoss = new Button("Videresend til chefen");
+        setForwardToBossListener();
         column = 0;
         row = 0;
     }
 
     private static GridPane createGridPane() {
-            GridPane gridPane = new GridPane();
-            gridPane.setVgap(25);
-            gridPane.setHgap(50);
-            gridPane.setAlignment(Pos.CENTER);
+        GridPane gridPane = new GridPane();
+        gridPane.setVgap(25);
+        gridPane.setHgap(50);
+        gridPane.setAlignment(Pos.CENTER);
 
-            return gridPane;
-        }
+        return gridPane;
+    }
 
+    protected Button getForwardBoss() {
+        return forwardBoss;
+    }
+    
     protected GridPane getGridPane() {
         return gridPane;
     }
 
-    protected ArrayList<Control> getFieldsList() {
-        return fieldsList;
+    protected HashMap<String, Control> getFieldMap() {
+        return fieldMap;
+    }
+
+    private void setForwardToBossListener() {
+        forwardBoss.setOnMouseClicked(e -> EmailService.sendEmail());
+
+        forwardBoss.setVisible(false);
     }
 
     protected boolean verifyHasFilledFields() {
         String redStyle = """
-            -fx-prompt-text-fill: F50000;
-            -fx-background-color: #f7adb1;
-            -fx-border-color: F50000;
-        """;
-        
+                    -fx-prompt-text-fill: F50000;
+                    -fx-background-color: #f7adb1;
+                    -fx-border-color: F50000;
+                """;
+
         boolean hasFilledFields = true;
-        for (Control widget : fieldsList) {
+        for (Control widget : fieldMap.values()) {
             if (widget instanceof TextField) {
                 hasFilledFields = !((TextField) widget).getText().isEmpty();
             } else if (widget instanceof ComboBox) {
@@ -71,8 +88,6 @@ public class Form {
             } else if (widget instanceof DatePicker) {
                 DatePicker dp = ((DatePicker) widget);
                 hasFilledFields = !(((DatePicker) widget).getValue() == null);
-                System.out.println(dp.getValue());
-                System.out.println(dp.getValue() == null);
             }
 
             if (!hasFilledFields) {
@@ -84,7 +99,7 @@ public class Form {
         }
         return hasFilledFields;
     }
-
+    
     private void setColumn(int value) {
         column = value;
     }
@@ -102,7 +117,7 @@ public class Form {
     }
 
     public static class Builder {
-        private Form form; 
+        private Form form;
 
         public Builder() {
             form = new Form();
@@ -120,7 +135,7 @@ public class Form {
                 row++;
             }
             form.getGridPane().add(vBox, column, row);
-            form.getFieldsList().add(control);
+            form.getFieldMap().put(labelText, control);
             column++;
 
             form.setColumn(column);
@@ -130,20 +145,19 @@ public class Form {
 
         private Builder withFieldsString(String... input) {
             for (String i : input) {
-                TextField textField = new TextField(i);
+                TextField textField = new TextField();
+                textField.setPromptText(i);
                 addFieldToForm(i, textField);
             }
 
             return this;
         }
 
-        private Builder withFieldsInt(String... input) {
-            for (String i : input) {
-                NumericTextField numberField = new NumericTextField();
-                numberField.setPromptText(i);
-                addFieldToForm(i, numberField);
-            }
-            
+        private Builder withFieldNumbers(int maxLength, boolean decimals, String input) {
+            NumericTextField numberField = new NumericTextField(decimals, maxLength);
+            numberField.setPromptText(input);
+            addFieldToForm(input, numberField);
+
             return this;
         }
 
@@ -160,7 +174,7 @@ public class Form {
         private <E> Builder withDropDownBox(ObservableList<E> content, String input) {
             AutoCompleteComboBox dropDown = new AutoCompleteComboBox<>(content);
             addFieldToForm(input, dropDown);
-        
+
             return this;
         }
 
@@ -173,7 +187,7 @@ public class Form {
 
             return this;
         }
-        
+
         private Form build() {
             return form;
         }
@@ -181,16 +195,17 @@ public class Form {
         protected Form buildCustomerForm() {
             form = new Form.Builder()
                 .withFieldsString("Fornavn", "Efternavn")
-                .withFieldsInt("Telefonnummer")
+                .withFieldNumbers(8, false, "Telefonnummer")
                 .withFieldsString("Email", "Adresse")
-                .withFieldsInt("CPR")
+                .withFieldNumbers(10, false, "CPR")
                 .build();
             return form;
         }
 
         protected Form buildCarForm() {
             form = new Form.Builder()
-                .withFieldsInt("Årgang", "Pris")
+                .withFieldNumbers(4, false, "Årgang")
+                .withFieldNumbers(-1, true, "Pris") //-1 = no maxlength constraint
                 .withFieldsString("Model")
                 .build();
             return form;
@@ -201,13 +216,24 @@ public class Form {
                 .withDropDownBox(CarController.getCars(), "Bil")
                 .withDropDownBox(CustomerController.getCustomers(), "CPR & Kunde")
                 .withDropDownBox(EmployeeController.getEmployees(), "Medarbejder")
-                .withFieldsUneditable("Model", "Fornavn", "Fornavn")
-                .withFieldsUneditable("Årgang", "Efternavn", "Efternavn")
-                .withFieldsUneditable("Pris", "CPR", "ID")
-                .withFieldsUneditable("Stelnummer", "Telefon nr.", "Telefon nr.")
-                .withFieldsUneditable("Kundens Adresse", "Email", "Email")
-                .withFieldsInt("Lånets størrelse", "Udbetaling", "Rente")
+                .withFieldsUneditable("Model", "Kundens Fornavn", "Medarbejderens Fornavn")
+                .withFieldsUneditable("Årgang", "Kundens Efternavn", "Medarbejderens Efternavn")
+                .withFieldsUneditable("Pris", "Kundens CPR", "Medarbejderens ID")
+                .withFieldsUneditable("Stelnummer", "Kundens Telefon nr.", "Medarbejderens Telefon nr.")
+                .withFieldsUneditable("Kundens Adresse", "Kundens Email", "Medarbejderens Email", "Lånets størrelse")
+                .withFieldNumbers(-1, true, "Udbetaling")
+                .withFieldsUneditable("Rente")
                 .withFieldsDatePicker(form)
+                .build();
+            return form;
+        }
+
+        protected Form buildEmployeeForm() {
+            form = new Form.Builder()
+                .withFieldsString("Fornavn", "Efternavn")
+                .withFieldNumbers(8, false, "Telefon nr.")
+                .withFieldsString("Email", "Kodeord")
+                .withFieldNumbers(-1, false, "Udlånsgrænse")   
                 .build();
             return form;
         }

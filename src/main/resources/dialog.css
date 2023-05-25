@@ -1,0 +1,25 @@
+.dialog{
+    -fx-background-color: #F7F7F7;
+}
+
+.dialog TextField, .dialog NumericTextField{
+    -fx-background-color: #F7F7F7;
+    -fx-border-color: #71717a;
+    -fx-border-width: 0.5;
+    -fx-prompt-text-fill: #404040;
+    -fx-border-radius: 5px;
+}
+
+.dialog TextField:disabled {
+    -fx-opacity: 1.0;
+    -fx-background-color: #d3d3d3;
+    -fx-border-color: #71717a;
+    -fx-border-width: 0.5;
+    -fx-border-radius: 5px;
+}   
+
+.errorLabel {
+    -fx-text-fill: red;
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+}

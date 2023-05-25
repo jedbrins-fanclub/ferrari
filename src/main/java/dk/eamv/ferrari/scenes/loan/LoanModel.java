@@ -136,4 +136,8 @@ public final class LoanModel {
     private static java.sql.Date convertDate(java.util.Date date) {
         return new java.sql.Date(date.getTime());
     }
+
+    public static java.util.Date revertDate(java.sql.Date date) {
+        return new java.util.Date(date.getTime());
+    }
 }

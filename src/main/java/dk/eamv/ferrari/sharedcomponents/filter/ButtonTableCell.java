@@ -2,6 +2,8 @@ package dk.eamv.ferrari.sharedcomponents.filter;
 
 import javafx.scene.control.Button;
 import javafx.scene.control.TableCell;
+import javafx.scene.shape.SVGPath;
+
 import java.util.function.Consumer;
 
 /**
@@ -24,6 +26,10 @@ public class ButtonTableCell<T> extends TableCell<T, Void> {
         btn = createButton(buttonName, onButtonClick);
     }
 
+    public ButtonTableCell(Consumer<T> onButtonClick, String svg) {
+        btn = createIconButton(onButtonClick, svg);
+    }
+
     /**
      * Creates a button with the given name and action.
      *
@@ -33,6 +39,21 @@ public class ButtonTableCell<T> extends TableCell<T, Void> {
      */
     private Button createButton(String name, Consumer<T> action) {
         Button button = new Button(name);
+        button.setOnAction(e -> handleButtonClick(action));
+        return button;
+    }
+
+    private Button createIconButton(Consumer<T> action, String svg) {
+        Button button = new Button();
+        button.getStyleClass().add("icon-button");
+
+        SVGPath icon = new SVGPath();
+        icon.setContent(svg);
+        icon.setScaleX(1.3);
+        icon.setScaleY(1.3);
+
+        button.setGraphic(icon);
+
         button.setOnAction(e -> handleButtonClick(action));
         return button;
     }

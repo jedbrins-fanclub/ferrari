@@ -60,14 +60,14 @@ public class Car {
     public ArrayList<String> getPropperties() {
         ArrayList<String> propperties = new ArrayList<String>();
         propperties.add(String.valueOf(year));
-        propperties.add(String.valueOf(price));
         propperties.add(model);
+        propperties.add(String.valueOf(price));
 
         return propperties;
     }
 
     @Override
     public String toString() {
-        return String.format("%-25s %-10d %,.2f", model, year, price);
+        return String.format("%-15s %-5d %,.0f", model, year, price);
     }
 }

@@ -1,14 +1,13 @@
 package dk.eamv.ferrari.scenes.loan;
 
+import dk.eamv.ferrari.csv.CSVWriter;
+import dk.eamv.ferrari.resources.SVGResources;
 import dk.eamv.ferrari.sharedcomponents.filter.FilteredTableBuilder;
 import dk.eamv.ferrari.sharedcomponents.forms.FormFactory;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ChoiceBox;
-
-import java.text.DecimalFormat;
-import java.util.ArrayList;
 
 public class LoanController {
 
@@ -18,20 +17,21 @@ public class LoanController {
     protected static void initFilterBuilder() {
         filteredTableBuilder = new FilteredTableBuilder<Loan>()
                 .withData(loans)
-                .withColumn("test", Loan::toString)
-                .withColumn("car_id", Loan::getCar_id)
-                .withColumn("customer_id", Loan::getCustomer_id)
-                .withColumn("employee_id", Loan::getEmployee_id)
-                .withColumn("Lån", Loan::getLoanSize)
-                .withColumn("Udbetaling", Loan::getDownPayment)
-                .withColumn("Rente", Loan::getInterestRate)
+                .withColumn("id", Loan::getId)
+                .withColumn("Bil", Loan::getCarLabel)
+                .withColumn("Kunde", Loan::getCustomerLabel)
+                .withColumn("Sælger", Loan::getEmployeeLabel)
+                .withColumn("Lån (DKK)", Loan::getLoanSize)
+                .withColumn("Udbetaling (DKK)", Loan::getDownPayment)
+                .withColumn("Rente (%)", Loan::getInterestRate)
                 .withColumn("Start", Loan::getStartDate)
                 .withColumn("Slut", Loan::getEndDate)
-                .withColumn("Status", loan -> loan.getStatus().getDisplayName())
-                .withButtonColumn("", "Opdater status", LoanController::updateLoanStatus)
-                .withButtonColumn("", "Rediger", LoanView::showEditLoanDialog)
-                .withButtonColumn("", "Slet", LoanController::deleteLoan)
-                .withButtonColumn("", "Eksporter til CSV", LoanController::exportLoan);
+                .withProgressColumn("", Loan::getStartDate, Loan::getEndDate)
+                .withStatusColumn("Status", Loan::getStatus)
+                .withButtonColumn(SVGResources.getChangeStatusIcon(), LoanController::updateLoanStatus)
+                .withButtonColumn(SVGResources.getEditIcon(), LoanView::showEditLoanDialog)
+                .withButtonColumn(SVGResources.getDeleteIcon(), LoanController::deleteLoan)
+                .withButtonColumn(SVGResources.getExportCSVIcon(), LoanController::exportLoan);
     }
 
     protected static void createLoan() {
@@ -39,7 +39,7 @@ public class LoanController {
     }
 
     protected static void updateLoan(Loan loan) {
-        System.out.println("Call method in LoanModel update loan with id: " + loan.getId());
+        FormFactory.updateLoanFormDialogBox(loan);
 
         LoanView.refreshTableView();
     }
@@ -83,8 +83,30 @@ public class LoanController {
         dialog.showAndWait();
     }
 
+    protected static void expandLoan(Loan loan) {
+        // If a row is clicked in the table, this method is called and the clicked loan is passed as the parameter
+
+        //TODO: Implement dialog or something similar to display details about the loan
+        System.out.println("Clicked: " + loan);
+    }
+
     private static void exportLoan(Loan loan) {
-        //TODO: Implement export to CSV here to export the selected loan which is passed as the parameter
+        new Thread(() -> {
+            // TODO: Tilbagebetalingsplan?
+            CSVWriter writer = new CSVWriter("out.csv");
+            writer.writeHeader(
+                "car id", "customer id", "employee id",
+                "loan size", "downpayment", "interest rate",
+                "start date", "end date", "status"
+            );
+
+            writer.writeRow(
+                loan.getCar_id(), loan.getCustomer_id(), loan.getEmployee_id(),
+                loan.getLoanSize(), loan.getDownPayment(), loan.getInterestRate(),
+                loan.getStartDate(), loan.getEndDate(), loan.getStatus().getDisplayName()
+            );
+            writer.close();
+        }).start();
     }
 
     public static ObservableList<Loan> getLoans() {

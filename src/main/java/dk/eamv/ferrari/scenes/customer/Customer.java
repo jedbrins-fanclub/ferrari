@@ -91,18 +91,18 @@ public class Customer {
 
     public ArrayList<String> getPropperties() {
         ArrayList<String> propperties = new ArrayList<String>();
-        propperties.add(firstName);
-        propperties.add(lastName);
-        propperties.add(phoneNumber);
-        propperties.add(email);
         propperties.add(address);
+        propperties.add(email);
         propperties.add(cpr);
+        propperties.add(phoneNumber);
+        propperties.add(lastName);
+        propperties.add(firstName);
 
         return propperties;
     }
 
     @Override
     public String toString() {
-        return String.format("%-15s %s %s", cpr, firstName, lastName);
+        return String.format("%-12s %s %s", cpr, firstName, lastName);
     }
 }
