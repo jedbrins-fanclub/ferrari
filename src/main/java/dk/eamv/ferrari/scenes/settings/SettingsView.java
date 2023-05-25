@@ -1,6 +1,8 @@
 package dk.eamv.ferrari.scenes.settings;
+import dk.eamv.ferrari.scenes.employee.EmployeeModel;
 import dk.eamv.ferrari.scenes.sidebar.SidebarButton;
 import dk.eamv.ferrari.scenes.sidebar.SidebarView;
+import dk.eamv.ferrari.sessionmanager.SessionManager;
 import dk.eamv.ferrari.sharedcomponents.nodes.NumericTextField;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -56,20 +58,27 @@ public class SettingsView {
 
         Button update = new Button("Opdater oplysninger");
         update.setOnAction((event) -> {
-            if(bekræftInput.getText().equals(nyKodeInput.getText())){
+        
+            if(!glKodeInput.getText().equals(SessionManager.getUser().getPassword())){
 
-                System.out.println("Koden er ok");
-            } else {
                 System.out.println("Koden er ikke ok");
             }
+        
+            if(nyKodeInput.getText().equals(bekræftInput.getText())){
 
-            if(glKodeInput.getText().equals(nyKodeInput.getText())){
-
+                SessionManager.getUser().setPassword(bekræftInput.getText());
+                rettelse.setVisible(false);
+                EmployeeModel.update(SessionManager.getUser());
+                rettelse.setText("Koden er nu ændret");
                 rettelse.setVisible(true);
-            } else {
-                System.out.println("koden ok");
-            }
 
+            } else {
+                rettelse.setVisible(true);
+                rettelse.setText("Forkert kode prøv igen");
+            }
+        
+
+            
         });
 
 
@@ -82,7 +91,7 @@ public class SettingsView {
                 bekræftKode, bekræftInput, update
 
         );
-        vbox.setAlignment(Pos.BOTTOM_CENTER);
+    
         vbox.setMaxWidth(Double.MAX_VALUE);
         vbox.setPadding(new Insets(25));
         vbox.setSpacing(5);
