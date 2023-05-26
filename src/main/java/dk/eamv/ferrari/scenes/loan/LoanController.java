@@ -4,6 +4,7 @@ import java.util.Optional;
 
 import dk.eamv.ferrari.csv.CSVWriter;
 import dk.eamv.ferrari.resources.SVGResources;
+import dk.eamv.ferrari.sessionmanager.SessionManager;
 import dk.eamv.ferrari.sharedcomponents.filter.FilteredTableBuilder;
 import dk.eamv.ferrari.sharedcomponents.forms.FormFactory;
 import javafx.collections.FXCollections;
@@ -19,22 +20,27 @@ public class LoanController {
 
     protected static void initFilterBuilder() {
         filteredTableBuilder = new FilteredTableBuilder<Loan>()
-                .withData(loans)
-                .withColumn("id", Loan::getId)
-                .withColumn("Bil", Loan::getCarLabel)
-                .withColumn("Kunde", Loan::getCustomerLabel)
-                .withColumn("Sælger", Loan::getEmployeeLabel)
-                .withColumn("Lån (DKK)", Loan::getLoanSize)
-                .withColumn("Udbetaling (DKK)", Loan::getDownPayment)
-                .withColumn("Rente (%)", Loan::getInterestRate)
-                .withColumn("Start", Loan::getStartDate)
-                .withColumn("Slut", Loan::getEndDate)
-                .withProgressColumn("", Loan::getStartDate, Loan::getEndDate)
-                .withStatusColumn("Status", Loan::getStatus)
-                .withButtonColumn(SVGResources.getChangeStatusIcon(), LoanController::updateLoanStatus)
+            .withData(loans)
+            .withColumn("id", Loan::getId)
+            .withColumn("Bil", Loan::getCarLabel)
+            .withColumn("Kunde", Loan::getCustomerLabel)
+            .withColumn("Sælger", Loan::getEmployeeLabel)
+            .withColumn("Lån (DKK)", Loan::getLoanSize)
+            .withColumn("Udbetaling (DKK)", Loan::getDownPayment)
+            .withColumn("Rente (%)", Loan::getInterestRate)
+            .withColumn("Start", Loan::getStartDate)
+            .withColumn("Slut", Loan::getEndDate)
+            .withProgressColumn("", Loan::getStartDate, Loan::getEndDate)
+            .withStatusColumn("Status", Loan::getStatus)
+            .withButtonColumn(SVGResources.getChangeStatusIcon(), LoanController::updateLoanStatus);
+        
+        if (SessionManager.getUser().isSalesManager()) {
+            filteredTableBuilder
                 .withButtonColumn(SVGResources.getEditIcon(), LoanView::showEditLoanDialog)
-                .withButtonColumn(SVGResources.getDeleteIcon(), LoanController::deleteLoan)
-                .withButtonColumn(SVGResources.getExportCSVIcon(), LoanController::exportLoan);
+                .withButtonColumn(SVGResources.getDeleteIcon(), LoanController::deleteLoan);
+        }
+
+        filteredTableBuilder.withButtonColumn(SVGResources.getExportCSVIcon(), LoanController::exportLoan);
     }
 
     protected static void showCreateLoan() {
