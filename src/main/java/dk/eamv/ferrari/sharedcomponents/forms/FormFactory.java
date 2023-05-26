@@ -12,7 +12,7 @@ import dk.eamv.ferrari.scenes.loan.Loan;
 /**
  * Utilizes the Factory pattern to create an interface of the available dialogs.
  * It calls the FormWrapper class, which wraps the form returned by the FormBuilder.
- * Holds CREATE & UPDATE forms.
+ * Holds CREATE and UPDATE forms.
  */
 public final class FormFactory {
     private static Form.Builder builder = new Form.Builder();

@@ -99,7 +99,7 @@ public class FormInputHandler {
     
     /**
      * Calls getString() and converts into a double.
-     * @see #getString(Form, String)
+     * @see #getString(String)
      * @param key - the String/Header of the TextField.
      * @return the double value of the input, with ","s converted to "."s.
      */

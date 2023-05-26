@@ -92,7 +92,6 @@ public final class LoanModel {
 
     /**
      * Update loan in the database based on the id.
-     * @param id the id to update
      * @param loan the new loan information
      */
     public static void update(Loan loan) {
