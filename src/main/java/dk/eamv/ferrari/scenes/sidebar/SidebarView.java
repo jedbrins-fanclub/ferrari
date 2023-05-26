@@ -3,6 +3,7 @@ package dk.eamv.ferrari.scenes.sidebar;
 import java.util.EnumMap;
 import java.util.Map;
 
+import dk.eamv.ferrari.sessionmanager.SessionManager;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.geometry.Side;
@@ -101,10 +102,11 @@ public class SidebarView extends VBox {
         buttonGroupOne.setSpacing(16);
 
         VBox buttonGroupTwo = new VBox();
-        buttonGroupTwo.getChildren().addAll(
-                buttons.get(SidebarButton.CARS),
-                buttons.get(SidebarButton.CUSTOMERS),
-                buttons.get(SidebarButton.SELLERS));
+        buttonGroupTwo.getChildren().add(buttons.get(SidebarButton.CARS));
+        buttonGroupTwo.getChildren().add(buttons.get(SidebarButton.CUSTOMERS));
+        if (SessionManager.getUser().isSalesManager()) {
+            buttonGroupTwo.getChildren().add(buttons.get(SidebarButton.SELLERS));
+        }
         buttonGroupTwo.setAlignment(Pos.CENTER_RIGHT);
         buttonGroupTwo.setSpacing(16);
 
