@@ -127,7 +127,6 @@ public final class EmployeeModel {
 
     /**
      * Update an employee in the database based on the id.
-     * @param id the employee id to update
      * @param employee the employee data to update with
      */
     public static void update(Employee employee) {

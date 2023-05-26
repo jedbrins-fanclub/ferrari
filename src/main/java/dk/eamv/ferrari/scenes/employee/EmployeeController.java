@@ -24,8 +24,12 @@ public class EmployeeController {
                 .withButtonColumn(SVGResources.getDeleteIcon(), EmployeeController::deleteEmployee);
     }
 
-    protected static void createEmployee() {
+    protected static void showCreateEmployee() {
         FormFactory.createEmployeeFormDialogBox();
+    }
+
+    public static void createEmployee(Employee employee) {
+        EmployeeModel.create(employee);
     }
 
     protected static void updateEmployee(Employee employee) {

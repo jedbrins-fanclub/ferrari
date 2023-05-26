@@ -9,7 +9,6 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableRow;
-import javafx.scene.input.MouseButton;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
@@ -71,12 +70,6 @@ public class LoanView {
         tableView.setPrefHeight(1200);
         tableView.setRowFactory(tableview -> {
             TableRow<Loan> row = new TableRow<>();
-            row.setOnMouseClicked(event -> {
-                if (!row.isEmpty()) {
-                    Loan clickedLoan = row.getItem();
-                    LoanController.expandLoan(clickedLoan);
-                }
-            });
             return row ;
         });
     }
@@ -89,7 +82,7 @@ public class LoanView {
         buttonCreate = new Button("Opret ny låneaftale");
         buttonCreate.getStyleClass().add("create-button");
 
-        buttonCreate.setOnAction(e -> LoanController.createLoan());
+        buttonCreate.setOnAction(e -> LoanController.showCreateLoan());
     }
 
     protected static void showEditLoanDialog(Loan selectedLoan) {

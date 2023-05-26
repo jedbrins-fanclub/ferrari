@@ -5,11 +5,11 @@ import java.util.Random;
 /**
  * Information Expert for credit rating.
  * This class provides a (Singleton) link to RKI,
- * which can be used to access information about individual credit scores.<p/>
- * <p>
+ * which can be used to access information about individual credit scores.
+ * 
  * For testing purposes, the following invalid (but working) CPR numbers
- * can be used to retrieve a specific credit rating:<p/>
- * <p>
+ * can be used to retrieve a specific credit rating:
+ * 
  * A: 0000000000<br/>
  * B: 0000000001<br/>
  * C: 0000000002<br/>

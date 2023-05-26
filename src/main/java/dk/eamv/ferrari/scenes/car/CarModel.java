@@ -18,8 +18,7 @@ public final class CarModel {
 
     /**
      * Read a car from the database, based on the id.
-     * @param id the id of the car to get from the database
-     * @return car containing the database row information
+     * @param car the id of the car to get from the database
      */
     public static void create(Car car) {
         try {
@@ -76,7 +75,6 @@ public final class CarModel {
 
     /**
      * Update a car in the database based on the id.
-     * @param id the car id to update
      * @param car the car information to update with
      */
     public static void update(Car car) {

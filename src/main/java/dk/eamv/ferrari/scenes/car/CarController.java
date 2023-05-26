@@ -17,17 +17,21 @@ public class CarController {
 
     protected static void initFilterBuilder() {
         filteredTableBuilder = new FilteredTableBuilder<Car>()
-                .withData(cars)
-                .withColumn("Stelnummer", Car::getId)
-                .withColumn("Model", Car::getModel)
-                .withColumn("Årgang", Car::getYear)
-                .withColumn("Pris (DKK)", Car::getPrice) //TODO: Decide how to display price (maybe store in Ks)
-                .withButtonColumn(SVGResources.getEditIcon(), CarView::showEditCarDialog)
-                .withButtonColumn(SVGResources.getDeleteIcon(), CarController::deleteCar);
+            .withData(cars)
+            .withColumn("Stelnummer", Car::getId)
+            .withColumn("Model", Car::getModel)
+            .withColumn("Årgang", Car::getYear)
+            .withColumn("Pris (DKK)", Car::getPrice) 
+            .withButtonColumn(SVGResources.getEditIcon(), CarView::showEditCarDialog)
+            .withButtonColumn(SVGResources.getDeleteIcon(), CarController::deleteCar);
     }
 
-    protected static void createCar() {
+    protected static void showCreateCar() {
         FormFactory.createCarFormDialogBox();
+    }
+
+    public static void createCar(Car car) {
+        CarModel.create(car);
     }
 
     protected static void updateCar(Car car) {

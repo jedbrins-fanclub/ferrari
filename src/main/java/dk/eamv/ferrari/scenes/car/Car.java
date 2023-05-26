@@ -1,6 +1,5 @@
 package dk.eamv.ferrari.scenes.car;
 
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 public class Car {
@@ -23,7 +22,6 @@ public class Car {
         this.year = year;
         this.price = price;
     }
-
 
     public int getId() {
         return id;
