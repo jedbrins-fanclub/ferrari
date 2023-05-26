@@ -21,11 +21,11 @@ public class CustomerController {
             .withColumn("Telefonnummer", Customer::getPhoneNumber)
             .withColumn("Email", Customer::getEmail)
             .withColumn("Adresse", Customer::getAddress)
-            .withColumn("CPR-nummer", Customer::getCpr)
-            .withButtonColumn(SVGResources.getEditIcon(), CustomerView::showEditCustomerDialog);
+            .withColumn("CPR-nummer", Customer::getCpr);
 
         if (SessionManager.getUser().isSalesManager()) {
-            filteredTableBuilder
+                filteredTableBuilder
+                .withButtonColumn(SVGResources.getEditIcon(), CustomerView::showEditCustomerDialog)
                 .withButtonColumn(SVGResources.getDeleteIcon(), CustomerController::deleteCustomer);
         }
     }
