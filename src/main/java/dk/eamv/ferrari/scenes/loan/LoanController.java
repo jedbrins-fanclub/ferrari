@@ -32,11 +32,12 @@ public class LoanController {
             .withColumn("Slut", Loan::getEndDate)
             .withProgressColumn("", Loan::getStartDate, Loan::getEndDate)
             .withStatusColumn("Status", Loan::getStatus)
-            .withButtonColumn(SVGResources.getChangeStatusIcon(), LoanController::updateLoanStatus)
-            .withButtonColumn(SVGResources.getEditIcon(), LoanView::showEditLoanDialog);
+            .withButtonColumn(SVGResources.getChangeStatusIcon(), LoanController::updateLoanStatus);
         
         if (SessionManager.getUser().isSalesManager()) {
-            filteredTableBuilder.withButtonColumn(SVGResources.getDeleteIcon(), LoanController::deleteLoan);
+            filteredTableBuilder
+                .withButtonColumn(SVGResources.getEditIcon(), LoanView::showEditLoanDialog)
+                .withButtonColumn(SVGResources.getDeleteIcon(), LoanController::deleteLoan);
         }
 
         filteredTableBuilder.withButtonColumn(SVGResources.getExportCSVIcon(), LoanController::exportLoan);
