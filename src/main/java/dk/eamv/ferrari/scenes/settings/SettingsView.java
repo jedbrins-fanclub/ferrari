@@ -3,6 +3,7 @@ import dk.eamv.ferrari.scenes.employee.EmployeeModel;
 import dk.eamv.ferrari.scenes.sidebar.SidebarButton;
 import dk.eamv.ferrari.scenes.sidebar.SidebarView;
 import dk.eamv.ferrari.sessionmanager.SessionManager;
+import dk.eamv.ferrari.sharedcomponents.nodes.NumericTextField;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -32,19 +33,22 @@ public class SettingsView {
     }
 
     private static StackPane getSettingsView() {
-        Label rettelse = new Label("Indtast en ny adgangskode!");
+        Label rettelse = new Label();
         rettelse.setVisible(false);
 
         Label indstilling = new Label("Indstillinger");
+        indstilling.getStyleClass().add("settings-title");
+
         Label rediger = new Label("Rediger oplysninger");
+        rediger.getStyleClass().add("settings-overskrift");
 
         Label email = new Label("email");
         TextField emailInput = new TextField(SessionManager.getUser().getEmail());
 
         
         Label tlf = new Label("Telefonnummer");
-        TextField tlfInput = new TextField(SessionManager.getUser().getPhoneNumber());
-
+        NumericTextField tlfInput = new NumericTextField(false, 8);
+        tlfInput.setText(SessionManager.getUser().getPhoneNumber());
     
 
         VBox tlfvbox = new VBox();
@@ -56,7 +60,7 @@ public class SettingsView {
         tlfvbox.setSpacing(-2);
 
         
-        Label updateKode = new Label("Opdater adgangskode");
+        
 
         Label glKode = new Label("Nuværende adgangskode");
         PasswordField glKodeInput = new PasswordField();
@@ -83,16 +87,20 @@ public class SettingsView {
         {
             SessionManager.getUser().setEmail(emailInput.getText());
             EmployeeModel.update(SessionManager.getUser());
+
+            rettelse.setText("Email er blevet ændret");
+            rettelse.setVisible(true);
         }
         
         if(!tlfInput.getText().equals(SessionManager.getUser().getPhoneNumber()))
         {
             SessionManager.getUser().setPhoneNumber(tlfInput.getText());
             EmployeeModel.update(SessionManager.getUser());
-        }
-        System.out.println(SessionManager.getUser().getPhoneNumber());
 
-            
+            rettelse.setText("Telefonnummeret er ændret");
+            rettelse.setVisible(true);
+
+        }
         
             if(!glKodeInput.getText().equals(SessionManager.getUser().getPassword())){
 
@@ -114,8 +122,6 @@ public class SettingsView {
                 rettelse.setText("Forkert kode prøv igen");
             }
         
-
-            
         });
 
 
@@ -142,7 +148,6 @@ public class SettingsView {
         StackPane window = new StackPane(parentContainer);
         window.setPadding(new Insets(50));
         window.setStyle("-fx-background-color: lightgrey");
-
         return window;
     }
 }

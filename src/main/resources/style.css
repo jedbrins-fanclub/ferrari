@@ -194,10 +194,12 @@
     -fx-background-color: white;
     -fx-max-width: 400;
     -fx-min-height: 30;
+    -fx-alignment: center;
 }
 
 .settings TextField:hover, PasswordField:hover {
     -fx-prompt-text-fill: -darker-gray;
+    
 }
 
 .settings Button {
@@ -214,6 +216,24 @@
     -fx-background-color: -dark-gray;
 }
 
-.settings Label {
-    -fx-font-size: 18;
-}
+    #rettelse 
+    {
+    -fx-font-size: 55;
+    -fx-font-weight: bold;
+    -fx-alignment: center;
+
+    }
+
+        .settings Label {
+        -fx-font-size: 18;
+    }
+
+    .settings-overskrift {
+        -fx-font-size:25;
+        -fx-font-weight:500;
+    }
+
+    .settings-title {
+        -fx-font-size:30;
+        -fx-font-weight:900;
+    }
