@@ -1,6 +1,7 @@
 package dk.eamv.ferrari.scenes.customer;
 
 import dk.eamv.ferrari.resources.SVGResources;
+import dk.eamv.ferrari.sessionmanager.SessionManager;
 import dk.eamv.ferrari.sharedcomponents.filter.FilteredTableBuilder;
 import dk.eamv.ferrari.sharedcomponents.forms.FormFactory;
 import javafx.collections.FXCollections;
@@ -13,16 +14,20 @@ public class CustomerController {
 
     protected static void initFilterBuilder() {
         filteredTableBuilder = new FilteredTableBuilder<Customer>()
-                .withData(customers)
-                .withColumn("Kundenr", Customer::getId)
-                .withColumn("Fornavn", Customer::getFirstName)
-                .withColumn("Efternavn", Customer::getLastName)
-                .withColumn("Telefonnummer", Customer::getPhoneNumber)
-                .withColumn("Email", Customer::getEmail)
-                .withColumn("Adresse", Customer::getAddress)
-                .withColumn("CPR-nummer", Customer::getCpr)
-                .withButtonColumn(SVGResources.getEditIcon(), CustomerView::showEditCustomerDialog)
+            .withData(customers)
+            .withColumn("Kundenr", Customer::getId)
+            .withColumn("Fornavn", Customer::getFirstName)
+            .withColumn("Efternavn", Customer::getLastName)
+            .withColumn("Telefonnummer", Customer::getPhoneNumber)
+            .withColumn("Email", Customer::getEmail)
+            .withColumn("Adresse", Customer::getAddress)
+            .withColumn("CPR-nummer", Customer::getCpr)
+            .withButtonColumn(SVGResources.getEditIcon(), CustomerView::showEditCustomerDialog);
+
+        if (SessionManager.getUser().isSalesManager()) {
+            filteredTableBuilder
                 .withButtonColumn(SVGResources.getDeleteIcon(), CustomerController::deleteCustomer);
+        }
     }
 
     protected static void showCreateCustomer() {
