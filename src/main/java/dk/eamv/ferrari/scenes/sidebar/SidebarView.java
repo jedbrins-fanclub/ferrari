@@ -6,7 +6,6 @@ import java.util.Map;
 import dk.eamv.ferrari.sessionmanager.SessionManager;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.geometry.Side;
 import javafx.scene.control.Label;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
@@ -22,19 +21,22 @@ public class SidebarView extends VBox {
     private final Map<SidebarButton, String> icons = new EnumMap<>(SidebarButton.class);
     protected final Map<SidebarButton, ToggleButton> buttons = new EnumMap<>(SidebarButton.class);
 
-    public SidebarView() {
-        setButtonMap();
-        configureButtons();
-        attachToggleButtonListeners();
+    public SidebarView() {}
 
-        setMinWidth(250);
-        setSpacing(50);
-        getStyleClass().add("sidebar");
+    public static void update() {
+        sidebarView.setButtonMap();
+        sidebarView.configureButtons();
+        sidebarView.attachToggleButtonListeners();
 
-        getChildren().addAll(getHeader(), getButtons());
+        sidebarView.setMinWidth(250);
+        sidebarView.setSpacing(50);
+        sidebarView.getStyleClass().add("sidebar");
+        sidebarView.getChildren().clear();
+        sidebarView.getChildren().addAll(sidebarView.getHeader(), sidebarView.getButtons());
     }
 
     private void setButtonMap() {
+        buttons.clear();
         for (SidebarButton button : SidebarButton.values()) {
             ToggleButton toggleButton = new ToggleButton(button.getLabel());
             buttons.put(button, toggleButton);
@@ -111,8 +113,9 @@ public class SidebarView extends VBox {
         buttonGroupTwo.setSpacing(16);
 
         VBox buttonGroupThree = new VBox(
-                buttons.get(SidebarButton.SETTINGS),
-                buttons.get(SidebarButton.LOGOUT));
+            buttons.get(SidebarButton.SETTINGS),
+            buttons.get(SidebarButton.LOGOUT)
+        );
         buttonGroupThree.setAlignment(Pos.CENTER_RIGHT);
         buttonGroupThree.setSpacing(16);
 
@@ -128,6 +131,7 @@ public class SidebarView extends VBox {
     }
 
     public static SidebarView getSidebarView() {
+        update();
         return sidebarView;
     }
 }
