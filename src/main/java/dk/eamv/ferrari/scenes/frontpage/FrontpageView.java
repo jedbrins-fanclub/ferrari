@@ -1,10 +1,14 @@
 package dk.eamv.ferrari.scenes.frontpage;
 
 import dk.eamv.ferrari.scenes.sidebar.SidebarView;
+import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 
 public class FrontpageView {
     public static BorderPane getScene() {
@@ -22,9 +26,17 @@ public class FrontpageView {
         imageView.setFitWidth(300);
         bPane.setCenter(imageView);
 
-        
         Label welcome = new Label("Velkommen til Ferrarie Herning");
-        bPane.setBottom(welcome);
+        welcome.setFont(Font.font("Arial", FontWeight.BOLD, 34));
+        VBox wvbox = new VBox();
+        wvbox.getChildren().add(welcome);
+        bPane.setTop(wvbox);
+        wvbox.setAlignment(Pos.CENTER);
+
+        
+
+
+
 
         return bPane;
         }
