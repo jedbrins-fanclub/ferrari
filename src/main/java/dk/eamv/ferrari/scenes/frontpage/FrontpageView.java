@@ -17,31 +17,24 @@ public class FrontpageView {
         scene.setCenter(getFrontPageView());
         return scene;
     }
-    
-        private static BorderPane getFrontPageView() {
+
+    private static BorderPane getFrontPageView() {
         BorderPane bPane = new BorderPane();
-        Image image = new Image("C:/Users/Brozat/Documents/1.ÅrsProject/ferrari/src/main/resources/media/ferrari-logo.png");
+        Image image = new Image(
+                "C:/Users/Brozat/Documents/1.ÅrsProject/ferrari/src/main/resources/media/ferrari-logo.png");
         ImageView imageView = new ImageView(image);
         imageView.setFitHeight(500);
         imageView.setFitWidth(300);
         bPane.setCenter(imageView);
 
-        Label welcome = new Label("Velkommen til Ferrarie Herning");
+        Label welcome = new Label("Velkommen til Ferrari Herning");
         welcome.setFont(Font.font("Arial", FontWeight.BOLD, 34));
         VBox wvbox = new VBox();
         wvbox.getChildren().add(welcome);
         bPane.setTop(wvbox);
         wvbox.setAlignment(Pos.CENTER);
 
-        
-
-
-
-
         return bPane;
-        }
-        
-        
-
-
     }
+
+}
