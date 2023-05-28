@@ -9,7 +9,8 @@ public enum SidebarButton {
     CARS("Biler"),
     CUSTOMERS("Kunder"),
     SELLERS("Sælgere"),
-    SETTINGS("Indstillinger");
+    SETTINGS("Indstillinger"),
+    LOGOUT("Log ud");
 
     private final String label;
 
@@ -30,6 +31,7 @@ public enum SidebarButton {
             case CUSTOMERS -> SVGResources.getCustomersIcon();
             case SELLERS -> SVGResources.getSellersIcon();
             case SETTINGS -> SVGResources.getSettingsIcon();
+            case LOGOUT -> SVGResources.getLogOutIcon();
         };
     }
 }

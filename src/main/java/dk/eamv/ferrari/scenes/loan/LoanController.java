@@ -1,12 +1,16 @@
 package dk.eamv.ferrari.scenes.loan;
 
+import java.util.Optional;
+
 import dk.eamv.ferrari.csv.CSVWriter;
 import dk.eamv.ferrari.resources.SVGResources;
+import dk.eamv.ferrari.sessionmanager.SessionManager;
 import dk.eamv.ferrari.sharedcomponents.filter.FilteredTableBuilder;
 import dk.eamv.ferrari.sharedcomponents.forms.FormFactory;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ChoiceBox;
 
 public class LoanController {
@@ -16,26 +20,35 @@ public class LoanController {
 
     protected static void initFilterBuilder() {
         filteredTableBuilder = new FilteredTableBuilder<Loan>()
-                .withData(loans)
-                .withColumn("id", Loan::getId)
-                .withColumn("Bil", Loan::getCarLabel)
-                .withColumn("Kunde", Loan::getCustomerLabel)
-                .withColumn("Sælger", Loan::getEmployeeLabel)
-                .withColumn("Lån (DKK)", Loan::getLoanSize)
-                .withColumn("Udbetaling (DKK)", Loan::getDownPayment)
-                .withColumn("Rente (%)", Loan::getInterestRate)
-                .withColumn("Start", Loan::getStartDate)
-                .withColumn("Slut", Loan::getEndDate)
-                .withProgressColumn("", Loan::getStartDate, Loan::getEndDate)
-                .withStatusColumn("Status", Loan::getStatus)
-                .withButtonColumn(SVGResources.getChangeStatusIcon(), LoanController::updateLoanStatus)
+            .withData(loans)
+            .withColumn("id", Loan::getId)
+            .withColumn("Bil", Loan::getCarLabel)
+            .withColumn("Kunde", Loan::getCustomerLabel)
+            .withColumn("Sælger", Loan::getEmployeeLabel)
+            .withColumn("Lån (DKK)", Loan::getLoanSize)
+            .withColumn("Udbetaling (DKK)", Loan::getDownPayment)
+            .withColumn("Rente (%)", Loan::getInterestRate)
+            .withColumn("Start", Loan::getStartDate)
+            .withColumn("Slut", Loan::getEndDate)
+            .withProgressColumn("", Loan::getStartDate, Loan::getEndDate)
+            .withStatusColumn("Status", Loan::getStatus)
+            .withButtonColumn(SVGResources.getChangeStatusIcon(), LoanController::updateLoanStatus);
+        
+        if (SessionManager.getUser().isSalesManager()) {
+            filteredTableBuilder
                 .withButtonColumn(SVGResources.getEditIcon(), LoanView::showEditLoanDialog)
-                .withButtonColumn(SVGResources.getDeleteIcon(), LoanController::deleteLoan)
-                .withButtonColumn(SVGResources.getExportCSVIcon(), LoanController::exportLoan);
+                .withButtonColumn(SVGResources.getDeleteIcon(), LoanController::deleteLoan);
+        }
+
+        filteredTableBuilder.withButtonColumn(SVGResources.getExportCSVIcon(), LoanController::exportLoan);
     }
 
-    protected static void createLoan() {
+    protected static void showCreateLoan() {
         FormFactory.createLoanFormDialogBox();
+    }
+
+    public static void createLoan(Loan loan) {
+        LoanModel.create(loan);
     }
 
     protected static void updateLoan(Loan loan) {
@@ -61,33 +74,26 @@ public class LoanController {
         // Initial value of the ChoiceBox is set to the current status of the loan
         choiceBox.setValue(loan.getStatus().getDisplayName());
 
-        // If a different status is selected in the ChoiceBox, it is observed and the Loan is updated
-        choiceBox.getSelectionModel().selectedItemProperty().addListener((obs, oldStatus, newStatus) -> {
-            if (newStatus != null) {
-                for (LoanState state : LoanState.values()) {
-                    if (new LoanStatus(state).getDisplayName().equals(newStatus)) {
-                        loan.setStatus(new LoanStatus(state));
-                        LoanController.updateLoan(loan);
-                        LoanView.refreshTableView(); // TableView is refreshed so the new status is shown
-                        break;
-                    }
-                }
-            }
-        });
-
         // Use a dialog for the ChoiceBox
         Alert dialog = new Alert(Alert.AlertType.CONFIRMATION);
         dialog.setTitle("Opdater status");
         dialog.setHeaderText("Vælg ny status for dette lån");
         dialog.getDialogPane().setContent(choiceBox);
-        dialog.showAndWait();
-    }
+        Optional<ButtonType> result = dialog.showAndWait();
+        if (!result.isPresent()) {
+            return;
+        }
 
-    protected static void expandLoan(Loan loan) {
-        // If a row is clicked in the table, this method is called and the clicked loan is passed as the parameter
-
-        //TODO: Implement dialog or something similar to display details about the loan
-        System.out.println("Clicked: " + loan);
+        if (result.get() == ButtonType.OK) {
+            for (LoanState state : LoanState.values()) {
+                if (new LoanStatus(state).getDisplayName().equals(choiceBox.getValue())) {
+                    loan.setStatus(new LoanStatus(state));
+                    LoanModel.update(loan);
+                    LoanView.refreshTableView(); // TableView is refreshed so the new status is shown
+                    break;
+                }
+            }
+        }
     }
 
     private static void exportLoan(Loan loan) {

@@ -82,7 +82,7 @@ public class CarView {
         buttonCreate = new Button("Opret ny bil");
         buttonCreate.getStyleClass().add("create-button");
         
-        buttonCreate.setOnAction(e -> CarController.createCar());
+        buttonCreate.setOnAction(e -> CarController.showCreateCar());
     }
 
     protected static void showEditCarDialog(Car selectedCar) {

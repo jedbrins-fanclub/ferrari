@@ -1,6 +1,7 @@
 package dk.eamv.ferrari.scenes.car;
 
 import dk.eamv.ferrari.resources.SVGResources;
+import dk.eamv.ferrari.sessionmanager.SessionManager;
 import dk.eamv.ferrari.sharedcomponents.filter.FilteredTableBuilder;
 import dk.eamv.ferrari.sharedcomponents.forms.FormFactory;
 import javafx.collections.FXCollections;
@@ -17,17 +18,25 @@ public class CarController {
 
     protected static void initFilterBuilder() {
         filteredTableBuilder = new FilteredTableBuilder<Car>()
-                .withData(cars)
-                .withColumn("Stelnummer", Car::getId)
-                .withColumn("Model", Car::getModel)
-                .withColumn("Årgang", Car::getYear)
-                .withColumn("Pris (DKK)", Car::getPrice) //TODO: Decide how to display price (maybe store in Ks)
+            .withData(cars)
+            .withColumn("Stelnummer", Car::getId)
+            .withColumn("Model", Car::getModel)
+            .withColumn("Årgang", Car::getYear)
+            .withColumn("Pris (DKK)", Car::getPrice);
+
+        if (SessionManager.getUser().isSalesManager()) {
+            filteredTableBuilder
                 .withButtonColumn(SVGResources.getEditIcon(), CarView::showEditCarDialog)
                 .withButtonColumn(SVGResources.getDeleteIcon(), CarController::deleteCar);
+        }
     }
 
-    protected static void createCar() {
+    protected static void showCreateCar() {
         FormFactory.createCarFormDialogBox();
+    }
+
+    public static void createCar(Car car) {
+        CarModel.create(car);
     }
 
     protected static void updateCar(Car car) {

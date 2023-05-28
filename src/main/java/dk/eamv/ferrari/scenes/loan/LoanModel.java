@@ -3,7 +3,6 @@ package dk.eamv.ferrari.scenes.loan;
 import dk.eamv.ferrari.database.Database;
 
 import java.util.ArrayList;
-import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.PreparedStatement;
@@ -93,7 +92,6 @@ public final class LoanModel {
 
     /**
      * Update loan in the database based on the id.
-     * @param id the id to update
      * @param loan the new loan information
      */
     public static void update(Loan loan) {

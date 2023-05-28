@@ -79,7 +79,7 @@ public class CustomerView {
         buttonCreate = new Button("Registrer ny kunde");
         buttonCreate.getStyleClass().add("create-button");
 
-        buttonCreate.setOnAction(e -> CustomerController.createCustomer());
+        buttonCreate.setOnAction(e -> CustomerController.showCreateCustomer());
     }
 
     protected static void showEditCustomerDialog(Customer selectedCustomer) {
