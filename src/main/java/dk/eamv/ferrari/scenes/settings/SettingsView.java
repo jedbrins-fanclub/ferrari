@@ -97,14 +97,13 @@ public class SettingsView {
             }
         
             if (newPasswordInput.getText().equals(confirmPasswordInput.getText())) {
-                SessionManager.getUser().setPassword(confirmPasswordInput.getText());
-                statusLabel.setVisible(false);
-                EmployeeModel.update(SessionManager.getUser());
                 statusLabel.setText("Koden er nu ændret");
+                SessionManager.getUser().setPassword(confirmPasswordInput.getText());
+                EmployeeModel.update(SessionManager.getUser());
                 statusLabel.setVisible(true);
             } else {
-                statusLabel.setVisible(true);
                 statusLabel.setText("Skriv den samme kode i 'ny kode' og 'gentag kode'");
+                statusLabel.setVisible(true);
             }
         });
 
