@@ -15,9 +15,9 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 
 /**
- * Made by: Benjamin og Stefan
+ * Made by: Benjamin and Stefan
  * Checked by:
- * Modified by: Mikkel og Stefan
+ * Modified by: Mikkel and Stefan
  */
 public class SettingsView {
 
@@ -33,121 +33,97 @@ public class SettingsView {
     }
 
     private static StackPane getSettingsView() {
-        Label rettelse = new Label();
-        rettelse.setVisible(false);
+        Label statusLabel = new Label();
+        statusLabel.setVisible(false);
 
-        Label indstilling = new Label("Indstillinger");
-        indstilling.getStyleClass().add("settings-title");
+        Label settingsLabel = new Label("Indstillinger");
+        settingsLabel.getStyleClass().add("settings-title");
 
-        Label rediger = new Label("Rediger oplysninger");
-        rediger.getStyleClass().add("settings-overskrift");
+        Label editLabel = new Label("Rediger oplysninger");
+        editLabel.getStyleClass().add("settings-overskrift");
 
-        Label email = new Label("email");
+        Label emailLabel = new Label("email");
         TextField emailInput = new TextField(SessionManager.getUser().getEmail());
 
         
-        Label tlf = new Label("Telefonnummer");
-        NumericTextField tlfInput = new NumericTextField(false, 8);
-        tlfInput.setText(SessionManager.getUser().getPhoneNumber());
+        Label telephoneLabel = new Label("Telefonnummer");
+        NumericTextField telephoneInput = new NumericTextField(false, 8);
+        telephoneInput.setText(SessionManager.getUser().getPhoneNumber());
     
 
-        VBox tlfvbox = new VBox();
-        tlfvbox.setAlignment(Pos.CENTER);
-        tlfvbox.getChildren().addAll(
-        email, emailInput,
-        tlf, tlfInput
+        VBox telephoneContainer = new VBox(-2);
+        telephoneContainer.setAlignment(Pos.CENTER);
+        telephoneContainer.getChildren().addAll(emailLabel, emailInput, telephoneLabel, telephoneInput);
+
+        Label currentPasswordLabel = new Label("Nuværende adgangskode");
+        PasswordField currentPasswordInput = new PasswordField();
+
+        Label newPasswordLabel = new Label("Ny adgangskode");
+        PasswordField newPasswordInput = new PasswordField();
+
+        Label confirmPasswordLabel = new Label("Gentag kode");
+        PasswordField confirmPasswordInput = new  PasswordField();
+
+        VBox passwordContainer = new VBox(-2);
+        passwordContainer.setAlignment(Pos.CENTER);
+        passwordContainer.getChildren().addAll(
+            currentPasswordLabel, currentPasswordInput,
+            newPasswordLabel, newPasswordInput,
+            confirmPasswordLabel, confirmPasswordInput
         );
-        tlfvbox.setSpacing(-2);
 
+        Button updateButton = new Button("Opdater oplysninger");
+        updateButton.setOnAction((event) -> {
+            if (!emailInput.getText().equals(SessionManager.getUser().getEmail())) {
+                SessionManager.getUser().setEmail(emailInput.getText());
+                EmployeeModel.update(SessionManager.getUser());
+
+                statusLabel.setText("Email er blevet ændret");
+                statusLabel.setVisible(true);
+            }
         
+            if (!telephoneInput.getText().equals(SessionManager.getUser().getPhoneNumber())) {
+                SessionManager.getUser().setPhoneNumber(telephoneInput.getText());
+                EmployeeModel.update(SessionManager.getUser());
+
+                statusLabel.setText("Telefonnummeret er ændret");
+                statusLabel.setVisible(true);
+            }
         
-
-        Label glKode = new Label("Nuværende adgangskode");
-        PasswordField glKodeInput = new PasswordField();
-
-        Label nyKode = new Label("Ny adgangskode");
-        PasswordField nyKodeInput = new PasswordField();
-
-        Label bekræftKode = new Label("Gentag kode");
-        PasswordField bekræftInput = new  PasswordField();
-
-        VBox kodevbox = new VBox();
-        kodevbox.setAlignment(Pos.CENTER);
-        kodevbox.getChildren().addAll(
-            glKode, glKodeInput, nyKode,
-            nyKodeInput, bekræftKode,
-            bekræftInput
-        );
-            kodevbox.setSpacing(-2);
-
-        Button update = new Button("Opdater oplysninger");
-        update.setOnAction((event) -> {
-
-            if(!emailInput.getText().equals(SessionManager.getUser().getEmail()))
-        {
-            SessionManager.getUser().setEmail(emailInput.getText());
-            EmployeeModel.update(SessionManager.getUser());
-
-            rettelse.setText("Email er blevet ændret");
-            rettelse.setVisible(true);
-        }
-        
-        if(!tlfInput.getText().equals(SessionManager.getUser().getPhoneNumber()))
-        {
-            SessionManager.getUser().setPhoneNumber(tlfInput.getText());
-            EmployeeModel.update(SessionManager.getUser());
-
-            rettelse.setText("Telefonnummeret er ændret");
-            rettelse.setVisible(true);
-
-        }
-        
-            if(!glKodeInput.getText().equals(SessionManager.getUser().getPassword())){
-
-                rettelse.setText("Koden er IKKE ok");
-                rettelse.setVisible(true);
+            if (!currentPasswordInput.getText().equals(SessionManager.getUser().getPassword())) {
+                statusLabel.setText("Koden er IKKE ok");
+                statusLabel.setVisible(true);
                 return;
             }
         
-                if(nyKodeInput.getText().equals(bekræftInput.getText())){
-
-                SessionManager.getUser().setPassword(bekræftInput.getText());
-                rettelse.setVisible(false);
+            if (newPasswordInput.getText().equals(confirmPasswordInput.getText())) {
+                SessionManager.getUser().setPassword(confirmPasswordInput.getText());
+                statusLabel.setVisible(false);
                 EmployeeModel.update(SessionManager.getUser());
-                rettelse.setText("Koden er nu ændret");
-                rettelse.setVisible(true);
-
+                statusLabel.setText("Koden er nu ændret");
+                statusLabel.setVisible(true);
             } else {
-                rettelse.setVisible(true);
-                rettelse.setText("Forkert kode prøv igen");
+                statusLabel.setVisible(true);
+                statusLabel.setText("Skriv den samme kode i 'ny kode' og 'gentag kode'");
             }
-        
         });
 
-
-        VBox vbox  = new VBox();
+        VBox vbox = new VBox();
         vbox.setAlignment(Pos.CENTER);
-        vbox.getChildren().addAll(
-                indstilling, rediger, tlfvbox,
-                rettelse,
-                kodevbox, update
-
-        );
+        vbox.getChildren().addAll(settingsLabel, editLabel, telephoneContainer, statusLabel, passwordContainer, updateButton);
     
         vbox.setMaxWidth(Double.MAX_VALUE);
         vbox.setPadding(new Insets(25));
         vbox.setSpacing(15);
-        vbox.getStyleClass().add("table-view-container");
-        vbox.getStyleClass().add("settings");
+        vbox.getStyleClass().addAll("table-view-container", "settings");
 
         // Apply drop shadow to parentContainer to avoid applying it to VBox children
         StackPane parentContainer = new StackPane(vbox);
         parentContainer.getStyleClass().add("drop-shadow-effect");
 
-
-        StackPane window = new StackPane(parentContainer);
-        window.setPadding(new Insets(50));
-        window.setStyle("-fx-background-color: lightgrey");
-        return window;
+        StackPane container = new StackPane(parentContainer);
+        container.setPadding(new Insets(50));
+        container.setStyle("-fx-background-color: lightgrey");
+        return container;
     }
 }
