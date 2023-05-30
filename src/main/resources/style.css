@@ -53,7 +53,7 @@
 }
 
 
-.login TextField, PasswordField {
+.login TextField, .login PasswordField {
     -fx-prompt-text-fill: #555555;
     -fx-background-color: transparent;
     -fx-pref-width: 400;
@@ -188,3 +188,52 @@
     -fx-background-color: #d3d3d3;
     -fx-border-color: #d3d3d3;
 }
+
+.settings TextField, .settings PasswordField, .settings NumericTextField {
+    -fx-prompt-text-fill: #555555;
+    -fx-background-color: white;
+    -fx-max-width: 400;
+    -fx-min-height: 30;
+    -fx-alignment: center;
+}
+
+.settings TextField:hover, PasswordField:hover {
+    -fx-prompt-text-fill: -darker-gray;
+    
+}
+
+.settings Button {
+    -fx-background-color: -darker-gray;
+    -fx-pref-width: 400;
+    -fx-pref-height: 40;
+    -fx-background-radius: 50;
+    -fx-text-fill: -text-color;
+    -fx-font-size: 24;
+    -fx-font-weight: bold;
+}
+
+.settings Button:hover {
+    -fx-background-color: -dark-gray;
+}
+
+    #rettelse 
+    {
+    -fx-font-size: 55;
+    -fx-font-weight: bold;
+    -fx-alignment: center;
+
+    }
+
+        .settings Label {
+        -fx-font-size: 18;
+    }
+
+    .settings-overskrift {
+        -fx-font-size:25;
+        -fx-font-weight:500;
+    }
+
+    .settings-title {
+        -fx-font-size:30;
+        -fx-font-weight:900;
+    }
