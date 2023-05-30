@@ -99,7 +99,7 @@ public class LoanController {
     private static void exportLoan(Loan loan) {
         new Thread(() -> {
             // TODO: Tilbagebetalingsplan?
-            CSVWriter writer = new CSVWriter("out.csv");
+            CSVWriter writer = new CSVWriter(String.format("%d_%s_%s.csv", loan.getCustomer_id(), loan.getStartDate(), loan.getEndDate()));
             writer.writeHeader(
                 "car id", "customer id", "employee id",
                 "loan size", "downpayment", "interest rate",
