@@ -89,7 +89,6 @@ public final class CustomerModel {
 
     /**
      * Update a customer in the database based on the id.
-     * @param id the customer id to update
      * @param customer the customer information to update with
      */
     public static void update(Customer customer) {

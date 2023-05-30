@@ -89,7 +89,7 @@ public class Employee {
     }
 
     public boolean isSalesManager() {
-        return maxLoan >= 0;
+        return maxLoan == -1;
     }
 
     public ArrayList<String> getPropperties() {

@@ -78,7 +78,7 @@ public class EmployeeView {
         buttonCreate.getStyleClass().add("create-button");
 
         buttonCreate.setOnAction(e -> {
-            EmployeeController.createEmployee();
+            EmployeeController.showCreateEmployee();
         }); 
     }
 
