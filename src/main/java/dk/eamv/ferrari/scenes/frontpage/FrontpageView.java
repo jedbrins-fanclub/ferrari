@@ -20,9 +20,7 @@ public class FrontpageView {
 
     private static BorderPane getFrontPageView() {
         BorderPane bPane = new BorderPane();
-        Image image = new Image(
-                "C:/Users/Brozat/Documents/1.ÅrsProject/ferrari/src/main/resources/media/ferrari-logo.png");
-        ImageView imageView = new ImageView(image);
+        ImageView imageView = new ImageView(new Image("file:src/main/resources/media/ferrari-logo.png"));
         imageView.setFitHeight(500);
         imageView.setFitWidth(300);
         bPane.setCenter(imageView);
