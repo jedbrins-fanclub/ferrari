@@ -1,6 +1,5 @@
 package dk.eamv.ferrari;
 
-import dk.eamv.ferrari.scenes.loan.LoanView;
 import dk.eamv.ferrari.scenes.login.LoginView;
 import dk.eamv.ferrari.database.Database;
 import dk.eamv.ferrari.scenemanager.SceneManager;
@@ -11,8 +10,7 @@ public class Main extends Application {
     @Override
     public void start(Stage stage) {
         Database.init();
-        SceneManager.init(stage);
-        SceneManager.changeScene(LoanView.getScene());
+        SceneManager.init(stage, LoginView.getScene());
     }
 
     public static void main(String[] args) {
