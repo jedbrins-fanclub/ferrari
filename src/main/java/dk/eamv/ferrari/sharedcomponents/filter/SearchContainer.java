@@ -8,11 +8,16 @@ import javafx.scene.layout.VBox;
 import javafx.scene.shape.SVGPath;
 
 /**
- * Lavet af: Mikkel
+ * Created by: Mikkel
+ * <p>
+ * A simple visual container for a TextField that adds an outline and a magnifying glass icon.
  */
-
 public class SearchContainer extends HBox {
 
+    /**
+     * Creates the container and sets its content
+     * @param textField the instance of a TextField to be contained
+     */
     public SearchContainer(TextField textField) {
         SVGPath icon = new SVGPath();
         icon.setContent(SVGResources.getSearchIcon());
