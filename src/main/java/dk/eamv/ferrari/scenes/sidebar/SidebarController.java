@@ -9,37 +9,43 @@ import dk.eamv.ferrari.scenes.loan.LoanView;
 import dk.eamv.ferrari.scenes.login.LoginView;
 import javafx.event.ActionEvent;
 
+/**
+ * Created by: Mikkel
+ * <p>
+ *     Handles buttons in the Sidebar in order to switch scene
+ * </p>
+ */
 public class SidebarController {
 
-    static void onDashboardButtonClick(ActionEvent event) {
+    protected static void onDashboardButtonClick(ActionEvent event) {
         SceneManager.changeScene(FrontpageView.getScene());
     }
 
-    static void onLoansButtonClick(ActionEvent event) {
+    protected static void onLoansButtonClick(ActionEvent event) {
         SceneManager.changeScene(LoanView.getScene());
     }
 
-    static void onReportsButtonClick(ActionEvent event) {
-        System.out.println("Clicked: reports");
+    protected static void onReportsButtonClick(ActionEvent event) {
+        // Reports scene is not implemented
     }
 
-    static void onCarsButtonClick(ActionEvent event) {
+    protected static void onCarsButtonClick(ActionEvent event) {
         SceneManager.changeScene(CarView.getScene());
     }
 
-    static void onCustomersButtonClick(ActionEvent event) {
+    protected static void onCustomersButtonClick(ActionEvent event) {
         SceneManager.changeScene(CustomerView.getScene());
     }
 
-    static void onSellersButtonClick(ActionEvent event) {
+    protected static void onSellersButtonClick(ActionEvent event) {
         SceneManager.changeScene(EmployeeView.getScene());
     }
 
-    static void onSettingsButtonClick(ActionEvent event) {
+    protected static void onSettingsButtonClick(ActionEvent event) {
         System.out.println("Clicked: settings");
     }
 
-    static void onLogOutButtonClick(ActionEvent event) {
+    protected static void onLogOutButtonClick(ActionEvent event) {
         SceneManager.changeScene(LoginView.getScene());
     }
 
