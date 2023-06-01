@@ -11,7 +11,6 @@ import java.util.function.Consumer;
  * Allows the withButtonColumn method the FilteredTableBuilder class to not also take on the responsibility of
  * creating the ButtonTableCall with an innerclass following the single responsibility principle
  * @see FilteredTableBuilder
- *
  */
 public class ButtonTableCell<T> extends TableCell<T, Void> {
     private final Button btn;
@@ -27,7 +26,7 @@ public class ButtonTableCell<T> extends TableCell<T, Void> {
     }
 
     public ButtonTableCell(Consumer<T> onButtonClick, String svg) {
-        btn = createIconButton(onButtonClick, svg);
+        btn = createIconButton(svg, onButtonClick);
     }
 
     /**
@@ -43,7 +42,14 @@ public class ButtonTableCell<T> extends TableCell<T, Void> {
         return button;
     }
 
-    private Button createIconButton(Consumer<T> action, String svg) {
+    /**
+     * Creates a button with the given SVG and action.
+     *
+     * @param svg   the SVG-string to be set as the button graphic
+     * @param action the action to perform when the button is clicked
+     * @return the created button
+     */
+    private Button createIconButton(String svg, Consumer<T> action) {
         Button button = new Button();
         button.getStyleClass().add("icon-button");
 
