@@ -9,9 +9,9 @@ import java.util.Objects;
 import java.util.function.Predicate;
 
 /**
- * Lavet af: Mikkel
+ * Created by: Mikkel
  * <p>
- * Class to add functionality to the standard JavaFX TableView class by extending it
+ * Class to add functionality to the standard JavaFX TableView class
  */
 public class FilteredTable<T> extends TableView<T> {
     // TableView takes generic type T in order to be able to use different types (Car, Customer etc)
