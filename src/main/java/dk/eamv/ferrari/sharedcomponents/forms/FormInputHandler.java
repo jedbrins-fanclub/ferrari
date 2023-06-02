@@ -276,7 +276,7 @@ public class FormInputHandler {
      * @return the matching AutoCompleteComboBox.
      */
     protected static <E> AutoCompleteComboBox<E> getAutoCompleteComboBox(String key) {
-        return (AutoCompleteComboBox) form.getFieldMap().get(key);
+        return (AutoCompleteComboBox<E>) form.getFieldMap().get(key);
     }
 
     /**
