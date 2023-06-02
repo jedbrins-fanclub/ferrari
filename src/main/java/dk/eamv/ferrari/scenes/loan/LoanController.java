@@ -13,8 +13,9 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ChoiceBox;
 
+// Made by: Mikkel
+// Modified by: Benjamin (extended CRUD for sales manager)
 public class LoanController {
-
     protected static FilteredTableBuilder<Loan> filteredTableBuilder;
     private static final ObservableList<Loan> loans = FXCollections.observableArrayList(LoanModel.readAll());
 

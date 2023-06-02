@@ -14,11 +14,9 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 
-/**
- * Made by: Benjamin and Stefan
- * Checked by:
- * Modified by: Mikkel and Stefan
- */
+// Made by: Benjamin and Stefan
+// Checked by:
+// Modified by: Mikkel and Stefan
 public class SettingsView {
 
     public static BorderPane getScene(){

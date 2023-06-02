@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 
 import dk.api.bank.developertools.InterestRateTestTool;
 
+// Made by: Benjamin
 public class InterestRateTest {
     @Test
     public void testRate() {

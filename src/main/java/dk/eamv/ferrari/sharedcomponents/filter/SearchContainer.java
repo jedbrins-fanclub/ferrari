@@ -7,9 +7,9 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.SVGPath;
 
+// Made by: Mikkel
+
 /**
- * Created by: Mikkel
- * <p>
  * A simple visual container for a TextField that adds an outline and a magnifying glass icon.
  */
 public class SearchContainer extends HBox {

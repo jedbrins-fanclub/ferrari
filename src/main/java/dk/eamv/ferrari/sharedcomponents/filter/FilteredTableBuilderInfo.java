@@ -3,8 +3,9 @@ package dk.eamv.ferrari.sharedcomponents.filter;
 import java.util.List;
 import java.util.function.Function;
 
+// Created by: Mikkel
+
 /**
- * Created by: Mikkel
  * <p>
  * When it is necessary to pass information about the FilteredTable instance and its contents to create UI elements
  * that relate to it, this interface is used to limit access to only these methods.

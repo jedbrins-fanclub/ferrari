@@ -7,6 +7,7 @@ import dk.eamv.ferrari.scenes.customer.Customer;
 import javafx.application.Platform;
 import javafx.scene.control.Button;
 
+// Made by: Benjamin and Christian
 public class FormThreadHandler {
     private static Button buttonOK = FormWrapper.getButtonOK();
 
@@ -26,9 +27,9 @@ public class FormThreadHandler {
             Rating creditRating = CreditRator.i().rate(cpr);
 
             FormBinder.setCustomersCreditScore(creditRating);
+            FormBinder.calculateInterestRate();
 
             Platform.runLater(() -> {
-                FormBinder.calculateInterestRate();
                 if (creditRating.equals(Rating.D)) {
                     FormStatusHandler.displayErrorMessage("Kunden har kreditværdighed D");
                 } else {

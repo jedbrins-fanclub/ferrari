@@ -7,8 +7,9 @@ import dk.eamv.ferrari.sharedcomponents.forms.FormFactory;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
+// Made by: Mikkel
+// Modified by: Benjamin (extended CRUD for sales manager)
 public class CustomerController {
-
     protected static FilteredTableBuilder<Customer> filteredTableBuilder;
     private static final ObservableList<Customer> customers = FXCollections.observableArrayList(CustomerModel.readAll());
 

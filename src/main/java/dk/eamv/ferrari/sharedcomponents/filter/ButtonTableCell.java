@@ -6,9 +6,9 @@ import javafx.scene.shape.SVGPath;
 
 import java.util.function.Consumer;
 
+// Made by: Mikkel
+
 /**
- * Created by: Mikkel
- * <p>
  * A custom table cell that contains a button.
  * Allows the withButtonColumn method the FilteredTableBuilder class to not also take on the responsibility of
  * creating the ButtonTableCall with an innerclass following the single responsibility principle

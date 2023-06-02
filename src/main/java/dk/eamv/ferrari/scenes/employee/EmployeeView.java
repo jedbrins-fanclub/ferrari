@@ -14,7 +14,6 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 
 public class EmployeeView {
-
     private static FilteredTable<Employee> tableView;
     private static SearchContainer searchContainer;
     private static Button buttonCreate;

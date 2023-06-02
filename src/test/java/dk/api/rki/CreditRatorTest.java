@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.Test;
 
+// Made by: Benjamin
 public class CreditRatorTest {
     @Test
     public void testCreditRating() {

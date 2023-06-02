@@ -13,9 +13,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 
-/**
- * Lavet af: Mikkel
- */
+// Made by: Mikkel
 public class CarView {
 
     private static FilteredTable<Car> tableView;

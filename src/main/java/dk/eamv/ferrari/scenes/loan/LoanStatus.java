@@ -1,14 +1,13 @@
 package dk.eamv.ferrari.scenes.loan;
 
 /**
- * Made by: Benjamin, Mikkel
- * Checked by:
- * Modified by:
+ * Made by: Benjamin and Mikkel
  */
 public class LoanStatus {
     private final LoanState state;
 
     /**
+     * Creates a new LoanStatus
      * @param state the state of the LoanStatus to create
      */
     public LoanStatus(LoanState state) {
@@ -16,7 +15,7 @@ public class LoanStatus {
     }
 
     /**
-     * Creates a loan status based on an integer value.
+     * Creates a LoanStatus based on an integer value.
      * @param value the LoanState as an integer value
      */
     public LoanStatus(int value) {
@@ -55,6 +54,9 @@ public class LoanStatus {
         };
     }
 
+    /**
+     * @return the current LoanState
+     */
     public LoanState getState() {
         return state;
     }

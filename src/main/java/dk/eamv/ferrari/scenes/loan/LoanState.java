@@ -1,10 +1,9 @@
 package dk.eamv.ferrari.scenes.loan;
 
+// Made by: Benjamin and Mikkel (Rewritten)
+
 /**
  * Enum indicating the current state of a Loan.
- * Made by: Benjamin
- * Checked by:
- * Modified by:
  */
 public enum LoanState {
     PENDING,

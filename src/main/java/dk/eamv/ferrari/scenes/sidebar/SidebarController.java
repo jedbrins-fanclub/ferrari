@@ -10,14 +10,12 @@ import dk.eamv.ferrari.scenes.settings.SettingsView;
 import dk.eamv.ferrari.scenes.login.LoginView;
 import javafx.event.ActionEvent;
 
+// Made by: Mikkel
+
 /**
- * Created by: Mikkel
- * <p>
- *     Handles buttons in the Sidebar in order to switch scene
- * </p>
+ *  Handles buttons in the Sidebar in order to switch scene
  */
 public class SidebarController {
-
     protected static void onDashboardButtonClick(ActionEvent event) {
         SceneManager.changeScene(FrontpageView.getScene());
     }

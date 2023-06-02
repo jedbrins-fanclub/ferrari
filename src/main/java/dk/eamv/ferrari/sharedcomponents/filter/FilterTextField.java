@@ -5,8 +5,8 @@ import javafx.scene.control.TextField;
 import java.util.List;
 import java.util.function.Function;
 
+// Made by: Mikkel
 /**
- * Created by: Mikkel
  * Instances of this class has the capacity to set the filter of a {@code FilteredTable}.
  */
 public class FilterTextField<T> extends TextField {

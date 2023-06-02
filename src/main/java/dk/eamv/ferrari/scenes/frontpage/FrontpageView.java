@@ -11,6 +11,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 
+// Made by: Benjamin and Stefan
 public class FrontpageView {
     public static BorderPane getScene() {
         BorderPane scene = new BorderPane();
@@ -36,5 +37,4 @@ public class FrontpageView {
 
         return bPane;
     }
-
 }

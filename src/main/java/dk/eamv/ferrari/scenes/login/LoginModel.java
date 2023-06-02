@@ -8,11 +8,8 @@ import dk.eamv.ferrari.database.Database;
 import dk.eamv.ferrari.scenes.employee.Employee;
 import dk.eamv.ferrari.scenes.employee.EmployeeModel;
 
-/**
- * Lavet af:
- * Tjekket af:
- * Modificeret af:
- */
+// Made by: Christian
+// Checked by: Benjamin
 public class LoginModel {
     public static Employee authenticate(String email, String password) {
         try {

@@ -18,7 +18,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 
-//Lavet af: Christian
+// Made by: Christian
+// Modified by: Benjamin (simplifications, fieldMap, misc...)
 
 /**
  * A Form is a wrapperclass for a GridPane. It allows the user to enter input into various Control objects.

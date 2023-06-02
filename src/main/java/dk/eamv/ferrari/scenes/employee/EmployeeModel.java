@@ -7,11 +7,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-/**
- * Made by: Benjamin
- * Checked by:
- * Modified by:
- */
+// Made by: Benjamin
 public final class EmployeeModel {
     // Private constructor to disallow instantiation
     private EmployeeModel() {}

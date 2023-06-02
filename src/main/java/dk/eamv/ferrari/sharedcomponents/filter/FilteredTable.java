@@ -8,9 +8,9 @@ import javafx.scene.control.TableView;
 import java.util.Objects;
 import java.util.function.Predicate;
 
+// Made by: Mikkel
+
 /**
- * Created by: Mikkel
- * <p>
  * Class to add functionality to the standard JavaFX TableView class
  */
 public class FilteredTable<T> extends TableView<T> {
