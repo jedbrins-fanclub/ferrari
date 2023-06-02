@@ -16,7 +16,6 @@ import javafx.event.ActionEvent;
  *  Handles buttons in the Sidebar in order to switch scene
  */
 public class SidebarController {
-
     protected static void onDashboardButtonClick(ActionEvent event) {
         SceneManager.changeScene(FrontpageView.getScene());
     }

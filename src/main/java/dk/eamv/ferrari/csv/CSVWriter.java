@@ -5,7 +5,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 // Made by: Benjamin
-
 public class CSVWriter {
     private FileWriter file;
     private BufferedWriter writer;
