@@ -9,29 +9,37 @@ import java.util.Objects;
 import java.util.function.Predicate;
 
 /**
- * Lavet af: Mikkel
+ * Created by: Mikkel
+ * <p>
+ * Class to add functionality to the standard JavaFX TableView class
  */
 public class FilteredTable<T> extends TableView<T> {
     // TableView takes generic type T in order to be able to use different types (Car, Customer etc)
 
     private final FilteredList<T> filteredData;
-    private final SortedList<T> sortedData;
 
-    // When class is instantiated, it takes the original data that is to be filtered (list of Car objects etc)
+    /**
+     * Adds the filtering functionality to the TableViews
+     * @param data the original data that is to be filtered (list of Car objects etc)
+     */
     public FilteredTable(ObservableList<T> data) {
         // Data will initially be shown like this (everything)
         filteredData = new FilteredList<>(data, predicate -> true);
-        sortedData = new SortedList<>(filteredData);
+        SortedList<T> sortedData = new SortedList<>(filteredData);
 
         // Binds data from list to the TableView - If user sorts in the tableview, list order is updated
         sortedData.comparatorProperty().bind(comparatorProperty());
         setItems(sortedData);
 
-        // Has some problems regarding the colors
+        // Sets stylesheet for tables
         getStylesheets().add(Objects.requireNonNull(getClass().getResource("/tableview.css")).toExternalForm());
     }
 
-    // This is explained in detail in the FieldTextField class
+    /**
+     * Method to decide whether to update the content of the TableView according to the TextFields content
+     * @param predicate method that returns true or false
+     * @see FilterTextField
+     */
     public void setFilter(Predicate<T> predicate) {
         filteredData.setPredicate(predicate);
     }

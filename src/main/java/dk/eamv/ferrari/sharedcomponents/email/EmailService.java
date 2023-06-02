@@ -5,8 +5,14 @@ import org.simplejavamail.api.mailer.config.TransportStrategy;
 import org.simplejavamail.email.EmailBuilder;
 import org.simplejavamail.mailer.MailerBuilder;
 
+/**
+ * Class to handle use of the SimpleJavaMail library.
+ */
 public class EmailService {
 
+    /**
+     * Standard method for sending an email from seller to sales manager.
+     */
     public static void sendEmail() {
         Email email = EmailBuilder.startingBlank()
                 .from("Sælgeren", "ferrari.herning.seller@gmail.com")
@@ -23,7 +29,7 @@ public class EmailService {
                         """)
                 .buildEmail();
 
-
+        // Sends the email on a new thread to keep the system responsive.
         new Thread(() -> MailerBuilder
                 .withSMTPServer("Smtp.gmail.com", 587, "ferrari.herning.seller@gmail.com", "jeetyoldfpfisysb")
                 .withTransportStrategy(TransportStrategy.SMTP_TLS)

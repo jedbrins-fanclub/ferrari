@@ -15,6 +15,12 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.SVGPath;
 
+/**
+ * Created by: Mikkel
+ * <p>
+ * This class represents the SidebarView of the application.
+ * It serves as a container for the sidebar elements.
+ */
 public class SidebarView extends VBox {
     private static final SidebarView sidebarView = new SidebarView();
     private final ToggleGroup toggleGroup = new ToggleGroup();
@@ -23,6 +29,10 @@ public class SidebarView extends VBox {
 
     public SidebarView() {}
 
+    /**
+     * Updates the SidebarView.
+     * Configures buttons, attaches listeners and updates layout.
+     */
     public static void update() {
         sidebarView.setButtonMap();
         sidebarView.configureButtons();
@@ -35,6 +45,10 @@ public class SidebarView extends VBox {
         sidebarView.getChildren().addAll(sidebarView.getHeader(), sidebarView.getButtons());
     }
 
+    /**
+     * Sets the button map.
+     * Populates the buttons and icons maps with the SidebarButtons and their corresponding labels and icons.
+     */
     private void setButtonMap() {
         buttons.clear();
         for (SidebarButton button : SidebarButton.values()) {
@@ -44,6 +58,9 @@ public class SidebarView extends VBox {
         }
     }
 
+    /**
+     * Attaches the appropriate listeners to the ToggleButtons in the SidebarView.
+     */
     protected void attachToggleButtonListeners() {
         buttons.get(SidebarButton.DASHBOARD).setOnAction(SidebarController::onDashboardButtonClick);
         buttons.get(SidebarButton.LOANS).setOnAction(SidebarController::onLoansButtonClick);
@@ -55,6 +72,11 @@ public class SidebarView extends VBox {
         buttons.get(SidebarButton.LOGOUT).setOnAction(SidebarController::onLogOutButtonClick);
     }
 
+    /**
+     * Creates and returns the header for the SidebarView.
+     * The header includes a logo and a title.
+     * @return HBox - the header of the SidebarView
+     */
     private HBox getHeader() {
         HBox header = new HBox();
 
@@ -72,6 +94,10 @@ public class SidebarView extends VBox {
         return header;
     }
 
+    /**
+     * Configures the ToggleButtons in the SidebarView.
+     * Sets their icon, alignment, style class, and toggle group.
+     */
     private void configureButtons() {
 
         for (Map.Entry<SidebarButton, String> entry : icons.entrySet()) {
@@ -92,6 +118,11 @@ public class SidebarView extends VBox {
         }
     }
 
+    /**
+     * Creates and returns a VBox containing the buttons for the SidebarView.
+     * Organizes the buttons into groups and configures their layout.
+     * @return VBox - a container with the SidebarView's buttons
+     */
     private VBox getButtons() {
         VBox buttonsContainer = new VBox();
 
@@ -126,6 +157,11 @@ public class SidebarView extends VBox {
         return buttonsContainer;
     }
 
+
+    /**
+     * Sets the active toggle button in the SidebarView.
+     * @param button - the SidebarButton to be set active
+     */
     public void setActiveToggleButton(SidebarButton button) {
         toggleGroup.selectToggle(buttons.get(button));
     }
