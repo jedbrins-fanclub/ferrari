@@ -5,6 +5,7 @@ import dk.eamv.ferrari.database.Database;
 import java.util.ArrayList;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.sql.PreparedStatement;
 
 // Made by: Benjamin
@@ -19,10 +20,8 @@ public final class LoanModel {
     public static void create(Loan loan) {
         try {
             PreparedStatement statement = Database.getConnection().prepareStatement(
-                String.format("""
-                    INSERT INTO dbo.Loan
-                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);
-                """)
+                "INSERT INTO dbo.Loan VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);",
+                Statement.RETURN_GENERATED_KEYS
             );
 
             statement.setInt(1, loan.getCar_id());
@@ -35,7 +34,14 @@ public final class LoanModel {
             statement.setDate(8, convertDate(loan.getEndDate()));
             statement.setInt(9, loan.getStatus().getStatusNumber());
 
-            statement.executeUpdate();
+            int row = statement.executeUpdate();
+            assert row != 0: "Unable to insert Loan into database";
+
+            // Set the Loan ID to the newly inserted row
+            ResultSet generatedKeys = statement.getGeneratedKeys();
+            if (generatedKeys.next()) {
+                loan.setId(generatedKeys.getInt(1));
+            }
         } catch (SQLException exception) {
             exception.printStackTrace();
         }

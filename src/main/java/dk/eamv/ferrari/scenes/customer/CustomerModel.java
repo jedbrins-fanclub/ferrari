@@ -5,6 +5,7 @@ import dk.eamv.ferrari.database.Database;
 import java.util.ArrayList;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.sql.PreparedStatement;
 
 // Made by: Benjamin
@@ -19,10 +20,8 @@ public final class CustomerModel {
     public static void create(Customer customer) {
         try {
             PreparedStatement statement = Database.getConnection().prepareStatement(
-                String.format("""
-                    INSERT INTO dbo.Customer
-                    VALUES (?, ?, ?, ?, ?, ?);
-                """)
+                "INSERT INTO dbo.Customer VALUES (?, ?, ?, ?, ?, ?);",
+                Statement.RETURN_GENERATED_KEYS
             );
 
             statement.setString(1, customer.getFirstName());
@@ -32,7 +31,14 @@ public final class CustomerModel {
             statement.setString(5, customer.getAddress());
             statement.setString(6, customer.getCpr());
 
-            statement.executeUpdate();
+            int row = statement.executeUpdate();
+            assert row != 0: "Unable to insert Customer into database";
+
+            // Set the Customer ID to the newly inserted row
+            ResultSet generatedKeys = statement.getGeneratedKeys();
+            if (generatedKeys.next()) {
+                customer.setId(generatedKeys.getInt(1));
+            }
         } catch (SQLException exception) {
             exception.printStackTrace();
         }

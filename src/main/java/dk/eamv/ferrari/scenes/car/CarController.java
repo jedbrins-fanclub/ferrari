@@ -39,7 +39,6 @@ public class CarController {
 
     protected static void updateCar(Car car) {
         FormFactory.updateCarFormDialogBox(car);
-
         CarView.refreshTableView();
     }
 

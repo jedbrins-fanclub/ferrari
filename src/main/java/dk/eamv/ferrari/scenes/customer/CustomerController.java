@@ -41,7 +41,6 @@ public class CustomerController {
 
     protected static void updateCustomer(Customer customer) {
         FormFactory.updateCustomerFormDialogBox(customer);
-
         CustomerView.refreshTableView();
     }
 

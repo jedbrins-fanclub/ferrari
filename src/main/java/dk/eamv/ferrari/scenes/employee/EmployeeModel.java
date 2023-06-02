@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 // Made by: Benjamin
 public final class EmployeeModel {
@@ -19,10 +20,8 @@ public final class EmployeeModel {
     public static void create(Employee employee) {
         try {
             PreparedStatement statement = Database.getConnection().prepareStatement(
-                String.format("""
-                    INSERT INTO dbo.Employee
-                    VALUES (?, ?, ?, ?, ?, ?);
-                """)
+                "INSERT INTO dbo.Employee VALUES (?, ?, ?, ?, ?, ?);",
+                Statement.RETURN_GENERATED_KEYS
             );
 
             statement.setString(1, employee.getFirstName());
@@ -32,7 +31,14 @@ public final class EmployeeModel {
             statement.setString(5, employee.getPassword());
             statement.setDouble(6, employee.getMaxLoan());
 
-            statement.executeUpdate();
+            int row = statement.executeUpdate();
+            assert row != 0: "Unable to insert Employee into database";
+
+            // Set the Employee ID to the newly inserted row
+            ResultSet generatedKeys = statement.getGeneratedKeys();
+            if (generatedKeys.next()) {
+                employee.setId(generatedKeys.getInt(1));
+            }
         } catch (SQLException exception) {
             exception.printStackTrace();
         }

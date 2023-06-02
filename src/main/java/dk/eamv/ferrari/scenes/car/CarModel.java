@@ -5,6 +5,7 @@ import dk.eamv.ferrari.database.Database;
 import java.util.ArrayList;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.sql.PreparedStatement;
 
 
@@ -20,16 +21,22 @@ public final class CarModel {
     public static void create(Car car) {
         try {
             PreparedStatement statement = Database.getConnection().prepareStatement(
-                    String.format("""
-                                INSERT INTO dbo.Car
-                                VALUES (?, ?, ?);
-                            """));
+                "INSERT INTO dbo.Car VALUES (?, ?, ?);",
+                Statement.RETURN_GENERATED_KEYS
+            );
 
             statement.setString(1, car.getModel());
             statement.setInt(2, car.getYear());
             statement.setDouble(3, car.getPrice());
 
-            statement.executeUpdate();
+            int row = statement.executeUpdate();
+            assert row != 0: "Unable to insert Car into database";
+
+            // Set the Car ID to the newly inserted row
+            ResultSet generatedKeys = statement.getGeneratedKeys();
+            if (generatedKeys.next()) {
+                car.setId(generatedKeys.getInt(1));
+            }
         } catch (SQLException exception) {
             exception.printStackTrace();
         }
