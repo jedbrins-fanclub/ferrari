@@ -10,6 +10,7 @@ public class NumericTextField extends TextField {
         maxLength = -1;
         allowDecimals = true;
     }
+
     public NumericTextField(boolean allowDecimals, int maxLength) {
         this.allowDecimals = allowDecimals;
         this.maxLength = maxLength;

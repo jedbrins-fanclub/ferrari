@@ -35,7 +35,7 @@ public final class FormWrapper {
     /**
      * Closes the active dialog.
      */
-    protected static void closeDialog(Dialog dialog) {
+    protected static void closeDialog(Dialog<Object> dialog) {
         dialog.setResult(true);
         dialog.close();
     }
@@ -49,7 +49,7 @@ public final class FormWrapper {
         dialog.show();
     }
 
-    protected static Dialog getDialog() {
+    protected static Dialog<Object> getDialog() {
         return dialog;
     }
 

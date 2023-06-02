@@ -10,7 +10,6 @@ import javafx.scene.control.Button;
 public class FormThreadHandler {
     private static Button buttonOK = FormWrapper.getButtonOK();
 
-    //TODO: Benjamin write Javadoc
     protected static void checkRKI() {
         new Thread(() -> {
             Customer customer = FormInputHandler.getEntityFromComboBox("CPR & Kunde");
@@ -41,7 +40,6 @@ public class FormThreadHandler {
         }).start();
     }
 
-    //TODO: Benjamin write Javadoc
     protected static void checkRate() {
         new Thread(() -> {
             Platform.runLater(() -> {
