@@ -111,7 +111,7 @@ INSERT INTO [Customer] VALUES ('Lene', 'Dinesen', '64567890', 'lene.dinesen@emai
 
 INSERT INTO [Employee] VALUES ('Jonas', 'Johnson', '12345678', 'admin@ferrari.dk', 'admin', -1); -- Sales Manager
 INSERT INTO [Employee] VALUES ('Morten', 'Hansen', '12345678', 'morten.hansen@ferrari.dk', 'password1', -1); -- Sales Manager
-INSERT INTO [Employee] VALUES ('Jonas', 'Johnson', '12345678', 'employee@ferrari.dk', 'employee', 2400000);
+INSERT INTO [Employee] VALUES ('Uranus', 'Saturnis', '12345678', 'employee@ferrari.dk', 'employee', 2400000);
 INSERT INTO [Employee] VALUES ('Laura', 'Andersen', '23456789', 'laura.andersen@ferrari.dk', 'password2', 2200000);
 INSERT INTO [Employee] VALUES ('Peter', 'Jensen', '34567890', 'peter.jensen@ferrari.dk', 'password3', 2350000);
 INSERT INTO [Employee] VALUES ('Julie', 'Nielsen', '45678901', 'julie.nielsen@ferrari.dk', 'password4', 2400000);
