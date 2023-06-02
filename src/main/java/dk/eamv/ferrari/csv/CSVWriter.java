@@ -4,11 +4,8 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 
-/**
- * Made by: Benjamin
- * Checked by:
- * Modified by:
- */
+// Made by: Benjamin
+
 public class CSVWriter {
     private FileWriter file;
     private BufferedWriter writer;

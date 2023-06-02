@@ -1,0 +1,2 @@
+car id,customer id,employee id,loan size,downpayment,interest rate,start date,end date,status
+"2","2","3","1350000.0","450000.0","9.5","2023-07-01","2028-07-01","Afvist ✖"

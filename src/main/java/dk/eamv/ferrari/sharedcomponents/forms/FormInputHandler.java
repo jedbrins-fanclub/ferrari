@@ -20,7 +20,7 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 import javafx.util.StringConverter;
 
-//Lavet af Christian
+// Made by Christian
 
 /**
  * Handles the logic of creating objects from user input, when CREATE dialogs are shown.
@@ -28,7 +28,6 @@ import javafx.util.StringConverter;
  * The getFields<Entity> methods read the input in the fields, and returns an object based on that.
  * The setFields<Entity> methods set the input in the fields, based on the object, passed in the argument.
  */
-
 public class FormInputHandler {
     private static Form form;
 

@@ -22,11 +22,8 @@ import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.SVGPath;
 
-/**
- * Lavet af: Christian 
- * Tjekket af:
- * Modificeret af: Mikkel (CSS, små visuelle ændringer)
- */
+// Made by: Christian
+// Modified by: Mikkel (CSS og små visuelle ændringer)
 public class LoginView implements ToggleVisible {
     private static TextField usernameTextField;
     private static PasswordField passwordPasswordField;

@@ -5,9 +5,7 @@ import dk.eamv.ferrari.scenes.customer.Customer;
 import dk.eamv.ferrari.scenes.employee.Employee;
 import dk.eamv.ferrari.scenes.loan.Loan;
 
-/*
- * Lavet af: Christian, Stefan og Benjamin
- */
+// Lavet af: Christian, Stefan og Benjamin
 
 /**
  * Utilizes the Factory pattern to create an interface of the available dialogs.

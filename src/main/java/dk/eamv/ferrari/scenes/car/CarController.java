@@ -7,10 +7,8 @@ import dk.eamv.ferrari.sharedcomponents.forms.FormFactory;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
-/**
- * Lavet af: Mikkel
- */
-
+// Made by: Mikkel
+// Modified by: Benjamin (extended CRUD for sales manager)
 public class CarController {
 
     protected static FilteredTableBuilder<Car> filteredTableBuilder;

@@ -5,11 +5,9 @@ import dk.eamv.ferrari.scenes.frontpage.FrontpageView;
 import dk.eamv.ferrari.sessionmanager.SessionManager;
 import dk.eamv.ferrari.scenemanager.SceneManager;
 
-/**
- * Lavet af: Christian
- * Tjekket af:
- * Modificeret af: Benjamin
- */
+// Made by: Christian
+// Checked by: Benjamin
+// Modified by: Benjamin
 public class LoginController {
     public static void authenticate() {
         Employee employee = LoginModel.authenticate(LoginView.getUsernameInput(), LoginView.getPasswordInput());

@@ -7,6 +7,7 @@ import javafx.scene.image.Image;
 import java.util.Objects;
 import dk.eamv.ferrari.scenes.login.LoginView;
 
+// Made by: Benjamin
 public class SceneManager {
     private static Stage stage;
 

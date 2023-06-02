@@ -2,15 +2,24 @@ package dk.eamv.ferrari.sharedcomponents.nodes;
 
 import javafx.scene.control.TextField;
 
+// Made by Benjamin and Christian
 public class NumericTextField extends TextField {
     private boolean allowDecimals;
     private int maxLength;
 
+    /**
+     * Creates a new NumericTextField
+     */
     public NumericTextField() {
         maxLength = -1;
         allowDecimals = true;
     }
 
+    /**
+     * Creates a new NumericTextField
+     * @param allowDecimals whether to allow decimals
+     * @param maxLength the max amount of digits in the textfield
+     */
     public NumericTextField(boolean allowDecimals, int maxLength) {
         this.allowDecimals = allowDecimals;
         this.maxLength = maxLength;

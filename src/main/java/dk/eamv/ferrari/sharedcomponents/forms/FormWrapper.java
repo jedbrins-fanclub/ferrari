@@ -21,13 +21,12 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Window;
 
+// Made by: Christian
+/*
+* Wraps the entire form into a dialog box, then adds buttons and mouselisteners to those buttons.
+* Checks if all fields are full, then ok button runs the query into the database.
+*/
 public final class FormWrapper {
-    /*
-     * Lavet af: Christian
-     * Wraps the entire form into a dialog box, then adds buttons and mouselisteners to those buttons.
-     * Checks if all fields are full, then ok button runs the query into the database.
-     */
-
     private static Dialog<Object> dialog;
     private static Form form;
     private static Button buttonOK = new Button("OK");

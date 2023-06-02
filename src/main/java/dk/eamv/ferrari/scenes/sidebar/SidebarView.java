@@ -15,9 +15,9 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.SVGPath;
 
+// Made by: Mikkel
+
 /**
- * Created by: Mikkel
- * <p>
  * This class represents the SidebarView of the application.
  * It serves as a container for the sidebar elements.
  */

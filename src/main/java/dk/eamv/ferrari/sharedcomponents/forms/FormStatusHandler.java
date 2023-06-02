@@ -2,6 +2,7 @@ package dk.eamv.ferrari.sharedcomponents.forms;
 
 import javafx.scene.control.Label;
 
+// Made by: Benjamin and Christian
 public class FormStatusHandler {
     private static Label statusLabel = new Label();
 

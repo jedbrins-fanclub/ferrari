@@ -5,6 +5,8 @@ import org.simplejavamail.api.mailer.config.TransportStrategy;
 import org.simplejavamail.email.EmailBuilder;
 import org.simplejavamail.mailer.MailerBuilder;
 
+// Made by: Mikkel
+
 /**
  * Class to handle use of the SimpleJavaMail library.
  */

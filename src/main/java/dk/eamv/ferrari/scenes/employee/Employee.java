@@ -2,6 +2,7 @@ package dk.eamv.ferrari.scenes.employee;
 
 import java.util.ArrayList;
 
+// Made by: Mikkel
 public class Employee {
     private int id;
     private String firstName;

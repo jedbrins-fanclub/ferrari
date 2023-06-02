@@ -15,7 +15,6 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 
 public class LoanView {
-
     private static FilteredTable<Loan> tableView;
     private static SearchContainer searchContainer;
     private static Button buttonCreate;

@@ -18,7 +18,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 
-// Made by Christian.
+// Made by: Christian
 
 /**
  * Handles the logic of binding fields in loanforms, manually setting the fields and setting mouselisteners for the dialogboxes.

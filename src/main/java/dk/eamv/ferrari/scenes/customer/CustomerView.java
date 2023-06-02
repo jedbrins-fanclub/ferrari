@@ -13,8 +13,9 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 
-public class CustomerView {
+// Made by: Mikkel and Stefan
 
+public class CustomerView {
     private static FilteredTable<Customer> tableView;
     private static SearchContainer searchContainer;
     private static Button buttonCreate;

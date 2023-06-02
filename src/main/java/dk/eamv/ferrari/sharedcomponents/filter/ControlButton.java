@@ -2,12 +2,11 @@ package dk.eamv.ferrari.sharedcomponents.filter;
 
 import javafx.scene.control.Button;
 
+// Made by: Mikkel
+
 /**
- * Created by: Mikkel
- * <p>
  * Class makes it possible to create a button to affect a selected row in FilteredTables, with the feature of being
  * disabled until a row is selected for the given table.
- * <p>
  * It is not used in the current state of the program, as this task is handled by buttons within the tables themselves.
  */
 public class ControlButton extends Button {

@@ -2,8 +2,8 @@ package dk.eamv.ferrari.scenes.customer;
 
 import java.util.ArrayList;
 
+// Made by: Mikkel
 public class Customer {
-
     private int id;
     private String firstName;
     private String lastName;

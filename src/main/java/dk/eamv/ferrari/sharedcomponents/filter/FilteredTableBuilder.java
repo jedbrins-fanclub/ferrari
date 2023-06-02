@@ -17,9 +17,7 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-/**
- * Lavet af: Mikkel
- */
+// Made by: Mikkel
 
 /**
  * @param <T> The type of the elements contained in the table row. This is generic to allow the FilteredTableBuilder to
