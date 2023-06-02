@@ -3,7 +3,6 @@ package dk.eamv.ferrari.sharedcomponents.forms;
 import java.time.LocalDate;
 import java.time.Period;
 
-import dk.api.rki.CreditRator;
 import dk.api.rki.Rating;
 import dk.eamv.ferrari.scenes.car.Car;
 import dk.eamv.ferrari.scenes.car.CarController;
@@ -235,8 +234,7 @@ public class FormBinder {
                         return;
                     }
 
-                    Customer customer = FormInputHandler.getEntityFromComboBox("CPR & Kunde");
-                    if (CreditRator.i().rate(customer.getCpr()).equals(Rating.D)) {
+                    if (customersCreditScore.equals(Rating.D)) {
                         FormStatusHandler.displayErrorMessage("Kunden har kreditværdighed D");
                         return;
                     }
