@@ -72,9 +72,12 @@ public class FormInputHandler {
         Car car = getEntityFromComboBox("Bil");
         Customer customer = getEntityFromComboBox("CPR & Kunde");
         Employee employee = getEntityFromComboBox("Medarbejder");
-        Loan loan = new Loan(car.getId(), customer.getId(), employee.getId(), getDouble("Lånets størrelse"), getDouble("Udbetaling"), getDouble("Rente"), getSelectedDate("Start dato DD/MM/ÅÅÅÅ"), getSelectedDate("Slut dato DD/MM/ÅÅÅÅ"), new LoanStatus(3));
-        System.out.println("Get selected date" + getSelectedDate("Start dato DD/MM/ÅÅÅÅ"));
-        System.out.println("Get selected date" + getSelectedDate("Slut dato DD/MM/ÅÅÅÅ"));
+        Loan loan = new Loan(
+            car.getId(), customer.getId(), employee.getId(),
+            getDouble("Lånets størrelse"), getDouble("Udbetaling"), getDouble("Rente"),
+            getSelectedDate("Start dato DD/MM/ÅÅÅÅ"), getSelectedDate("Slut dato DD/MM/ÅÅÅÅ"),
+            new LoanStatus(3)
+        );
         return loan;
     }
     
@@ -117,12 +120,8 @@ public class FormInputHandler {
      */
     protected static Date getSelectedDate(String key) {
         DatePicker datePicker = getDatePicker(key);
-        System.out.println("DatePicker " + datePicker);
         LocalDate localDate = datePicker.getValue();
-        System.out.println("Local Date " + localDate);
         Instant instant = Instant.from(localDate.atStartOfDay(ZoneId.systemDefault()));
-        System.out.println("Instant " + instant);
-        System.out.println("Date from instant " + Date.from(instant));
         return Date.from(instant);
     }
 
