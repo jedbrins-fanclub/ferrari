@@ -1,8 +1,8 @@
-.dialog{
+.dialog {
     -fx-background-color: #F7F7F7;
 }
 
-.dialog TextField, .dialog NumericTextField{
+.dialog TextField, .dialog NumericTextField {
     -fx-background-color: #F7F7F7;
     -fx-border-color: #71717a;
     -fx-border-width: 0.5;
@@ -16,6 +16,12 @@
     -fx-border-color: #71717a;
     -fx-border-width: 0.5;
     -fx-border-radius: 5px;
+}
+
+.dialog-empty-field {
+    -fx-prompt-text-fill: #F50000;
+    -fx-background-color: #f7adb1;
+    -fx-border-color: #F50000;
 }
 
 .dialog-status-label {

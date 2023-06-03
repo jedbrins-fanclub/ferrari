@@ -77,12 +77,6 @@ public class Form {
      * @return - true if all fields have input inside, else false.
      */
     protected boolean verifyHasFilledFields() {
-        String redStyle = """
-            -fx-prompt-text-fill: F50000;
-            -fx-background-color: #f7adb1;
-            -fx-border-color: F50000;
-        """;
-
         boolean allFieldsFilled = true;
         for (Control widget : fieldMap.values()) {
             boolean filledField = true;
@@ -95,10 +89,10 @@ public class Form {
             }
 
             if (!filledField) {
-                widget.setStyle(redStyle);
+                widget.getStyleClass().add("dialog-empty-field");
                 allFieldsFilled = false;
             } else {
-                widget.setStyle(null);
+                widget.getStyleClass().remove("dialog-empty-field");
             }
         }
         return allFieldsFilled;
