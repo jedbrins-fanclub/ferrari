@@ -29,7 +29,7 @@ jobs:
       id: cache-jdk
       uses: actions/cache@v3
       with:
-        path: ~/.sdkman
+        path: ~/.m2/repository
         key: ${{ runner.os }}-jdk
     - name: Set up JDK 19
       uses: actions/setup-java@v3
