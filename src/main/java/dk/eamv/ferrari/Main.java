@@ -2,7 +2,7 @@ package dk.eamv.ferrari;
 
 import dk.eamv.ferrari.scenes.login.LoginView;
 import dk.eamv.ferrari.database.Database;
-import dk.eamv.ferrari.scenemanager.SceneManager;
+import dk.eamv.ferrari.managers.SceneManager;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
