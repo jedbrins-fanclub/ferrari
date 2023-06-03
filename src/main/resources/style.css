@@ -216,24 +216,22 @@
     -fx-background-color: -dark-gray;
 }
 
-    #rettelse 
-    {
+#rettelse {
     -fx-font-size: 55;
     -fx-font-weight: bold;
     -fx-alignment: center;
+}
 
-    }
+.settings Label {
+    -fx-font-size: 18;
+}
 
-        .settings Label {
-        -fx-font-size: 18;
-    }
+.settings-overskrift {
+    -fx-font-size: 25;
+    -fx-font-weight: 500;
+}
 
-    .settings-overskrift {
-        -fx-font-size:25;
-        -fx-font-weight:500;
-    }
-
-    .settings-title {
-        -fx-font-size:30;
-        -fx-font-weight:900;
-    }
+.settings-title {
+    -fx-font-size: 30;
+    -fx-font-weight: 900;
+}
