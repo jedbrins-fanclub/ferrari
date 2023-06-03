@@ -12,19 +12,19 @@ import javafx.scene.control.TextField;
 
 // Made by Benjamin and Christian
 public class AutoCompleteComboBox<E> extends ComboBox<String> {
-    private HashMap<String, E> map = new HashMap<String, E>();
+    private HashMap<String, E> elements = new HashMap<String, E>();
 
     /**
      * Create a new AutoCompleteCombobBox
-     * @param content ObservableList of the content to show
+     * @param entities ObservableList of the entities to show
      */
-    public AutoCompleteComboBox(ObservableList<E> content) {
+    public AutoCompleteComboBox(ObservableList<E> entities) {
         setEditable(true);
 
         ArrayList<String> items = new ArrayList<String>();
-        for (E element : content) {
-            map.put(element.toString(), element);
-            items.add(element.toString());
+        for (E entity : entities) {
+            elements.put(entity.toString(), entity);
+            items.add(entity.toString());
         }
 
         FilteredList<String> filteredItems = new FilteredList<String>(FXCollections.observableArrayList(items), p -> true);
@@ -61,7 +61,7 @@ public class AutoCompleteComboBox<E> extends ComboBox<String> {
      * @return E generic type
      */
     public E getSelectedItem() {
-        return map.get(getSelectionModel().getSelectedItem());
+        return elements.get(getSelectionModel().getSelectedItem());
     }
 
     /**
@@ -69,6 +69,6 @@ public class AutoCompleteComboBox<E> extends ComboBox<String> {
      * @return boolean true if nothing is selected
      */
     public boolean isEmpty() {
-        return map.get(getSelectionModel().getSelectedItem()) == null;
+        return elements.get(getSelectionModel().getSelectedItem()) == null;
     }
 }
