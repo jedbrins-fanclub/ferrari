@@ -19,11 +19,7 @@ public class LoanStatus {
      * @param value the LoanState as an integer value
      */
     public LoanStatus(int value) {
-        if (value < 0 || value > 5) {
-            throw new RuntimeException(
-                String.format("Invalid loan status, expected 0-4, got %d", value)
-            );
-        }
+        assert value >= 0 && value <= 5: String.format("Invalid loan status, expected 0-4, got %d", value);
         this.state = LoanState.values()[value];
     }
 

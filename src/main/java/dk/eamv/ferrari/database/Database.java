@@ -14,10 +14,7 @@ public abstract class Database {
     */
     public static void init() {
         String connectionString = System.getenv("SQL_SERVER_CONNECTION");
-        if (connectionString == null) {
-            throw new RuntimeException("Environment variable SQL_SERVER_CONNECTION not set");
-        }
-
+        assert connectionString != null: "Environment variable SQL_SERVER_CONNECTION not set";
         init(connectionString);
     }
 
