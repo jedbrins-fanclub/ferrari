@@ -1,7 +1,7 @@
 package dk.eamv.ferrari.scenes.customer;
 
+import dk.eamv.ferrari.managers.SessionManager;
 import dk.eamv.ferrari.resources.SVGResources;
-import dk.eamv.ferrari.sessionmanager.SessionManager;
 import dk.eamv.ferrari.sharedcomponents.filter.FilteredTableBuilder;
 import dk.eamv.ferrari.sharedcomponents.forms.FormFactory;
 import javafx.collections.FXCollections;

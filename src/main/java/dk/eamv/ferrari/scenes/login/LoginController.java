@@ -2,8 +2,8 @@ package dk.eamv.ferrari.scenes.login;
 
 import dk.eamv.ferrari.scenes.employee.Employee;
 import dk.eamv.ferrari.scenes.frontpage.FrontpageView;
-import dk.eamv.ferrari.sessionmanager.SessionManager;
-import dk.eamv.ferrari.scenemanager.SceneManager;
+import dk.eamv.ferrari.managers.SceneManager;
+import dk.eamv.ferrari.managers.SessionManager;
 
 // Made by: Christian
 // Checked by: Benjamin

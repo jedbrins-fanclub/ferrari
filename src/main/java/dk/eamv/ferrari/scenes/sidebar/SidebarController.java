@@ -1,6 +1,6 @@
 package dk.eamv.ferrari.scenes.sidebar;
 
-import dk.eamv.ferrari.scenemanager.SceneManager;
+import dk.eamv.ferrari.managers.SceneManager;
 import dk.eamv.ferrari.scenes.car.CarView;
 import dk.eamv.ferrari.scenes.customer.CustomerView;
 import dk.eamv.ferrari.scenes.employee.EmployeeView;

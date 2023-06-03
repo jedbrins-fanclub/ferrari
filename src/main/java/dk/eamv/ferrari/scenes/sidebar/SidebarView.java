@@ -3,7 +3,7 @@ package dk.eamv.ferrari.scenes.sidebar;
 import java.util.EnumMap;
 import java.util.Map;
 
-import dk.eamv.ferrari.sessionmanager.SessionManager;
+import dk.eamv.ferrari.managers.SessionManager;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;

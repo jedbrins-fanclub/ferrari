@@ -1,8 +1,8 @@
 package dk.eamv.ferrari.scenes.settings;
+import dk.eamv.ferrari.managers.SessionManager;
 import dk.eamv.ferrari.scenes.employee.EmployeeModel;
 import dk.eamv.ferrari.scenes.sidebar.SidebarButton;
 import dk.eamv.ferrari.scenes.sidebar.SidebarView;
-import dk.eamv.ferrari.sessionmanager.SessionManager;
 import dk.eamv.ferrari.sharedcomponents.nodes.NumericTextField;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;

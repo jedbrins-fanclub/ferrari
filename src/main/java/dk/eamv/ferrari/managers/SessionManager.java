@@ -1,4 +1,4 @@
-package dk.eamv.ferrari.sessionmanager;
+package dk.eamv.ferrari.managers;
 
 import dk.eamv.ferrari.scenes.employee.Employee;
 import dk.eamv.ferrari.scenes.employee.EmployeeModel;

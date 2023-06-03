@@ -3,8 +3,8 @@ package dk.eamv.ferrari.scenes.loan;
 import java.util.Optional;
 
 import dk.eamv.ferrari.csv.CSVWriter;
+import dk.eamv.ferrari.managers.SessionManager;
 import dk.eamv.ferrari.resources.SVGResources;
-import dk.eamv.ferrari.sessionmanager.SessionManager;
 import dk.eamv.ferrari.sharedcomponents.filter.FilteredTableBuilder;
 import dk.eamv.ferrari.sharedcomponents.forms.FormFactory;
 import javafx.collections.FXCollections;

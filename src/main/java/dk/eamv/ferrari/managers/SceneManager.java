@@ -1,4 +1,4 @@
-package dk.eamv.ferrari.scenemanager;
+package dk.eamv.ferrari.managers;
 
 import javafx.scene.Scene;
 import javafx.scene.Parent;
