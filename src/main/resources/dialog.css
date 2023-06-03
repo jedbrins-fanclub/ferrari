@@ -16,4 +16,16 @@
     -fx-border-color: #71717a;
     -fx-border-width: 0.5;
     -fx-border-radius: 5px;
-}   
+}
+
+.dialog-status-label {
+    -fx-text-fill: gold;
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+}
+
+.dialog-error-label {
+    -fx-text-fill: red;
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+}

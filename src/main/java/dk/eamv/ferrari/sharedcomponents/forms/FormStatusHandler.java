@@ -15,11 +15,7 @@ public class FormStatusHandler {
      * @param message - the message to be displayed
      */
     protected static void displayErrorMessage(String message) {
-        statusLabel.setStyle("""
-            -fx-text-fill: red;
-            -fx-font-size: 20px;
-            -fx-font-weight: bold;
-        """);
+        statusLabel.getStyleClass().setAll("dialog-error-label");
         statusLabel.setText(message);
         statusLabel.setVisible(true);
     }
@@ -29,11 +25,7 @@ public class FormStatusHandler {
      * @param message - the message to be displayed
      */
     protected static void displayStatusMessage(String message) {
-        statusLabel.setStyle("""
-            -fx-text-fill: gold;
-            -fx-font-size: 20px;
-            -fx-font-weight: bold;
-        """);
+        statusLabel.getStyleClass().setAll("dialog-status-label");
         statusLabel.setText(message);
         statusLabel.setVisible(true);
     }
