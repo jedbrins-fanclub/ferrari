@@ -31,6 +31,10 @@ public final class FormWrapper {
     private static Form form;
     private static Button buttonOK = new Button("OK");
 
+    protected static Dialog<Object> getDialog() {
+        return dialog;
+    }
+
     /**
      * Closes the active dialog.
      */
@@ -46,10 +50,6 @@ public final class FormWrapper {
     protected static void showDialog(String title) {
         dialog.setTitle(title);
         dialog.show();
-    }
-
-    protected static Dialog<Object> getDialog() {
-        return dialog;
     }
 
     /**
