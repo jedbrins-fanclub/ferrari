@@ -179,61 +179,35 @@ public class FormBinder {
     protected static void setCreateMouseListener(CRUDType type) {
         Button buttonOK = FormWrapper.getButtonOK();
 
-        switch (type) {
-            case CAR:
-                buttonOK.setOnMouseClicked(e -> {
-                    if (!form.verifyHasFilledFields()) {
-                        FormStatusHandler.displayErrorMessage("Mangler input i de markerede felter");
-                        return;
-                    }
+        buttonOK.setOnMouseClicked(e -> {
+            if (!form.verifyHasFilledFields()) {
+                FormStatusHandler.displayErrorMessage("Mangler input i de markerede felter");
+                return;
+            }
 
+            switch (type) {
+                case CAR: {
                     Car car = FormInputHandler.getFieldsCar();
                     CarController.getCars().add(car);
                     CarController.createCar(car);
-                    FormWrapper.closeDialog(FormWrapper.getDialog());
-                });
-                break;
+                    break;
+                }
 
-            case CUSTOMER:
-                buttonOK.setOnMouseClicked(e -> {
-                    if (!form.verifyHasFilledFields()) {
-                        FormStatusHandler.displayErrorMessage("Mangler input i de markerede felter");
-                        return;
-                    }
-
+                case CUSTOMER: {
                     Customer customer = FormInputHandler.getFieldsCustomer();
                     CustomerController.getCustomers().add(customer);
                     CustomerController.createCustomer(customer);
-                    FormWrapper.closeDialog(FormWrapper.getDialog());
-                });
-                break;
+                    break;
+                }
 
-            case EMPLOYEE:
-                buttonOK.setOnMouseClicked(e -> {
-                    if (!form.verifyHasFilledFields()) {
-                        FormStatusHandler.displayErrorMessage("Mangler input i de markerede felter");
-                        return;
-                    }
-
+                case EMPLOYEE: {
                     Employee employee = FormInputHandler.getFieldsEmployee();
                     EmployeeController.getEmployees().add(employee);
                     EmployeeController.createEmployee(employee);
-                    FormWrapper.closeDialog(FormWrapper.getDialog());
-                });
-                break;
-            
-            case LOAN:
-                buttonOK.setOnMouseClicked(e -> {
-                    if (!form.verifyHasFilledFields()) {
-                        FormStatusHandler.displayErrorMessage("Mangler input i de markerede felter");
-                        return;
-                    }
+                    break;
+                }
 
-                    if (customersCreditScore.equals(Rating.D)) {
-                        FormStatusHandler.displayErrorMessage("Kunden har kreditværdighed D");
-                        return;
-                    }
-
+                case LOAN: {
                     if (customersCreditScore.equals(Rating.D)) {
                         FormStatusHandler.displayErrorMessage("Kunden har kreditværdighed D");
                         return;
@@ -254,13 +228,12 @@ public class FormBinder {
                     Loan loan = FormInputHandler.getFieldsLoan();
                     LoanController.getLoans().add(loan);
                     LoanController.createLoan(loan);
-                    FormWrapper.closeDialog(FormWrapper.getDialog());
-                });
-                break;
+                    break;
+                }
+            }
 
-            default:
-                break;
-        }
+            FormWrapper.closeDialog(FormWrapper.getDialog());
+        });
     }
 
     /**
