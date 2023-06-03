@@ -53,7 +53,7 @@ public class AutoCompleteComboBox<E> extends ComboBox<String> {
         });
 
         setItems(filteredItems);
-        setStyle("-fx-font-family: \"COURIER NEW\";");
+        getStyleClass().add("combobox");
     }
 
     /**

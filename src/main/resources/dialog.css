@@ -29,3 +29,7 @@
     -fx-font-size: 20px;
     -fx-font-weight: bold;
 }
+
+.combobox {
+    -fx-font-family: "Courier New";
+}
