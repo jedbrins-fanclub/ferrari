@@ -164,10 +164,10 @@ public class Form {
          * @return - itself allowing for method chaining.
          */
         private Builder withFieldsString(String... input) {
-            for (String i : input) {
+            for (String text : input) {
                 TextField textField = new TextField();
-                textField.setPromptText(i);
-                addFieldToForm(i, textField);
+                textField.setPromptText(text);
+                addFieldToForm(text, textField);
             }
 
             return this;
@@ -196,10 +196,10 @@ public class Form {
          * @return - itself allowing for method chaining.
          */
         private Builder withFieldsUneditable(String... input) {
-            for (String i : input) {
+            for (String text : input) {
                 TextField textField = new TextField();
                 textField.setDisable(true);
-                addFieldToForm(i, textField);
+                addFieldToForm(text, textField);
             }
 
             return this;
