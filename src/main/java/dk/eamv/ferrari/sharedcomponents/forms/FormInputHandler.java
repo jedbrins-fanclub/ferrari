@@ -265,7 +265,7 @@ public class FormInputHandler {
      * @return the matching TextField.
      */
     protected static TextField getTextField(String key) {
-        return (TextField) form.getFieldMap().get(key);
+        return (TextField)(form.getFieldMap().get(key));
     }
 
     /**
@@ -273,8 +273,9 @@ public class FormInputHandler {
      * @param key - the String/Header of the AutoCompleteComboBox.
      * @return the matching AutoCompleteComboBox.
      */
+    @SuppressWarnings("unchecked")
     protected static <E> AutoCompleteComboBox<E> getAutoCompleteComboBox(String key) {
-        return (AutoCompleteComboBox<E>) form.getFieldMap().get(key);
+        return (AutoCompleteComboBox<E>)(form.getFieldMap().get(key));
     }
 
     /**
@@ -283,6 +284,6 @@ public class FormInputHandler {
      * @return the matching DatePicker.
      */
     protected static DatePicker getDatePicker(String key) {
-        return (DatePicker) form.getFieldMap().get(key);
+        return (DatePicker)(form.getFieldMap().get(key));
     }
 }
