@@ -89,16 +89,16 @@ public class Customer {
         this.cpr = cpr;
     }
 
-    public ArrayList<String> getPropperties() {
-        ArrayList<String> propperties = new ArrayList<String>();
-        propperties.add(address);
-        propperties.add(email);
-        propperties.add(cpr);
-        propperties.add(phoneNumber);
-        propperties.add(lastName);
-        propperties.add(firstName);
+    public ArrayList<String> getProperties() {
+        ArrayList<String> properties = new ArrayList<String>();
+        properties.add(address);
+        properties.add(email);
+        properties.add(cpr);
+        properties.add(phoneNumber);
+        properties.add(lastName);
+        properties.add(firstName);
 
-        return propperties;
+        return properties;
     }
 
     @Override

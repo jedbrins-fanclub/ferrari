@@ -93,16 +93,16 @@ public class Employee {
         return maxLoan == -1;
     }
 
-    public ArrayList<String> getPropperties() {
-        ArrayList<String> propperties = new ArrayList<String>();
-        propperties.add(password);
-        propperties.add(email);
-        propperties.add(String.valueOf(maxLoan));
-        propperties.add(phoneNumber);
-        propperties.add(lastName);
-        propperties.add(firstName);
+    public ArrayList<String> getProperties() {
+        ArrayList<String> properties = new ArrayList<String>();
+        properties.add(password);
+        properties.add(email);
+        properties.add(String.valueOf(maxLoan));
+        properties.add(phoneNumber);
+        properties.add(lastName);
+        properties.add(firstName);
 
-        return propperties;
+        return properties;
     }
 
     @Override

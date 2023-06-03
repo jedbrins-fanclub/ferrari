@@ -138,10 +138,10 @@ public class FormInputHandler {
 
     /**
      * Iterates over the ArrayList of properties, and sets each field in the hashmap to the property.
-     * @param car - a Car object, whose propperties will fill the form.
+     * @param car - a Car object, whose properties will fill the form.
      */
     protected static void setFieldsCar(Car car) {
-        ArrayList<String> input = car.getPropperties();
+        ArrayList<String> input = car.getProperties();
         HashMap<String, Control> fieldMap = form.getFieldMap();
 
         int counter = 0;
@@ -154,10 +154,10 @@ public class FormInputHandler {
 
     /**
      * Iterates over the ArrayList of properties, and sets each field in the hashmap to the property.
-     * @param customer - a Customer object, whose propperties will fill the form.
+     * @param customer - a Customer object, whose properties will fill the form.
      */
     protected static void setFieldsCustomer(Customer customer) {
-        ArrayList<String> input = customer.getPropperties();
+        ArrayList<String> input = customer.getProperties();
         HashMap<String, Control> fieldMap = form.getFieldMap();
 
         int counter = 0;
@@ -170,10 +170,10 @@ public class FormInputHandler {
 
     /**
      * Iterates over the ArrayList of properties, and sets each field in the hashmap to the property.
-     * @param employee - an Employee object, whose propperties will fill the form.
+     * @param employee - an Employee object, whose properties will fill the form.
      */
     protected static void setFieldsEmployee(Employee employee) {
-        ArrayList<String> input = employee.getPropperties();
+        ArrayList<String> input = employee.getProperties();
         HashMap<String, Control> fieldMap = form.getFieldMap();
 
         int counter = 0;
@@ -185,10 +185,10 @@ public class FormInputHandler {
     }
     
     /**
-     * @param car - a Car object, whose propperties will fill the form.
-     * @param customer - a Customer object, whose propperties will fill the form.
-     * @param employee - an Employee object, whose propperties will fill the form.
-     * @param loan - a Loan object, whose propperties will fill the form.
+     * @param car - a Car object, whose properties will fill the form.
+     * @param customer - a Customer object, whose properties will fill the form.
+     * @param employee - an Employee object, whose properties will fill the form.
+     * @param loan - a Loan object, whose properties will fill the form.
      */
     protected static void setFieldsLoan(Car car, Customer customer, Employee employee, Loan loan) {
         setChoiceBox("Bil", car.toString());

@@ -55,13 +55,13 @@ public class Car {
         this.price = price;
     }
 
-    public ArrayList<String> getPropperties() {
-        ArrayList<String> propperties = new ArrayList<String>();
-        propperties.add(String.valueOf(year));
-        propperties.add(model);
-        propperties.add(String.valueOf(price));
+    public ArrayList<String> getProperties() {
+        ArrayList<String> properties = new ArrayList<String>();
+        properties.add(String.valueOf(year));
+        properties.add(model);
+        properties.add(String.valueOf(price));
 
-        return propperties;
+        return properties;
     }
 
     @Override
