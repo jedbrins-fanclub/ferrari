@@ -9,7 +9,7 @@
 
 .root {
   -fx-font-family: "Inter", "Segoe UI", "Arial", sans-serif;
-  -fx-background-color: #f7f7f7;
+  -fx-background-color: lightgrey;
 }
 
 .drop-shadow-effect {

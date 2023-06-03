@@ -120,7 +120,6 @@ public class SettingsView {
 
         StackPane container = new StackPane(parentContainer);
         container.setPadding(new Insets(50));
-        container.setStyle("-fx-background-color: lightgrey");
         return container;
     }
 }

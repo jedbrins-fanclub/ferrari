@@ -59,7 +59,6 @@ public class LoanView {
 
         StackPane window = new StackPane(parentContainer);
         window.setPadding(new Insets(50));
-        window.setStyle("-fx-background-color: lightgrey");
 
         return window;
     }
