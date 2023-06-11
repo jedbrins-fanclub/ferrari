@@ -27,7 +27,8 @@ public class CustomerController {
         if (SessionManager.getUser().isSalesManager()) {
                 filteredTableBuilder
                 .withButtonColumn(SVGResources.getEditIcon(), CustomerView::showEditCustomerDialog)
-                .withButtonColumn(SVGResources.getDeleteIcon(), CustomerController::deleteCustomer);
+                .withButtonColumn(SVGResources.getDeleteIcon(), CustomerController::deleteCustomer)
+                .withButtonColumn(SVGResources.getBanIcon(), CustomerController::banCustomer); // TODO: Dialog
         }
     }
 
@@ -46,8 +47,12 @@ public class CustomerController {
 
     protected static void deleteCustomer(Customer customer) {
         CustomerModel.delete(customer.getId());
+        customers.remove(customer);
+    }
 
-        // When removing the customer from the ObservableList, the TableView updates automatically
+    protected static void banCustomer(Customer customer) {
+        customer.setStatus(CustomerStatus.BANNED);
+        CustomerModel.update(customer);
         customers.remove(customer);
     }
 
