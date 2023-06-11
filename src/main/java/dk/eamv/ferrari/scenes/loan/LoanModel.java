@@ -124,6 +124,34 @@ public final class LoanModel {
         }
     }
 
+    // rs.isBeforeFirst() https://stackoverflow.com/a/6813771
+    public static boolean checkEmployeeID(int id) {
+        ResultSet rs = Database.query("SELECT COUNT(*) FROM dbo.Loan WHERE employee_id = " + id);
+        try {
+            return rs.isBeforeFirst();
+        } catch (SQLException exception) {
+            return false;
+        }
+    }
+
+    public static boolean checkCustomerID(int id) {
+        ResultSet rs = Database.query("SELECT COUNT(*) FROM dbo.Loan WHERE customer_id = " + id);
+        try {
+            return rs.isBeforeFirst();
+        } catch (SQLException exception) {
+            return false;
+        }
+    }
+
+    public static boolean checkCarID(int id) {
+        ResultSet rs = Database.query("SELECT COUNT(*) FROM dbo.Loan WHERE car_id = " + id);
+        try {
+            return rs.isBeforeFirst();
+        } catch (SQLException exception) {
+            return false;
+        }
+    }
+
     /**
      * Delete a loan from the database, based on the id.
      * @param id the id of the Loan to delete

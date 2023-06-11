@@ -1,6 +1,7 @@
 package dk.eamv.ferrari.scenes.car;
 
 import dk.eamv.ferrari.database.Database;
+import dk.eamv.ferrari.scenes.loan.LoanModel;
 
 import java.util.ArrayList;
 import java.sql.ResultSet;
@@ -21,13 +22,14 @@ public final class CarModel {
     public static void create(Car car) {
         try {
             PreparedStatement statement = Database.getConnection().prepareStatement(
-                "INSERT INTO dbo.Car VALUES (?, ?, ?);",
+                "INSERT INTO dbo.Car VALUES (?, ?, ?, ?);",
                 Statement.RETURN_GENERATED_KEYS
             );
 
             statement.setString(1, car.getModel());
             statement.setInt(2, car.getYear());
             statement.setDouble(3, car.getPrice());
+            statement.setInt(4, car.getStatus().toInt());
 
             int row = statement.executeUpdate();
             assert row != 0: "Unable to insert Car into database";
@@ -85,14 +87,15 @@ public final class CarModel {
         try {
             PreparedStatement statement = Database.getConnection().prepareStatement("""
                 UPDATE dbo.Car
-                SET model = ?, year = ?, price = ?
+                SET model = ?, year = ?, price = ?, status = ?
                 WHERE id = ?;
             """);
 
             statement.setString(1, car.getModel());
             statement.setInt(2, car.getYear());
             statement.setDouble(3, car.getPrice());
-            statement.setInt(4, car.getId());
+            statement.setInt(4, car.getStatus().toInt());
+            statement.setInt(5, car.getId());
 
             statement.executeUpdate();
         } catch (SQLException exception) {
@@ -105,6 +108,11 @@ public final class CarModel {
      * @param id the id of the car to delete from the database
      */
     public static void delete(int id) {
+        if (!LoanModel.checkCarID(id)) {
+            Database.execute("DELETE FROM Car WHERE id = " + id);
+            return;
+        }
+
         try {
             PreparedStatement statement = Database.getConnection().prepareStatement("""
                 UPDATE dbo.Car

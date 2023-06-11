@@ -1,6 +1,7 @@
 package dk.eamv.ferrari.scenes.customer;
 
 import dk.eamv.ferrari.database.Database;
+import dk.eamv.ferrari.scenes.loan.LoanModel;
 
 import java.util.ArrayList;
 import java.sql.ResultSet;
@@ -20,7 +21,7 @@ public final class CustomerModel {
     public static void create(Customer customer) {
         try {
             PreparedStatement statement = Database.getConnection().prepareStatement(
-                "INSERT INTO dbo.Customer VALUES (?, ?, ?, ?, ?, ?);",
+                "INSERT INTO dbo.Customer VALUES (?, ?, ?, ?, ?, ?, ?);",
                 Statement.RETURN_GENERATED_KEYS
             );
 
@@ -30,6 +31,7 @@ public final class CustomerModel {
             statement.setString(4, customer.getEmail());
             statement.setString(5, customer.getAddress());
             statement.setString(6, customer.getCpr());
+            statement.setInt(7, customer.getStatus().toInt());
 
             int row = statement.executeUpdate();
             assert row != 0: "Unable to insert Customer into database";
@@ -101,7 +103,7 @@ public final class CustomerModel {
                 SET
                     first_name = ?, last_name = ?,
                     phone_number = ?, email = ?,
-                    address = ?, cpr = ?
+                    address = ?, cpr = ?, status = ?
                 WHERE id = ?;
             """);
 
@@ -111,7 +113,8 @@ public final class CustomerModel {
             statement.setString(4, customer.getEmail());
             statement.setString(5, customer.getAddress());
             statement.setString(6, customer.getCpr());
-            statement.setInt(7, customer.getId());
+            statement.setInt(7, customer.getStatus().toInt());
+            statement.setInt(8, customer.getId());
 
             statement.executeUpdate();
         } catch (SQLException exception) {
@@ -124,6 +127,11 @@ public final class CustomerModel {
      * @param id the id of the customer to delete from the database
      */
     public static void delete(int id) {
+        if (!LoanModel.checkCustomerID(id)) {
+            Database.execute("DELETE FROM Customer WHERE id = " + id);
+            return;
+        }
+
         try {
             PreparedStatement statement = Database.getConnection().prepareStatement("""
                 UPDATE dbo.Customer
