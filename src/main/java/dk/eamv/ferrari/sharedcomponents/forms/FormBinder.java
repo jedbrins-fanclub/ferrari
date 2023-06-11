@@ -81,6 +81,7 @@ public class FormBinder {
     protected static void bindFieldsCustomer() {
         AutoCompleteComboBox<Customer> comboBox = FormInputHandler.getAutoCompleteComboBox("CPR & Kunde");
         comboBox.setOnAction(e -> {
+            // TODO: Why not just comboBox.getValue()
             Customer customer = FormInputHandler.getEntityFromComboBox("CPR & Kunde");
             if (customer != null) {
                 FormThreadHandler.checkRKI();
