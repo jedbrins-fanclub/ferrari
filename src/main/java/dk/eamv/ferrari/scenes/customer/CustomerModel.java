@@ -57,7 +57,8 @@ public final class CustomerModel {
                 return new Customer(
                     id, rs.getString("first_name"), rs.getString("last_name"),
                     rs.getString("phone_number"), rs.getString("email"),
-                    rs.getString("address"), rs.getString("cpr")
+                    rs.getString("address"), rs.getString("cpr"),
+                    CustomerStatus.valueOf(rs.getInt("status"))
                 );
             }
         } catch (SQLException exception) {
@@ -121,9 +122,21 @@ public final class CustomerModel {
     /**
      * Delete customer from the database based on the id.
      * @param id the id of the customer to delete from the database
-     * @return boolean indicating if the deletion was successful
      */
-    public static boolean delete(int id) {
-        return Database.execute("DELETE FROM dbo.Customer WHERE id = " + id);
+    public static void delete(int id) {
+        try {
+            PreparedStatement statement = Database.getConnection().prepareStatement("""
+                UPDATE dbo.Customer
+                SET status = ?
+                WHERE id = ?;
+            """);
+
+            statement.setInt(1, CustomerStatus.DELETED.toInt());
+            statement.setInt(2, id);
+
+            statement.executeUpdate();
+        } catch (SQLException exception) {
+            exception.printStackTrace();
+        }
     }
 }

@@ -103,9 +103,21 @@ public final class CarModel {
     /**
      * Delete car from the database based on the id.
      * @param id the id of the car to delete from the database
-     * @return boolean indicating if the deletion was successful
      */
-    public static boolean delete(int id) {
-        return Database.execute("DELETE FROM dbo.Car WHERE id = " + id);
+    public static void delete(int id) {
+        try {
+            PreparedStatement statement = Database.getConnection().prepareStatement("""
+                UPDATE dbo.Car
+                SET status = ?
+                WHERE id = ?;
+            """);
+
+            statement.setInt(1, CarStatus.DELETED.toInt());
+            statement.setInt(2, id);
+
+            statement.executeUpdate();
+        } catch (SQLException exception) {
+            exception.printStackTrace();
+        }
     }
 }

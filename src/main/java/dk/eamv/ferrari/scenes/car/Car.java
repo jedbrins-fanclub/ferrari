@@ -8,6 +8,7 @@ public class Car {
     private String model;
     private int year;
     private double price;
+    private CarStatus status;
 
     public Car(int id, String model, int year, double price) {
         this.id = id;
@@ -53,6 +54,14 @@ public class Car {
 
     public void setPrice(double price) {
         this.price = price;
+    }
+
+    public CarStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(CarStatus status) {
+        this.status = status;
     }
 
     public ArrayList<String> getProperties() {

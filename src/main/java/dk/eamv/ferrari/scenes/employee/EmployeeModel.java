@@ -57,7 +57,8 @@ public final class EmployeeModel {
                 return new Employee(
                     id, rs.getString("first_name"), rs.getString("last_name"), 
                     rs.getString("phone_number"), rs.getString("email"), 
-                    rs.getString("password"), rs.getDouble("max_loan")
+                    rs.getString("password"), rs.getDouble("max_loan"),
+                    EmployeeStatus.valueOf(rs.getInt("status"))
                 );
             }
         } catch (SQLException exception) {
@@ -79,7 +80,8 @@ public final class EmployeeModel {
                 employees.add(new Employee(
                     rs.getInt("id"), rs.getString("first_name"), rs.getString("last_name"),
                     rs.getString("phone_number"), rs.getString("email"),
-                    rs.getString("password"), rs.getDouble("max_loan")
+                    rs.getString("password"), rs.getDouble("max_loan"),
+                    EmployeeStatus.valueOf(rs.getInt("status"))
                 ));
             }
         } catch (SQLException exception) {
@@ -117,7 +119,8 @@ public final class EmployeeModel {
                 employees.add(new Employee(
                     rs.getInt("id"), rs.getString("first_name"), rs.getString("last_name"), 
                     rs.getString("phone_number"), rs.getString("email"), 
-                    rs.getString("password"), rs.getDouble("max_loan")
+                    rs.getString("password"), rs.getDouble("max_loan"),
+                    EmployeeStatus.valueOf(rs.getInt("status"))
                 ));
             }
         } catch (SQLException exception) {
@@ -158,9 +161,21 @@ public final class EmployeeModel {
     /**
      * Delete an employee from the database based on the id.
      * @param id the id to delete from the database
-     * @return boolean to show if the deletion was successful
      */
-    public static boolean delete(int id) {
-        return Database.execute("DELETE FROM dbo.Employee WHERE id = " + id);
+    public static void delete(int id) {
+        try {
+            PreparedStatement statement = Database.getConnection().prepareStatement("""
+                UPDATE dbo.Employee
+                SET status = ?
+                WHERE id = ?;
+            """);
+
+            statement.setInt(1, EmployeeStatus.DELETED.toInt());
+            statement.setInt(2, id);
+
+            statement.executeUpdate();
+        } catch (SQLException exception) {
+            exception.printStackTrace();
+        }
     }
 }

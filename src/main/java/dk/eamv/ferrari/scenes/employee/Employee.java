@@ -11,9 +11,9 @@ public class Employee {
     private String email;
     private String password;
     private double maxLoan;
+    private EmployeeStatus status;
 
-    public Employee(int id, String firstName, String lastName, String phoneNumber, String email, String password,
-            double maxLoan) {
+    public Employee(int id, String firstName, String lastName, String phoneNumber, String email, String password, double maxLoan, EmployeeStatus status) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -21,6 +21,7 @@ public class Employee {
         this.email = email;
         this.password = password;
         this.maxLoan = maxLoan;
+        this.status = status;
     }
     
     //Overloaded to account for CREATEs with no ID
@@ -87,6 +88,14 @@ public class Employee {
 
     public void setMaxLoan(double maxLoan) {
         this.maxLoan = maxLoan;
+    }
+
+    public EmployeeStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(EmployeeStatus status) {
+        this.status = status;
     }
 
     public boolean isSalesManager() {
