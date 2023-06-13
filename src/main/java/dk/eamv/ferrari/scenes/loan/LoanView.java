@@ -35,9 +35,6 @@ public class LoanView extends TableView {
         Button buttonCreate = new Button("Opret ny låneaftale");
         Button buttonExport = new Button("Eksporter alle lån");
 
-        buttonCreate.getStyleClass().add("significant-button");
-        buttonExport.getStyleClass().add("significant-button");
-
         buttonCreate.setOnAction(e -> LoanController.showCreateLoan());
         buttonExport.setOnAction(e -> LoanController.exportAllLoans());
 

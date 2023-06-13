@@ -6,6 +6,7 @@ import dk.eamv.ferrari.sharedcomponents.filter.FilteredTableBuilder;
 import dk.eamv.ferrari.sharedcomponents.filter.SearchContainer;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
@@ -17,6 +18,10 @@ public class TableView {
 
     public static StackPane getTableScene() {
         tableView.setPrefHeight(1200);
+
+        for (Node button : buttonRow.getChildren()) {
+            button.getStyleClass().add("significant-button");
+        }
 
         HBox containerAboveTable = new HBox();
         containerAboveTable.setAlignment(Pos.CENTER_LEFT);

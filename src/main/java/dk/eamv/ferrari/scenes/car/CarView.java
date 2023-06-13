@@ -24,7 +24,7 @@ public class CarView extends TableView {
         CarController.initFilterBuilder();
         initTableView();
         initSearchContainer(CarController.filteredTableBuilder);
-        initButtonCreate();
+        initButtons();
         return getTableScene();
     }
 
@@ -33,9 +33,8 @@ public class CarView extends TableView {
     }
 
 
-    private static void initButtonCreate() {
+    private static void initButtons() {
         Button buttonCreate = new Button("Opret ny bil");
-        buttonCreate.getStyleClass().add("significant-button");
         buttonCreate.setOnAction(e -> CarController.showCreateCar());
         buttonRow.getChildren().setAll(buttonCreate);
     }

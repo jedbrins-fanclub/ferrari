@@ -34,7 +34,6 @@ public class EmployeeView extends TableView {
     
     private static void initButtons() {
         Button buttonCreate = new Button("Registrer ny medarbejder");
-        buttonCreate.getStyleClass().add("significant-button");
         buttonCreate.setOnAction(e -> EmployeeController.showCreateEmployee()); 
         buttonRow.getChildren().setAll(buttonCreate);
     }

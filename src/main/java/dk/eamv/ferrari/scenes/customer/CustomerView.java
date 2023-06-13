@@ -31,7 +31,7 @@ public class CustomerView extends TableView {
         CustomerController.initFilterBuilder();
         initTableView();
         initSearchContainer(CustomerController.filteredTableBuilder);
-        initButtonCreate();
+        initButtons();
         return getTableScene();
     }
 
@@ -39,9 +39,8 @@ public class CustomerView extends TableView {
         tableView = CustomerController.filteredTableBuilder.build();
     }
 
-    private static void initButtonCreate() {
+    private static void initButtons() {
         Button buttonCreate = new Button("Registrer ny kunde");
-        buttonCreate.getStyleClass().add("significant-button");
         buttonCreate.setOnAction(e -> CustomerController.showCreateCustomer());
         buttonRow.getChildren().setAll(buttonCreate);
     }
