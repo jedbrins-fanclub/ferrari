@@ -181,7 +181,7 @@ public class FormBinder {
 
         buttonOK.setOnMouseClicked(e -> {
             if (!form.verifyHasFilledFields()) {
-                FormStatusHandler.displayErrorMessage("Mangler input i de markerede felter");
+                FormStatusHandler.displayMessage(true, "Mangler input i de markerede felter");
                 return;
             }
 
@@ -209,18 +209,18 @@ public class FormBinder {
 
                 case LOAN: {
                     if (customersCreditScore.equals(Rating.D)) {
-                        FormStatusHandler.displayErrorMessage("Kunden har kreditværdighed D");
+                        FormStatusHandler.displayMessage(true, "Kunden har kreditværdighed D");
                         return;
                     }
 
                     if (Double.valueOf(calculateLoanSize()) < 0) {
-                        FormStatusHandler.displayErrorMessage("Lånets størrelse kan ikke være mindre end det udbetalte beløb");
+                        FormStatusHandler.displayMessage(true, "Lånets størrelse kan ikke være mindre end det udbetalte beløb");
                         return;
                     }
 
                     Employee employee = FormInputHandler.getEntityFromComboBox("Medarbejder");
                     if (employee.getMaxLoan() < FormInputHandler.getDouble("Lånets størrelse")) {
-                        FormStatusHandler.displayErrorMessage("Lånets størrelse overskrider medarbejderens beføjelser.");
+                        FormStatusHandler.displayMessage(true, "Lånets størrelse overskrider medarbejderens beføjelser.");
                         form.getForwardBoss().setVisible(true);
                         return;
                     }
