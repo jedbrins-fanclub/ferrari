@@ -65,7 +65,7 @@ public final class CarModel {
     public static ArrayList<Car> readAll() {
         ArrayList<Car> cars = new ArrayList<Car>();
 
-        try (ResultSet rs = Database.query("SELECT * FROM dbo.Car WHERE status = " + CarStatus.ACTIVE.toInt())) {
+        try (ResultSet rs = Database.query("SELECT * FROM dbo.Car")) {
             while (rs.next()) {
                 cars.add(new Car(
                     rs.getInt("id"), rs.getString("model"), rs.getInt("year"), rs.getDouble("price"), CarStatus.valueOf(rs.getInt("status"))
