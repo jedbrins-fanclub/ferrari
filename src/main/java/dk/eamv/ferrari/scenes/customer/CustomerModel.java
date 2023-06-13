@@ -77,7 +77,7 @@ public final class CustomerModel {
     public static ArrayList<Customer> readAll() {
         ArrayList<Customer> customers = new ArrayList<Customer>();
 
-        try (ResultSet rs = Database.query("SELECT * FROM dbo.Customer")) {
+        try (ResultSet rs = Database.query("SELECT * FROM dbo.Customer WHERE NOT status = " + CustomerStatus.DELETED.toInt())) {
             while (rs.next()) {
                 customers.add(new Customer(
                     rs.getInt("id"), rs.getString("first_name"), rs.getString("last_name"),

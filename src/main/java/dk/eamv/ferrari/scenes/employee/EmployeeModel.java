@@ -77,7 +77,7 @@ public final class EmployeeModel {
     public static ArrayList<Employee> readAll() {
         ArrayList<Employee> employees = new ArrayList<Employee>();
 
-        try (ResultSet rs = Database.query("SELECT * FROM dbo.Employee")) {
+        try (ResultSet rs = Database.query("SELECT * FROM dbo.Employee WHERE NOT status = " + EmployeeStatus.DELETED.toInt())) {
             while (rs.next()) {
                 employees.add(new Employee(
                     rs.getInt("id"), rs.getString("first_name"), rs.getString("last_name"),
