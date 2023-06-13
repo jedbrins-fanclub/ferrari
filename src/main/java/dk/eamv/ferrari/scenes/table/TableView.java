@@ -23,17 +23,15 @@ public class TableView {
             button.getStyleClass().add("significant-button");
         }
 
-        HBox containerAboveTable = new HBox();
+        HBox containerAboveTable = new HBox(10);
         containerAboveTable.setAlignment(Pos.CENTER_LEFT);
         containerAboveTable.setPadding(new Insets(0, 10, 0, 0));
-        containerAboveTable.setSpacing(10);
         containerAboveTable.getChildren().addAll(searchContainer, buttonRow); // Put search box top right of table
 
-        VBox tableContainer = new VBox();
+        VBox tableContainer = new VBox(25);
         tableContainer.setAlignment(Pos.BOTTOM_CENTER);
         tableContainer.setMaxWidth(Double.MAX_VALUE);
         tableContainer.setPadding(new Insets(25));
-        tableContainer.setSpacing(25);
         tableContainer.getStyleClass().add("table-view-container");
         tableContainer.getChildren().addAll(containerAboveTable, tableView);
 
