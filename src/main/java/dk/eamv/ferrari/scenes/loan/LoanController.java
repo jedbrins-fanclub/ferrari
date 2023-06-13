@@ -62,8 +62,6 @@ public class LoanController {
 
     protected static void deleteLoan(Loan loan) {
         LoanModel.delete(loan.getId());
-
-        // When removing the Loan from the ObservableList, the TableView updates automatically
         loans.remove(loan);
     }
 
