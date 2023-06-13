@@ -32,6 +32,7 @@
 
 .login-box Label {
     -fx-font-weight: 900;
+    -fx-padding: 0 0 5px 0;
 }
 
 .login-box Button {
@@ -63,14 +64,8 @@
     -fx-prompt-text-fill: -darker-gray;
 }
 
-.login-forgotten-password {
-    -fx-text-fill: #555555;
-    -fx-font-weight: 300;
-    -fx-padding: 0 0 0 300;
-}
-
 .login-logo-horse {
-    -fx-fill: F9F9F9;
+    -fx-fill: #F9F9F9;
     -fx-opacity: 0.2;
 }
 
