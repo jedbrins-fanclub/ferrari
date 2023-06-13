@@ -65,7 +65,7 @@ public class FormBinder {
         TextField loanSize = FormInputHandler.getTextField("Lånets størrelse");
         AutoCompleteComboBox<Car> comboBox = FormInputHandler.getAutoCompleteComboBox("Bil");
         comboBox.setOnAction(e -> {
-            Car car = FormInputHandler.getEntityFromComboBox("Bil");
+            Car car = comboBox.getSelectedItem();
             if (car != null) {
                 setFieldsLoanCar(car);
                 loanSize.setText(calculateLoanSize());
@@ -81,8 +81,7 @@ public class FormBinder {
     protected static void bindFieldsCustomer() {
         AutoCompleteComboBox<Customer> comboBox = FormInputHandler.getAutoCompleteComboBox("CPR & Kunde");
         comboBox.setOnAction(e -> {
-            // TODO: Why not just comboBox.getValue()
-            Customer customer = FormInputHandler.getEntityFromComboBox("CPR & Kunde");
+            Customer customer = comboBox.getSelectedItem();
             if (customer != null) {
                 FormThreadHandler.checkRKI();
                 setFieldsLoanCustomer(customer);
@@ -95,9 +94,9 @@ public class FormBinder {
      * Binds it to action (On dropdown selected) to autofill the fields related to the Employee.
      */
     protected static void bindFieldsEmployee() {
-        AutoCompleteComboBox<Customer> comboBox = FormInputHandler.getAutoCompleteComboBox("Medarbejder");
+        AutoCompleteComboBox<Employee> comboBox = FormInputHandler.getAutoCompleteComboBox("Medarbejder");
         comboBox.setOnAction(e -> {
-            Employee employee = FormInputHandler.getEntityFromComboBox("Medarbejder");
+            Employee employee = comboBox.getSelectedItem();
             if (employee != null) {
                 setFieldsLoanEmployee(employee);
             }
