@@ -26,23 +26,13 @@ public final class FormFactory {
         FormWrapper.showDialog(title);
     }
 
-    public static void updateCarFormDialogBox(Car car) {
-        FormWrapper.wrapUpdate(builder.buildCarForm(), car);
-        FormWrapper.showDialog("Opdater bil");
-    }
-
-    public static void updateCustomerFormDialogBox(Customer customer) {
-        FormWrapper.wrapUpdate(builder.buildCustomerForm(), customer);
-        FormWrapper.showDialog("Opdater Kunde");
-    }
-
-    public static void updateEmployeeFormDialogBox(Employee employee) {
-        FormWrapper.wrapUpdate(builder.buildEmployeeForm(), employee);
-        FormWrapper.showDialog("Opdater medarbejder");
-    }
-
-    public static void updateLoanFormDialogBox(Loan loan) {
-        FormWrapper.wrapUpdate(builder.buildLoanForm(), loan);
-        FormWrapper.showDialog("Opdater lån");
+    public static void updateDialogBox(CRUDType type, String title, Object object) {
+        switch (type) {
+            case CAR -> FormWrapper.wrapUpdate(builder.buildCarForm(), (Car)object);
+            case CUSTOMER -> FormWrapper.wrapUpdate(builder.buildCustomerForm(), (Customer)object);
+            case EMPLOYEE -> FormWrapper.wrapUpdate(builder.buildEmployeeForm(), (Employee)object);
+            case LOAN -> FormWrapper.wrapUpdate(builder.buildLoanForm(), (Loan)object);
+        }
+        FormWrapper.showDialog(title);
     }
 }

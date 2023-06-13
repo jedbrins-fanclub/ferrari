@@ -54,8 +54,7 @@ public class LoanController {
     }
 
     protected static void updateLoan(Loan loan) {
-        FormFactory.updateLoanFormDialogBox(loan);
-        LoanView.refreshTableView();
+        FormFactory.updateDialogBox(CRUDType.LOAN, "Opdater lån", loan);
     }
 
     protected static void deleteLoan(Loan loan) {

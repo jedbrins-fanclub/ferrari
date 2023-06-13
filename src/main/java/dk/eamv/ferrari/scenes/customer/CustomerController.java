@@ -42,8 +42,7 @@ public class CustomerController {
     }
 
     protected static void updateCustomer(Customer customer) {
-        FormFactory.updateCustomerFormDialogBox(customer);
-        CustomerView.refreshTableView();
+        FormFactory.updateDialogBox(CRUDType.CUSTOMER, "Opdater kunde", customer);
     }
 
     protected static void deleteCustomer(Customer customer) {

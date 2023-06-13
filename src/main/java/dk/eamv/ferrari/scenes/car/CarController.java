@@ -39,8 +39,7 @@ public class CarController {
     }
 
     protected static void updateCar(Car car) {
-        FormFactory.updateCarFormDialogBox(car);
-        CarView.refreshTableView();
+        FormFactory.updateDialogBox(CRUDType.CAR, "Opdater bil", car);
     }
 
     protected static void deleteCar(Car car) {

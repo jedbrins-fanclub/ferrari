@@ -40,8 +40,7 @@ public class EmployeeController {
     }
 
     protected static void updateEmployee(Employee employee) {
-        FormFactory.updateEmployeeFormDialogBox(employee);
-        EmployeeView.refreshTableView();
+        FormFactory.updateDialogBox(CRUDType.EMPLOYEE, "Opdater sælger", employee);
     }
 
     protected static void deleteEmployee(Employee employee) {
