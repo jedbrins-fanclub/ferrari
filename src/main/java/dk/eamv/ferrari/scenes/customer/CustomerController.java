@@ -3,6 +3,7 @@ package dk.eamv.ferrari.scenes.customer;
 import dk.eamv.ferrari.managers.SessionManager;
 import dk.eamv.ferrari.resources.SVGResources;
 import dk.eamv.ferrari.sharedcomponents.filter.FilteredTableBuilder;
+import dk.eamv.ferrari.sharedcomponents.forms.CRUDType;
 import dk.eamv.ferrari.sharedcomponents.forms.FormFactory;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -33,7 +34,7 @@ public class CustomerController {
     }
 
     protected static void showCreateCustomer() {
-        FormFactory.createCustomerFormDialogBox();
+        FormFactory.createDialogBox(CRUDType.CUSTOMER, "Opret Kunde");
     }
 
     public static void createCustomer(Customer customer) {

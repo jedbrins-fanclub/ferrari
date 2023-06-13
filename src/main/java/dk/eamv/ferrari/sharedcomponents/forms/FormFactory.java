@@ -15,24 +15,15 @@ import dk.eamv.ferrari.scenes.loan.Loan;
 public final class FormFactory {
     private static Form.Builder builder = new Form.Builder();
 
-    public static void createCarFormDialogBox() {
-        FormWrapper.wrapCreate(builder.buildCarForm(), CRUDType.CAR);
-        FormWrapper.showDialog("Opret bil");
-    }
+    public static void createDialogBox(CRUDType type, String title) {
+        switch (type) {
+            case CAR -> FormWrapper.wrapCreate(builder.buildCarForm(), type);
+            case CUSTOMER -> FormWrapper.wrapCreate(builder.buildCustomerForm(), type);
+            case EMPLOYEE -> FormWrapper.wrapCreate(builder.buildEmployeeForm(), type);
+            case LOAN -> FormWrapper.wrapCreate(builder.buildLoanForm(), type);
+        }
 
-    public static void createCustomerFormDialogBox() {
-        FormWrapper.wrapCreate(builder.buildCustomerForm(), CRUDType.CUSTOMER);
-        FormWrapper.showDialog("Opret kunde");
-    }
-
-    public static void createEmployeeFormDialogBox() {
-        FormWrapper.wrapCreate(builder.buildEmployeeForm(), CRUDType.EMPLOYEE);
-        FormWrapper.showDialog("Opret medarbejder");
-    }
-
-    public static void createLoanFormDialogBox() {
-        FormWrapper.wrapCreate(builder.buildLoanForm(), CRUDType.LOAN);
-        FormWrapper.showDialog("Opret lån");
+        FormWrapper.showDialog(title);
     }
 
     public static void updateCarFormDialogBox(Car car) {

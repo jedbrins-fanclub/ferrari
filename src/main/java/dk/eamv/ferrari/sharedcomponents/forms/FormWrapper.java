@@ -61,7 +61,7 @@ public final class FormWrapper {
         FormInputHandler.setForm(form);
         FormBinder.setForm(form);
     }
-    
+
     /**
      * Creates a dialog based on the CRUD type argument passed, then sets the mouselisteners for it.
      * @param form - the form of the active dialog.
