@@ -242,7 +242,7 @@ public class FormBinder {
      * @see FormInputHandler#getDouble(String)
      */
     private static String calculateLoanSize() {
-        //Both start at 0, so we can return something (0 in this case) if theyre null & empty.
+        // Both start at 0, so we can return something (0 in this case) if theyre null & empty.
         double price = 0;
         double downpayment = 0;
 
@@ -253,7 +253,7 @@ public class FormBinder {
 
         TextField textField = FormInputHandler.getTextField("Udbetaling");
         if (!textField.getText().isEmpty()) {
-            downpayment = FormInputHandler.getDouble("Udbetaling"); //call this instead of textField, to format ,s to .s (check javadoc).
+            downpayment = FormInputHandler.getDouble("Udbetaling"); // Call this instead of textField, to format ,s to .s (check javadoc).
         }
 
         return String.valueOf(price - downpayment);
@@ -268,13 +268,13 @@ public class FormBinder {
         double downpayment = 0;
         double carPrice = 0;
 
-        totalInterestRate += banksInterestRate; //add banks rate
+        totalInterestRate += banksInterestRate; // Add banks rate
 
-        totalInterestRate += getCreditScoreInterestRate(customersCreditScore); //add interest rate based on customers credit score
+        totalInterestRate += getCreditScoreInterestRate(customersCreditScore); // Add interest rate based on customers credit score
 
         TextField downpaymentField = FormInputHandler.getTextField("Udbetaling");
         if (!downpaymentField.getText().isEmpty()) {
-            downpayment = FormInputHandler.getDouble("Udbetaling"); //calls this method to convert ","s to "."s (check javadoc).
+            downpayment = FormInputHandler.getDouble("Udbetaling"); // Calls this method to convert ","s to "."s (check javadoc).
         }
 
         Car selectedCar = FormInputHandler.getEntityFromComboBox("Bil");
@@ -283,7 +283,8 @@ public class FormBinder {
         }
 
         if (!downpaymentField.getText().isEmpty() && selectedCar != null) {
-            if (downpayment / carPrice < 0.5) { //add 1% if loansize > 50%
+            // Add 1% if loansize > 50%
+            if (downpayment / carPrice < 0.5) {
                 totalInterestRate += 1;
             }
         }
@@ -292,7 +293,8 @@ public class FormBinder {
         DatePicker end = FormInputHandler.getDatePicker("Slut dato DD/MM/ÅÅÅÅ");
 
         if (start.getValue() != null && end.getValue() != null) {
-            if (calculateDaysBetween(start, end) > 3 * 365) { //add 1% if loan period > 3 years.
+            // Add 1% if loan period > 3 years.
+            if (calculateDaysBetween(start, end) > 3 * 365) {
                 totalInterestRate += 1;
             }
         }
@@ -325,15 +327,13 @@ public class FormBinder {
     private static int getCreditScoreInterestRate(Rating creditRating) {
         int interestRate = 0;
 
-        if (creditRating == null) {
-            return interestRate;
-        }
-
-        switch (creditRating) {
-            case A -> interestRate += 1;
-            case B -> interestRate += 2;
-            case C -> interestRate += 3;
-            default -> interestRate += 0;
+        if (creditRating != null) {
+            interestRate += switch (creditRating) {
+                case A -> 1;
+                case B -> 2;
+                case C -> 3;
+                default -> 0;
+            };
         }
 
         return interestRate;
@@ -355,6 +355,6 @@ public class FormBinder {
 
         double totalDays = days + months * 30.5 + years * 365;
 
-        return (int) totalDays;
+        return (int)totalDays;
     }
 }
