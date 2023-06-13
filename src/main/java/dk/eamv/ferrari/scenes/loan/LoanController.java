@@ -1,5 +1,8 @@
 package dk.eamv.ferrari.scenes.loan;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
 import java.util.Optional;
 
 import dk.eamv.ferrari.csv.CSVWriter;
@@ -42,7 +45,7 @@ public class LoanController {
                 .withButtonColumn(SVGResources.getDeleteIcon(), LoanController::deleteLoan);
         }
 
-        filteredTableBuilder.withButtonColumn(SVGResources.getExportCSVIcon(), LoanController::exportLoan);
+        filteredTableBuilder.withButtonColumn(SVGResources.getExportCSVIcon(), LoanController::export);
     }
 
     protected static void showCreateLoan() {
@@ -95,21 +98,32 @@ public class LoanController {
             }
         }
     }
-
-    private static void exportLoan(Loan loan) {
+    
+    protected static void exportAllLoans() {
+        export(Arrays.copyOf(loans.toArray(), loans.size(), Loan[].class));
+    }
+    
+    private static void export(Loan... list) {
         new Thread(() -> {
-            CSVWriter writer = new CSVWriter(String.format("%d_%s_%s.csv", loan.getCustomer_id(), loan.getStartDate(), loan.getEndDate()));
+            LocalDate currentDate = LocalDate.now();
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            String formattedDate = currentDate.format(formatter);
+
+            CSVWriter writer = new CSVWriter(formattedDate + ".csv");
             writer.writeHeader(
                 "car id", "customer id", "employee id",
                 "loan size", "downpayment", "interest rate",
                 "start date", "end date", "status"
             );
 
-            writer.writeRow(
-                loan.getCar_id(), loan.getCustomer_id(), loan.getEmployee_id(),
-                loan.getLoanSize(), loan.getDownPayment(), loan.getInterestRate(),
-                loan.getStartDate(), loan.getEndDate(), loan.getStatus().getDisplayName()
-            );
+            for (Loan loan : list) {
+                writer.writeRow(
+                    loan.getCar_id(), loan.getCustomer_id(), loan.getEmployee_id(),
+                    loan.getLoanSize(), loan.getDownPayment(), loan.getInterestRate(),
+                    loan.getStartDate(), loan.getEndDate(), loan.getStatus().getDisplayName()
+                );
+            }
+
             writer.close();
         }).start();
     }

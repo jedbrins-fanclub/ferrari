@@ -17,7 +17,7 @@ import javafx.scene.layout.VBox;
 public class LoanView {
     private static FilteredTable<Loan> tableView;
     private static SearchContainer searchContainer;
-    private static Button buttonCreate;
+    private static HBox buttonRow = new HBox(5);
 
     public static BorderPane getScene() {
         BorderPane scene = new BorderPane();
@@ -35,13 +35,13 @@ public class LoanView {
 
         initTableView();
         initSearchContainer();
-        initButtonCreate();
+        initButtonRow();
 
         HBox containerAboveTable = new HBox();
         containerAboveTable.setAlignment(Pos.CENTER_LEFT);
         containerAboveTable.setPadding(new Insets(0, 10, 0, 0));
         containerAboveTable.setSpacing(10);
-        containerAboveTable.getChildren().addAll(searchContainer, buttonCreate); // Put search box top right of table
+        containerAboveTable.getChildren().addAll(searchContainer, buttonRow); // Put search box top right of table
 
         VBox tableContainer = new VBox();
         tableContainer.setAlignment(Pos.BOTTOM_CENTER);
@@ -76,11 +76,17 @@ public class LoanView {
         searchContainer = new SearchContainer(new FilterTextField<>(LoanController.filteredTableBuilder));
     }
 
-    private static void initButtonCreate() {
-        buttonCreate = new Button("Opret ny låneaftale");
-        buttonCreate.getStyleClass().add("create-button");
+    private static void initButtonRow() {
+        Button buttonCreate = new Button("Opret ny låneaftale");
+        Button buttonExport = new Button("Eksporter alle lån");
+
+        buttonCreate.getStyleClass().add("significant-button");
+        buttonExport.getStyleClass().add("significant-button");
 
         buttonCreate.setOnAction(e -> LoanController.showCreateLoan());
+        buttonExport.setOnAction(e -> LoanController.exportAllLoans());
+
+        buttonRow.getChildren().setAll(buttonCreate, buttonExport);
     }
 
     protected static void showEditLoanDialog(Loan selectedLoan) {
