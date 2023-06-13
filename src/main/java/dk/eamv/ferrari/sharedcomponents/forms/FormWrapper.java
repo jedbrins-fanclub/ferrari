@@ -180,10 +180,12 @@ public final class FormWrapper {
                 newLoan.setId(loan.getId());
                 LoanModel.update(newLoan);
 
-                //update in TableView 
                 ObservableList<Loan> loans = LoanController.getLoans();
-                loans.remove(loan);
-                loans.add(newLoan);
+                int index = loans.indexOf(loan);
+                loans.remove(index);
+                loans.add(index, newLoan);
+
+                closeDialog(dialog);
             }
         });
     }
