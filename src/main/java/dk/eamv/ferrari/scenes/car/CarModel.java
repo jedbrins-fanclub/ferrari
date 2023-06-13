@@ -49,7 +49,7 @@ public final class CarModel {
 
         try {
             if (rs.next()) {
-                return new Car(id, rs.getString("model"), rs.getInt("year"), rs.getDouble("price"));
+                return new Car(id, rs.getString("model"), rs.getInt("year"), rs.getDouble("price"), CarStatus.valueOf(rs.getInt("status")));
             }
         } catch (SQLException exception) {
             exception.printStackTrace();
@@ -68,8 +68,7 @@ public final class CarModel {
         try (ResultSet rs = Database.query("SELECT * FROM dbo.Car WHERE status = " + CarStatus.ACTIVE.toInt())) {
             while (rs.next()) {
                 cars.add(new Car(
-                    rs.getInt("id"), rs.getString("model"),
-                    rs.getInt("year"), rs.getDouble("price")
+                    rs.getInt("id"), rs.getString("model"), rs.getInt("year"), rs.getDouble("price"), CarStatus.valueOf(rs.getInt("status"))
                 ));
             }
         } catch (SQLException exception) {

@@ -82,7 +82,7 @@ public final class CustomerModel {
                 customers.add(new Customer(
                     rs.getInt("id"), rs.getString("first_name"), rs.getString("last_name"),
                     rs.getString("phone_number"), rs.getString("email"),
-                    rs.getString("address"), rs.getString("cpr")
+                    rs.getString("address"), rs.getString("cpr"), CustomerStatus.valueOf(rs.getInt("status"))
                 ));
             }
         } catch (SQLException exception) {
