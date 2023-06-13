@@ -32,7 +32,6 @@ public class SettingsView {
 
     private static StackPane getSettingsView() {
         Label statusLabel = new Label();
-        statusLabel.setVisible(false);
 
         Label settingsLabel = new Label("Indstillinger");
         settingsLabel.getStyleClass().add("settings-title");
@@ -48,7 +47,6 @@ public class SettingsView {
         NumericTextField telephoneInput = new NumericTextField(false, 8);
         telephoneInput.setText(SessionManager.getUser().getPhoneNumber());
     
-
         VBox telephoneContainer = new VBox(-2);
         telephoneContainer.setAlignment(Pos.CENTER);
         telephoneContainer.getChildren().addAll(emailLabel, emailInput, telephoneLabel, telephoneInput);
@@ -60,7 +58,7 @@ public class SettingsView {
         PasswordField newPasswordInput = new PasswordField();
 
         Label confirmPasswordLabel = new Label("Gentag kode");
-        PasswordField confirmPasswordInput = new  PasswordField();
+        PasswordField confirmPasswordInput = new PasswordField();
 
         VBox passwordContainer = new VBox(-2);
         passwordContainer.setAlignment(Pos.CENTER);
@@ -75,33 +73,26 @@ public class SettingsView {
             if (!emailInput.getText().equals(SessionManager.getUser().getEmail())) {
                 SessionManager.getUser().setEmail(emailInput.getText());
                 EmployeeModel.update(SessionManager.getUser());
-
                 statusLabel.setText("Email er blevet ændret");
-                statusLabel.setVisible(true);
             }
-        
+
             if (!telephoneInput.getText().equals(SessionManager.getUser().getPhoneNumber())) {
                 SessionManager.getUser().setPhoneNumber(telephoneInput.getText());
                 EmployeeModel.update(SessionManager.getUser());
-
                 statusLabel.setText("Telefonnummeret er ændret");
-                statusLabel.setVisible(true);
             }
-        
+
             if (!currentPasswordInput.getText().equals(SessionManager.getUser().getPassword())) {
                 statusLabel.setText("Koden er IKKE ok");
-                statusLabel.setVisible(true);
                 return;
             }
-        
+
             if (newPasswordInput.getText().equals(confirmPasswordInput.getText())) {
                 statusLabel.setText("Koden er nu ændret");
                 SessionManager.getUser().setPassword(confirmPasswordInput.getText());
                 EmployeeModel.update(SessionManager.getUser());
-                statusLabel.setVisible(true);
             } else {
                 statusLabel.setText("Skriv den samme kode i 'ny kode' og 'gentag kode'");
-                statusLabel.setVisible(true);
             }
         });
 
