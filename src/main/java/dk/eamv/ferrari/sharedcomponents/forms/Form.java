@@ -243,13 +243,12 @@ public class Form {
          * @return - the customer form.
          */
         protected Form buildCustomerForm() {
-            form = new Form.Builder()
-                    .withFieldsString("Fornavn", "Efternavn")
-                    .withFieldNumbers(8, false, "Telefonnummer")
-                    .withFieldsString("Email", "Adresse")
-                    .withFieldNumbers(10, false, "CPR")
-                    .build();
-            return form;
+            return new Form.Builder()
+                .withFieldsString("Fornavn", "Efternavn")
+                .withFieldNumbers(8, false, "Telefonnummer")
+                .withFieldsString("Email", "Adresse")
+                .withFieldNumbers(10, false, "CPR")
+                .build();
         }
 
         /**
@@ -257,12 +256,11 @@ public class Form {
          * @return - the car form.
          */
         protected Form buildCarForm() {
-            form = new Form.Builder()
-                    .withFieldNumbers(4, false, "Årgang")
-                    .withFieldNumbers(-1, true, "Pris") //-1 = no maxlength constraint
-                    .withFieldsString("Model")
-                    .build();
-            return form;
+            return new Form.Builder()
+                .withFieldNumbers(4, false, "Årgang")
+                .withFieldNumbers(-1, true, "Pris") //-1 = no maxlength constraint
+                .withFieldsString("Model")
+                .build();
         }
 
         /**
@@ -270,13 +268,12 @@ public class Form {
          * @return - the employee form.
          */
         protected Form buildEmployeeForm() {
-            form = new Form.Builder()
-                    .withFieldsString("Fornavn", "Efternavn")
-                    .withFieldNumbers(8, false, "Telefon nr.")
-                    .withFieldsString("Email", "Kodeord")
-                    .withFieldNumbers(-1, false, "Udlånsgrænse")
-                    .build();
-            return form;
+            return new Form.Builder()
+                .withFieldsString("Fornavn", "Efternavn")
+                .withFieldNumbers(8, false, "Telefon nr.")
+                .withFieldsString("Email", "Kodeord")
+                .withFieldNumbers(-1, false, "Udlånsgrænse")
+                .build();
         }
         
         /**
@@ -284,7 +281,7 @@ public class Form {
          * @return - the loan form.
          */
         protected Form buildLoanForm() {
-            form = new Form.Builder()
+            return new Form.Builder()
                 .withDropDownBox(CarController.getCars(), "Bil")
                 .withDropDownBox(CustomerController.getCustomers(), "CPR & Kunde")
                 .withDropDownBox(EmployeeController.getEmployees(), "Medarbejder")
@@ -297,7 +294,6 @@ public class Form {
                 .withFieldsUneditable("Rente")
                 .withFieldsDatePicker()
                 .build();
-            return form;
         }
     }
 }
