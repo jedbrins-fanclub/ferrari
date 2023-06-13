@@ -186,28 +186,25 @@ public class FormBinder {
             }
 
             switch (type) {
-                case CAR: {
+                case CAR -> {
                     Car car = FormInputHandler.getFieldsCar();
                     CarController.getCars().add(car);
                     CarController.createCar(car);
-                    break;
                 }
 
-                case CUSTOMER: {
+                case CUSTOMER -> {
                     Customer customer = FormInputHandler.getFieldsCustomer();
                     CustomerController.getCustomers().add(customer);
                     CustomerController.createCustomer(customer);
-                    break;
                 }
 
-                case EMPLOYEE: {
+                case EMPLOYEE -> {
                     Employee employee = FormInputHandler.getFieldsEmployee();
                     EmployeeController.getEmployees().add(employee);
                     EmployeeController.createEmployee(employee);
-                    break;
                 }
 
-                case LOAN: {
+                case LOAN -> {
                     if (customersCreditScore.equals(Rating.D)) {
                         FormWrapper.showStatusLabel(true, "Kunden har kreditværdighed D");
                         return;
@@ -228,7 +225,6 @@ public class FormBinder {
                     Loan loan = FormInputHandler.getFieldsLoan();
                     LoanController.getLoans().add(loan);
                     LoanController.createLoan(loan);
-                    break;
                 }
             }
 
