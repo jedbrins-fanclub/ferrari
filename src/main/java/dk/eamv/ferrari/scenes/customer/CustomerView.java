@@ -1,5 +1,7 @@
 package dk.eamv.ferrari.scenes.customer;
 
+import java.util.Optional;
+
 import dk.eamv.ferrari.scenes.sidebar.SidebarButton;
 import dk.eamv.ferrari.scenes.sidebar.SidebarView;
 import dk.eamv.ferrari.sharedcomponents.filter.FilterTextField;
@@ -7,7 +9,10 @@ import dk.eamv.ferrari.sharedcomponents.filter.FilteredTable;
 import dk.eamv.ferrari.sharedcomponents.filter.SearchContainer;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
@@ -84,6 +89,18 @@ public class CustomerView {
 
     protected static void showEditCustomerDialog(Customer selectedCustomer) {
         CustomerController.updateCustomer(selectedCustomer);
+    }
+
+    protected static boolean confirmBan(Customer customer) {
+        Alert alert = new Alert(AlertType.CONFIRMATION);
+        alert.setTitle("Ban Kunde");
+        alert.setHeaderText(null);
+        alert.setContentText(
+            String.format("Er du sikker på at du vil banlyse %s %s?", customer.getFirstName(), customer.getLastName())
+        );
+
+        Optional<ButtonType> result = alert.showAndWait();
+        return result.get() == ButtonType.OK;
     }
 
     public static void refreshTableView() {

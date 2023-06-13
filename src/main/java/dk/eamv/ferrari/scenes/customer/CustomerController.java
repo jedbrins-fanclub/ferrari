@@ -29,7 +29,7 @@ public class CustomerController {
                 filteredTableBuilder
                 .withButtonColumn(SVGResources.getEditIcon(), CustomerView::showEditCustomerDialog)
                 .withButtonColumn(SVGResources.getDeleteIcon(), CustomerController::deleteCustomer)
-                .withButtonColumn(SVGResources.getBanIcon(), CustomerController::banCustomer); // TODO: Dialog
+                .withButtonColumn(SVGResources.getBanIcon(), CustomerController::banCustomer);
         }
     }
 
@@ -51,9 +51,11 @@ public class CustomerController {
     }
 
     protected static void banCustomer(Customer customer) {
-        customer.setStatus(CustomerStatus.BANNED);
-        CustomerModel.update(customer);
-        customers.remove(customer);
+        if (CustomerView.confirmBan(customer)) {
+            customer.setStatus(CustomerStatus.BANNED);
+            CustomerModel.update(customer);
+            customers.remove(customer);
+        }
     }
 
     public static ObservableList<Customer> getCustomers() {
