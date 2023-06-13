@@ -96,7 +96,7 @@ public class FilteredTableBuilder<T> implements FilteredTableBuilderInfo<T> {
                 } else {
                     // Update the text and colour depending on LoanState enum
                     setText(item.getDisplayName());
-                    switch (item.getState()) {
+                    switch (item) {
                         case PENDING -> setTextFill(Color.ORANGE);
                         case APPROVED -> setTextFill(Color.GREEN);
                         case REJECTED -> setTextFill(Color.RED);

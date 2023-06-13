@@ -32,7 +32,7 @@ public final class LoanModel {
             statement.setDouble(6, loan.getInterestRate());
             statement.setDate(7, convertDate(loan.getStartDate()));
             statement.setDate(8, convertDate(loan.getEndDate()));
-            statement.setInt(9, loan.getStatus().getStatusNumber());
+            statement.setInt(9, loan.getStatus().toInt());
 
             int row = statement.executeUpdate();
             assert row != 0: "Unable to insert Loan into database";
@@ -60,7 +60,7 @@ public final class LoanModel {
                 return new Loan(
                     id, rs.getInt("car_id"), rs.getInt("customer_id"), rs.getInt("employee_id"),
                     rs.getDouble("loan_size"), rs.getDouble("down_payment"), rs.getDouble("interest_rate"),
-                    rs.getDate("start_date"), rs.getDate("end_date"), new LoanStatus(rs.getInt("status"))
+                    rs.getDate("start_date"), rs.getDate("end_date"), LoanStatus.valueOf(rs.getInt("status"))
                 );
             }
         } catch (SQLException exception) {
@@ -82,7 +82,7 @@ public final class LoanModel {
                 loans.add(new Loan(
                     rs.getInt("id"), rs.getInt("car_id"), rs.getInt("customer_id"), rs.getInt("employee_id"),
                     rs.getDouble("loan_size"), rs.getDouble("down_payment"), rs.getDouble("interest_rate"),
-                    rs.getDate("start_date"), rs.getDate("end_date"), new LoanStatus(rs.getInt("status"))
+                    rs.getDate("start_date"), rs.getDate("end_date"), LoanStatus.valueOf(rs.getInt("status"))
                 ));
             }
         } catch (SQLException exception) {
@@ -115,7 +115,7 @@ public final class LoanModel {
             statement.setDouble(6, loan.getInterestRate());
             statement.setDate(7, convertDate(loan.getStartDate()));
             statement.setDate(8, convertDate(loan.getEndDate()));
-            statement.setInt(9, loan.getStatus().getStatusNumber());
+            statement.setInt(9, loan.getStatus().toInt());
             statement.setInt(10, loan.getId());
 
             statement.executeUpdate();

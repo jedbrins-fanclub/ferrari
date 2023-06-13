@@ -67,8 +67,8 @@ public class LoanController {
     protected static void updateLoanStatus(Loan loan) {
         // Create a ChoiceBox to enable the user to set the status of this loan
         ChoiceBox<String> choiceBox = new ChoiceBox<>();
-        for (LoanState state : LoanState.values()) {
-            choiceBox.getItems().add(new LoanStatus(state).getDisplayName());
+        for (LoanStatus state : LoanStatus.values()) {
+            choiceBox.getItems().add(state.getDisplayName());
         }
 
         // Initial value of the ChoiceBox is set to the current status of the loan
@@ -85,9 +85,9 @@ public class LoanController {
         }
 
         if (result.get() == ButtonType.OK) {
-            for (LoanState state : LoanState.values()) {
-                if (new LoanStatus(state).getDisplayName().equals(choiceBox.getValue())) {
-                    loan.setStatus(new LoanStatus(state));
+            for (LoanStatus state : LoanStatus.values()) {
+                if (state.getDisplayName().equals(choiceBox.getValue())) {
+                    loan.setStatus(state);
                     LoanModel.update(loan);
                     LoanView.refreshTableView(); // TableView is refreshed so the new status is shown
                     break;

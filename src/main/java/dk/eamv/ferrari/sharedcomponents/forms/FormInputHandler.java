@@ -75,7 +75,7 @@ public class FormInputHandler {
             car.getId(), customer.getId(), employee.getId(),
             getDouble("Lånets størrelse"), getDouble("Udbetaling"), getDouble("Rente"),
             getSelectedDate("Start dato DD/MM/ÅÅÅÅ"), getSelectedDate("Slut dato DD/MM/ÅÅÅÅ"),
-            new LoanStatus(3)
+            LoanStatus.valueOf(3)
         );
         return loan;
     }
