@@ -8,7 +8,6 @@ import dk.eamv.ferrari.scenes.car.Car;
 import dk.eamv.ferrari.scenes.car.CarController;
 import dk.eamv.ferrari.scenes.customer.Customer;
 import dk.eamv.ferrari.scenes.customer.CustomerController;
-import dk.eamv.ferrari.scenes.customer.CustomerStatus;
 import dk.eamv.ferrari.scenes.employee.Employee;
 import dk.eamv.ferrari.scenes.employee.EmployeeController;
 import dk.eamv.ferrari.scenes.loan.Loan;
