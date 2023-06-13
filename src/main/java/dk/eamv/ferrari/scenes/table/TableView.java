@@ -45,7 +45,7 @@ public class TableView {
         return pane;
     }
 
-    protected static <E> void initSearchContainer(FilteredTableBuilder<E> filteredTable) {
+    protected static void initSearchContainer(FilteredTableBuilder<?> filteredTable) {
         searchContainer = new SearchContainer(new FilterTextField<>(filteredTable));
     }
 
