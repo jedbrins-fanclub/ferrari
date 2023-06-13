@@ -332,7 +332,7 @@ public class FormBinder {
                 case A -> 1;
                 case B -> 2;
                 case C -> 3;
-                default -> 0;
+                case D -> 0;
             };
         }
 
