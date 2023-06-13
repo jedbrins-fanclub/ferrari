@@ -6,7 +6,7 @@ import dk.eamv.ferrari.csv.CSVWriter;
 import dk.eamv.ferrari.managers.SessionManager;
 import dk.eamv.ferrari.resources.SVGResources;
 import dk.eamv.ferrari.sharedcomponents.filter.FilteredTableBuilder;
-import dk.eamv.ferrari.sharedcomponents.forms.CRUDType;
+import dk.eamv.ferrari.sharedcomponents.forms.FormType;
 import dk.eamv.ferrari.sharedcomponents.forms.FormFactory;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -46,7 +46,7 @@ public class LoanController {
     }
 
     protected static void showCreateLoan() {
-        FormFactory.createDialogBox(CRUDType.LOAN, "Opret Lån");
+        FormFactory.createDialogBox(FormType.LOAN, "Opret Lån");
     }
 
     public static void createLoan(Loan loan) {
@@ -54,7 +54,7 @@ public class LoanController {
     }
 
     protected static void updateLoan(Loan loan) {
-        FormFactory.updateDialogBox(CRUDType.LOAN, "Opdater lån", loan);
+        FormFactory.updateDialogBox(FormType.LOAN, "Opdater lån", loan);
     }
 
     protected static void deleteLoan(Loan loan) {

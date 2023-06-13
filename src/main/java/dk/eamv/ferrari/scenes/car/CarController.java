@@ -3,7 +3,7 @@ package dk.eamv.ferrari.scenes.car;
 import dk.eamv.ferrari.managers.SessionManager;
 import dk.eamv.ferrari.resources.SVGResources;
 import dk.eamv.ferrari.sharedcomponents.filter.FilteredTableBuilder;
-import dk.eamv.ferrari.sharedcomponents.forms.CRUDType;
+import dk.eamv.ferrari.sharedcomponents.forms.FormType;
 import dk.eamv.ferrari.sharedcomponents.forms.FormFactory;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -31,7 +31,7 @@ public class CarController {
     }
 
     protected static void showCreateCar() {
-        FormFactory.createDialogBox(CRUDType.CAR, "Opret Bil");
+        FormFactory.createDialogBox(FormType.CAR, "Opret Bil");
     }
 
     public static void createCar(Car car) {
@@ -39,7 +39,7 @@ public class CarController {
     }
 
     protected static void updateCar(Car car) {
-        FormFactory.updateDialogBox(CRUDType.CAR, "Opdater bil", car);
+        FormFactory.updateDialogBox(FormType.CAR, "Opdater bil", car);
     }
 
     protected static void deleteCar(Car car) {

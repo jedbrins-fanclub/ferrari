@@ -176,7 +176,7 @@ public class FormBinder {
      * Sets the mouse listener for the "OK" button in the form, based on the passed argument.
      * @param type - the CRUD Type (Car, Customer, Employee, Loan)
      */
-    protected static void setCreateMouseListener(CRUDType type) {
+    protected static void setCreateMouseListener(FormType type) {
         Button buttonOK = FormWrapper.getButtonOK();
 
         buttonOK.setOnMouseClicked(e -> {

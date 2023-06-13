@@ -15,7 +15,7 @@ import dk.eamv.ferrari.scenes.loan.Loan;
 public final class FormFactory {
     private static Form.Builder builder = new Form.Builder();
 
-    public static void createDialogBox(CRUDType type, String title) {
+    public static void createDialogBox(FormType type, String title) {
         switch (type) {
             case CAR -> FormWrapper.wrapCreate(builder.buildCarForm(), type);
             case CUSTOMER -> FormWrapper.wrapCreate(builder.buildCustomerForm(), type);
@@ -25,7 +25,7 @@ public final class FormFactory {
         FormWrapper.showDialog(title);
     }
 
-    public static void updateDialogBox(CRUDType type, String title, Object object) {
+    public static void updateDialogBox(FormType type, String title, Object object) {
         switch (type) {
             case CAR -> FormWrapper.wrapUpdate(builder.buildCarForm(), (Car)object);
             case CUSTOMER -> FormWrapper.wrapUpdate(builder.buildCustomerForm(), (Customer)object);

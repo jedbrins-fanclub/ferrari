@@ -3,7 +3,7 @@ package dk.eamv.ferrari.scenes.employee;
 import dk.eamv.ferrari.managers.SessionManager;
 import dk.eamv.ferrari.resources.SVGResources;
 import dk.eamv.ferrari.sharedcomponents.filter.FilteredTableBuilder;
-import dk.eamv.ferrari.sharedcomponents.forms.CRUDType;
+import dk.eamv.ferrari.sharedcomponents.forms.FormType;
 import dk.eamv.ferrari.sharedcomponents.forms.FormFactory;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -32,7 +32,7 @@ public class EmployeeController {
     }
 
     protected static void showCreateEmployee() {
-        FormFactory.createDialogBox(CRUDType.EMPLOYEE, "Opret Sælger");
+        FormFactory.createDialogBox(FormType.EMPLOYEE, "Opret Sælger");
     }
 
     public static void createEmployee(Employee employee) {
@@ -40,7 +40,7 @@ public class EmployeeController {
     }
 
     protected static void updateEmployee(Employee employee) {
-        FormFactory.updateDialogBox(CRUDType.EMPLOYEE, "Opdater sælger", employee);
+        FormFactory.updateDialogBox(FormType.EMPLOYEE, "Opdater sælger", employee);
     }
 
     protected static void deleteEmployee(Employee employee) {

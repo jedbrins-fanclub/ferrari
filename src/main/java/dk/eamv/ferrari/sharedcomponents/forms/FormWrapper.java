@@ -68,11 +68,11 @@ public final class FormWrapper {
      * @param form - the form of the active dialog.
      * @param type - (CRUDType. Car, Customer, Employee, Loan)
      */
-    protected static void wrapCreate(Form form, CRUDType type) {
+    protected static void wrapCreate(Form form, FormType type) {
         initForm(form);
         initDialog();
         FormBinder.setCreateMouseListener(type);
-        if (type == CRUDType.LOAN) {
+        if (type == FormType.LOAN) {
             FormBinder.applyLoanFormBinds();
             FormThreadHandler.checkRate();
         }
