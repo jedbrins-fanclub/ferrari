@@ -1,13 +1,9 @@
-
 .root {
   -ferrari-red: #F50000;
   -darkest-gray: #111111;
   -darker-gray: #1F1F1F;
   -dark-gray: #373737;
   -text-color: #FFFFFF;
-}
-
-.root {
   -fx-font-family: "Inter", "Segoe UI", "Arial", sans-serif;
   -fx-background-color: lightgrey;
 }
@@ -16,19 +12,31 @@
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 10, 0, 0, 5);
 }
 
-/* Login */
-.login {
+.login-box {
     -fx-font-family: "Inter", "Segoe UI", "Arial", sans-serif;
     -fx-background-color: #f7f7f7;
+    -fx-max-width: 400px;
+    -fx-max-height: 325px;
+    -fx-border-radius: 50px;
+    -fx-background-radius: 50px;
 }
 
-.login Label {
+.login-field-box {
+    -fx-padding: 20px 30px;
+}
+
+.login-box TextField, .login-box PasswordField {
+    -fx-prompt-text-fill: #555555;
+    -fx-background-color: transparent;
+}
+
+.login-box Label {
     -fx-font-weight: 900;
 }
 
-.login Button {
+.login-box Button {
     -fx-background-color: -darker-gray;
-    -fx-pref-width: 400;
+    -fx-pref-width: 350;
     -fx-pref-height: 40;
     -fx-background-radius: 50;
     -fx-text-fill: -text-color;
@@ -36,27 +44,19 @@
     -fx-font-weight: bold;
 }
 
-.login Button:hover {
+.login-box Button:hover {
     -fx-background-color: -dark-gray;
 }
 
 .login-header {
     -fx-font-size: 24;
     -fx-font-weight: bold;
-    -fx-padding: 0 0 0 215;
 }
 
 .login-error {
     -fx-font-weight: bold;
     -fx-padding: 0 0 0 201;
     -fx-text-fill: darkred;
-}
-
-
-.login TextField, .login PasswordField {
-    -fx-prompt-text-fill: #555555;
-    -fx-background-color: transparent;
-    -fx-pref-width: 400;
 }
 
 .login TextField:hover, PasswordField:hover {

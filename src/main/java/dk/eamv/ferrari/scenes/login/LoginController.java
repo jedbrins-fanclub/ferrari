@@ -10,6 +10,7 @@ import dk.eamv.ferrari.managers.SessionManager;
 // Modified by: Benjamin
 public class LoginController {
     public static void authenticate() {
+        /*
         Employee employee = LoginModel.authenticate(LoginView.getUsernameInput(), LoginView.getPasswordInput());
         if (employee != null) {
             SessionManager.setUser(employee);
@@ -18,5 +19,6 @@ public class LoginController {
         } else {
             LoginView.showErrorMessage(true);
         }
+        */
     }
 }

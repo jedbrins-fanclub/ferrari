@@ -26,7 +26,7 @@ public class TableView {
         HBox containerAboveTable = new HBox(10);
         containerAboveTable.setAlignment(Pos.CENTER_LEFT);
         containerAboveTable.setPadding(new Insets(0, 10, 0, 0));
-        containerAboveTable.getChildren().addAll(searchContainer, buttonRow); // Put search box top right of table
+        containerAboveTable.getChildren().addAll(searchContainer, buttonRow);
 
         VBox tableContainer = new VBox(25);
         tableContainer.setAlignment(Pos.BOTTOM_CENTER);
