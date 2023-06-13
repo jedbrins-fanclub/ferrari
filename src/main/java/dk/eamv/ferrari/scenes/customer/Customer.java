@@ -93,6 +93,10 @@ public class Customer {
         this.status = status;
     }
 
+    public boolean isBanned() {
+        return status == CustomerStatus.BANNED;
+    }
+
     public ArrayList<String> getProperties() {
         ArrayList<String> properties = new ArrayList<String>();
         properties.add(address);

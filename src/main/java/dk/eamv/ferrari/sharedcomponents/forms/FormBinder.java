@@ -8,6 +8,7 @@ import dk.eamv.ferrari.scenes.car.Car;
 import dk.eamv.ferrari.scenes.car.CarController;
 import dk.eamv.ferrari.scenes.customer.Customer;
 import dk.eamv.ferrari.scenes.customer.CustomerController;
+import dk.eamv.ferrari.scenes.customer.CustomerStatus;
 import dk.eamv.ferrari.scenes.employee.Employee;
 import dk.eamv.ferrari.scenes.employee.EmployeeController;
 import dk.eamv.ferrari.scenes.loan.Loan;
@@ -83,7 +84,10 @@ public class FormBinder {
         comboBox.setOnAction(e -> {
             Customer customer = comboBox.getSelectedItem();
             if (customer != null) {
-                FormThreadHandler.checkRKI();
+                if (verifyCustomerNotBanned(customer)) {
+                    FormThreadHandler.checkRKI();
+                }
+
                 setFieldsLoanCustomer(customer);
             }
         });
@@ -205,6 +209,11 @@ public class FormBinder {
                 }
 
                 case LOAN -> {
+                    Customer customer = FormInputHandler.getEntityFromComboBox("CPR & Kunde");
+                    if (!verifyCustomerNotBanned(customer)) {
+                        return;
+                    }
+
                     if (customersCreditScore.equals(Rating.D)) {
                         FormWrapper.showStatusLabel(true, "Kunden har kreditværdighed D");
                         return;
@@ -352,5 +361,14 @@ public class FormBinder {
         double totalDays = days + months * 30.5 + years * 365;
 
         return (int)totalDays;
+    }
+
+    private static boolean verifyCustomerNotBanned(Customer customer) {
+        if (customer.isBanned()) {
+            FormWrapper.showStatusLabel(true, "Kunden er bandlyst!");
+            return false;
+        }
+
+        return true;
     }
 }
