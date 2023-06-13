@@ -30,6 +30,7 @@ public final class FormWrapper {
     private static Dialog<Object> dialog;
     private static Form form;
     private static Button buttonOK = new Button("OK");
+    private static Label statusLabel = new Label();
 
     protected static Dialog<Object> getDialog() {
         return dialog;
@@ -207,7 +208,6 @@ public final class FormWrapper {
             closeDialog(dialog);
         });
 
-        Label statusLabel = FormStatusHandler.getStatusLabel();
         statusLabel.setVisible(false);
 
         HBox buttons = new HBox(buttonCancel, buttonOK, form.getForwardBoss(), statusLabel);
@@ -221,5 +221,19 @@ public final class FormWrapper {
 
     protected static Button getButtonOK() {
         return buttonOK;
+    }
+
+    protected static void showStatusLabel(boolean isError, String message) {
+        statusLabel.getStyleClass().setAll(isError ? "dialog-error-label" : "dialog-status-label");
+        statusLabel.setText(message);
+        statusLabel.setVisible(true);
+    }
+
+    protected static void hideStatusLabel() {
+        statusLabel.setVisible(false);
+    }
+
+    protected static Label getStatusLabel() {
+        return statusLabel;
     }
 }

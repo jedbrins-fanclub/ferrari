@@ -20,7 +20,7 @@ public class FormThreadHandler {
 
             Platform.runLater(() -> {
                 buttonOK.setDisable(true);
-                FormStatusHandler.displayMessage(false, "Finder kreditværdighed for kunde");
+                FormWrapper.showStatusLabel(false, "Finder kreditværdighed for kunde");
             });
 
             String cpr = customer.getCpr();
@@ -31,9 +31,9 @@ public class FormThreadHandler {
 
             Platform.runLater(() -> {
                 if (creditRating.equals(Rating.D)) {
-                    FormStatusHandler.displayMessage(true, "Kunden har kreditværdighed D");
+                    FormWrapper.showStatusLabel(true, "Kunden har kreditværdighed D");
                 } else {
-                    FormStatusHandler.hideStatusLabel();
+                    FormWrapper.hideStatusLabel();
                 }
                 
                 buttonOK.setDisable(false);
@@ -45,13 +45,13 @@ public class FormThreadHandler {
         new Thread(() -> {
             Platform.runLater(() -> {
                 buttonOK.setDisable(true);
-                FormStatusHandler.displayMessage(false, "Finder dagens rente");
+                FormWrapper.showStatusLabel(false, "Finder dagens rente");
             });
 
             FormBinder.setBanksInterestRate(InterestRate.i().todaysRate());
             Platform.runLater(() -> {
-                FormStatusHandler.hideStatusLabel();
                 buttonOK.setDisable(false);
+                FormWrapper.hideStatusLabel();
             });
         }).start();
     }
