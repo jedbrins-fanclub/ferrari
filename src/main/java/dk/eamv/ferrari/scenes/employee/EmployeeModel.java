@@ -1,6 +1,7 @@
 package dk.eamv.ferrari.scenes.employee;
 
 import dk.eamv.ferrari.database.Database;
+import dk.eamv.ferrari.scenes.loan.LoanModel;
 
 import java.util.ArrayList;
 import java.sql.PreparedStatement;
@@ -20,7 +21,7 @@ public final class EmployeeModel {
     public static void create(Employee employee) {
         try {
             PreparedStatement statement = Database.getConnection().prepareStatement(
-                "INSERT INTO dbo.Employee VALUES (?, ?, ?, ?, ?, ?);",
+                "INSERT INTO dbo.Employee VALUES (?, ?, ?, ?, ?, ?, ?);",
                 Statement.RETURN_GENERATED_KEYS
             );
 
@@ -30,6 +31,7 @@ public final class EmployeeModel {
             statement.setString(4, employee.getEmail());
             statement.setString(5, employee.getPassword());
             statement.setDouble(6, employee.getMaxLoan());
+            statement.setInt(7, employee.getStatus().toInt());
 
             int row = statement.executeUpdate();
             assert row != 0: "Unable to insert Employee into database";
@@ -57,7 +59,8 @@ public final class EmployeeModel {
                 return new Employee(
                     id, rs.getString("first_name"), rs.getString("last_name"), 
                     rs.getString("phone_number"), rs.getString("email"), 
-                    rs.getString("password"), rs.getDouble("max_loan")
+                    rs.getString("password"), rs.getDouble("max_loan"),
+                    EmployeeStatus.valueOf(rs.getInt("status"))
                 );
             }
         } catch (SQLException exception) {
@@ -74,12 +77,13 @@ public final class EmployeeModel {
     public static ArrayList<Employee> readAll() {
         ArrayList<Employee> employees = new ArrayList<Employee>();
 
-        try (ResultSet rs = Database.query("SELECT * FROM dbo.Employee")) {
+        try (ResultSet rs = Database.query("SELECT * FROM dbo.Employee WHERE status = " + EmployeeStatus.ACTIVE.toInt())) {
             while (rs.next()) {
                 employees.add(new Employee(
                     rs.getInt("id"), rs.getString("first_name"), rs.getString("last_name"),
                     rs.getString("phone_number"), rs.getString("email"),
-                    rs.getString("password"), rs.getDouble("max_loan")
+                    rs.getString("password"), rs.getDouble("max_loan"),
+                    EmployeeStatus.valueOf(rs.getInt("status"))
                 ));
             }
         } catch (SQLException exception) {
@@ -117,7 +121,8 @@ public final class EmployeeModel {
                 employees.add(new Employee(
                     rs.getInt("id"), rs.getString("first_name"), rs.getString("last_name"), 
                     rs.getString("phone_number"), rs.getString("email"), 
-                    rs.getString("password"), rs.getDouble("max_loan")
+                    rs.getString("password"), rs.getDouble("max_loan"),
+                    EmployeeStatus.valueOf(rs.getInt("status"))
                 ));
             }
         } catch (SQLException exception) {
@@ -137,7 +142,7 @@ public final class EmployeeModel {
                 UPDATE dbo.Employee
                 SET
                     first_name = ?, last_name = ?, phone_number = ?,
-                    email = ?, password = ?, max_loan = ?
+                    email = ?, password = ?, max_loan = ?, status = ?
                 WHERE id = ?;
             """);
 
@@ -147,7 +152,8 @@ public final class EmployeeModel {
             statement.setString(4, employee.getEmail());
             statement.setString(5, employee.getPassword());
             statement.setDouble(6, employee.getMaxLoan());
-            statement.setInt(7, employee.getId());
+            statement.setInt(7, employee.getStatus().toInt());
+            statement.setInt(8, employee.getId());
 
             statement.executeUpdate();
         } catch (SQLException exception) {
@@ -158,9 +164,26 @@ public final class EmployeeModel {
     /**
      * Delete an employee from the database based on the id.
      * @param id the id to delete from the database
-     * @return boolean to show if the deletion was successful
      */
-    public static boolean delete(int id) {
-        return Database.execute("DELETE FROM dbo.Employee WHERE id = " + id);
+    public static void delete(int id) {
+        if (!LoanModel.checkEmployeeID(id)) {
+            Database.execute("DELETE FROM Employee WHERE id = " + id);
+            return;
+        }
+
+        try {
+            PreparedStatement statement = Database.getConnection().prepareStatement("""
+                UPDATE dbo.Employee
+                SET status = ?
+                WHERE id = ?;
+            """);
+
+            statement.setInt(1, EmployeeStatus.DELETED.toInt());
+            statement.setInt(2, id);
+
+            statement.executeUpdate();
+        } catch (SQLException exception) {
+            exception.printStackTrace();
+        }
     }
 }

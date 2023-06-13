@@ -1,6 +1,7 @@
 package dk.eamv.ferrari.scenes.car;
 
 import dk.eamv.ferrari.database.Database;
+import dk.eamv.ferrari.scenes.loan.LoanModel;
 
 import java.util.ArrayList;
 import java.sql.ResultSet;
@@ -21,13 +22,14 @@ public final class CarModel {
     public static void create(Car car) {
         try {
             PreparedStatement statement = Database.getConnection().prepareStatement(
-                "INSERT INTO dbo.Car VALUES (?, ?, ?);",
+                "INSERT INTO dbo.Car VALUES (?, ?, ?, ?);",
                 Statement.RETURN_GENERATED_KEYS
             );
 
             statement.setString(1, car.getModel());
             statement.setInt(2, car.getYear());
             statement.setDouble(3, car.getPrice());
+            statement.setInt(4, car.getStatus().toInt());
 
             int row = statement.executeUpdate();
             assert row != 0: "Unable to insert Car into database";
@@ -47,7 +49,7 @@ public final class CarModel {
 
         try {
             if (rs.next()) {
-                return new Car(id, rs.getString("model"), rs.getInt("year"), rs.getDouble("price"));
+                return new Car(id, rs.getString("model"), rs.getInt("year"), rs.getDouble("price"), CarStatus.valueOf(rs.getInt("status")));
             }
         } catch (SQLException exception) {
             exception.printStackTrace();
@@ -63,11 +65,10 @@ public final class CarModel {
     public static ArrayList<Car> readAll() {
         ArrayList<Car> cars = new ArrayList<Car>();
 
-        try (ResultSet rs = Database.query("SELECT * FROM dbo.Car")) {
+        try (ResultSet rs = Database.query("SELECT * FROM dbo.Car WHERE status = " + CarStatus.ACTIVE.toInt())) {
             while (rs.next()) {
                 cars.add(new Car(
-                    rs.getInt("id"), rs.getString("model"),
-                    rs.getInt("year"), rs.getDouble("price")
+                    rs.getInt("id"), rs.getString("model"), rs.getInt("year"), rs.getDouble("price"), CarStatus.valueOf(rs.getInt("status"))
                 ));
             }
         } catch (SQLException exception) {
@@ -85,14 +86,15 @@ public final class CarModel {
         try {
             PreparedStatement statement = Database.getConnection().prepareStatement("""
                 UPDATE dbo.Car
-                SET model = ?, year = ?, price = ?
+                SET model = ?, year = ?, price = ?, status = ?
                 WHERE id = ?;
             """);
 
             statement.setString(1, car.getModel());
             statement.setInt(2, car.getYear());
             statement.setDouble(3, car.getPrice());
-            statement.setInt(4, car.getId());
+            statement.setInt(4, car.getStatus().toInt());
+            statement.setInt(5, car.getId());
 
             statement.executeUpdate();
         } catch (SQLException exception) {
@@ -103,9 +105,26 @@ public final class CarModel {
     /**
      * Delete car from the database based on the id.
      * @param id the id of the car to delete from the database
-     * @return boolean indicating if the deletion was successful
      */
-    public static boolean delete(int id) {
-        return Database.execute("DELETE FROM dbo.Car WHERE id = " + id);
+    public static void delete(int id) {
+        if (!LoanModel.checkCarID(id)) {
+            Database.execute("DELETE FROM Car WHERE id = " + id);
+            return;
+        }
+
+        try {
+            PreparedStatement statement = Database.getConnection().prepareStatement("""
+                UPDATE dbo.Car
+                SET status = ?
+                WHERE id = ?;
+            """);
+
+            statement.setInt(1, CarStatus.DELETED.toInt());
+            statement.setInt(2, id);
+
+            statement.executeUpdate();
+        } catch (SQLException exception) {
+            exception.printStackTrace();
+        }
     }
 }
