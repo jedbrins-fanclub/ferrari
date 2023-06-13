@@ -39,7 +39,7 @@ public class SettingsView {
         Label editLabel = new Label("Rediger oplysninger");
         editLabel.getStyleClass().add("settings-overskrift");
 
-        Label emailLabel = new Label("email");
+        Label emailLabel = new Label("Email");
         TextField emailInput = new TextField(SessionManager.getUser().getEmail());
 
         
