@@ -22,7 +22,6 @@ public final class FormFactory {
             case EMPLOYEE -> FormWrapper.wrapCreate(builder.buildEmployeeForm(), type);
             case LOAN -> FormWrapper.wrapCreate(builder.buildLoanForm(), type);
         }
-
         FormWrapper.showDialog(title);
     }
 
