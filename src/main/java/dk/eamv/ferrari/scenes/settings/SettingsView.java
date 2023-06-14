@@ -96,10 +96,8 @@ public class SettingsView {
             }
         });
 
-        VBox vbox = new VBox();
+        VBox vbox = new VBox(settingsLabel, editLabel, telephoneContainer, statusLabel, passwordContainer, updateButton);
         vbox.setAlignment(Pos.CENTER);
-        vbox.getChildren().addAll(settingsLabel, editLabel, telephoneContainer, statusLabel, passwordContainer, updateButton);
-    
         vbox.setMaxWidth(Double.MAX_VALUE);
         vbox.setPadding(new Insets(25));
         vbox.setSpacing(15);

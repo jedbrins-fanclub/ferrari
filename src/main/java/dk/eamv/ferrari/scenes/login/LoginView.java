@@ -47,9 +47,6 @@ public class LoginView {
     }
 
     private static VBox getLoginBox() {
-        VBox vbox = new VBox();
-        vbox.getStyleClass().addAll("login-box", "drop-shadow-effect");
-        
         Label loginLabel = new Label("LOGIN");
         loginLabel.getStyleClass().add("login-header");
 
@@ -62,8 +59,9 @@ public class LoginView {
 
         errorLabel.getStyleClass().setAll(".login-error");
 
+        VBox vbox = new VBox(hbox, errorLabel, getUsernameBox(), getPasswordBox(), loginButton);
         vbox.setAlignment(Pos.CENTER);
-        vbox.getChildren().addAll(hbox, errorLabel, getUsernameBox(), getPasswordBox(), loginButton);
+        vbox.getStyleClass().addAll("login-box", "drop-shadow-effect");
         return vbox;
     }
 

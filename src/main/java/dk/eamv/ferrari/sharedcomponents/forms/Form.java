@@ -135,15 +135,15 @@ public class Form {
             int row = form.getRow();
             int column = form.getColumn();
 
-            VBox vBox = new VBox();
             Label heading = new Label(labelText);
-            vBox.getChildren().addAll(heading, control);
+            VBox vbox = new VBox(heading, control);
+
             if (column > 2) { //enforce maximum 3 fields in each row.
                 column = 0;
                 row++;
             }
 
-            form.getGridPane().add(vBox, column, row);
+            form.getGridPane().add(vbox, column, row);
             form.getFieldMap().put(labelText, control);
             column++;
 

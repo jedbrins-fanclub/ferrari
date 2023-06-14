@@ -47,15 +47,14 @@ public class TableView {
     }
 
     protected static void initSearchContainer(FilteredTableBuilder<?> filteredTable) {
-        searchContainer = new HBox();
         SVGPath icon = new SVGPath();
         icon.setContent(SVGResources.getSearchIcon());
 
         VBox iconContainer = new VBox(icon);
         iconContainer.setAlignment(Pos.CENTER);
 
+        searchContainer = new HBox(iconContainer, new FilterTextField<>(filteredTable));
         searchContainer.getStyleClass().add("search-container");
-        searchContainer.getChildren().addAll(iconContainer, new FilterTextField<>(filteredTable));
     }
 
     protected static void initTableView(FilteredTable<?> table) {
