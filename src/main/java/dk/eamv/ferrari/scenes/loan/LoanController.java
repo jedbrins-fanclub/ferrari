@@ -103,9 +103,8 @@ public class LoanController {
     
     private static void export(Loan... list) {
         new Thread(() -> {
-            LocalDate currentDate = LocalDate.now();
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-            String formattedDate = currentDate.format(formatter);
+            String formattedDate = LocalDate.now().format(formatter);
 
             CSVWriter writer = new CSVWriter(formattedDate + ".csv");
             writer.writeHeader(
