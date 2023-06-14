@@ -26,8 +26,8 @@ public class EmployeeController {
             
         if (SessionManager.getUser().isSalesManager()) {
             filteredTableBuilder
-                .withButtonColumn(SVGResources.getDeleteIcon(), EmployeeController::deleteEmployee)
-                .withButtonColumn(SVGResources.getEditIcon(), EmployeeView::showEditEmployeeDialog);
+                .withButtonColumn(SVGResources.getEditIcon(), EmployeeView::showEditEmployeeDialog)
+                .withButtonColumn(SVGResources.getDeleteIcon(), EmployeeController::deleteEmployee);
         }
     }
 
