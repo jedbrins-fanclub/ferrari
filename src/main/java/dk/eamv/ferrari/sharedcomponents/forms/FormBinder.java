@@ -224,7 +224,7 @@ public class FormBinder {
                     }
 
                     Employee employee = FormInputHandler.getEntityFromComboBox("Medarbejder");
-                    if (employee.getMaxLoan() < FormInputHandler.getDouble("Lånets størrelse")) {
+                    if (loanExceedsLimit(employee)) {
                         FormWrapper.showStatusLabel(true, "Lånets størrelse overskrider medarbejderens beføjelser.");
                         form.getForwardBoss().setVisible(true);
                         return;
@@ -381,5 +381,9 @@ public class FormBinder {
 
     protected static boolean downpaymentLessThanHalf(double downpayment, double carPrice) {
         return downpayment / carPrice < 0.5;
+    }
+
+    protected static boolean loanExceedsLimit(Employee employee) {
+        return employee.getMaxLoan() < FormInputHandler.getDouble("Lånets størrelse");
     }
 }
