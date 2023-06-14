@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 
 // Made by: Benjamin
@@ -30,8 +31,8 @@ public final class LoanModel {
             statement.setDouble(4, loan.getLoanSize());
             statement.setDouble(5, loan.getDownPayment());
             statement.setDouble(6, loan.getInterestRate());
-            statement.setDate(7, convertDate(loan.getStartDate()));
-            statement.setDate(8, convertDate(loan.getEndDate()));
+            statement.setDate(7, Date.valueOf(loan.getStartDate()));
+            statement.setDate(8, Date.valueOf(loan.getEndDate()));
             statement.setInt(9, loan.getStatus().toInt());
 
             int row = statement.executeUpdate();
@@ -60,7 +61,7 @@ public final class LoanModel {
                 return new Loan(
                     id, rs.getInt("car_id"), rs.getInt("customer_id"), rs.getInt("employee_id"),
                     rs.getDouble("loan_size"), rs.getDouble("down_payment"), rs.getDouble("interest_rate"),
-                    rs.getDate("start_date"), rs.getDate("end_date"), LoanStatus.valueOf(rs.getInt("status"))
+                    converDate(rs.getDate("start_date")), converDate(rs.getDate("end_date")), LoanStatus.valueOf(rs.getInt("status"))
                 );
             }
         } catch (SQLException exception) {
@@ -82,7 +83,7 @@ public final class LoanModel {
                 loans.add(new Loan(
                     rs.getInt("id"), rs.getInt("car_id"), rs.getInt("customer_id"), rs.getInt("employee_id"),
                     rs.getDouble("loan_size"), rs.getDouble("down_payment"), rs.getDouble("interest_rate"),
-                    rs.getDate("start_date"), rs.getDate("end_date"), LoanStatus.valueOf(rs.getInt("status"))
+                    converDate(rs.getDate("start_date")), converDate(rs.getDate("end_date")), LoanStatus.valueOf(rs.getInt("status"))
                 ));
             }
         } catch (SQLException exception) {
@@ -113,8 +114,8 @@ public final class LoanModel {
             statement.setDouble(4, loan.getLoanSize());
             statement.setDouble(5, loan.getDownPayment());
             statement.setDouble(6, loan.getInterestRate());
-            statement.setDate(7, convertDate(loan.getStartDate()));
-            statement.setDate(8, convertDate(loan.getEndDate()));
+            statement.setDate(7, Date.valueOf(loan.getStartDate()));
+            statement.setDate(8, Date.valueOf(loan.getEndDate()));
             statement.setInt(9, loan.getStatus().toInt());
             statement.setInt(10, loan.getId());
 
@@ -161,11 +162,8 @@ public final class LoanModel {
         return Database.execute("DELETE FROM dbo.Loan WHERE id = " + id);
     }
 
-    private static java.sql.Date convertDate(java.util.Date date) {
-        return new java.sql.Date(date.getTime());
-    }
-
-    public static java.util.Date revertDate(java.sql.Date date) {
+    // sql.Date -> util.Date
+    private static java.util.Date converDate(java.sql.Date date) {
         return new java.util.Date(date.getTime());
     }
 }

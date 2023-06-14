@@ -9,8 +9,6 @@ import dk.eamv.ferrari.scenes.loan.LoanStatus;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -18,7 +16,6 @@ import dk.eamv.ferrari.sharedcomponents.nodes.AutoCompleteComboBox;
 import javafx.scene.control.Control;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
-import javafx.util.StringConverter;
 
 // Made by Christian
 
@@ -194,8 +191,8 @@ public class FormInputHandler {
         setChoiceBox("Bil", car.toString());
         setChoiceBox("CPR & Kunde", customer.toString());
         setChoiceBox("Medarbejder", employee.toString());
-        setDatePicker("Start dato DD/MM/ÅÅÅÅ", String.valueOf(loan.getStartDate()));
-        setDatePicker("Slut dato DD/MM/ÅÅÅÅ", String.valueOf(loan.getEndDate()));
+        setDatePicker("Start dato DD/MM/ÅÅÅÅ", loan.getStartDate());
+        setDatePicker("Slut dato DD/MM/ÅÅÅÅ", loan.getEndDate());
     }
     
     /**
@@ -221,42 +218,9 @@ public class FormInputHandler {
      * @param key - the String/Header of the DatePicker.
      * @param date - the Date converted to a String.
      */
-    protected static void setDatePicker(String key, String date) {
-        System.out.println("date argument" + date);
+    protected static void setDatePicker(String key, LocalDate date) {
         DatePicker datePicker = getDatePicker(key);
-        datePicker.setConverter(new StringConverter<LocalDate>() {
-            DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-            
-            @Override //Date -> String. Called when setting the date
-            public String toString(LocalDate date) {
-                if (date != null) {
-                    return dateFormatter.format(date);
-                } else {
-                    return "";
-                }
-            }
-
-            @Override // Date <- String
-            public LocalDate fromString(String string) {
-                if (string != null && !string.isEmpty()) {
-                    try {
-                        // Convert from "yyyy-MM-dd" to "dd/MM/yyyy"
-                        LocalDate originalDate = LocalDate.parse(string, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-                        String formattedDate = dateFormatter.format(originalDate);
-                        return LocalDate.parse(formattedDate, dateFormatter);
-
-                    } catch (DateTimeParseException e) {
-                        // Handle the parsing exception
-                        System.out.println("Error parsing date: " + string);
-                        return null;
-                    }
-                } else {
-                    return null;
-                }
-            }
-        });
-        LocalDate localDate = datePicker.getConverter().fromString(date);
-        datePicker.setValue(localDate);
+        datePicker.setValue(date);
     }
     
     /**

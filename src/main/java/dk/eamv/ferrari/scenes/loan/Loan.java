@@ -7,6 +7,9 @@ import dk.eamv.ferrari.scenes.customer.CustomerModel;
 import dk.eamv.ferrari.scenes.employee.Employee;
 import dk.eamv.ferrari.scenes.employee.EmployeeModel;
 
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Date;
 
 // Made by: Mikkel
@@ -96,16 +99,18 @@ public class Loan {
         this.interestRate = interestRate;
     }
 
-    public Date getStartDate() {
-        return startDate;
+    public LocalDate getStartDate() {
+        Instant instant = startDate.toInstant();
+        return instant.atZone(ZoneId.systemDefault()).toLocalDate();
     }
 
     public void setStartDate(Date startDate) {
         this.startDate = startDate;
     }
 
-    public Date getEndDate() {
-        return endDate;
+    public LocalDate getEndDate() {
+        Instant instant = endDate.toInstant();
+        return instant.atZone(ZoneId.systemDefault()).toLocalDate();
     }
 
     public void setEndDate(Date endDate) {

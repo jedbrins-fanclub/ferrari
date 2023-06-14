@@ -9,8 +9,8 @@ import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.paint.Color;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Consumer;
@@ -111,12 +111,13 @@ public class FilteredTableBuilder<T> implements FilteredTableBuilderInfo<T> {
         return this;
     }
 
-    public FilteredTableBuilder<T> withProgressColumn(String columnName, Function<T, Date> startDateGetter, Function<T, Date> endDateGetter) {
+    public FilteredTableBuilder<T> withProgressColumn(String columnName, Function<T, LocalDate> startDateGetter, Function<T, LocalDate> endDateGetter) {
         TableColumn<T, Double> progressColumn = new TableColumn<>(columnName);
         progressColumn.setCellValueFactory(cellData -> {
-            long start = startDateGetter.apply(cellData.getValue()).getTime();
-            long end = endDateGetter.apply(cellData.getValue()).getTime();
-            long current = new Date().getTime();
+            long start = startDateGetter.apply(cellData.getValue()).toEpochDay();
+            long end = endDateGetter.apply(cellData.getValue()).toEpochDay();
+            long current = LocalDate.now().toEpochDay();
+
             double progress = (double) (current - start) / (end - start);
 
             /* We make sure the progress is not below 0 or above 1
@@ -126,7 +127,6 @@ public class FilteredTableBuilder<T> implements FilteredTableBuilderInfo<T> {
              * Whether it should show 0 progress or a loading bar seems a design choice.
              */
             progress = Math.max(0, Math.min(1, progress));
-
 
             return new ReadOnlyObjectWrapper<>(progress);
         });
