@@ -3,7 +3,9 @@ package dk.eamv.ferrari.sharedcomponents.forms;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
+import dk.eamv.ferrari.scenes.car.Car;
 import dk.eamv.ferrari.scenes.employee.Employee;
+import javafx.scene.control.TextField;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.Mockito.mock;
@@ -79,5 +81,17 @@ public class LoanSizeTest {
         assertThat(exceedsLimit).isTrue();
     }
 
-    
+    //verify that loansize gets calculated correctly
+    @Test
+    public void testCalculateLoanSize() {
+        Car car = mock(Car.class);
+        when(FormInputHandler.getEntityFromComboBox("Bil")).thenReturn(car);
+        when(car.getPrice()).thenReturn(1000000.0);
+
+        when(FormInputHandler.getTextField("Udbetaling")).thenReturn(new TextField("l"));
+        when(FormInputHandler.getDouble("Udbetaling")).thenReturn(500000.0);
+
+        double loanSize = Double.valueOf(FormBinder.calculateLoanSize());
+        assertThat(loanSize).isEqualTo(500000);
+    }
 }

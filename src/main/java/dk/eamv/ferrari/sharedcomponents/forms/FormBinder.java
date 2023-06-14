@@ -245,7 +245,7 @@ public class FormBinder {
      * @return returned as a String, not an int, so it can be directly used to set the value of a TextField.
      * @see FormInputHandler#getDouble(String)
      */
-    private static String calculateLoanSize() {
+    protected static String calculateLoanSize() {
         // Both start at 0, so we can return something (0 in this case) if theyre null & empty.
         double price = 0;
         double downpayment = 0;
