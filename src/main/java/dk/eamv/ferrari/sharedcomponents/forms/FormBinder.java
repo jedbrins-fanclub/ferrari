@@ -349,7 +349,7 @@ public class FormBinder {
      * @param end - the end date picker
      * @return the days between the 2 selected dates, as an int.
      */
-    private static int calculateDaysBetween(DatePicker start, DatePicker end) {
+    protected static int calculateDaysBetween(DatePicker start, DatePicker end) {
         LocalDate startDate = start.getValue();
         LocalDate endDate = end.getValue();
         Period period = Period.between(startDate, endDate);
