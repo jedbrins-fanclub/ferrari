@@ -8,14 +8,13 @@ import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.paint.Color;
-import javafx.util.Pair;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.function.Consumer;
 import java.util.function.Function;
-import java.util.stream.Collectors;
 
 // Made by: Mikkel
 
@@ -35,10 +34,10 @@ public class FilteredTableBuilder<T> implements FilteredTableBuilderInfo<T> {
      * when the {@link #FilteredTableBuilder} is instantiated.</p>
      * <p>For more details go to: {@link #withColumn(String, Function)}</p>
      */
-    private final List<Pair<String, Function<T, Object>>> columnInfo;
-    private final List<TableColumn<T, ?>> statusColumns;
-    private final List<TableColumn<T, ?>> progressColumns;
-    private final List<TableColumn<T, ?>> buttonColumns;
+    private final HashMap<String, Function<T, Object>> columnInfo;
+    private final ArrayList<TableColumn<T, ?>> statusColumns;
+    private final ArrayList<TableColumn<T, ?>> progressColumns;
+    private final ArrayList<TableColumn<T, ?>> buttonColumns;
     private FilteredTable<T> filteredTable;
 
     /**
@@ -53,7 +52,7 @@ public class FilteredTableBuilder<T> implements FilteredTableBuilderInfo<T> {
      * <p>These columns will be added together in the {@link #build()} method.
      */
     public FilteredTableBuilder() {
-        columnInfo = new ArrayList<>();
+        columnInfo = new HashMap<>();
         statusColumns = new ArrayList<>();
         progressColumns = new ArrayList<>();
         buttonColumns = new ArrayList<>();
@@ -78,7 +77,7 @@ public class FilteredTableBuilder<T> implements FilteredTableBuilderInfo<T> {
     public FilteredTableBuilder<T> withColumn(String columnName, Function<T, Object> propertyValueGetter) {
 
         // Every time this method is called, a specific column and its list of Value Getter methods is added to the list
-        columnInfo.add(new Pair<>(columnName, propertyValueGetter));
+        columnInfo.put(columnName, propertyValueGetter);
         return this;
     }
 
@@ -173,7 +172,7 @@ public class FilteredTableBuilder<T> implements FilteredTableBuilderInfo<T> {
 
     public FilteredTable<T> build() {
         filteredTable = new FilteredTable<>(data);
-        for (Pair<String, Function<T, Object>> info : columnInfo) {
+        for (Map.Entry<String, Function<T, Object>> info : columnInfo.entrySet()) {
             TableColumn<T, Object> column = new TableColumn<>(info.getKey());
             column.setCellValueFactory(cellData -> new SimpleObjectProperty<>(info.getValue().apply(cellData.getValue())));
             filteredTable.getColumns().add(column);
@@ -194,7 +193,7 @@ public class FilteredTableBuilder<T> implements FilteredTableBuilderInfo<T> {
     }
 
     @Override
-    public List<Function<T, Object>> getPropertyValueGetters() {
-        return columnInfo.stream().map(Pair::getValue).collect(Collectors.toList());
+    public ArrayList<Function<T, Object>> getPropertyValueGetters() {
+        return new ArrayList<>(columnInfo.values());
     }
 }
