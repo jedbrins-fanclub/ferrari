@@ -1,7 +1,6 @@
 package dk.eamv.ferrari.scenes.sidebar;
 
 import java.util.EnumMap;
-import java.util.Map;
 
 import dk.eamv.ferrari.managers.SessionManager;
 import javafx.geometry.Insets;
@@ -24,8 +23,8 @@ import javafx.scene.shape.SVGPath;
 public class SidebarView extends VBox {
     private static final SidebarView sidebarView = new SidebarView();
     private final ToggleGroup toggleGroup = new ToggleGroup();
-    private final Map<SidebarButton, String> icons = new EnumMap<>(SidebarButton.class);
-    protected final Map<SidebarButton, ToggleButton> buttons = new EnumMap<>(SidebarButton.class);
+    private final EnumMap<SidebarButton, String> icons = new EnumMap<>(SidebarButton.class);
+    protected final EnumMap<SidebarButton, ToggleButton> buttons = new EnumMap<>(SidebarButton.class);
 
     public SidebarView() {}
 
@@ -78,18 +77,16 @@ public class SidebarView extends VBox {
      * @return HBox - the header of the SidebarView
      */
     private HBox getHeader() {
-        HBox header = new HBox();
-
         ImageView logo = new ImageView(new Image("file:src/main/resources/media/ferrari-logo.png"));
         logo.setFitHeight(64);
         logo.setPreserveRatio(true);
 
         Label text = new Label("Ferrari");
 
+        HBox header = new HBox(logo, text);
         header.setAlignment(Pos.CENTER);
         header.setPadding(new Insets(25, 0, 0, 0));
         header.setSpacing(10);
-        header.getChildren().addAll(logo, text);
 
         return header;
     }
@@ -99,9 +96,7 @@ public class SidebarView extends VBox {
      * Sets their icon, alignment, style class, and toggle group.
      */
     private void configureButtons() {
-
-        for (Map.Entry<SidebarButton, String> entry : icons.entrySet()) {
-
+        for (EnumMap.Entry<SidebarButton, String> entry : icons.entrySet()) {
             ToggleButton button = buttons.get(entry.getKey());
 
             SVGPath icon = new SVGPath();
@@ -124,22 +119,20 @@ public class SidebarView extends VBox {
      * @return VBox - a container with the SidebarView's buttons
      */
     private VBox getButtons() {
-        VBox buttonsContainer = new VBox();
-
-        VBox buttonGroupOne = new VBox();
-        buttonGroupOne.getChildren().addAll(
-                buttons.get(SidebarButton.DASHBOARD),
-                buttons.get(SidebarButton.LOANS),
-                buttons.get(SidebarButton.REPORTS));
+        VBox buttonGroupOne = new VBox(
+            buttons.get(SidebarButton.DASHBOARD),
+            buttons.get(SidebarButton.LOANS),
+            buttons.get(SidebarButton.REPORTS)
+        );
         buttonGroupOne.setAlignment(Pos.CENTER_RIGHT);
         buttonGroupOne.setSpacing(16);
 
-        VBox buttonGroupTwo = new VBox();
-        buttonGroupTwo.getChildren().add(buttons.get(SidebarButton.CARS));
-        buttonGroupTwo.getChildren().add(buttons.get(SidebarButton.CUSTOMERS));
-        if (SessionManager.getUser().isSalesManager()) {
-            buttonGroupTwo.getChildren().add(buttons.get(SidebarButton.SELLERS));
-        }
+        VBox buttonGroupTwo = new VBox(
+            buttons.get(SidebarButton.CARS),
+            buttons.get(SidebarButton.CUSTOMERS),
+            // Add employee button if the sales manager is logged in
+            SessionManager.getUser().isSalesManager() ? buttons.get(SidebarButton.SELLERS) : null
+        );
         buttonGroupTwo.setAlignment(Pos.CENTER_RIGHT);
         buttonGroupTwo.setSpacing(16);
 
@@ -150,13 +143,11 @@ public class SidebarView extends VBox {
         buttonGroupThree.setAlignment(Pos.CENTER_RIGHT);
         buttonGroupThree.setSpacing(16);
 
-        buttonsContainer.setSpacing(50); // buttons are grouped visually as they best relate
-
-        buttonsContainer.getChildren().addAll(buttonGroupOne, buttonGroupTwo, buttonGroupThree);
+        VBox buttonsContainer = new VBox(buttonGroupOne, buttonGroupTwo, buttonGroupThree);
+        buttonsContainer.setSpacing(50); // Buttons are grouped visually as they best relate
 
         return buttonsContainer;
     }
-
 
     /**
      * Sets the active toggle button in the SidebarView.
