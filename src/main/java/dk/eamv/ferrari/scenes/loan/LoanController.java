@@ -33,8 +33,8 @@ public class LoanController {
             .withColumn("Lån (DKK)", Loan::getLoanSize)
             .withColumn("Udbetaling (DKK)", Loan::getDownPayment)
             .withColumn("Rente (%)", Loan::getInterestRate)
-            .withColumn("Start", Loan::getStartDate)
-            .withColumn("Slut", Loan::getEndDate)
+            .withColumn("Start", Loan::getStartDateFormatted)
+            .withColumn("Slut", Loan::getEndDateFormatted)
             .withProgressColumn("", Loan::getStartDate, Loan::getEndDate)
             .withStatusColumn("Status", Loan::getStatus)
             .withButtonColumn(SVGResources.getChangeStatusIcon(), LoanController::updateLoanStatus);

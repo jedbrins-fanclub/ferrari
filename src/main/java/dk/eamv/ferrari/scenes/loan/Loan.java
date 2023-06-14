@@ -10,6 +10,7 @@ import dk.eamv.ferrari.scenes.employee.EmployeeModel;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 // Made by: Mikkel
@@ -104,6 +105,11 @@ public class Loan {
         return instant.atZone(ZoneId.systemDefault()).toLocalDate();
     }
 
+    public String getStartDateFormatted() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        return getStartDate().format(formatter);
+    }
+
     public void setStartDate(Date startDate) {
         this.startDate = startDate;
     }
@@ -111,6 +117,11 @@ public class Loan {
     public LocalDate getEndDate() {
         Instant instant = endDate.toInstant();
         return instant.atZone(ZoneId.systemDefault()).toLocalDate();
+    }
+
+    public String getEndDateFormatted() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        return getEndDate().format(formatter);
     }
 
     public void setEndDate(Date endDate) {
