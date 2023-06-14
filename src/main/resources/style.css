@@ -14,9 +14,9 @@
 
 .login-box {
     -fx-font-family: "Inter", "Segoe UI", "Arial", sans-serif;
-    -fx-background-color: #f7f7f7;
+    -fx-background-color: #F7F7F7;
     -fx-max-width: 400px;
-    -fx-max-height: 325px;
+    -fx-max-height: 375px;
     -fx-border-radius: 50px;
     -fx-background-radius: 50px;
 }
