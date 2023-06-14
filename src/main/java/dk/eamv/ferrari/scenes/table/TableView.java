@@ -1,19 +1,20 @@
 package dk.eamv.ferrari.scenes.table;
 
+import dk.eamv.ferrari.resources.SVGResources;
 import dk.eamv.ferrari.sharedcomponents.filter.FilterTextField;
 import dk.eamv.ferrari.sharedcomponents.filter.FilteredTable;
 import dk.eamv.ferrari.sharedcomponents.filter.FilteredTableBuilder;
-import dk.eamv.ferrari.sharedcomponents.filter.SearchContainer;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.shape.SVGPath;
 
 public class TableView {
     protected static FilteredTable<?> tableView;
-    protected static SearchContainer searchContainer;
+    protected static HBox searchContainer;
     protected static HBox buttonRow = new HBox(5);
 
     public static StackPane getTableScene() {
@@ -46,7 +47,15 @@ public class TableView {
     }
 
     protected static void initSearchContainer(FilteredTableBuilder<?> filteredTable) {
-        searchContainer = new SearchContainer(new FilterTextField<>(filteredTable));
+        searchContainer = new HBox();
+        SVGPath icon = new SVGPath();
+        icon.setContent(SVGResources.getSearchIcon());
+
+        VBox iconContainer = new VBox(icon);
+        iconContainer.setAlignment(Pos.CENTER);
+
+        searchContainer.getStyleClass().add("search-container");
+        searchContainer.getChildren().addAll(iconContainer, new FilterTextField<>(filteredTable));
     }
 
     public static void refreshTableView() {
