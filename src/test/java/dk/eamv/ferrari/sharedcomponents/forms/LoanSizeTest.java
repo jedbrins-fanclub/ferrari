@@ -10,9 +10,9 @@ public class LoanSizeTest {
         double downPayment = 1499999;
         double carPrice = 3000000;
 
-        boolean greaterThanHalf = FormBinder.downpaymentLessThanHalf(downPayment, carPrice);
+        boolean lessThanHalf = FormBinder.downpaymentLessThanHalf(downPayment, carPrice);
 
-        assertThat(greaterThanHalf).isTrue();
+        assertThat(lessThanHalf).isTrue();
     }
 
     @Test
@@ -20,9 +20,9 @@ public class LoanSizeTest {
         double downPayment = 1500000;
         double carPrice = 3000000;
 
-        boolean greaterThanHalf = FormBinder.downpaymentLessThanHalf(downPayment, carPrice);
+        boolean lessThanHalf = FormBinder.downpaymentLessThanHalf(downPayment, carPrice);
 
-        assertThat(greaterThanHalf).isFalse();
+        assertThat(lessThanHalf).isFalse();
     }
 
     @Test
@@ -30,8 +30,8 @@ public class LoanSizeTest {
         double downPayment = 1500001;
         double carPrice = 3000000;
 
-        boolean greaterThanHalf = FormBinder.downpaymentLessThanHalf(downPayment, carPrice);
+        boolean lessThanHalf = FormBinder.downpaymentLessThanHalf(downPayment, carPrice);
 
-        assertThat(greaterThanHalf).isFalse();
+        assertThat(lessThanHalf).isFalse();
     }
 }
