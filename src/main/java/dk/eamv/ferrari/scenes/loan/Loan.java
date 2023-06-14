@@ -122,25 +122,19 @@ public class Loan {
 
     public String getCarLabel() {
         Car car = CarModel.read(car_id);
-
         assert car != null;
-
         return car.getModel();
     }
 
     public String getCustomerLabel() {
         Customer customer = CustomerModel.read(customer_id);
-
         assert customer != null;
-
         return customer.getFirstName() + " " + customer.getLastName();
     }
 
     public String getEmployeeLabel() {
         Employee employee = EmployeeModel.read(employee_id);
-
         assert employee != null;
-
         return employee.getFirstName() + " " + employee.getLastName();
     }
 }

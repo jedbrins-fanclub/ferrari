@@ -29,14 +29,10 @@ public class CustomerView extends TableView {
 
     private static StackPane getCustomerView() {
         CustomerController.initFilterBuilder();
-        initTableView();
+        initTableView(CustomerController.filteredTableBuilder.build());
         initSearchContainer(CustomerController.filteredTableBuilder);
         initButtons();
         return getTableScene();
-    }
-
-    private static void initTableView() {
-        tableView = CustomerController.filteredTableBuilder.build();
     }
 
     private static void initButtons() {

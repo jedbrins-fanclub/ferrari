@@ -22,16 +22,11 @@ public class CarView extends TableView {
 
     private static StackPane getCarView() {
         CarController.initFilterBuilder();
-        initTableView();
+        initTableView(CarController.filteredTableBuilder.build());
         initSearchContainer(CarController.filteredTableBuilder);
         initButtons();
         return getTableScene();
     }
-
-    private static void initTableView() {
-        tableView = CarController.filteredTableBuilder.build();
-    }
-
 
     private static void initButtons() {
         Button buttonCreate = new Button("Opret ny bil");

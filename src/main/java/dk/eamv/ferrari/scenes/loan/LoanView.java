@@ -21,14 +21,10 @@ public class LoanView extends TableView {
 
     private static StackPane getLoanView() {
         LoanController.initFilterBuilder();
-        initTableView();
+        initTableView(LoanController.filteredTableBuilder.build());
         initSearchContainer(LoanController.filteredTableBuilder);
         initButtons();
         return getTableScene();
-    }
-
-    private static void initTableView() {
-        tableView = LoanController.filteredTableBuilder.build();
     }
 
     private static void initButtons() {

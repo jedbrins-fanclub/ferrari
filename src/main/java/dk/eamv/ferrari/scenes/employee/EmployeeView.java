@@ -22,16 +22,12 @@ public class EmployeeView extends TableView {
 
     private static StackPane getEmployeeView() {
         EmployeeController.initFilterBuilder();
-        initTableView();
+        initTableView(EmployeeController.filteredTableBuilder.build());
         initSearchContainer(EmployeeController.filteredTableBuilder);
         initButtons();
         return getTableScene();
     }
 
-    private static void initTableView() {
-        tableView = EmployeeController.filteredTableBuilder.build();
-    }
-    
     private static void initButtons() {
         Button buttonCreate = new Button("Registrer ny medarbejder");
         buttonCreate.setOnAction(e -> EmployeeController.showCreateEmployee()); 

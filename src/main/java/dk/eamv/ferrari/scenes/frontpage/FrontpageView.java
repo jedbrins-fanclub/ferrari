@@ -26,14 +26,15 @@ public class FrontpageView {
         ImageView imageView = new ImageView(new Image("file:src/main/resources/media/ferrari-logo.png"));
         imageView.setFitHeight(500);
         imageView.setFitWidth(300);
-        bPane.setCenter(imageView);
 
         Label welcome = new Label("Velkommen til Ferrari Herning");
         welcome.setFont(Font.font("Arial", FontWeight.BOLD, 34));
-        VBox wvbox = new VBox();
-        wvbox.getChildren().add(welcome);
-        bPane.setTop(wvbox);
-        wvbox.setAlignment(Pos.CENTER);
+
+        VBox vbox = new VBox(welcome);
+        vbox.setAlignment(Pos.CENTER);
+
+        bPane.setCenter(imageView);
+        bPane.setTop(vbox);
 
         return bPane;
     }

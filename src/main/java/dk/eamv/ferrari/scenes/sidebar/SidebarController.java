@@ -47,5 +47,4 @@ public class SidebarController {
     protected static void onLogOutButtonClick(ActionEvent event) {
         SceneManager.changeScene(LoginView.getScene());
     }
-
 }

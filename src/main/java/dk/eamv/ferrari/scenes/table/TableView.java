@@ -58,6 +58,10 @@ public class TableView {
         searchContainer.getChildren().addAll(iconContainer, new FilterTextField<>(filteredTable));
     }
 
+    protected static void initTableView(FilteredTable<?> table) {
+        tableView = table;
+    }
+
     public static void refreshTableView() {
         tableView.refresh();
         tableView.sort();
