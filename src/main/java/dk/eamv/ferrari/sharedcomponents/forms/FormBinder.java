@@ -288,7 +288,7 @@ public class FormBinder {
 
         if (!downpaymentField.getText().isEmpty() && selectedCar != null) {
             // Add 1% if loansize > 50%
-            if (downpayment / carPrice < 0.5) {
+            if (downpaymentLessThanHalf(downpayment, carPrice)) {
                 totalInterestRate += 1;
             }
         }
@@ -377,5 +377,9 @@ public class FormBinder {
 
     protected static boolean periodIsNotNegative(DatePicker start, DatePicker end) {
         return calculateDaysBetween(start, end) >= 0;
+    }
+
+    protected static boolean downpaymentLessThanHalf(double downpayment, double carPrice) {
+        return downpayment / carPrice < 0.5;
     }
 }
