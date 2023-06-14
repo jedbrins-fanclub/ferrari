@@ -298,7 +298,7 @@ public class FormBinder {
 
         if (start.getValue() != null && end.getValue() != null) {
             // Add 1% if loan period > 3 years.
-            if (calculateDaysBetween(start, end) > 3 * 365) {
+            if (periodIsOver3Yrs(start, end)) {
                 totalInterestRate += 1;
             }
         }
@@ -369,5 +369,13 @@ public class FormBinder {
         }
 
         return true;
+    }
+
+    protected static boolean periodIsOver3Yrs(DatePicker start, DatePicker end) {
+        return calculateDaysBetween(start, end) > 3 * 365;
+    }
+
+    protected static boolean periodIsNotNegative(DatePicker start, DatePicker end) {
+        return calculateDaysBetween(start, end) >= 0;
     }
 }
