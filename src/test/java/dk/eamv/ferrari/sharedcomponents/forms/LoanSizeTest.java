@@ -79,7 +79,7 @@ public class LoanSizeTest {
         assertThat(exceedsLimit).isTrue();
     }
 
-    //verify that loansize gets calculated correctly
+    //verify that loansize gets calculated correctly .
     @Test
     public void testCalculateLoanSize() {
         Car car = mock(Car.class);
@@ -91,5 +91,5 @@ public class LoanSizeTest {
 
         double loanSize = Double.valueOf(FormBinder.calculateLoanSize());
         assertThat(loanSize).isEqualTo(500000);
-    }
+    } 
 }
