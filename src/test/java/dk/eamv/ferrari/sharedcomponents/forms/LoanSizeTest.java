@@ -9,7 +9,6 @@ import javafx.scene.control.TextField;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.mockStatic;
 import static org.mockito.Mockito.when;
 
 
@@ -18,7 +17,6 @@ public class LoanSizeTest {
 
     @BeforeAll
     public static void init() {
-        mockStatic(FormInputHandler.class);
         when(employee.getMaxLoan()).thenReturn(1000000.0);
     }
 

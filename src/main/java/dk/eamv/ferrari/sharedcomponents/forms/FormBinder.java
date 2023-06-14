@@ -267,7 +267,7 @@ public class FormBinder {
      * Calculates the total interest rate, based on the listed conditions in the program requirements.
      * @see FormInputHandler#getDouble(String)
      */
-    protected static void calculateInterestRate() {
+    protected static double calculateInterestRate() {
         double totalInterestRate = 0.0;
         double downpayment = 0;
         double carPrice = 0;
@@ -305,6 +305,7 @@ public class FormBinder {
 
         TextField interestField = FormInputHandler.getTextField("Rente");
         interestField.setText(String.format("%.2f", totalInterestRate));
+        return totalInterestRate;
     }
 
     /**
@@ -328,7 +329,7 @@ public class FormBinder {
      * @param creditRating - the customers credit score.
      * @return - the interest rate based on the customers credit score.
      */
-    private static int getCreditScoreInterestRate(Rating creditRating) {
+    protected static int getCreditScoreInterestRate(Rating creditRating) {
         int interestRate = 0;
 
         if (creditRating != null) {
