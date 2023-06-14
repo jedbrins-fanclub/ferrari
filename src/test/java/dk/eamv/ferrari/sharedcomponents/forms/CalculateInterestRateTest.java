@@ -69,7 +69,7 @@ public class CalculateInterestRateTest {
         assertThat(FormBinder.calculateInterestRate()).isEqualTo(mockInterestRate);
     }
 
-    //Loansize - downpayment
+    //Loansize to downpayment ratio
     @Test
     public void lessThanHalf_ShouldAdd_1() {
         when(FormInputHandler.getTextField("Udbetaling")).thenReturn(new TextField("499999.0"));
@@ -100,16 +100,25 @@ public class CalculateInterestRateTest {
     //Dates
     @Test
     public void shorterThan3Yrs_ShouldAdd_0() {
+        when(FormInputHandler.getDatePicker("Start dato DD/MM/ÅÅÅÅ")).thenReturn(new DatePicker(LocalDate.of(1, 1, 1)));
+        when(FormInputHandler.getDatePicker("Slut dato DD/MM/ÅÅÅÅ")).thenReturn(new DatePicker(LocalDate.of(3, 12, 31)));
 
+        assertThat(FormBinder.calculateInterestRate()).isEqualTo(0);
     }
-
+    
     @Test
     public void exactly3Yrs_ShouldAdd_0() {
+        when(FormInputHandler.getDatePicker("Start dato DD/MM/ÅÅÅÅ")).thenReturn(new DatePicker(LocalDate.of(1, 1, 1)));
+        when(FormInputHandler.getDatePicker("Slut dato DD/MM/ÅÅÅÅ")).thenReturn(new DatePicker(LocalDate.of(4, 1, 1)));
 
+        assertThat(FormBinder.calculateInterestRate()).isEqualTo(0);
     }
-
+    
     @Test
     public void longerThan3Yrs_ShouldAdd_1() {
+        when(FormInputHandler.getDatePicker("Start dato DD/MM/ÅÅÅÅ")).thenReturn(new DatePicker(LocalDate.of(1, 1, 1)));
+        when(FormInputHandler.getDatePicker("Slut dato DD/MM/ÅÅÅÅ")).thenReturn(new DatePicker(LocalDate.of(4, 1, 2)));
 
+        assertThat(FormBinder.calculateInterestRate()).isEqualTo(1);
     }
 }
