@@ -133,54 +133,24 @@ public class FormInputHandler {
         return acb.getSelectedItem();
     }
 
-    /**
-     * Iterates over the ArrayList of properties, and sets each field in the hashmap to the property.
-     * @param car - a Car object, whose properties will fill the form.
-     */
-    protected static void setFieldsCar(Car car) {
-        ArrayList<String> input = car.getProperties();
+    protected static void setFields(FormType type, Object object) {
+        assert type != FormType.LOAN: "You should call setFieldsLoan()";
+
         HashMap<String, Control> fieldMap = form.getFieldMap();
 
-        int counter = 0;
+        ArrayList<String> input = switch (type) {
+            case CAR -> ((Car)(object)).getProperties();
+            case CUSTOMER -> ((Customer)(object)).getProperties();
+            case EMPLOYEE -> ((Employee)(object)).getProperties();
+            case LOAN -> null;
+        };
 
+        int counter = 0;
         for (Control field : fieldMap.values()) {
-            ((TextField) field).setText(input.get(counter));
-            counter++;
+            ((TextField) field).setText(input.get(counter++));
         }
     }
 
-    /**
-     * Iterates over the ArrayList of properties, and sets each field in the hashmap to the property.
-     * @param customer - a Customer object, whose properties will fill the form.
-     */
-    protected static void setFieldsCustomer(Customer customer) {
-        ArrayList<String> input = customer.getProperties();
-        HashMap<String, Control> fieldMap = form.getFieldMap();
-
-        int counter = 0;
-
-        for (Control field : fieldMap.values()) {
-            ((TextField) field).setText(input.get(counter));
-            counter++;
-        }
-    }
-
-    /**
-     * Iterates over the ArrayList of properties, and sets each field in the hashmap to the property.
-     * @param employee - an Employee object, whose properties will fill the form.
-     */
-    protected static void setFieldsEmployee(Employee employee) {
-        ArrayList<String> input = employee.getProperties();
-        HashMap<String, Control> fieldMap = form.getFieldMap();
-
-        int counter = 0;
-
-        for (Control field : fieldMap.values()) {
-            ((TextField) field).setText(input.get(counter));
-            counter++;
-        }
-    }
-    
     /**
      * @param car - a Car object, whose properties will fill the form.
      * @param customer - a Customer object, whose properties will fill the form.

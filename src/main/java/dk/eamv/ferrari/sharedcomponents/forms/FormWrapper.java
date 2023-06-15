@@ -78,6 +78,12 @@ public final class FormWrapper {
         }
     }
 
+    protected static void wrapUpdate(Form form, FormType type, Object object) {
+        initForm(form);
+        initDialog();
+        FormInputHandler.setFields(type, object);
+    }
+
     /**
      * Opens a dialog, then fills it with the properties of the Car object, allowing the user to change the fields.
      * @param form - the form of the active dialog.
@@ -86,7 +92,7 @@ public final class FormWrapper {
     protected static void wrapUpdate(Form form, Car car) {
         initForm(form);
         initDialog();
-        FormInputHandler.setFieldsCar(car);
+        FormInputHandler.setFields(FormType.CAR, car);
         buttonOK.setOnMouseClicked(e -> {
             if (form.verifyHasFilledFields()) {
                 Car newCar = FormInputHandler.getFieldsCar();
@@ -112,7 +118,7 @@ public final class FormWrapper {
     protected static void wrapUpdate(Form form, Customer customer) {
         initForm(form);
         initDialog();
-        FormInputHandler.setFieldsCustomer(customer);
+        FormInputHandler.setFields(FormType.CUSTOMER, customer);
         buttonOK.setOnMouseClicked(e -> {
             if (form.verifyHasFilledFields()) {
                 Customer newCustomer = FormInputHandler.getFieldsCustomer();
@@ -138,7 +144,7 @@ public final class FormWrapper {
     protected static void wrapUpdate(Form form, Employee employee) {
         initForm(form);
         initDialog();
-        FormInputHandler.setFieldsEmployee(employee);
+        FormInputHandler.setFields(FormType.EMPLOYEE, employee);
         buttonOK.setOnMouseClicked(e -> {
             if (form.verifyHasFilledFields()) {
                 Employee newEmployee = FormInputHandler.getFieldsEmployee();
