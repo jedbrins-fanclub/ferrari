@@ -22,7 +22,6 @@ public class CalculateInterestRateTest {
     
     @BeforeAll
     public static void initOnce() {
-        Platform.startup(() -> {});
         mockStatic(FormInputHandler.class);
         when(car.getPrice()).thenReturn(1000000.0);
     }

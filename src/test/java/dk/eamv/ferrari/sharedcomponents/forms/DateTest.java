@@ -1,7 +1,9 @@
 package dk.eamv.ferrari.sharedcomponents.forms;
 
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
+import javafx.application.Platform;
 import javafx.scene.control.DatePicker;
 
 import static org.assertj.core.api.Assertions.*;
@@ -11,6 +13,11 @@ import java.time.LocalDate;
 public class DateTest {
     private LocalDate startDate = LocalDate.of(1, 1, 1);
     private DatePicker startDatePicker = new DatePicker(startDate);
+
+    @BeforeAll
+    public void init() {
+        Platform.startup(() -> {});
+    }    
 
     @Test
     public void oneWeek_ShouldBe_7Days() {
