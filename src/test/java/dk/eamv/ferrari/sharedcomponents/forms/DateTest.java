@@ -1,10 +1,16 @@
 package dk.eamv.ferrari.sharedcomponents.forms;
 
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import javafx.application.Platform;
 import javafx.scene.control.DatePicker;
 
 import static org.assertj.core.api.Assertions.*;
+import static org.mockito.Mockito.mockStatic;
+import static org.mockito.Mockito.when;
 
 import java.time.LocalDate;
 
@@ -12,6 +18,16 @@ public class DateTest {
     private LocalDate startDate = LocalDate.of(1, 1, 1);
     private DatePicker startDatePicker = new DatePicker(startDate);
     
+    @BeforeEach
+    public static void initOnce() {
+        Platform.startup(() -> {});
+    }
+    
+    @AfterEach
+    public static void cleanUp() {
+        Platform.exit();
+    }
+
     @Test
     public void oneWeek_ShouldBe_7Days() {
         LocalDate endDate = LocalDate.of(1, 1, 8);

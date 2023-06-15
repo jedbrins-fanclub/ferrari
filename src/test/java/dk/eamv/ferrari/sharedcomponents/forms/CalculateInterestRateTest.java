@@ -7,6 +7,7 @@ import static org.mockito.Mockito.when;
 
 import java.time.LocalDate;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -20,11 +21,16 @@ import javafx.scene.control.TextField;
 public class CalculateInterestRateTest {
     private static Car car = mock(Car.class);
     
-    @BeforeAll
+    @BeforeEach
     public static void initOnce() {
         Platform.startup(() -> {});
         mockStatic(FormInputHandler.class);
         when(car.getPrice()).thenReturn(1000000.0);
+    }
+    
+    @AfterEach
+    public static void cleanUp() {
+        Platform.exit();
     }
     
     @BeforeEach
