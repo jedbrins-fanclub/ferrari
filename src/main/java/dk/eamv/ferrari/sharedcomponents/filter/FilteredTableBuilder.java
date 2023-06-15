@@ -11,7 +11,7 @@ import javafx.scene.paint.Color;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -34,7 +34,7 @@ public class FilteredTableBuilder<T> implements FilteredTableBuilderInfo<T> {
      * when the {@link #FilteredTableBuilder} is instantiated.</p>
      * <p>For more details go to: {@link #withColumn(String, Function)}</p>
      */
-    private final HashMap<String, Function<T, Object>> columnInfo;
+    private final LinkedHashMap<String, Function<T, Object>> columnInfo;
     private final ArrayList<TableColumn<T, ?>> statusColumns;
     private final ArrayList<TableColumn<T, ?>> progressColumns;
     private final ArrayList<TableColumn<T, ?>> buttonColumns;
@@ -52,7 +52,7 @@ public class FilteredTableBuilder<T> implements FilteredTableBuilderInfo<T> {
      * <p>These columns will be added together in the {@link #build()} method.
      */
     public FilteredTableBuilder() {
-        columnInfo = new HashMap<>();
+        columnInfo = new LinkedHashMap<>();
         statusColumns = new ArrayList<>();
         progressColumns = new ArrayList<>();
         buttonColumns = new ArrayList<>();
