@@ -19,12 +19,12 @@ public class DateTest {
     private DatePicker startDatePicker = new DatePicker(startDate);
     
     @BeforeEach
-    public static void initOnce() {
+    public void initOnce() {
         Platform.startup(() -> {});
     }
     
     @AfterEach
-    public static void cleanUp() {
+    public void cleanUp() {
         Platform.exit();
     }
 

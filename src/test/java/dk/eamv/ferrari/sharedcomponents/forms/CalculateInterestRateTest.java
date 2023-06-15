@@ -22,14 +22,14 @@ public class CalculateInterestRateTest {
     private static Car car = mock(Car.class);
     
     @BeforeEach
-    public static void initOnce() {
+    public void initOnce() {
         Platform.startup(() -> {});
         mockStatic(FormInputHandler.class);
         when(car.getPrice()).thenReturn(1000000.0);
     }
     
     @AfterEach
-    public static void cleanUp() {
+    public void cleanUp() {
         Platform.exit();
     }
     
