@@ -8,6 +8,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.Separator;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -36,6 +37,7 @@ public class LoginView {
         background.widthProperty().bind(scene.widthProperty());
         background.heightProperty().bind(scene.heightProperty());
 
+        scene.addEventHandler(KeyEvent.KEY_PRESSED, LoginController::keypress);
         scene.getChildren().addAll(
             background,
             getRepeatingLogo(),
