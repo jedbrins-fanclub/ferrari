@@ -15,7 +15,7 @@ public class DateTest {
     private DatePicker startDatePicker = new DatePicker(startDate);
 
     @BeforeAll
-    public void init() {
+    public static void init() {
         Platform.startup(() -> {});
     }    
 
