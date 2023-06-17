@@ -95,7 +95,7 @@ public final class FormWrapper {
         FormInputHandler.setFields(FormType.CAR, car);
         buttonOK.setOnMouseClicked(e -> {
             if (form.verifyHasFilledFields()) {
-                Car newCar = FormInputHandler.getFieldsCar();
+                Car newCar = (Car)FormInputHandler.getFields(FormType.CAR);
                 newCar.setId(car.getId());
                 CarModel.update(newCar);
 
@@ -121,7 +121,7 @@ public final class FormWrapper {
         FormInputHandler.setFields(FormType.CUSTOMER, customer);
         buttonOK.setOnMouseClicked(e -> {
             if (form.verifyHasFilledFields()) {
-                Customer newCustomer = FormInputHandler.getFieldsCustomer();
+                Customer newCustomer = (Customer)FormInputHandler.getFields(FormType.CUSTOMER);
                 newCustomer.setId(customer.getId());
                 CustomerModel.update(newCustomer);
 
@@ -147,7 +147,7 @@ public final class FormWrapper {
         FormInputHandler.setFields(FormType.EMPLOYEE, employee);
         buttonOK.setOnMouseClicked(e -> {
             if (form.verifyHasFilledFields()) {
-                Employee newEmployee = FormInputHandler.getFieldsEmployee();
+                Employee newEmployee = (Employee)FormInputHandler.getFields(FormType.EMPLOYEE);
                 newEmployee.setId(employee.getId());
                 EmployeeModel.update(newEmployee);
 
@@ -182,7 +182,7 @@ public final class FormWrapper {
 
         buttonOK.setOnMouseClicked(e -> {
             if (form.verifyHasFilledFields()) {
-                Loan newLoan = FormInputHandler.getFieldsLoan();
+                Loan newLoan = (Loan)FormInputHandler.getFields(FormType.LOAN);
                 newLoan.setId(loan.getId());
                 LoanModel.update(newLoan);
 

@@ -36,45 +36,25 @@ public class FormInputHandler {
         FormInputHandler.form = form;
     }
 
-    /**
-     * Reads the input of the fields and returns a Car object based on the input.
-     * @return the Car object based on the input of the form.
-     */
-    protected static Car getFieldsCar() {
-        return new Car(getString("Model"), getInt("Årgang"), getDouble("Pris"));
-    }
+    protected static Object getFields(FormType type) {
+        if (type == FormType.LOAN) {
+            Car car = getEntityFromComboBox("Bil");
+            Customer customer = getEntityFromComboBox("CPR & Kunde");
+            Employee employee = getEntityFromComboBox("Medarbejder");
+            return new Loan(
+                car.getId(), customer.getId(), employee.getId(),
+                getDouble("Lånets størrelse"), getDouble("Udbetaling"), getDouble("Rente"),
+                getSelectedDate("Start dato DD/MM/ÅÅÅÅ"), getSelectedDate("Slut dato DD/MM/ÅÅÅÅ"),
+                LoanStatus.valueOf(3)
+            );
+        }
 
-    /**
-     * Reads the input of the fields and returns a Customer object based on the input.
-     * @return the Customer object based on the input of the form.
-     */
-    protected static Customer getFieldsCustomer() {
-        return new Customer(getString("Fornavn"), getString("Efternavn"), getString("Telefonnummer"), getString("Email"), getString("Adresse"), getString("CPR"));
-    }
-    
-    /**
-     * Reads the input of the fields and returns an Employee object based on the input.
-     * @return the Employee object based on the input of the form.
-     */
-    protected static Employee getFieldsEmployee() {
-        return new Employee(getString("Fornavn"), getString("Efternavn"), getString("Telefon nr."), getString("Email"), getString("Kodeord"), getDouble("Udlånsgrænse"));
-    }
-    
-    /**
-     * Reads the input of the fields and returns a Loan object based on the input.
-     * @return the Loan object based on the input of the form.
-     */
-    protected static Loan getFieldsLoan() {
-        Car car = getEntityFromComboBox("Bil");
-        Customer customer = getEntityFromComboBox("CPR & Kunde");
-        Employee employee = getEntityFromComboBox("Medarbejder");
-        Loan loan = new Loan(
-            car.getId(), customer.getId(), employee.getId(),
-            getDouble("Lånets størrelse"), getDouble("Udbetaling"), getDouble("Rente"),
-            getSelectedDate("Start dato DD/MM/ÅÅÅÅ"), getSelectedDate("Slut dato DD/MM/ÅÅÅÅ"),
-            LoanStatus.valueOf(3)
-        );
-        return loan;
+        return switch (type) {
+            case CAR -> new Car(getString("Model"), getInt("Årgang"), getDouble("Pris"));
+            case CUSTOMER -> new Customer(getString("Fornavn"), getString("Efternavn"), getString("Telefonnummer"), getString("Email"), getString("Adresse"), getString("CPR"));
+            case EMPLOYEE -> new Employee(getString("Fornavn"), getString("Efternavn"), getString("Telefon nr."), getString("Email"), getString("Kodeord"), getDouble("Udlånsgrænse"));
+            case LOAN -> null;
+        };
     }
     
     /**

@@ -190,25 +190,25 @@ public class FormBinder {
 
             switch (type) {
                 case CAR -> {
-                    Car car = FormInputHandler.getFieldsCar();
+                    Car car = (Car)FormInputHandler.getFields(FormType.CAR);
                     CarController.getCars().add(car);
                     CarController.createCar(car);
                 }
 
                 case CUSTOMER -> {
-                    Customer customer = FormInputHandler.getFieldsCustomer();
+                    Customer customer = (Customer)FormInputHandler.getFields(FormType.CUSTOMER);
                     CustomerController.getCustomers().add(customer);
                     CustomerController.createCustomer(customer);
                 }
 
                 case EMPLOYEE -> {
-                    Employee employee = FormInputHandler.getFieldsEmployee();
+                    Employee employee = (Employee)FormInputHandler.getFields(FormType.EMPLOYEE);
                     EmployeeController.getEmployees().add(employee);
                     EmployeeController.createEmployee(employee);
                 }
 
                 case LOAN -> {
-                    Customer customer = FormInputHandler.getEntityFromComboBox("CPR & Kunde");
+                    Customer customer = (Customer)FormInputHandler.getEntityFromComboBox("CPR & Kunde");
                     if (!verifyCustomerNotBanned(customer)) {
                         return;
                     }
@@ -230,7 +230,7 @@ public class FormBinder {
                         return;
                     }
 
-                    Loan loan = FormInputHandler.getFieldsLoan();
+                    Loan loan = (Loan)FormInputHandler.getFields(FormType.LOAN);
                     LoanController.getLoans().add(loan);
                     LoanController.createLoan(loan);
                 }
