@@ -3,9 +3,13 @@
   -darkest-gray: #111111;
   -darker-gray: #1F1F1F;
   -dark-gray: #373737;
+  -login-logo-color: #F9F9F9;
+  -icon-button-color: #D3D3D3;
   -text-color: #FFFFFF;
+  -loginbox-background-color: #F7F7F7;
   -fx-font-family: "Inter", "Segoe UI", "Arial", sans-serif;
   -fx-background-color: lightgrey;
+  -textfield-background: white;
 }
 
 .drop-shadow-effect {
@@ -14,7 +18,7 @@
 
 .login-box {
     -fx-font-family: "Inter", "Segoe UI", "Arial", sans-serif;
-    -fx-background-color: #F7F7F7;
+    -fx-background-color: -loginbox-background-color;
     -fx-max-width: 400px;
     -fx-max-height: 375px;
     -fx-border-radius: 50px;
@@ -26,7 +30,7 @@
 }
 
 .login-box TextField, .login-box PasswordField {
-    -fx-prompt-text-fill: #555555;
+    -fx-prompt-text-fill: -dark-gray;
     -fx-background-color: transparent;
 }
 
@@ -65,7 +69,7 @@
 }
 
 .login-logo-horse {
-    -fx-fill: #F9F9F9;
+    -fx-fill: -login-logo-color;
     -fx-opacity: 0.2;
 }
 
@@ -103,7 +107,7 @@
 }
 
 .ToggleButtonSelected {
-    -fx-background-color: #F50000;
+    -fx-background-color: -ferrari-red;
     -fx-text-fill: -darker-gray;
 }
 
@@ -123,7 +127,7 @@
 }
 
 .sidebar ToggleButton:selected {
-    -fx-background-color: #F50000;
+    -fx-background-color: -ferrari-red;
     -fx-text-fill: -darker-gray;
 }
 
@@ -166,25 +170,25 @@
 
 .icon-button {
     -fx-background-color: transparent;
-    -fx-border-color: #d3d3d3;
+    -fx-border-color: -icon-button-color;
     -fx-border-radius: 7px;
-    -fx-fill: #d3d3d3;
+    -fx-fill: -icon-button-color;
 }
 
 .icon-button:hover {
-    -fx-background-color: #d3d3d3;
+    -fx-background-color: -icon-button-color;
     -fx-background-radius: 7px;
     -fx-fill: #323232;
 }
 
 .icon-button:pressed {
-    -fx-background-color: #d3d3d3;
-    -fx-border-color: #d3d3d3;
+    -fx-background-color: -icon-button-color;
+    -fx-border-color: -icon-button-color;
 }
 
 .settings TextField, .settings PasswordField, .settings NumericTextField {
-    -fx-prompt-text-fill: #555555;
-    -fx-background-color: white;
+    -fx-prompt-text-fill: -dark-gray;
+    -fx-background-color: -textfield-background;
     -fx-max-width: 400;
     -fx-min-height: 30;
     -fx-alignment: center;
