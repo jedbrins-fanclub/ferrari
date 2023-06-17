@@ -41,7 +41,7 @@ public class FormInputHandler {
             return new Loan(
                 car.getId(), customer.getId(), employee.getId(),
                 getDouble("Lånets størrelse"), getDouble("Udbetaling"), getDouble("Rente"),
-                getSelectedDate("Start dato DD/MM/ÅÅÅÅ"), getSelectedDate("Slut dato DD/MM/ÅÅÅÅ"),
+                getDatePicker("Start dato DD/MM/ÅÅÅÅ").getValue(), getDatePicker("Slut dato DD/MM/ÅÅÅÅ").getValue(),
                 LoanStatus.valueOf(3)
             );
         }
@@ -83,16 +83,6 @@ public class FormInputHandler {
         String rawValue = getString(key);
         String formattedValue = rawValue.replace(",", ".");
         return Double.valueOf(formattedValue);
-    }
-
-    /**
-     * Casts the Control into a DatePicker. Then takes the DatePicker and converts it value into an instant,
-     * which is then returned as a Date.
-     * @param key - the String/Header og the DatePicker.
-     * @return the Date of DatePicker.
-     */
-    protected static LocalDate getSelectedDate(String key) {
-        return getDatePicker(key).getValue();
     }
 
     /**
