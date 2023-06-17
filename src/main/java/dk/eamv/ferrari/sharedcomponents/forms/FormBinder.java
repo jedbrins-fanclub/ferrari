@@ -1,7 +1,6 @@
 package dk.eamv.ferrari.sharedcomponents.forms;
 
-import java.time.LocalDate;
-import java.time.Period;
+import java.time.temporal.ChronoUnit;
 
 import dk.api.rki.Rating;
 import dk.eamv.ferrari.scenes.car.Car;
@@ -298,7 +297,8 @@ public class FormBinder {
 
         if (start.getValue() != null && end.getValue() != null) {
             // Add 1% if loan period > 3 years.
-            if (calculateDaysBetween(start, end) > 3 * 365) {
+            long difference = ChronoUnit.DAYS.between(start.getValue(), end.getValue());
+            if (difference > 3 * 365) {
                 totalInterestRate += 1;
             }
         }
@@ -341,25 +341,6 @@ public class FormBinder {
         }
 
         return interestRate;
-    }
-
-    /**
-    * Takes the DatePickers and gets their value. Then calculates the days between the inputs.
-     * @param start - the start date picker
-     * @param end - the end date picker
-     * @return the days between the 2 selected dates, as an int.
-     */
-    private static int calculateDaysBetween(DatePicker start, DatePicker end) {
-        LocalDate startDate = start.getValue();
-        LocalDate endDate = end.getValue();
-        Period period = Period.between(startDate, endDate);
-        int days = period.getDays();
-        int months = period.getMonths();
-        int years = period.getYears();
-
-        double totalDays = days + months * 30.5 + years * 365;
-
-        return (int)totalDays;
     }
 
     private static boolean verifyCustomerNotBanned(Customer customer) {
