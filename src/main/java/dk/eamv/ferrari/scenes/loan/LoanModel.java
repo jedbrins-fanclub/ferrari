@@ -61,7 +61,7 @@ public final class LoanModel {
                 return new Loan(
                     id, rs.getInt("car_id"), rs.getInt("customer_id"), rs.getInt("employee_id"),
                     rs.getDouble("loan_size"), rs.getDouble("down_payment"), rs.getDouble("interest_rate"),
-                    converDate(rs.getDate("start_date")), converDate(rs.getDate("end_date")), LoanStatus.valueOf(rs.getInt("status"))
+                    rs.getDate("start_date").toLocalDate(), rs.getDate("end_date").toLocalDate(), LoanStatus.valueOf(rs.getInt("status"))
                 );
             }
         } catch (SQLException exception) {
@@ -83,7 +83,7 @@ public final class LoanModel {
                 loans.add(new Loan(
                     rs.getInt("id"), rs.getInt("car_id"), rs.getInt("customer_id"), rs.getInt("employee_id"),
                     rs.getDouble("loan_size"), rs.getDouble("down_payment"), rs.getDouble("interest_rate"),
-                    converDate(rs.getDate("start_date")), converDate(rs.getDate("end_date")), LoanStatus.valueOf(rs.getInt("status"))
+                    rs.getDate("start_date").toLocalDate(), rs.getDate("end_date").toLocalDate(), LoanStatus.valueOf(rs.getInt("status"))
                 ));
             }
         } catch (SQLException exception) {
@@ -160,10 +160,5 @@ public final class LoanModel {
      */
     public static boolean delete(int id) {
         return Database.execute("DELETE FROM dbo.Loan WHERE id = " + id);
-    }
-
-    // sql.Date -> util.Date
-    private static java.util.Date converDate(java.sql.Date date) {
-        return new java.util.Date(date.getTime());
     }
 }

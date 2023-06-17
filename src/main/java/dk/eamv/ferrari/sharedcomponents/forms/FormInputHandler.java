@@ -6,11 +6,8 @@ import dk.eamv.ferrari.scenes.employee.Employee;
 import dk.eamv.ferrari.scenes.loan.Loan;
 import dk.eamv.ferrari.scenes.loan.LoanStatus;
 
-import java.time.Instant;
 import java.time.LocalDate;
-import java.time.ZoneId;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import dk.eamv.ferrari.sharedcomponents.nodes.AutoCompleteComboBox;
 import javafx.scene.control.Control;
@@ -94,11 +91,8 @@ public class FormInputHandler {
      * @param key - the String/Header og the DatePicker.
      * @return the Date of DatePicker.
      */
-    protected static Date getSelectedDate(String key) {
-        DatePicker datePicker = getDatePicker(key);
-        LocalDate localDate = datePicker.getValue();
-        Instant instant = Instant.from(localDate.atStartOfDay(ZoneId.systemDefault()));
-        return Date.from(instant);
+    protected static LocalDate getSelectedDate(String key) {
+        return getDatePicker(key).getValue();
     }
 
     /**
