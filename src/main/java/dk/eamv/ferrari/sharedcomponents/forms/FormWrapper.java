@@ -39,7 +39,7 @@ public final class FormWrapper {
     /**
      * Closes the active dialog.
      */
-    protected static void closeDialog(Dialog<Object> dialog) {
+    protected static void closeDialog() {
         dialog.setResult(true);
         dialog.close();
     }
@@ -105,7 +105,7 @@ public final class FormWrapper {
                 cars.remove(index);
                 cars.add(index, newCar);
 
-                closeDialog(dialog);
+                closeDialog();
             }
         });
     }
@@ -131,7 +131,7 @@ public final class FormWrapper {
                 customers.remove(index);
                 customers.add(index, newCustomer);
 
-                closeDialog(dialog);
+                closeDialog();
             }
         });
     }
@@ -157,7 +157,7 @@ public final class FormWrapper {
                 employees.remove(index);
                 employees.add(index, newEmployee);
 
-                closeDialog(dialog);
+                closeDialog();
             }
         });
     }
@@ -191,7 +191,7 @@ public final class FormWrapper {
                 loans.remove(index);
                 loans.add(index, newLoan);
 
-                closeDialog(dialog);
+                closeDialog();
             }
         });
     }
@@ -213,7 +213,7 @@ public final class FormWrapper {
 
         Button buttonCancel = new Button("Fortryd");
         buttonCancel.setOnMouseClicked(e -> {
-            closeDialog(dialog);
+            closeDialog();
         });
 
         statusLabel.setVisible(false);

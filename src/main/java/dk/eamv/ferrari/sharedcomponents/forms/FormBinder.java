@@ -236,7 +236,7 @@ public class FormBinder {
                 }
             }
 
-            FormWrapper.closeDialog(FormWrapper.getDialog());
+            FormWrapper.closeDialog();
         });
     }
 
