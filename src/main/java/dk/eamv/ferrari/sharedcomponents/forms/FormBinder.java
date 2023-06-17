@@ -224,7 +224,7 @@ public class FormBinder {
                     }
 
                     Employee employee = FormInputHandler.getEntityFromComboBox("Medarbejder");
-                    if (employee.getMaxLoan() < FormInputHandler.getDouble("Lånets størrelse")) {
+                    if (loanExceedsLimit(employee)) {
                         FormWrapper.showStatusLabel(true, "Lånets størrelse overskrider medarbejderens beføjelser.");
                         form.getForwardBoss().setVisible(true);
                         return;
@@ -245,7 +245,7 @@ public class FormBinder {
      * @return returned as a String, not an int, so it can be directly used to set the value of a TextField.
      * @see FormInputHandler#getDouble(String)
      */
-    private static String calculateLoanSize() {
+    protected static String calculateLoanSize() {
         // Both start at 0, so we can return something (0 in this case) if theyre null & empty.
         double price = 0;
         double downpayment = 0;
@@ -267,7 +267,7 @@ public class FormBinder {
      * Calculates the total interest rate, based on the listed conditions in the program requirements.
      * @see FormInputHandler#getDouble(String)
      */
-    protected static void calculateInterestRate() {
+    protected static double calculateInterestRate() {
         double totalInterestRate = 0.0;
         double downpayment = 0;
         double carPrice = 0;
@@ -288,7 +288,7 @@ public class FormBinder {
 
         if (!downpaymentField.getText().isEmpty() && selectedCar != null) {
             // Add 1% if loansize > 50%
-            if (downpayment / carPrice < 0.5) {
+            if (downpaymentLessThanHalf(downpayment, carPrice)) {
                 totalInterestRate += 1;
             }
         }
@@ -298,13 +298,14 @@ public class FormBinder {
 
         if (start.getValue() != null && end.getValue() != null) {
             // Add 1% if loan period > 3 years.
-            if (calculateDaysBetween(start, end) > 3 * 365) {
+            if (periodIsOver3Yrs(start, end)) {
                 totalInterestRate += 1;
             }
         }
 
         TextField interestField = FormInputHandler.getTextField("Rente");
         interestField.setText(String.format("%.2f", totalInterestRate));
+        return totalInterestRate;
     }
 
     /**
@@ -328,7 +329,7 @@ public class FormBinder {
      * @param creditRating - the customers credit score.
      * @return - the interest rate based on the customers credit score.
      */
-    private static int getCreditScoreInterestRate(Rating creditRating) {
+    protected static int getCreditScoreInterestRate(Rating creditRating) {
         int interestRate = 0;
 
         if (creditRating != null) {
@@ -349,7 +350,7 @@ public class FormBinder {
      * @param end - the end date picker
      * @return the days between the 2 selected dates, as an int.
      */
-    private static int calculateDaysBetween(DatePicker start, DatePicker end) {
+    protected static int calculateDaysBetween(DatePicker start, DatePicker end) {
         LocalDate startDate = start.getValue();
         LocalDate endDate = end.getValue();
         Period period = Period.between(startDate, endDate);
@@ -369,5 +370,21 @@ public class FormBinder {
         }
 
         return true;
+    }
+
+    protected static boolean periodIsOver3Yrs(DatePicker start, DatePicker end) {
+        return calculateDaysBetween(start, end) > 3 * 365;
+    }
+
+    protected static boolean periodIsNotNegative(DatePicker start, DatePicker end) {
+        return calculateDaysBetween(start, end) >= 0;
+    }
+
+    protected static boolean downpaymentLessThanHalf(double downpayment, double carPrice) {
+        return downpayment / carPrice < 0.5;
+    }
+
+    protected static boolean loanExceedsLimit(Employee employee) {
+        return employee.getMaxLoan() < FormInputHandler.getDouble("Lånets størrelse");
     }
 }
