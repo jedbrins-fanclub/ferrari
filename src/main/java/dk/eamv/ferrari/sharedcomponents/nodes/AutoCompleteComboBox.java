@@ -7,7 +7,6 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.TextField;
 
 // Made by Benjamin and Christian
 public class AutoCompleteComboBox<E> extends ComboBox<String> {
