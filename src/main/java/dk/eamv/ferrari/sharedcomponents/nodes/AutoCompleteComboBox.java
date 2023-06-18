@@ -25,7 +25,6 @@ public class AutoCompleteComboBox<E> extends ComboBox<String> {
 
         FilteredList<String> filteredItems = new FilteredList<String>(FXCollections.observableArrayList(elements.keySet()), p -> true);
         getEditor().textProperty().addListener((obs, oldValue, newValue) -> {
-            final TextField editor = getEditor();
             final String selected = getSelectionModel().getSelectedItem();
 
             // This needs run on the GUI thread to avoid the error described
@@ -33,16 +32,12 @@ public class AutoCompleteComboBox<E> extends ComboBox<String> {
             Platform.runLater(() -> {
                 // If the no item in the list is selected or the selected item
                 // isn't equal to the current input, we refilter the list.
-                if (selected == null || !selected.equals(editor.getText())) {
+                if (selected == null || !selected.equals(newValue)) {
                     filteredItems.setPredicate(item -> {
                         // We return true for any items that starts with the
                         // same letters as the input. We use toUpperCase to
                         // avoid case sensitivity.
-                        if (item.toString().toUpperCase().contains(newValue.toUpperCase())) {
-                            return true;
-                        } else {
-                            return false;
-                        }
+                        return item.toUpperCase().contains(newValue.toUpperCase());
                     });
                 }
             });
