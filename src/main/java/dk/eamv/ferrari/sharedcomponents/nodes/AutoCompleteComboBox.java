@@ -1,6 +1,5 @@
 package dk.eamv.ferrari.sharedcomponents.nodes;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 import javafx.application.Platform;
@@ -20,14 +19,11 @@ public class AutoCompleteComboBox<E> extends ComboBox<String> {
      */
     public AutoCompleteComboBox(ObservableList<E> entities) {
         setEditable(true);
-
-        ArrayList<String> items = new ArrayList<String>();
         for (E entity : entities) {
             elements.put(entity.toString(), entity);
-            items.add(entity.toString());
         }
 
-        FilteredList<String> filteredItems = new FilteredList<String>(FXCollections.observableArrayList(items), p -> true);
+        FilteredList<String> filteredItems = new FilteredList<String>(FXCollections.observableArrayList(elements.keySet()), p -> true);
         getEditor().textProperty().addListener((obs, oldValue, newValue) -> {
             final TextField editor = getEditor();
             final String selected = getSelectionModel().getSelectedItem();
